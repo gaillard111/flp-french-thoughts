@@ -1,0 +1,13 @@
+services:
+    thoudght.admin.thought:
+        class: ThoughtBundle\Admin\ThoughtAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: thought, label: "Thought" }
+        arguments:
+            - ~
+            - ThoughtBundle\Entity\Thought
+            - 'ThoughtBundle:ThoughtAdmin'
+
+    thought.parser.service:
+        class: ThoughtBundle\Parser\Service
+        arguments: []
