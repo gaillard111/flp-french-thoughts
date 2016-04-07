@@ -20,8 +20,14 @@ class Service
 
         $quotes = explode(html_entity_decode('&laquo;'), htmlspecialchars($content));
 
+        $qoute = $quotes[8];
+
+        $quoteParts = explode(html_entity_decode('&raquo;'), $qoute);
+
+        $content = trim($quoteParts[0]);
+
         echo '<pre>';
-        var_dump($quotes[1]);
+        var_dump($content);
         echo '</pre>';
     }
 }

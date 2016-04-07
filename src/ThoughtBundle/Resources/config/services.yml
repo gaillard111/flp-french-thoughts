@@ -11,3 +11,10 @@ services:
     thought.parser.service:
         class: ThoughtBundle\Parser\Service
         arguments: []
+
+#    thought.search_provider.thought:
+#        class: ThoughtBundle\Provider\ThoughtProvider
+#        arguments:
+#            - fos_elastica.index.app.thought
+#        tags:
+#            - { name: fos_elastica.provider, index: app, type: thought }

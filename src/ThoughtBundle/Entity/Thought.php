@@ -54,6 +54,16 @@ class Thought
     protected $updateAt;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $amount = 0;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $published;
+
+    /**
      * Get id
      *
      * @return integer
@@ -238,5 +248,69 @@ class Thought
     public function setUpdateAtValue()
     {
         $this->updateAt = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreFlush
+     */
+    public function setAmountValue()
+    {
+        $charList = preg_replace('/\s|"|\?|\.|,/', '', $this->content);
+
+        $this->amount = str_word_count($this->content, 0, $charList);
+    }
+
+    /**
+     * Set published
+     *
+     * @param boolean $published
+     * @return Thought
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * Get published
+     *
+     * @return boolean
+     */
+    public function getPublished()
+    {
+        return $this->published;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublish()
+    {
+        return $this->published ? true : false;
+    }
+
+    /**
+     * Set amount
+     *
+     * @param integer $amount
+     * @return Thought
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * Get amount
+     *
+     * @return integer 
+     */
+    public function getAmount()
+    {
+        return $this->amount;
     }
 }

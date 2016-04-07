@@ -83,7 +83,6 @@ sonata_block:
         sonata.user.block.account: # used to display menu option (login option)
         sonata.block.service.text: # used to if you plan to use Sonata user routes
 
-
 sonata_user:
     #security_acl: true # Uncomment for ACL support
     manager_type: orm # can be orm or mongodb
@@ -100,3 +99,29 @@ fos_user:
 
     service:
         user_manager: sonata.user.orm.user_manager
+
+fos_elastica:
+    clients:
+        default: { host: 127.0.0.1, port: 9200 }
+    indexes:
+        app:
+            index_name: thought
+            types:
+                thought:
+                    mappings:
+                        content: ~
+                        author: ~
+                        tags: ~
+                        thoughtInfo: ~
+                        category: ~
+                    persistence:
+                        # the driver can be orm, mongodb, phpcr or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: ThoughtBundle\Entity\Thought
+                        provider: ~
+                        listener:
+                            is_indexable_callback: "thought.isPublish()"
+                            #immediate: ~
+                        finder: ~

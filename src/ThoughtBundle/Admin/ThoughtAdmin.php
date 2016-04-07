@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
  * Class ThoughtAdmin
@@ -24,7 +25,10 @@ class ThoughtAdmin extends Admin
             ->add('content')
             ->add('thoughtInfo')
             ->add('author')
-            ->add('tags');
+            ->add('tags')
+            ->add('published', null, array(
+                'required' => false,
+            ));
     }
 
     /**
@@ -37,6 +41,14 @@ class ThoughtAdmin extends Admin
             ->add('content')
             ->add('category')
             ->add('author')
+            ->add('_action', 'action', array(
+                'actions' => array(
+                    'publish' => array(
+                        'template' => 'ThoughtBundle:CRUD:list__publish_publish.html.twig',
+                    ),
+                ),
+                'label'    => 'Published',
+            ))
         ;
     }
 
@@ -50,5 +62,13 @@ class ThoughtAdmin extends Admin
             ->add('author')
             ->add('tags')
         ;
+    }
+
+    /**
+     * @param RouteCollection $collection
+     */
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('publish', $this->getRouterIdParameter().'/publish');
     }
 }

@@ -1,0 +1,6 @@
+<input class="publish_{{ object.id }}" type="checkbox" {{ object.published ? 'checked' : '' }} />
+<script type="text/javascript">
+    $('input.publish_{{ object.id }}').on('ifChanged', function(){
+        location.href="{{ admin.generateObjectUrl('publish', object) }}";
+    });
+</script>
