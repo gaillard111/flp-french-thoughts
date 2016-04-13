@@ -1,0 +1,78 @@
+<div class="row">
+    {% set search = app.request.get('search') %}
+
+    <form class="col-sm-12" method="get">
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label for="inputSearch">{{ 'thought.filter.content.label'|trans }}</label>
+                <input value="{{ search.words is defined ? search.words : '' }}" type="text" name="search[words]" class="form-control" id="inputSearch" placeholder="{{ 'thought.filter.content.placeholder'|trans }}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="checkbox col-sm-12">
+                <label>
+                    <input type="checkbox" {{ search.field is defined and 'content' in search.field|keys ? 'checked' : '' }} name="search[field][content]"> {{ 'thought.filter.fields.content.label'|trans }}
+                </label>
+                <label>
+                    <input type="checkbox" {{ search.field is defined and 'category' in search.field|keys ? 'checked' : '' }} name="search[field][category]"> {{ 'thought.filter.fields.category.label'|trans }}
+                </label>
+                <label>
+                    <input type="checkbox" {{ search.field is defined and 'tags' in search.field|keys ? 'checked' : '' }} name="search[field][tags]"> {{ 'thought.filter.fields.tags.label'|trans }}
+                </label>
+                <label>
+                    <input type="checkbox" {{ search.field is defined and 'author' in search.field|keys ? 'checked' : '' }} name="search[field][author]"> {{ 'thought.filter.fields.author.label'|trans }}
+                </label>
+                <label>
+                    <input type="checkbox" {{ search.field is defined and 'thoughtInfo' in search.field|keys ? 'checked' : '' }} name="search[field][thoughtInfo]"> {{ 'thought.filter.fields.thoughtInfo.label'|trans }}
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <label for="search_max_words" class="col-sm-2 control-label">
+                    {{ 'thought.filter.max_words.label'|trans }}
+                    <select id="search_max_words" name="search[max_words]" class="form-control">
+                        <option value="0">{{ 'thought.filter.max_words.options.unlimited'|trans }}</option>
+                        <option {{ search.max_words is defined and search.max_words == 320 ? 'selected' : '' }} value="320">320</option>
+                        <option {{ search.max_words is defined and search.max_words == 80 ? 'selected' : '' }} value="80">80</option>
+                    </select>
+                </label>
+
+                <label for="search_min_words" class="col-sm-2 control-label">
+                    {{ 'thought.filter.min_words.label'|trans }}
+                    <select id="search_min_words" name="search[min_words]" class="form-control">
+                        <option value="0">{{ 'thought.filter.min_words.options.unlimited'|trans }}</option>
+                        <option  {{ search.min_words is defined and search.min_words == 240 ? 'selected' : '' }} value="240">240</option>
+                    </select>
+                </label>
+
+                <label for="search_sorting" class="col-sm-2 control-label">
+                    {{ 'thought.filter.sorting.label'|trans }}
+                    <select id="search_sorting" name="search[sorting]" class="form-control">
+                        <option value>--</option>
+                        <option {{ search.sorting is defined and search.sorting == 'amount' ? 'selected' : '' }} value="amount">
+                            {{ 'thought.filter.sorting.options.amount'|trans }}
+                        </option>
+                        <option {{ search.sorting is defined and search.sorting == 'category' ? 'selected' : '' }} value="category">
+                            {{ 'thought.filter.sorting.options.category'|trans }}
+                        </option>
+                        <option {{ search.sorting is defined and search.sorting == 'author' ? 'selected' : '' }} value="author">
+                            {{ 'thought.filter.sorting.options.author'|trans }}
+                        </option>
+                    </select>
+                </label>
+                <div class="checkbox">
+                    <label>
+                        <input {{ search.sorting_desc is defined and 'on' == search.sorting_desc ? 'checked' : '' }} type="checkbox" name="search[sorting_desc]"> {{ 'thought.filter.sorting_desc.label'|trans }}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-12">
+                <button class="btn btn-primary">Search</button>
+                <a href="/" class="btn btn-warning">Clear filter</a>
+            </div>
+        </div>
+    </form>
+</div>

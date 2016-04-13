@@ -1,0 +1,43 @@
+thought:
+    property:
+        content: quote
+        category: category
+        author: author
+        tags: tags
+        thoughtInfo: info
+
+    filter:
+        content:
+            label: Search words
+            placeholder: search words
+        fields:
+            content:
+                label: Quote
+            category:
+                label: Category
+            tags:
+                label: Tags
+            author:
+                label: Author
+            thoughtInfo:
+                label: Info
+        max_words:
+            label: max words
+            options:
+                unlimited: unlimited
+        min_words:
+            label: min words
+            options:
+                unlimited: unlimited
+        sorting:
+            label: sorting
+            options:
+                amount:   size
+                category: category
+                author:   Author
+        sorting_desc:
+            label: desc
+        buttons:
+            search: Search
+            reset:  Clear filter
+        time_counter : Search time counter

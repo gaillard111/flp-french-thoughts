@@ -25,7 +25,9 @@
         "sonata-project/easy-extends-bundle": "dev-master",
         "sonata-project/user-bundle": "dev-master",
         "sonata-project/datagrid-bundle": "dev-master",
-        "friendsofsymfony/elastica-bundle": "^3.1"
+        "friendsofsymfony/elastica-bundle": "^3.1",
+        "knplabs/knp-paginator-bundle": "^2.5",
+        "pagerfanta/pagerfanta": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

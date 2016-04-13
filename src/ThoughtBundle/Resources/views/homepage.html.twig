@@ -1,0 +1,39 @@
+{% extends 'ThoughtBundle::layout.html.twig' %}
+
+{% block page_title %}Home page{% endblock %}
+
+{% block content %}
+
+
+    {% include '@Thought/search_thought.html.twig' %}
+
+    <div>{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
+
+    {% for thought in thoughts %}
+        <div class="jumbotron">
+            <p>
+                <strong class="col-sm-2">{{ 'thought.property.author'|trans|capitalize }}</strong>
+                <span>{{ thought.author }}</span>
+            </p>
+            <p>
+                <strong class="col-sm-2">{{ 'thought.property.category'|trans|capitalize }}</strong>
+                <span>{{ thought.category }}</span>
+            </p>
+            <p>
+                <strong class="col-sm-12">{{ 'thought.property.content'|trans|capitalize }}</strong>
+                <span>{{ thought.content }}</span>
+            </p>
+            <p>
+                <strong class="col-sm-2">{{ 'thought.property.thoughtInfo'|trans|capitalize }}</strong>
+                <span>{{ thought.thoughtInfo }}</span>
+            </p>
+            <p>
+                <strong class="col-sm-2">{{ 'thought.property.tags'|trans|capitalize }}</strong>
+                <span>{{ thought.tags }}</span>
+            </p>
+        </div>
+    {% else %}
+
+    {% endfor %}
+
+{% endblock %}

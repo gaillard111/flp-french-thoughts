@@ -1,0 +1,10 @@
+.jumbotron{
+    padding: 30px !important;
+}
+.jumbotron p{
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+.jumbotron strong{
+    padding: 0;
+}

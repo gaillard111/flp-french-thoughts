@@ -18,3 +18,7 @@ services:
 #            - fos_elastica.index.app.thought
 #        tags:
 #            - { name: fos_elastica.provider, index: app, type: thought }
+
+    thought.model.thought_model:
+        class: ThoughtBundle\Model\ThoughtModel
+        arguments: ["@doctrine.orm.entity_manager"]
