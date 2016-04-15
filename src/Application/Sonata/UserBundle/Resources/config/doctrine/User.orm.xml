@@ -9,6 +9,10 @@
         <id name="id" column="id" type="integer">
             <generator strategy="AUTO" />
         </id>
+        <one-to-many
+                field="thoughts"
+                target-entity="ThoughtBundle\Entity\Thought"
+                mapped-by="owner" />
 
     </entity>
 

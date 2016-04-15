@@ -64,6 +64,12 @@ class Thought
     protected $published;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User", inversedBy="thoughts")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $owner;
+
+    /**
      * Get id
      *
      * @return integer
@@ -243,6 +249,14 @@ class Thought
     }
 
     /**
+     * @ORM\PrePersist
+     */
+    public function setPublishedValue()
+    {
+        $this->published = false;
+    }
+
+    /**
      * @ORM\PreUpdate
      */
     public function setUpdateAtValue()
@@ -312,5 +326,28 @@ class Thought
     public function getAmount()
     {
         return $this->amount;
+    }
+
+    /**
+     * Set owner
+     *
+     * @param \Application\Sonata\UserBundle\Entity\User $owner
+     * @return Thought
+     */
+    public function setOwner(\Application\Sonata\UserBundle\Entity\User $owner = null)
+    {
+        $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * Get owner
+     *
+     * @return \Application\Sonata\UserBundle\Entity\User 
+     */
+    public function getOwner()
+    {
+        return $this->owner;
     }
 }

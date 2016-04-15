@@ -23,17 +23,21 @@ class HomepageController extends Controller
     {
         $start = microtime(true);
 
+        $page = $request->query->getInt('page', 1);
+
+        $countItem = 10;
+
         $modelThought = $this->container->get('thought.model.thought_model');
 
         $finder = $this->container->get('fos_elastica.finder.app.thought');
 
-        $thoughts = $modelThought->getThoughtsFromElastic($request->get('search'), $finder);
+        $thoughts = $modelThought->getThoughtsFromElastic($request->get('search'), $finder, $page, $countItem);
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $thoughts,
-            $request->query->getInt('page', 1),
-            10
+            $page,
+            $countItem
         );
 
         $timeExecute = microtime(true) - $start;

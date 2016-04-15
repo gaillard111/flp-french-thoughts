@@ -1,0 +1,49 @@
+{% extends 'ApplicationSonataUserBundle:Profile:action.html.twig' %}
+
+{% block sonata_profile_title %}Thought's list{% endblock %}
+
+{% block sonata_profile_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <p><a href="{{ path('sonata_user_thought_create') }}" class="btn btn-primary">Add thought</a></p>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{{ 'thought.property.content'|trans }}</th>
+                    <th>{{ 'thought.property.author'|trans }}</th>
+                    <th>{{ 'thought.property.category'|trans }}</th>
+                    <th>{{ 'thought.property.publish'|trans }}</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for thought in thoughts %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ thought.content|raw[:200] }}{{ thought.content|raw|length > 200 ? '...' : '' }}</td>
+                        <td>{{ thought.author }}</td>
+                        <td>{{ thought.category }}</td>
+                        <td>
+                        <span class="label label-{{ thought.published ? 'success' : 'danger' }}">
+                            {{ thought.published ? 'Yes' : 'No' }}
+                        </span>
+                        </td>
+                        <td>
+                            <ul>
+                                <li><a href="#">Edit</a></li>
+                                <li><a href="#">Delete</a></li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+

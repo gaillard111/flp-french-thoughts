@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@ThoughtBundle/Resources/config/services.yml" }
+    - { resource: "@ApplicationSonataUserBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -86,7 +87,22 @@ sonata_block:
 sonata_user:
     #security_acl: true # Uncomment for ACL support
     manager_type: orm # can be orm or mongodb
+    profile:
+        menu:
+            - { route: 'sonata_user_profile_show', label: 'user.dashboard.menu.link_dashboard', domain: 'messages'}
+            - { route: 'sonata_user_profile_edit', label: 'user.dashboard.menu.link_profile', domain: 'messages'}
+            - { route: 'sonata_user_thoughts', label: 'user.dashboard.menu.link_thoughts', domain: 'messages'}
+        form:
+            type:               application_sonata_user_profile
+            handler:            sonata.user.profile.form.handler.default
+            name:               application_sonata_user_profile
+            validation_groups:  [Profile]
 
+        register:
+            form:
+                type:           front_user_registration
+                handler:        sonata.user.registration.form.handler.default
+                name:           front_user_registration_form
 
 fos_user:
     db_driver:  orm # can be orm or odm

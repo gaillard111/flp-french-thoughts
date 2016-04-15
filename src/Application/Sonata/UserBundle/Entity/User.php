@@ -11,6 +11,7 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Sonata\UserBundle\Entity\BaseUser as BaseUser;
 
 /**
@@ -31,6 +32,11 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Thought", mappedBy="owner")
+     */
+    protected $thoughts;
+
+    /**
      * Get id
      *
      * @return int $id
@@ -38,5 +44,38 @@ class User extends BaseUser
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Add thoughts
+     *
+     * @param \ThoughtBundle\Entity\Thought $thoughts
+     * @return User
+     */
+    public function addThought(\ThoughtBundle\Entity\Thought $thoughts)
+    {
+        $this->thoughts[] = $thoughts;
+
+        return $this;
+    }
+
+    /**
+     * Remove thoughts
+     *
+     * @param \ThoughtBundle\Entity\Thought $thoughts
+     */
+    public function removeThought(\ThoughtBundle\Entity\Thought $thoughts)
+    {
+        $this->thoughts->removeElement($thoughts);
+    }
+
+    /**
+     * Get thoughts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getThoughts()
+    {
+        return $this->thoughts;
     }
 }

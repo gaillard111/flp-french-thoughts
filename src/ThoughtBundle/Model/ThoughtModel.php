@@ -2,8 +2,10 @@
 
 namespace ThoughtBundle\Model;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
+use ThoughtBundle\Entity\Thought;
 
 /**
  * Class ThoughtModel
@@ -37,16 +39,37 @@ class ThoughtModel
     public function getThoughts()
     {
         return $this->repository->createQueryBuilder('t')
+            ->where('t.published = 1')
             ->orderBy('t.createdAt', 'DESC')
             ->getQuery();
     }
 
     /**
+     * @param User $user
+     * @return \Doctrine\ORM\Query
+     */
+    public function getUserThoughts(User $user)
+    {
+        return $this->repository->createQueryBuilder('t')
+            ->where('t.owner = :user')
+            ->orderBy('t.createdAt', 'DESC')
+            ->setParameter('user', $user)
+            ->getQuery();
+    }
+
+    public function create(array $data)
+    {
+
+    }
+
+
+    /**
      * @param array             $request
      * @param TransformedFinder $finder
-     * @return array
+     * @param integer           $page
+     * @return \Doctrine\ORM\Query|\FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface|\FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter
      */
-    public function getThoughtsFromElastic($request, TransformedFinder $finder)
+    public function getThoughtsFromElastic($request, TransformedFinder $finder, $page, $countItem)
     {
         if (isset($request['words']) and !empty(trim($request['words']))) {
             $fields = array(
@@ -71,6 +94,8 @@ class ThoughtModel
 
             $maxWords = $request['max_words'] == 0 ? 99999999 : intval($request['max_words']);
 
+            $page = $page ? $page : 1;
+
             $query = new \Elastica\Query\MultiMatch();
 
             $query->setParams(
@@ -80,6 +105,7 @@ class ThoughtModel
                             'query' => $request['words'],
                             'fields' => $fields,
                         ),
+
                     ),
                     'filter' => array(
                         'range' => array(
@@ -93,11 +119,69 @@ class ThoughtModel
                 )
             );
 
-            $thoughts = $finder->find($query);
+            $query->setParam('from', (($page - 1) * $countItem));
+            $query->setParam('size', $countItem);
+
+            $thoughts = $finder->createPaginatorAdapter($query);
 
             return $thoughts;
         } else {
             return $this->getThoughts();
         }
     }
+
+    /**
+     * @param array $data
+     * @return int
+     */
+    public function saveThoughts(array $data)
+    {
+        $flag = false;
+
+        $countAdded = 0;
+
+        foreach ($data as $item) {
+            if ($this->createTransaction($item)) {
+                $flag = true;
+                $countAdded++;
+            }
+        }
+
+        if ($flag == true) {
+            $this->em->flush();
+        }
+
+        return $countAdded;
+    }
+
+    /**
+     * @param array $data
+     * @return bool|int
+     */
+    private function createTransaction(array $data)
+    {
+        $tags = (isset($data['tags'])) ? $data['tags'] : null;
+        $author = (isset($data['author'])) ? $data['author'] : null;
+        $content = (isset($data['content'])) ? $data['content'] : null;
+        $category = (isset($data['category'])) ? $data['category'] : null;
+        $published = (isset($data['published'])) ? $data['published'] : null;
+        $thoughtInfo = (isset($data['info'])) ? $data['info'] : null;
+
+        if (!empty($content)) {
+            $thought = new Thought();
+            $thought->setTags($tags);
+            $thought->setAuthor($author);
+            $thought->setContent($content);
+            $thought->setCategory($category);
+            $thought->setPublished($published);
+            $thought->setThoughtInfo($thoughtInfo);
+
+            $this->em->persist($thought);
+
+            return true;
+        }
+
+        return false;
+    }
+
 }

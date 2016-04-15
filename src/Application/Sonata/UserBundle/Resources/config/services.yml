@@ -1,0 +1,12 @@
+services:
+    thought.user.profile.type:
+        class: Application\Sonata\UserBundle\Form\Type\ProfileType
+        parent: sonata.user.profile.form.type
+        tags:
+            - { name: form.type, alias: application_sonata_user_profile }
+
+    thought.user.registration.type:
+        class: Application\Sonata\UserBundle\Form\Type\RegisterType
+        parent: fos_user.registration.form.type
+        tags:
+            - { name: form.type, alias: front_user_registration }

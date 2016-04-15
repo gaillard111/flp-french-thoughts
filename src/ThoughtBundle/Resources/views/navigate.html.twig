@@ -1,0 +1,36 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+                Brand
+            </a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            {% if app.user %}
+                <li>
+                    <a href="{{ path('sonata_user_profile_show') }}">
+                        Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('fos_user_security_logout') }}">
+                        Sign out
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ path('fos_user_registration_register') }}">
+                        Registration
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('fos_user_security_login') }}">
+                        Sign in
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+
+
+    </div>
+</nav>

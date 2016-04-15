@@ -10,7 +10,7 @@ services:
 
     thought.parser.service:
         class: ThoughtBundle\Parser\Service
-        arguments: []
+        arguments: ["@service_container"]
 
 #    thought.search_provider.thought:
 #        class: ThoughtBundle\Provider\ThoughtProvider

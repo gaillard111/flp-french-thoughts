@@ -1,10 +1,53 @@
+user:
+    form:
+        registration:
+            username:
+                label:       Username
+                placeholder: Username
+            email:
+                label:       Email
+                placeholder: Email
+            firstname:
+                label:       Firstname
+                placeholder: Firstname
+            lastname:
+                label:       Lastname
+                placeholder: Lastname
+            password:
+                label:       Password
+                placeholder: Password
+                mismatch:    The entered passwords don't match
+            verification:
+                label:       Verification
+                placeholder: Verification
+        profile:
+            firstname:
+                label:       Firstname
+                placeholder: Firstname
+            lastname:
+                label:       Lastname
+                placeholder: Lastname
+            username:
+                label:       Username
+                placeholder: Username
+            email:
+                label:       Email
+                placeholder: Email
+            button: Submit
+    dashboard:
+        menu:
+            link_thoughts:  Thoughts
+            link_profile:   Profile
+            link_dashboard: Dashboard
+
 thought:
     property:
-        content: quote
-        category: category
-        author: author
-        tags: tags
-        thoughtInfo: info
+        content:     Quote
+        category:    Category
+        author:      Author
+        tags:        Tags
+        thoughtInfo: Info
+        publish:     Publish
 
     filter:
         content:
