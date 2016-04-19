@@ -15,11 +15,15 @@
         <div class="jumbotron">
             <p>
                 <strong class="col-sm-2">{{ 'thought.property.author'|trans|capitalize }}</strong>
-                <span>{{ thought.author }}</span>
+                <span>
+                    <a href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on'}) }}">{{ thought.author }}</a>
+                </span>
             </p>
             <p>
                 <strong class="col-sm-2">{{ 'thought.property.category'|trans|capitalize }}</strong>
-                <span>{{ thought.category }}</span>
+                <span>
+                    <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on'}) }}">{{ thought.category }}</a>
+                </span>
             </p>
             <p>
                 <strong class="col-sm-12">{{ 'thought.property.content'|trans|capitalize }}</strong>
@@ -31,7 +35,13 @@
             </p>
             <p>
                 <strong class="col-sm-2">{{ 'thought.property.tags'|trans|capitalize }}</strong>
-                <span>{{ thought.tags }}</span>
+                <span>
+                    {% for tag in thought.tags|split(',') %}
+                        <a href="{{ path('thought_homepage_index', {'search[words]': tag, 'search[field][tags]': 'on'}) }}">
+                            <span class="label label-info">{{ tag }}</span>
+                        </a>
+                    {% endfor %}
+                </span>
             </p>
         </div>
     {% else %}

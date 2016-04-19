@@ -253,7 +253,9 @@ class Thought
      */
     public function setPublishedValue()
     {
-        $this->published = false;
+        if (!$this->published) {
+            $this->published = false;
+        }
     }
 
     /**

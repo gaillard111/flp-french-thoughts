@@ -16,16 +16,28 @@ use Sonata\AdminBundle\Route\RouteCollection;
 class ThoughtAdmin extends Admin
 {
     /**
+     * Set javascript
+     */
+    public function configure()
+    {
+        $this->setTemplate('edit', 'ThoughtBundle:CRUD:edit_javascript.html.twig');
+    }
+
+    /**
      * @param FormMapper $formMapper
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('category')
+            ->add('category', 'text')
             ->add('content')
             ->add('thoughtInfo')
-            ->add('author')
-            ->add('tags')
+            ->add('author', 'text')
+            ->add('tags', 'text', array(
+                'attr' => array(
+                    'data-role' => 'tagsinput',
+                ),
+            ))
             ->add('published', null, array(
                 'required' => false,
             ));
@@ -69,6 +81,8 @@ class ThoughtAdmin extends Admin
      */
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('publish', $this->getRouterIdParameter().'/publish');
+        $collection
+            ->add('publish', $this->getRouterIdParameter().'/publish')
+        ;
     }
 }

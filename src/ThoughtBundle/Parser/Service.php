@@ -91,7 +91,7 @@ class Service
                         unset($parseStringParts[0]);
                         unset($parseStringParts[1]);
 
-                        $quoteTags = implode(', ', $parseStringParts);
+                        $quoteTags = implode(',', $parseStringParts);
                     }
                 }
             }

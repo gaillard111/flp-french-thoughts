@@ -38,7 +38,7 @@ class ThoughtType extends AbstractType
             ))
             ->add('tags', 'text', array(
                 'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr' => array('class' => 'form-control'),
+                'attr' => array('class' => 'form-control', 'data-role' => 'tagsinput'),
                 'required' => false,
             ))
         ;

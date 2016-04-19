@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 class HomepageController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", methods={"GET"})
      *
      * @param Request $request
      * @return Response

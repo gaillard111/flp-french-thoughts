@@ -2,8 +2,10 @@
 
 namespace ThoughtBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -29,7 +31,7 @@ class ThoughtAdminController extends Controller
 
         $this->admin->update($object);
 
-        $this->addFlash('sonata_flash_success', 'Published successfully');
+        $this->addFlash('sonata_flash_success', ($object->getPublished() ? 'Published' : 'Unpublished') . ' successfully');
 
         return new RedirectResponse($this->admin->generateUrl('list', $this->admin->getFilterParameters()));
     }

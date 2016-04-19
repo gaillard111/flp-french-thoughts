@@ -57,16 +57,12 @@ class ThoughtModel
             ->getQuery();
     }
 
-    public function create(array $data)
-    {
-
-    }
-
 
     /**
      * @param array             $request
      * @param TransformedFinder $finder
      * @param integer           $page
+     * @param integer           $countItem
      * @return \Doctrine\ORM\Query|\FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface|\FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter
      */
     public function getThoughtsFromElastic($request, TransformedFinder $finder, $page, $countItem)
@@ -86,13 +82,17 @@ class ThoughtModel
 
             $sort = array();
 
-            if ($request['sorting']) {
+            if (isset($request['sorting']) && $request['sorting']) {
                 $sort = array(
                     $request['sorting'] => (isset($request['sorting_desc']) ? 'desc' : 'asc'),
                 );
             }
 
-            $maxWords = $request['max_words'] == 0 ? 99999999 : intval($request['max_words']);
+            $maxWords = (isset($request['max_words']) && $request['max_words'] > 0) ? intval($request['max_words']) : 99999999;
+
+            $minWords = isset($request['min_words']) ? intval($request['min_words']) : 0;
+
+            $words = isset($request['words']) ? $request['words'] : null;
 
             $page = $page ? $page : 1;
 
@@ -102,15 +102,14 @@ class ThoughtModel
                 array(
                     'query' => array(
                         'multi_match' => array(
-                            'query' => $request['words'],
+                            'query' => $words,
                             'fields' => $fields,
                         ),
-
                     ),
                     'filter' => array(
                         'range' => array(
                             'amount' => array(
-                                'gte' => intval($request['min_words']),
+                                'gte' => $minWords,
                                 'lte' => $maxWords,
                             ),
                         ),
