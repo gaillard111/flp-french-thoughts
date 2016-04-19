@@ -118,7 +118,9 @@ fos_user:
 
 fos_elastica:
     clients:
-        default: { host: 127.0.0.1, port: 9200 }
+        default:
+            host: "%elastica_host%"
+            port: "%elastica_port%"
     indexes:
         app:
             index_name: thought
