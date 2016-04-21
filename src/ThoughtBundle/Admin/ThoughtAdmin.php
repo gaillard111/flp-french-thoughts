@@ -85,4 +85,14 @@ class ThoughtAdmin extends Admin
             ->add('publish', $this->getRouterIdParameter().'/publish')
         ;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExportFormats()
+    {
+        return array(
+            'csv'
+        );
+    }
 }

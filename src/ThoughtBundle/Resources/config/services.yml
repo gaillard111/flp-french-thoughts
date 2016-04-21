@@ -2,7 +2,7 @@ services:
     thoudght.admin.thought:
         class: ThoughtBundle\Admin\ThoughtAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: thought, label: "Thought" }
+            - { name: sonata.admin, manager_type: orm, group: Thoughts, label: "Thoughts" }
         arguments:
             - ~
             - ThoughtBundle\Entity\Thought

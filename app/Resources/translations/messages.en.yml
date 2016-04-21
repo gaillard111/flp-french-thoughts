@@ -8,18 +8,21 @@ user:
                 label:       Email
                 placeholder: Email
             firstname:
-                label:       Firstname
-                placeholder: Firstname
+                label:       First name
+                placeholder: First name
             lastname:
-                label:       Lastname
-                placeholder: Lastname
+                label:       Last name
+                placeholder: Last name
             password:
                 label:       Password
                 placeholder: Password
                 mismatch:    The entered passwords don't match
             verification:
-                label:       Verification
-                placeholder: Verification
+                label:       Reapeat password
+                placeholder: Reapeat password
+            button:          Register
+        authorization:
+            forgotten_pass: Forgot password
         profile:
             firstname:
                 label:       Firstname
@@ -33,7 +36,7 @@ user:
             email:
                 label:       Email
                 placeholder: Email
-            button: Submit
+            button:          Submit
     dashboard:
         menu:
             link_thoughts:  Thoughts
@@ -84,3 +87,11 @@ thought:
             search: Search
             reset:  Clear filter
         time_counter : Search time counter
+
+navbar:
+    brand:        French thoughts
+    profile:      Profile
+    sign_out:     Sign out
+    sign_in:      Sign in
+    registration: Registration
+    instruction:  Instruction

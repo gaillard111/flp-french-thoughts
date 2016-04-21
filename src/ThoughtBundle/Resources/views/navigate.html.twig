@@ -2,30 +2,35 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/">
-                Brand
+                {{ 'navbar.brand'|trans }}
             </a>
         </div>
         <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="#">
+                    {{ 'navbar.instruction'|trans }}
+                </a>
+            </li>
             {% if app.user %}
                 <li>
                     <a href="{{ path('sonata_user_profile_show') }}">
-                        Profile
+                        {{ 'navbar.profile'|trans }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ path('fos_user_security_logout') }}">
-                        Sign out
+                        {{ 'navbar.sign_out'|trans }}
                     </a>
                 </li>
             {% else %}
                 <li>
                     <a href="{{ path('fos_user_registration_register') }}">
-                        Registration
+                        {{ 'navbar.registration'|trans }}
                     </a>
                 </li>
                 <li>
                     <a href="{{ path('fos_user_security_login') }}">
-                        Sign in
+                        {{ 'navbar.sign_in'|trans }}
                     </a>
                 </li>
             {% endif %}
