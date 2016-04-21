@@ -25,11 +25,11 @@ user:
             forgotten_pass: Forgot password
         profile:
             firstname:
-                label:       Firstname
-                placeholder: Firstname
+                label:       First name
+                placeholder: First name
             lastname:
-                label:       Lastname
-                placeholder: Lastname
+                label:       Last name
+                placeholder: Last name
             username:
                 label:       Username
                 placeholder: Username

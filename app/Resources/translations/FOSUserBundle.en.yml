@@ -1,0 +1,3 @@
+form:
+    password_confirmation:     Reapeat password
+    new_password_confirmation: Reapeat password
