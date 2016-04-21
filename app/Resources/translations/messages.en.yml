@@ -42,6 +42,18 @@ user:
             link_thoughts:  Thoughts
             link_profile:   Profile
             link_dashboard: Dashboard
+    thought:
+        create_page:
+            title: Thought Create
+            submit: Submit
+        list_page:
+            title: Thought's list
+            add_button: Add thought
+            link:
+                edit:   Edit
+                delete: Delete
+            table:
+                action: Action
 
 thought:
     property:
