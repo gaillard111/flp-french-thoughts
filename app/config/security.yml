@@ -23,18 +23,18 @@ security:
             security: false
 
         # -> custom firewall for the admin area of the URL
-        admin:
-            pattern:  /admin(.*)
-            context:  user
-            form_login:
-                provider:  fos_userbundle
-                login_path:  /admin/login
-                use_forward:  false
-                check_path:  /admin/login_check
-                failure_path:  null
-            logout:
-                path:  /admin/logout
-            anonymous:  true
+#        admin:
+#            pattern:  /admin(.*)
+#            context:  user
+#            form_login:
+#                provider:  fos_userbundle
+#                login_path:  /admin/login
+#                use_forward:  false
+#                check_path:  /admin/login_check
+#                failure_path:  null
+#            logout:
+#                path:  /admin/logout
+#            anonymous:  true
         # -> end custom configuration
 
         main:
