@@ -59,4 +59,13 @@ class HomepageController extends Controller
 
         return new Response('');
     }
+
+    /**
+     * @Route("/instruction", name="instruction")
+     * @return Response
+     */
+    public function instructionAction()
+    {
+        return $this->render('@Thought/instruction.html.twig');
+    }
 }

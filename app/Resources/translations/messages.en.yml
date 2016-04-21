@@ -95,3 +95,4 @@ navbar:
     sign_in:      Sign in
     registration: Registration
     instruction:  Instruction
+    super_admin:  Admin dashboard

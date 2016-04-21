@@ -7,16 +7,24 @@
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a href="#">
+                <a href="{{ path('instruction') }}">
                     {{ 'navbar.instruction'|trans }}
                 </a>
             </li>
             {% if app.user %}
-                <li>
-                    <a href="{{ path('sonata_user_profile_show') }}">
-                        {{ 'navbar.profile'|trans }}
-                    </a>
-                </li>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <li>
+                        <a href="{{ path('sonata_admin_dashboard') }}">
+                            {{ 'navbar.super_admin'|trans }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ path('sonata_user_profile_show') }}">
+                            {{ 'navbar.profile'|trans }}
+                        </a>
+                    </li>
+                {% endif %}
                 <li>
                     <a href="{{ path('fos_user_security_logout') }}">
                         {{ 'navbar.sign_out'|trans }}
