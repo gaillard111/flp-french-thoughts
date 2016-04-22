@@ -22,3 +22,10 @@ services:
     thought.model.thought_model:
         class: ThoughtBundle\Model\ThoughtModel
         arguments: ["@doctrine.orm.entity_manager"]
+
+    thought.service.KnpMatcher:
+        class: ThoughtBundle\Service\KnpMatcher
+        arguments:
+            - @service_container
+        tags:
+            - { name: knp_menu.voter }
