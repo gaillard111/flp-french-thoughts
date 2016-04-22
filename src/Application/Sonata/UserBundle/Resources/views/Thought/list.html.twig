@@ -14,7 +14,7 @@
                     <th>{{ 'thought.property.author'|trans }}</th>
                     <th>{{ 'thought.property.category'|trans }}</th>
                     <th>{{ 'thought.property.publish'|trans }}</th>
-                    <th>{{ 'user.thought.list_page.table.action'|trans }}</th>
+                    {#<th>{{ 'user.thought.list_page.table.action'|trans }}</th>#}
                 </tr>
                 </thead>
                 <tbody>
@@ -29,12 +29,12 @@
                             {{ thought.published ? 'Yes' : 'No' }}
                         </span>
                         </td>
-                        <td>
+                        {#<td>
                             <ul>
                                 <li><a href="#">{{ 'user.thought.list_page.link.edit'|trans }}</a></li>
                                 <li><a href="#">{{ 'user.thought.list_page.link.delete'|trans }}</a></li>
                             </ul>
-                        </td>
+                        </td>#}
                     </tr>
                 {% endfor %}
                 </tbody>
