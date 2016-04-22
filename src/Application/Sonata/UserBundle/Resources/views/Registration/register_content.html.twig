@@ -1,6 +1,6 @@
 {% form_theme form '@ApplicationSonataUser/Profile/Form/form-change-password-content.html.twig' %}
 
-<div class="panel panel-success">
+<div class="panel panel-info">
     <div class="panel-heading">
         <h2 class="panel-title">{{ 'title_user_registration'|trans({}, 'SonataUserBundle') }}</h2>
     </div>
@@ -9,8 +9,8 @@
 
             {{ form_widget(form) }}
 
-            <div class="form-actions">
-                <input type="submit" value="{{ 'user.form.registration.button'|trans({}, 'messages') }}" class="btn btn-success pull-right" />
+            <div class="form-actions col-sm-7">
+                <input type="submit" value="{{ 'user.form.registration.button'|trans({}, 'messages') }}" class="btn btn-info pull-right" />
             </div>
         </form>
     </div>
