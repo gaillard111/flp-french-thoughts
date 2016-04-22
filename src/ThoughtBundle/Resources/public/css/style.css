@@ -23,3 +23,14 @@
 .margin-top-17{
     margin-top: 17px;
 }
+
+.form-error{
+    list-style: none;
+    padding-left: 5px;
+    font-size: 1.2rem;
+    color: red;
+}
+
+label.required:after{
+    content: '*';
+}

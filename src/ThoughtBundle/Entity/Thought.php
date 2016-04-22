@@ -70,6 +70,11 @@ class Thought
     protected $owner;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $liked = 0;
+
+    /**
      * Get id
      *
      * @return integer
@@ -351,5 +356,28 @@ class Thought
     public function getOwner()
     {
         return $this->owner;
+    }
+
+    /**
+     * Set liked
+     *
+     * @param integer $liked
+     * @return Thought
+     */
+    public function setLiked($liked)
+    {
+        $this->liked = $liked;
+
+        return $this;
+    }
+
+    /**
+     * Get liked
+     *
+     * @return integer
+     */
+    public function getLiked()
+    {
+        return $this->liked;
     }
 }

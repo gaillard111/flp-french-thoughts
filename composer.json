@@ -27,7 +27,8 @@
         "sonata-project/datagrid-bundle": "dev-master",
         "friendsofsymfony/elastica-bundle": "^3.1",
         "knplabs/knp-paginator-bundle": "^2.5",
-        "pagerfanta/pagerfanta": "^1.0"
+        "pagerfanta/pagerfanta": "^1.0",
+        "friendsofsymfony/jsrouting-bundle": "^1.6"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

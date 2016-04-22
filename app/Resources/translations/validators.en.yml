@@ -1,0 +1,5 @@
+user:
+    form:
+        registration:
+            password:
+                mismatch: The entered passwords don't match

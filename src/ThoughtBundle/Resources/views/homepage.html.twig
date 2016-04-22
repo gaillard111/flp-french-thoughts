@@ -43,6 +43,11 @@
                     {% endfor %}
                 </span>
             </p>
+            <p>
+                <button class="btn btn-info btn-sm like-quote" data-quote="{{ thought.id }}" type="button">
+                    <span class="badge-text">Like</span> <span class="badge" style="display: {{ (thought.liked > 0) ? 'inline-block' : 'none' }}">{{ thought.liked }}</span>
+                </button>
+            </p>
         </div>
     {% else %}
 

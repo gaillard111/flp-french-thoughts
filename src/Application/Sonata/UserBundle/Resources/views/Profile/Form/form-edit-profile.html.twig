@@ -244,11 +244,12 @@
 {%- block form_row -%}
     <div class="form-group">
         {{- form_label(form) -}}
-        {{- form_errors(form) -}}
+
         <div class="col-sm-10">
             {{- form_widget(form) -}}
         </div>
     </div>
+    {{- form_errors(form) -}}
 {%- endblock form_row -%}
 
 {%- block button_row -%}

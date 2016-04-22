@@ -67,35 +67,35 @@ class ThoughtModel
      */
     public function getThoughtsFromElastic($request, TransformedFinder $finder, $page, $countItem)
     {
-        if (isset($request['words']) and !empty(trim($request['words']))) {
-            $fields = array(
-                'tags',
-                'author',
-                'content',
-                'category',
-                'thoughtInfo',
+        $fields = array(
+            'tags',
+            'author',
+            'content',
+            'category',
+            'thoughtInfo',
+        );
+
+        if (isset($request['field']) and  count($request['field']) > 0) {
+            $fields = array_keys($request['field']);
+        }
+
+        $sort = array();
+
+        if (isset($request['sorting']) && $request['sorting']) {
+            $sort = array(
+                $request['sorting'] => (isset($request['sorting_desc']) ? 'desc' : 'asc'),
             );
+        }
 
-            if (isset($request['field']) and  count($request['field']) > 0) {
-                $fields = array_keys($request['field']);
-            }
+        $maxWords = (isset($request['max_words']) && $request['max_words'] > 0) ? intval($request['max_words']) : 99999999;
 
-            $sort = array();
+        $minWords = isset($request['min_words']) ? intval($request['min_words']) : 0;
 
-            if (isset($request['sorting']) && $request['sorting']) {
-                $sort = array(
-                    $request['sorting'] => (isset($request['sorting_desc']) ? 'desc' : 'asc'),
-                );
-            }
+        $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
-            $maxWords = (isset($request['max_words']) && $request['max_words'] > 0) ? intval($request['max_words']) : 99999999;
+        $page = $page ? $page : 1;
 
-            $minWords = isset($request['min_words']) ? intval($request['min_words']) : 0;
-
-            $words = isset($request['words']) ? $request['words'] : null;
-
-            $page = $page ? $page : 1;
-
+        if ($words) {
             $query = new \Elastica\Query\MultiMatch();
 
             $query->setParams(
@@ -120,13 +120,25 @@ class ThoughtModel
 
             $query->setParam('from', (($page - 1) * $countItem));
             $query->setParam('size', $countItem);
-
-            $thoughts = $finder->createPaginatorAdapter($query);
-
-            return $thoughts;
         } else {
-            return $this->getThoughts();
+            $query = new \Elastica\Query();
+
+            $query->setParams(array(
+                'filter' => array(
+                    'range' => array(
+                        'amount' => array(
+                            'gte' => $minWords,
+                            'lte' => $maxWords,
+                        ),
+                    ),
+                ),
+                'sort' => $sort,
+            ));
         }
+
+        $thoughts = $finder->createPaginatorAdapter($query);
+
+        return $thoughts;
     }
 
     /**
@@ -151,6 +163,34 @@ class ThoughtModel
         }
 
         return $countAdded;
+    }
+
+    /**
+     * @param Thought $thought
+     * @return Thought
+     */
+    public function addLike(Thought  $thought)
+    {
+        $thought->setLiked($thought->getLiked() + 1);
+
+        $this->em->persist($thought);
+        $this->em->flush();
+
+        return $thought;
+    }
+
+    /**
+     * @param Thought $thought
+     * @return Thought
+     */
+    public function removeLike(Thought  $thought)
+    {
+        $thought->setLiked($thought->getLiked() - 1);
+
+        $this->em->persist($thought);
+        $this->em->flush();
+
+        return $thought;
     }
 
     /**
@@ -182,5 +222,7 @@ class ThoughtModel
 
         return false;
     }
+
+
 
 }
