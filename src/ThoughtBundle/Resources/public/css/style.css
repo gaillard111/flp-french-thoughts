@@ -42,9 +42,7 @@ label.required:after{
 
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
     text-shadow: 0 -1px 0 #286090;
-
     border-color: #28a4c9;
-
     background-image: -webkit-linear-gradient(top,#5bc0de 0,#2aabd2 100%);
     background-image: -o-linear-gradient(top,#5bc0de 0,#2aabd2 100%);
     background-image: -webkit-gradient(linear,left top,left bottom,from(#5bc0de),to(#2aabd2));

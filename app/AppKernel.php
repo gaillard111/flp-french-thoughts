@@ -29,6 +29,10 @@ class AppKernel extends Kernel
             new ThoughtBundle\ThoughtBundle(),
             new FOS\ElasticaBundle\FOSElasticaBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+
+            new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
+            new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
+            new Sonata\FormatterBundle\SonataFormatterBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

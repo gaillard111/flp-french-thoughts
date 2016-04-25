@@ -82,7 +82,7 @@ class ThoughtAdmin extends Admin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection
-            ->add('publish', $this->getRouterIdParameter().'/publish')
+            ->add('publish', $this->getRouterIdParameter() . '/publish')
         ;
     }
 
@@ -92,7 +92,7 @@ class ThoughtAdmin extends Admin
     public function getExportFormats()
     {
         return array(
-            'csv'
+            'csv',
         );
     }
 }

@@ -16,6 +16,10 @@ class KnpMatcher implements VoterInterface
      */
     private $container;
 
+    /**
+     * KnpMatcher constructor.
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
