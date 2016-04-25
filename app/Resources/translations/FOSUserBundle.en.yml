@@ -1,3 +1,7 @@
 form:
     password_confirmation:     Reapeat password
     new_password_confirmation: Reapeat password
+
+resetting:
+    request:
+        username: "Email address:"

@@ -55,16 +55,6 @@ class ProfileType extends AbstractType
                 'required' => false,
                 'translation_domain' => 'messages',
             ))
-            ->add('username', null, array(
-                'label' => 'user.form.profile.username.label',
-                'label_attr' => array(
-                    'class' => 'control-label col-sm-2',
-                ),
-                'attr' => array(
-                    'class' => 'form-control',
-                ),
-                'translation_domain' => 'messages',
-            ))
             ->add('email', null, array(
                 'label' => 'user.form.profile.email.label',
                 'label_attr' => array(

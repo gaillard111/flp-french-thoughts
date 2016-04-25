@@ -1,0 +1,86 @@
+<?php
+
+namespace ThoughtBundle\Admin;
+
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Show\ShowMapper;
+
+/**
+ * Class UserAdmin
+ * @package ThoughtBundle\Admin
+ */
+class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
+{
+    /**
+     * @inheritdoc
+     */
+    public function getFormBuilder()
+    {
+        $this->formOptions['data_class'] = $this->getClass();
+
+        $options = $this->formOptions;
+        $options['validation_groups'] = (!$this->getSubject() || is_null($this->getSubject()->getId())) ? 'CustomRegistration' : 'CustomProfile';
+
+        $formBuilder = $this->getFormContractor()->getFormBuilder($this->getUniqid(), $options);
+
+        $this->defineFormBuilder($formBuilder);
+
+        return $formBuilder;
+    }
+
+    /**
+     * @param FormMapper $formMapper
+     */
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        // define group zoning
+        $formMapper
+            ->tab('User')
+            ->with('Profile', array('class' => 'col-md-6'))->end()
+            ->with('General', array('class' => 'col-md-6'))->end()
+            ->end()
+        ;
+
+        $now = new \DateTime();
+
+        $formMapper
+            ->tab('User')
+            ->with('General')
+            ->add('email')
+            ->add('plainPassword', 'text', array(
+                'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
+            ))
+            ->end()
+            ->with('Profile')
+            ->add('firstname', null, array('required' => false))
+            ->add('lastname', null, array('required' => false))
+            ->end()
+            ->end()
+        ;
+
+
+    }
+
+    /**
+     * @param ListMapper $listMapper
+     */
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->addIdentifier('email')
+            ->add('enabled', null, array('editable' => true))
+            ->add('locked', null, array('editable' => true))
+            ->add('createdAt')
+        ;
+    }
+
+    /**
+     * @param DatagridMapper $datagridMapper
+     */
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        parent::configureDatagridFilters($datagridMapper);
+    }
+}

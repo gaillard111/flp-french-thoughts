@@ -73,12 +73,20 @@ class User extends BaseUser
     }
 
     /**
-     * @ORM\PrePersist
+     * @inheritdoc
      */
-    public function setUsernameValue()
+    public function prePersist()
     {
-        if (!$this->username) {
-            $this->username = $this->email;
-        }
+        parent::prePersist();
+        $this->username = $this->email;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function preUpdate()
+    {
+        parent::preUpdate();
+        $this->username = $this->email;
     }
 }

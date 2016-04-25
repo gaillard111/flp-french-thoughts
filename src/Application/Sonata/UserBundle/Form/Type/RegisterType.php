@@ -19,9 +19,9 @@ class RegisterType extends RegistrationFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', null, array(
+            /*->add('username', null, array(
                 'label'    => 'user.form.registration.username.label',
-            ))
+            ))*/
             ->add('email', 'email', array(
                 'label'    => 'user.form.registration.email.label',
             ))
@@ -48,7 +48,8 @@ class RegisterType extends RegistrationFormType
     public function setDefaultOption(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'validation_groups' => array('Default', 'Register'),
+            //'validation_groups' => array('Default', 'Register'),
+            'validation_groups' => array('CustomRegistration'),
         ));
     }
 

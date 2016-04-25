@@ -107,13 +107,19 @@ sonata_user:
             type:               application_sonata_user_profile
             handler:            sonata.user.profile.form.handler.default
             name:               application_sonata_user_profile
-            validation_groups:  [Profile]
+            validation_groups:
+                - CustomProfile
 
         register:
             form:
                 type:           front_user_registration
                 handler:        sonata.user.registration.form.handler.default
                 name:           front_user_registration_form
+                validation_groups:
+                    - CustomRegistration
+    admin:
+        user:
+          class:      ThoughtBundle\Admin\UserAdmin
 
 sonata_formatter:
     formatters:

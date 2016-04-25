@@ -20,7 +20,9 @@ class ContentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $content = $em->getRepository('ThoughtBundle:Content')->find(1);
+        $content = $em->getRepository('ThoughtBundle:Content')->findOneBy(array(
+            'contentType' => 'instruction',
+        ));
 
         return $this->render('@Thought/instruction.html.twig', array(
             'content' => $content,

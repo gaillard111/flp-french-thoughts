@@ -40,6 +40,11 @@ class Content
     protected $updateAt;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $contentType;
+
+    /**
      * @var string
      */
     protected $formatType;
@@ -178,5 +183,28 @@ class Content
     public function setFormatType($formatType)
     {
         $this->formatType = $formatType;
+    }
+
+    /**
+     * Set contentType
+     *
+     * @param string $contentType
+     * @return Content
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+
+        return $this;
+    }
+
+    /**
+     * Get contentType
+     *
+     * @return string 
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
     }
 }
