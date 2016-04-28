@@ -3,6 +3,7 @@
 namespace ThoughtBundle\Parser;
 
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class Service
@@ -25,11 +26,14 @@ class Service
     }
 
     /**
-     * parser
+     * @param UploadedFile $file
+     * @return int
      */
-    public function testParse()
+    public function parseFile(UploadedFile $file)
     {
-        $filePath = __DIR__ . '/parseTxt.txt';
+        $filePath = $file->getPathname();
+
+        $data = array();
 
         $content = file_get_contents($filePath);
 
@@ -49,6 +53,12 @@ class Service
             $quoteParts = explode(html_entity_decode('&raquo;'), $quote);
 
             $quoteContent = trim($quoteParts[0]);
+
+            preg_match('/\[\d+\]/', $quoteContent, $match);
+            $quoteContent = preg_replace('/\[\d+\]/', '', $quoteContent);
+
+            $id = isset($match[0]) ? trim($match[0], '[]') : null;
+
 
             if (isset($quoteParts[1])) {
                 $parseString = trim($quoteParts[1]);
@@ -97,6 +107,7 @@ class Service
             }
 
             $data[] = array(
+                'id'        => $id,
                 'content'   => $quoteContent,
                 'author'    => $quoteAuthor,
                 'info'      => $quoteInfo,
@@ -107,10 +118,6 @@ class Service
             );
         }
 
-        $result = $this->container->get('thought.model.thought_model')->saveThoughts($data);
-
-        //var_dump($result);
-
-        echo "Added quotes: $result";
+        return $this->container->get('thought.model.thought_model')->saveThoughts($data);
     }
 }

@@ -94,6 +94,22 @@ sonata_admin:
     templates:
         # default global templates
         layout:  ThoughtBundle::Sonata/Admin/layout.html.twig
+#        list:    ThoughtBundle::CRUD/base_list.html.twig
+
+#    dashboard:
+#        groups:
+#            sonata_user:
+#                label: Users
+#                items:
+#                    - sonata.user.admin.user
+#            Thoughts:
+#                label: Thoughts
+#                items:
+#                    - thoudght.admin.thought
+#            Content:
+#                label: Content
+#                items: {Instruction: thoudght.admin.content}
+
 
 sonata_user:
     #security_acl: true # Uncomment for ACL support

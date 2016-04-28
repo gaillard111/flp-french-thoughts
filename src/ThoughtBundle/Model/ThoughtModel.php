@@ -61,11 +61,9 @@ class ThoughtModel
     /**
      * @param array             $request
      * @param TransformedFinder $finder
-     * @param integer           $page
-     * @param integer           $countItem
      * @return \Doctrine\ORM\Query|\FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface|\FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter
      */
-    public function getThoughtsFromElastic($request, TransformedFinder $finder, $page, $countItem)
+    public function getThoughtsFromElastic($request, TransformedFinder $finder)
     {
         $fields = array(
             'tags',
@@ -93,33 +91,27 @@ class ThoughtModel
 
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
-        $page = $page ? $page : 1;
-
         if ($words) {
-            $query = new \Elastica\Query\MultiMatch();
+            $query = new \Elastica\Query();
 
-            $query->setParams(
-                array(
-                    'query' => array(
-                        'multi_match' => array(
-                            'query' => $words,
-                            'fields' => $fields,
+            $query->setParams(array(
+                'query' => array(
+                    'multi_match' => array(
+                        'query'    => $words,
+                        'fields'   => $fields,
+                        'operator' => 'and',
+                    ),
+                ),
+                'filter' => array(
+                    'range' => array(
+                        'amount' => array(
+                            'gte' => $minWords,
+                            'lte' => $maxWords,
                         ),
                     ),
-                    'filter' => array(
-                        'range' => array(
-                            'amount' => array(
-                                'gte' => $minWords,
-                                'lte' => $maxWords,
-                            ),
-                        ),
-                    ),
-                    'sort' => $sort,
-                )
-            );
-
-            $query->setParam('from', (($page - 1) * $countItem));
-            $query->setParam('size', $countItem);
+                ),
+                'sort' => $sort,
+            ));
         } else {
             $query = new \Elastica\Query();
 
@@ -199,6 +191,9 @@ class ThoughtModel
      */
     private function createTransaction(array $data)
     {
+        $thought = null;
+
+        $id = (isset($data['id'])) ? $data['id'] : null;
         $tags = (isset($data['tags'])) ? $data['tags'] : null;
         $author = (isset($data['author'])) ? $data['author'] : null;
         $content = (isset($data['content'])) ? $data['content'] : null;
@@ -207,7 +202,14 @@ class ThoughtModel
         $thoughtInfo = (isset($data['info'])) ? $data['info'] : null;
 
         if (!empty($content)) {
-            $thought = new Thought();
+            if ($id > 0) {
+                $thought = $this->repository->find($id);
+            }
+
+            if (!$thought) {
+                $thought = new Thought();
+            }
+
             $thought->setTags($tags);
             $thought->setAuthor($author);
             $thought->setContent($content);

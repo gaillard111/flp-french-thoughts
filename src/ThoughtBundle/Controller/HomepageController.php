@@ -33,7 +33,7 @@ class HomepageController extends Controller
 
         $finder = $this->container->get('fos_elastica.finder.app.thought');
 
-        $thoughts = $modelThought->getThoughtsFromElastic($request->get('search'), $finder, $page, $countItem);
+        $thoughts = $modelThought->getThoughtsFromElastic($request->get('search'), $finder);
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(

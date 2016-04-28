@@ -44,3 +44,7 @@ _sonata_admin:
 
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+sonata_admin_custompage:
+    pattern:  /admin/export-thought
+    defaults: { _controller: 'ThoughtBundle:ExportAdmin:exportAdminPage' }

@@ -5,7 +5,11 @@
 {% block content %}
     {% include '@Thought/search_thought.html.twig' %}
 
-    <div>{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
+    <div class="row">
+        <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ thoughts.getTotalItemCount() }}</div>
+        <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
+    </div>
+
 
     <div class="navigation text-center">
         {{ knp_pagination_render(thoughts) }}

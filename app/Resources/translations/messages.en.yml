@@ -99,6 +99,7 @@ thought:
             search: Search
             reset:  Clear filter
         time_counter : Search time counter
+        result_counter : Search results
 
 navbar:
     brand:        French thoughts
@@ -108,3 +109,10 @@ navbar:
     registration: Registration
     instruction:  Instruction
     super_admin:  Admin dashboard
+
+sonata:
+    admin:
+        exportPage:
+            title:   Export thoughts
+            upload_success: Successfully uploaded %count% quotes!
+            not_suported:   "Upload file format not supported!"

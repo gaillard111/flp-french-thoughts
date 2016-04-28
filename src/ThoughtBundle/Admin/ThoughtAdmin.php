@@ -69,11 +69,21 @@ class ThoughtAdmin extends Admin
      */
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper
-            ->add('category')
-            ->add('author')
-            ->add('tags')
-        ;
+        foreach ($this->getFilterFields() as $filterField) {
+            $datagridMapper->add($filterField);
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilterFields()
+    {
+        return array(
+            'category',
+            'author',
+            'tags',
+        );
     }
 
     /**
@@ -92,7 +102,23 @@ class ThoughtAdmin extends Admin
     public function getExportFormats()
     {
         return array(
+            //'txt',
             'csv',
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getExportFields()
+    {
+        return array(
+            'id',
+            'content',
+            'tags',
+            'author',
+            'thoughtInfo',
+            'category',
         );
     }
 }
