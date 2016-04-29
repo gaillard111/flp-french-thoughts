@@ -37,12 +37,14 @@ class Service
 
         $content = file_get_contents($filePath);
 
-        $encoding = mb_detect_encoding($filePath);
+        $encoding = mb_detect_encoding($filePath, mb_detect_order(), true);
 
-        $content = mb_convert_encoding($content, 'utf-8', $encoding);
+        if ($encoding != 'utf-8') {
+            $content = mb_convert_encoding($content, 'utf-8', $encoding);
+        }
 
         $quotes = explode(html_entity_decode('&laquo;'), htmlspecialchars($content));
-
+        //var_dump($content); die;
         foreach ($quotes as $key => $quote) {
             $quoteCategory = '';
             $quoteAuthor = '';
@@ -93,7 +95,7 @@ class Service
 
                     $parseStringParts = explode(' - ', $parseStringParts);
 
-                    $quoteInfo = $parseStringParts[0];
+                    $quoteInfo = trim($parseStringParts[0]);
 
                     if (count($parseStringParts) > 1) {
                         $quoteCategory = $parseStringParts[1];

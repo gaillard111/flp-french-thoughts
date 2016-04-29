@@ -2,18 +2,11 @@
 
 namespace ThoughtBundle\Controller;
 
-use SensioLabs\Security\Crawler\FileGetContentsCrawler;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\MimeType\FileBinaryMimeTypeGuesser;
-use Symfony\Component\HttpFoundation\File\MimeType\FileinfoMimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sonata\AdminBundle\Controller\CoreController;
-use Symfony\Component\Templating\Storage\FileStorage;
 
 class ExportAdminController extends CoreController
 {
@@ -43,7 +36,6 @@ class ExportAdminController extends CoreController
                 $this->addFlash('sonata_user_error', $this->container->get('translator')->trans('sonata.admin.exportPage.not_suported'));
             }
         }
-
 
         return $this->render('@Thought/Sonata/Admin/exportAdminPage.html.twig', array(
             'base_template'   => $this->getBaseTemplate(),

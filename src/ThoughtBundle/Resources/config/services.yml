@@ -37,3 +37,6 @@ services:
             - @service_container
         tags:
             - { name: knp_menu.voter }
+
+    thought.service.export:
+        class: ThoughtBundle\Service\Export

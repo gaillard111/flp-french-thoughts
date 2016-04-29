@@ -1,7 +1,11 @@
-{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+{% extends 'ThoughtBundle:Sonata/Admin:layout.html.twig' %}
 
 {% block breadcrumb %}
-    <li><a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Dashboard{% endtrans %}</a><span class="divider">/</span></li>
+    <li>
+        <a href="{{ url('sonata_admin_dashboard') }}">
+            {% trans %}Dashboard{% endtrans %}
+        </a>
+    </li>
     <li class="active">{{ 'sonata.admin.exportPage.title'|trans }}</li>
 {% endblock %}
 

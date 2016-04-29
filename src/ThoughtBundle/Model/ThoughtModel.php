@@ -5,6 +5,7 @@ namespace ThoughtBundle\Model;
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
+use Symfony\Component\HttpFoundation\Request;
 use ThoughtBundle\Entity\Thought;
 
 /**
@@ -186,6 +187,41 @@ class ThoughtModel
     }
 
     /**
+     * @param array $filters
+     * @param array $filterFields
+     * @return array
+     */
+    public function getFilteredThoughts(array $filters, array $filterFields)
+    {
+        $where     = array();
+        $sortBy    = null;
+        $sortOrder = null;
+
+        if (count($filters)) {
+            $sortBy = isset($filters['_sort_by']) ? $filters['_sort_by'] : null;
+            $sortOrder = isset($filters['_sort_order']) ? $filters['_sort_order'] : null;
+
+            foreach ($filters as $filterName => $filterParams) {
+                if (in_array($filterName, $filterFields)) {
+                    switch ($filterParams['type']) {
+                        case 1:
+                            $where[$filterName] = " LIKE '%" . $filterParams['value'] . "%'";
+                            break;
+                        case 2:
+                            $where[$filterName] = " NOT LIKE '%" . $filterParams['value'] . "%'";
+                            break;
+                        case 3:
+                            $where[$filterName] = " = '" . $filterParams['value'] . "'";
+                            break;
+                    }
+                }
+            }
+        }
+
+        return $this->repository->getFilterThoughts($where, $sortOrder, $sortBy);
+    }
+
+    /**
      * @param array $data
      * @return bool|int
      */
@@ -201,7 +237,7 @@ class ThoughtModel
         $published = (isset($data['published'])) ? $data['published'] : null;
         $thoughtInfo = (isset($data['info'])) ? $data['info'] : null;
 
-        if (!empty($content)) {
+        if (!empty($content) && !empty($author) && !empty($category)) {
             if ($id > 0) {
                 $thought = $this->repository->find($id);
             }
@@ -224,7 +260,4 @@ class ThoughtModel
 
         return false;
     }
-
-
-
 }

@@ -102,8 +102,8 @@ class ThoughtAdmin extends Admin
     public function getExportFormats()
     {
         return array(
-            //'txt',
-            'csv',
+            'txt',
+            //'csv',
         );
     }
 

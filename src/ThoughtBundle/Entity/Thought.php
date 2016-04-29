@@ -5,7 +5,7 @@ namespace ThoughtBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ThoughtBundle\Repository\ThoughtRepository")
  * @ORM\Table(name="thought")
  * @ORM\HasLifecycleCallbacks
  */
