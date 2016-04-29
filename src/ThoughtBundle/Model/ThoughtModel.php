@@ -4,9 +4,9 @@ namespace ThoughtBundle\Model;
 
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
-use Elastica\Query\Bool;
+use Elastica\Query;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DependencyInjection\Container;
 use ThoughtBundle\Entity\Thought;
 
 /**
@@ -21,6 +21,11 @@ class ThoughtModel
     protected $em;
 
     /**
+     * @var Container
+     */
+    protected $container;
+
+    /**
      * @var \Doctrine\ORM\EntityRepository
      */
     protected $repository;
@@ -29,9 +34,10 @@ class ThoughtModel
      * ServiceMedia constructor.
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, Container $container)
     {
-        $this->em = $em;
+        $this->em         = $em;
+        $this->container  = $container;
         $this->repository = $em->getRepository('ThoughtBundle:Thought');
     }
 
@@ -94,11 +100,29 @@ class ThoughtModel
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
         if ($words) {
-            $query = new Bool();
+            /*$finder = $this->container->get('fos_elastica.finder.app.thought');
+            $query = new \Elastica\Query\BoolQuery();
+
+            $fieldQuery = new \Elastica\Query\Match();
+            $fieldQuery->setFieldQuery('category', 'femmes-per-femmes');
+            $fieldQuery->setFieldParam('category', 'analyzer', 'app_full_text_analizer');
+            $query->addMust($fieldQuery);*/
+
+            /*$tagsQuery = new \Elastica\Query\Terms();
+            $tagsQuery->setTerms('tags', array('tag1', 'tag2'));
+            $boolQuery->addShould($tagsQuery);*/
+
+            /*$categoryQuery = new \Elastica\Query\Terms();
+            $categoryQuery->setTerms('categoryIds', array('1', '2', '3'));
+            $boolQuery->addMust($categoryQuery);*/
+
+            //$data = $finder->find($boolQuery);
+
+            $query = new Query();
 
             $query->setParams(array(
                 'query' => array(
-                    'match_phrase' => array(
+                    'multi_match' => array(
                         'query'    => $words,
                         'fields'   => $fields,
                         'operator' => 'and',

@@ -29,7 +29,7 @@ services:
 
     thought.model.thought_model:
         class: ThoughtBundle\Model\ThoughtModel
-        arguments: ["@doctrine.orm.entity_manager"]
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
 
     thought.service.KnpMatcher:
         class: ThoughtBundle\Service\KnpMatcher

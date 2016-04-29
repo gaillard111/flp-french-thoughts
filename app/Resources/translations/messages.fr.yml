@@ -116,8 +116,8 @@ navbar:
 
 sonata:
     admin:
-        exportPage:
-            title:   Export citation
+        importPage:
+            title:   Import citation
             upload_success: Téléchargée avec succès %count% citations!
             not_suported:   "Upload file format not supported!"
 

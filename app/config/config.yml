@@ -224,7 +224,7 @@ fos_elastica:
                             app_analyzer:
                                 type: custom
                                 tokenizer: nGram
-                                filter   : [stopwords, app_ngram, asciifolding, lowercase]
+                                filter   : [stopwords, asciifolding, lowercase]
                             app_full_text_analizer:
                                 type: custom
                                 tokenizer: standard
@@ -235,10 +235,10 @@ fos_elastica:
                                 min_gram: 4
                                 max_gram: 20
                         filter:
-                            app_ngram:
-                                type: "nGram"
-                                min_gram: 4
-                                max_gram: 20
+                            #app_ngram:
+                            #    type: "nGram"
+                            #   min_gram: 4
+                            #    max_gram: 20
                             stopwords:
                                  type:      stop
                                  stopwords: [_french_]
