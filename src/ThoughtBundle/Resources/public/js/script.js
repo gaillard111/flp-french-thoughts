@@ -19,9 +19,9 @@ $(function(){
                 }
 
                 if (data.result == 'add') {
-                    badgeText.text('Liked');
+                    badgeText.text('Aimé');
                 } else {
-                    badgeText.text('Like');
+                    badgeText.text("J'aime");
                 }
 
                 console.log(data);

@@ -3,6 +3,12 @@
     border: solid 1px #ccc;
     background-color: transparent;
 }
+a.underline{
+    text-decoration: underline;
+}
+a.underline:hover{
+    text-decoration: none;
+}
 .jumbotron a:hover{
     text-decoration: none;
 }

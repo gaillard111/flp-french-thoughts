@@ -4,6 +4,7 @@ namespace ThoughtBundle\Model;
 
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
+use Elastica\Query\Bool;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
 use Symfony\Component\HttpFoundation\Request;
 use ThoughtBundle\Entity\Thought;
@@ -93,11 +94,11 @@ class ThoughtModel
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
         if ($words) {
-            $query = new \Elastica\Query();
+            $query = new Bool();
 
             $query->setParams(array(
                 'query' => array(
-                    'multi_match' => array(
+                    'match_phrase' => array(
                         'query'    => $words,
                         'fields'   => $fields,
                         'operator' => 'and',
