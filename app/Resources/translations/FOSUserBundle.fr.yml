@@ -1,0 +1,7 @@
+form:
+    password_confirmation:     Répéter le mot de passe
+    new_password_confirmation: Répéter le mot de passe
+
+resetting:
+    request:
+        username: "Email address:"

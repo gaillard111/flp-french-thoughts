@@ -5,7 +5,6 @@ namespace ThoughtBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sonata\UserBundle\Controller\ResettingFOSUser1Controller as BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ResettingFOSUser1Controller.
@@ -16,25 +15,38 @@ use Symfony\Component\HttpFoundation\Request;
 class ResettingFOSUser1Controller extends BaseController
 {
     /**
+     * Request reset user password: submit form and send email
+     *
      * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
-     * @Route("/resetting/check-email", name="user_resetting_send_email")
+     * @Route("/resetting/send-email", name="user_resetting_send_email")
      */
-    public function checkEmailAction()
+    public function sendEmailAction()
     {
-        var_dump($_REQUEST);
+        $username = $this->container->get('request')->request->get('username');
 
-        $session = $this->container->get('session');
-        $email = $session->get(static::SESSION_EMAIL);
-        $session->remove(static::SESSION_EMAIL);
+        /** @var $user UserInterface */
+        $user = $this->container->get('fos_user.user_manager')->findUserByUsernameOrEmail($username);
 
-        if (empty($email)) {
-            // the user does not come from the sendEmail action
-            return new RedirectResponse($this->container->get('router')->generate('fos_user_resetting_request'));
+        if (null === $user) {
+            return $this->container->get('templating')->renderResponse('FOSUserBundle:Resetting:request.html.'.$this->getEngine(), array('invalid_username' => $username));
         }
 
-        return $this->container->get('templating')->renderResponse('FOSUserBundle:Resetting:checkEmail.html.'.$this->getEngine(), array(
-            'email' => @$_POST['username'],
-        ));
+        if ($user->isPasswordRequestNonExpired($this->container->getParameter('fos_user.resetting.token_ttl'))) {
+            return $this->container->get('templating')->renderResponse('FOSUserBundle:Resetting:passwordAlreadyRequested.html.'.$this->getEngine());
+        }
+
+        if (null === $user->getConfirmationToken()) {
+            /** @var $tokenGenerator \FOS\UserBundle\Util\TokenGeneratorInterface */
+            $tokenGenerator = $this->container->get('fos_user.util.token_generator');
+            $user->setConfirmationToken($tokenGenerator->generateToken());
+        }
+
+        $this->container->get('session')->set(static::SESSION_EMAIL, $user);
+        $this->container->get('fos_user.mailer')->sendResettingEmailMessage($user);
+        $user->setPasswordRequestedAt(new \DateTime());
+        $this->container->get('fos_user.user_manager')->updateUser($user);
+
+        return new RedirectResponse($this->container->get('router')->generate('fos_user_resetting_check_email'));
     }
 }

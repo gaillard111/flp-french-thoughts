@@ -1,0 +1,5 @@
+user:
+    form:
+        registration:
+            password:
+                mismatch: Les mots de passe ne correspondent pas

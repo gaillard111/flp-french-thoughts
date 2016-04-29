@@ -1,5 +1,7 @@
 .jumbotron{
     padding: 30px !important;
+    border: solid 1px #ccc;
+    background-color: transparent;
 }
 .jumbotron a:hover{
     text-decoration: none;

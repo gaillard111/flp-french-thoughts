@@ -1,0 +1,125 @@
+user:
+    form:
+        registration:
+            username:
+                label:       Nom d'utilisateur
+                placeholder: Nom d'utilisateur
+            email:
+                label:       Email
+                placeholder: Email
+            firstname:
+                label:       Nom
+                placeholder: Nom
+            lastname:
+                label:       Prénom
+                placeholder: Prénom
+            password:
+                label:       Mot de passe
+                placeholder: Mot de passe
+                mismatch:    The entered passwords don't match
+            verification:
+                label:       Répéter le mot de passe
+                placeholder: Répéter le mot de passe
+            button:          Go
+        authorization:
+            forgotten_pass: Mot de passe oublié
+            remember_me:    Remember me
+            button:         Login
+        profile:
+            firstname:
+                label:       Nom
+                placeholder: Nom
+            lastname:
+                label:       Prénom
+                placeholder: Prénom
+            username:
+                label:       Nom d'utilisateur
+                placeholder: Nom d'utilisateur
+            email:
+                label:       Email
+                placeholder: Email
+            button:          Mettre à jour
+    dashboard:
+        menu:
+            link_thoughts:  Citations
+            link_profile:   Profil
+            link_dashboard: Dashboard
+    thought:
+        create_page:
+            title:  Citation Create
+            submit: Créer
+        list_page:
+            title: Liste de citations
+            add_button: Ajouter la citation
+            link:
+                edit:   Edit
+                delete: Delete
+            table:
+                action: Action
+
+thought:
+    property:
+        content:     Citation
+        category:    Catégorie
+        author:      Auteur
+        tags:        Corrélats
+        thoughtInfo: Info
+        publish:     Publish
+        like:        J'aime
+        liked:       Liked
+
+    filter:
+        content:
+            label: Recherche
+            placeholder: Recherche
+        fields:
+            content:
+                label: Citation
+            category:
+                label: Catégorie
+            tags:
+                label: Tag
+            author:
+                label: Auteur
+            thoughtInfo:
+                label: Info
+        max_words:
+            label: nb max de mots
+            options:
+                unlimited: illimité
+        min_words:
+            label: nb min de mots
+            options:
+                unlimited: illimité
+        sorting:
+            label: trier par
+            options:
+                amount:   taille
+                category: Catégorie
+                author:   Auteur
+        sorting_desc:
+            label: inverser
+        buttons:
+            search: Go !
+            reset:  Reset
+        time_counter : Search time counter
+        result_counter : Search results
+
+navbar:
+    brand:        Les fils de la pensée
+    profile:      Profile
+    sign_out:     Déconnexion
+    sign_in:      Autentification
+    registration: S'enregistrer
+    instruction:  Mode d'emploi
+    super_admin:  Admin dashboard
+
+sonata:
+    admin:
+        exportPage:
+            title:   Export citation
+            upload_success: Téléchargée avec succès %count% citations!
+            not_suported:   "Upload file format not supported!"
+
+    user:
+        change_password: Changer le mot de passe

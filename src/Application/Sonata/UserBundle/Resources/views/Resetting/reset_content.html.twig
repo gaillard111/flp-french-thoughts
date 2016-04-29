@@ -1,9 +1,11 @@
-{{ form_start(form, {'action': path('sonata_user_resetting_reset', {'token': token } ) }) }}
-{{ form_widget(form) }}
+{% form_theme form '@ApplicationSonataUser/Profile/Form/form-change-password-content.html.twig' %}
 
-<div class="form-actions form-group">
-    <div class="col-sm-offset-3 col-sm-9">
-        <input type="submit" value="{{ 'resetting.reset.submit'|trans({}, 'FOSUserBundle') }}" class="btn btn-primary" />
+<form {{ form_enctype(form) }} class="form-horizontal" method="post" action="{{ path('sonata_user_resetting_reset', {'token': token } ) }}">
+    {{ form_widget(form) }}
+
+    <div class="form-actions form-group">
+        <div class="col-sm-7">
+            <input type="submit" value="{{ 'resetting.reset.submit'|trans({}, 'FOSUserBundle') }}" class="btn btn-primary pull-right" />
+        </div>
     </div>
-</div>
-{{ form_end(form) }}
+</form>

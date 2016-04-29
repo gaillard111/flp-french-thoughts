@@ -21,25 +21,30 @@ class ThoughtType extends AbstractType
         $builder
             ->add('author', 'text', array(
                 'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr' => array('class' => 'form-control'),
+                'attr'       => array('class' => 'form-control'),
+                'label'      => 'thought.filter.fields.author.label',
             ))
             ->add('category', 'text', array(
                 'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr' => array('class' => 'form-control'),
+                'attr'       => array('class' => 'form-control'),
+                'label'      => 'thought.filter.fields.category.label',
             ))
             ->add('content', 'textarea', array(
                 'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr' => array('class' => 'form-control'),
+                'attr'       => array('class' => 'form-control'),
+                'label'      => 'thought.filter.fields.content.label',
             ))
             ->add('thoughtInfo', 'text', array(
                 'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr' => array('class' => 'form-control'),
-                'required' => false,
+                'attr'       => array('class' => 'form-control'),
+                'required'   => false,
+                'label'      => 'thought.filter.fields.thoughtInfo.label',
             ))
             ->add('tags', 'text', array(
                 'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr' => array('class' => 'form-control', 'data-role' => 'tagsinput'),
-                'required' => false,
+                'attr'       => array('class' => 'form-control', 'data-role' => 'tagsinput'),
+                'required'   => false,
+                'label'      => 'thought.filter.fields.tags.label',
             ))
         ;
     }
