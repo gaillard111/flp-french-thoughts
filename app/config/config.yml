@@ -195,29 +195,29 @@ fos_elastica:
                 thought:
                     mappings:
                         content:
-                            type: "multi_field"
-                            fields:
-                                content:
-                                    analyzer: app_analyzer
-                                    index: "analyzed"
-                                    type: "string"
+                            analyzer: app_analyzer
                         author:
                             type: "multi_field"
                             fields:
                                 author:
-                                    type: "string"
-                                    index: "analyzed"
-                                    analizer: app_analyzer
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_analyzer
                                 author_exact:
-                                    type:  "string"
-                                    index: "not_analyzed"
+                                    type:     "string"
+                                    index:    "not_analyzed"
+                                    analyzer: standard
                         tags:
                             type: "multi_field"
                             fields:
                                 tags:
-                                    type:  "string"
-                                    index: "analyzed"
-                                    analizer: app_analyzer
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_analyzer
+                                tags_exact:
+                                    type:     "string"
+                                    index:    "not_analyzed"
+                                    analyzer: standard
                         thoughtInfo:
                             type: "multi_field"
                             fields:
