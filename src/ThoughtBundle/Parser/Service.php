@@ -44,7 +44,7 @@ class Service
         }
 
         $quotes = explode(html_entity_decode('&laquo;'), htmlspecialchars($content));
-        //var_dump($content); die;
+
         foreach ($quotes as $key => $quote) {
             $quoteCategory = '';
             $quoteAuthor = '';
@@ -60,7 +60,6 @@ class Service
             $quoteContent = preg_replace('/\[\d+\]/', '', $quoteContent);
 
             $id = isset($match[0]) ? trim($match[0], '[]') : null;
-
 
             if (isset($quoteParts[1])) {
                 $parseString = trim($quoteParts[1]);
@@ -83,7 +82,7 @@ class Service
                     if (count($parseStringParts) > 1) {
                         unset($parseStringParts[0]);
 
-                        $quoteTags = implode(', ', $parseStringParts);
+                        $quoteTags = implode(',', $parseStringParts);
                     }
 
                 } else {

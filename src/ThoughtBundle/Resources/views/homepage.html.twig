@@ -20,13 +20,13 @@
             <p>
                 <strong class="col-sm-2">{{ 'thought.property.author'|trans|capitalize }}</strong>
                 <span>
-                    <a class="underline" href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on'}) }}">{{ thought.author }}</a>
+                    <a class="underline" href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">{{ thought.author }}</a>
                 </span>
             </p>
             <p>
                 <strong class="col-sm-2">{{ 'thought.property.category'|trans|capitalize }}</strong>
                 <span>
-                    <a class="underline" href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on'}) }}">{{ thought.category }}</a>
+                    <a class="underline" href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">{{ thought.category }}</a>
                 </span>
             </p>
             <p>
@@ -40,7 +40,7 @@
             <p>
                 <strong class="col-sm-2">{{ 'thought.property.tags'|trans|capitalize }}</strong>
                 <span>
-                    {% for tag in thought.tags|split(',') %}
+                    {% for tag in thought.tags|split(' , ') %}
                         <a href="{{ path('thought_homepage_index', {'search[words]': tag, 'search[field][tags]': 'on'}) }}">
                             <span class="label label-info">{{ tag }}</span>
                         </a>

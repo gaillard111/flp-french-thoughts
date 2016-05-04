@@ -115,6 +115,7 @@ class Thought
      */
     public function setTags($tags)
     {
+        $tags = preg_replace('/\,/', ' , ', $tags);
         $this->tags = $tags;
 
         return $this;

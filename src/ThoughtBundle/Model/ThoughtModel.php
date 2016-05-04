@@ -65,7 +65,6 @@ class ThoughtModel
             ->getQuery();
     }
 
-
     /**
      * @param array             $request
      * @param TransformedFinder $finder
@@ -93,6 +92,8 @@ class ThoughtModel
             );
         }
 
+        $strict = (isset($request['strict']) && $request['strict']) ? true : false;
+
         $maxWords = (isset($request['max_words']) && $request['max_words'] > 0) ? intval($request['max_words']) : 99999999;
 
         $minWords = isset($request['min_words']) ? intval($request['min_words']) : 0;
@@ -100,58 +101,19 @@ class ThoughtModel
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
         if ($words) {
-            /*$finder = $this->container->get('fos_elastica.finder.app.thought');
-            $query = new \Elastica\Query\BoolQuery();
+            if ($strict) {
+                $query = $this->searchExactly($words, $fields, $minWords, $maxWords, $sort);
+            } else {
+                $words = mb_strtolower($words);
 
-            $fieldQuery = new \Elastica\Query\Match();
-            $fieldQuery->setFieldQuery('category', 'femmes-per-femmes');
-            $fieldQuery->setFieldParam('category', 'analyzer', 'app_full_text_analizer');
-            $query->addMust($fieldQuery);*/
-
-            /*$tagsQuery = new \Elastica\Query\Terms();
-            $tagsQuery->setTerms('tags', array('tag1', 'tag2'));
-            $boolQuery->addShould($tagsQuery);*/
-
-            /*$categoryQuery = new \Elastica\Query\Terms();
-            $categoryQuery->setTerms('categoryIds', array('1', '2', '3'));
-            $boolQuery->addMust($categoryQuery);*/
-
-            //$data = $finder->find($boolQuery);
-
-            $query = new Query();
-
-            $query->setParams(array(
-                'query' => array(
-                    'multi_match' => array(
-                        'query'    => $words,
-                        'fields'   => $fields,
-                        'operator' => 'and',
-                    ),
-                ),
-                'filter' => array(
-                    'range' => array(
-                        'amount' => array(
-                            'gte' => $minWords,
-                            'lte' => $maxWords,
-                        ),
-                    ),
-                ),
-                'sort' => $sort,
-            ));
+                if (count(explode(' ', $words)) > 1) {
+                    $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort);
+                } else {
+                    $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort);
+                }
+            }
         } else {
-            $query = new \Elastica\Query();
-
-            $query->setParams(array(
-                'filter' => array(
-                    'range' => array(
-                        'amount' => array(
-                            'gte' => $minWords,
-                            'lte' => $maxWords,
-                        ),
-                    ),
-                ),
-                'sort' => $sort,
-            ));
+            $query = $this->searchDefault($minWords, $maxWords, $sort);
         }
 
         $thoughts = $finder->createPaginatorAdapter($query);
@@ -169,10 +131,17 @@ class ThoughtModel
 
         $countAdded = 0;
 
+        $transactionNum = 0;
+
         foreach ($data as $item) {
             if ($this->createTransaction($item)) {
                 $flag = true;
                 $countAdded++;
+                $transactionNum++;
+
+                if ($transactionNum % 100 == 0) {
+                    $this->em->flush();
+                }
             }
         }
 
@@ -244,6 +213,167 @@ class ThoughtModel
         }
 
         return $this->repository->getFilterThoughts($where, $sortOrder, $sortBy);
+    }
+
+    /**
+     * @param string $words
+     * @param array  $fields
+     * @param int    $minWords
+     * @param int    $maxWords
+     * @param array  $sort
+     * @return $this
+     */
+    public function searchExactly($words, $fields, $minWords, $maxWords, $sort)
+    {
+        $query = new \Elastica\Query();
+
+        $arrFields = array();
+
+        foreach ($fields as $field) {
+
+            $arrFields[] = array(
+                'bool' => array(
+                    'must' => array(
+                        'term' => array(
+                            ($field . '_exact') => $words,
+                        ),
+                    ),
+                ),
+            );
+        }
+
+        $arr = array(
+            'filter' => array(
+                'bool' => array(
+                    'should' => $arrFields,
+                    'must' => array(
+                        'range' => array(
+                            'amount' => array(
+                                'gte' => $minWords,
+                                'lte' => $maxWords,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            'sort' => $sort,
+        );
+
+        return $query->setParams($arr);
+    }
+
+    /**
+     * @param string $words
+     * @param array  $fields
+     * @param int    $minWords
+     * @param int    $maxWords
+     * @param array  $sort
+     * @return $this
+     */
+    public function searchFullText($words, $fields, $minWords, $maxWords, $sort)
+    {
+        $query = new \Elastica\Query();
+
+        $arrFields = array();
+
+        foreach ($fields as $field) {
+            $arrWords = array();
+
+            foreach (explode(' ', $words) as $word) {
+                $dashFlag = preg_match('/\-/', $word);
+
+                $arrWords[] = array(
+                    'term' => array(
+                        ($dashFlag ? $field : $field) => $word,
+                    ),
+                );
+            }
+
+            $arrFields[] = array(
+                'bool' => array(
+                    'must' => $arrWords,
+                ),
+            );
+        }
+
+        $arr = array(
+            'filter' => array(
+                'bool' => array(
+                    'should' => $arrFields,
+                    'must' => array(
+                        'range' => array(
+                            'amount' => array(
+                                'gte' => $minWords,
+                                'lte' => $maxWords,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            'sort' => $sort,
+        );
+
+        return $query->setParams($arr);
+    }
+
+    /**
+     * @param string $words
+     * @param array  $fields
+     * @param int    $minWords
+     * @param int    $maxWords
+     * @param array  $sort
+     * @return Query
+     */
+    public function searchWord($words, $fields, $minWords, $maxWords, $sort)
+    {
+        $query = new \Elastica\Query();
+
+        $query->setParams(array(
+            'query' => array(
+                'multi_match' => array(
+                    'query'  => $words,
+                    'fields' => $fields,
+                    'operator' => 'and',
+                    'minimum_should_match' => '100%',
+                ),
+            ),
+            'filter' => array(
+                'range' => array(
+                    'amount' => array(
+                        'gte' => $minWords,
+                        'lte' => $maxWords,
+                    ),
+                ),
+            ),
+            'sort' => $sort,
+        ));
+
+        return $query;
+    }
+
+    /**
+     * @param int   $minWords
+     * @param int   $maxWords
+     * @param array $sort
+     * @return Query
+     */
+    public function searchDefault($minWords, $maxWords, $sort)
+    {
+        $query = new \Elastica\Query();
+
+        $query->setRawQuery(array(
+            'filter' => array(
+                'range' => array(
+                    'amount' => array(
+                        'gte' => $minWords,
+                        'lte' => $maxWords,
+                    ),
+                ),
+            ),
+            'sort' => $sort,
+        ));
+
+        return $query;
     }
 
     /**
