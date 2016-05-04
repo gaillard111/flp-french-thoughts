@@ -207,7 +207,7 @@ fos_elastica:
                                 author:
                                     type: "string"
                                     index: "analyzed"
-                                    analizer: app_full_text_analizer
+                                    analizer: app_analyzer
                                 author_exact:
                                     type:  "string"
                                     index: "not_analyzed"
@@ -217,7 +217,7 @@ fos_elastica:
                                 tags:
                                     type:  "string"
                                     index: "analyzed"
-                                    analizer: app_full_text_analizer
+                                    analizer: app_analyzer
                         thoughtInfo:
                             type: "multi_field"
                             fields:
@@ -234,7 +234,7 @@ fos_elastica:
                                 category:
                                     type:  "string"
                                     index: "analyzed"
-                                    analyzer: app_full_text_analizer
+                                    analyzer: app_analyzer
                                 category_exact:
                                     type:  "string"
                                     index: "not_analyzed"

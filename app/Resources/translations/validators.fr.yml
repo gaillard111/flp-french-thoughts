@@ -3,3 +3,4 @@ user:
         registration:
             password:
                 mismatch: Les mots de passe ne correspondent pas
+            email_unique: Adresse e-mail existe déjà.
