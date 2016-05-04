@@ -59,3 +59,8 @@ label.required:after{
     filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     background-repeat: repeat-x;
 }
+.navbar .navbar-brand {
+    font-size: 30px;
+    padding: 10px 15px;
+    line-height: 30px;
+}
