@@ -264,12 +264,8 @@ fos_elastica:
                         analyzer:
                             app_analyzer:
                                 type: custom
-                                tokenizer: whitespace
-                                filter   : [stopwords, app_ngram, asciifolding, lowercase, my_word_delimiter]
-                            app_full_text_analizer:
-                                type: custom
-                                tokenizer: whitespace
-                                filter   : [stopwords, asciifolding, lowercase, my_word_delimiter]
+                                tokenizer: standard
+                                filter   : [app_ngram, my_asciifolding, lowercase, my_word_delimiter]
                             app_sort_analizer:
                                 type: custom
                                 tokenizer: keyword
@@ -282,7 +278,7 @@ fos_elastica:
                         filter:
                             app_ngram:
                                 type: "nGram"
-                                min_gram: 4
+                                min_gram: 1
                                 max_gram: 20
                             stopwords:
                                 type:      stop
@@ -291,10 +287,12 @@ fos_elastica:
                             my_word_delimiter:
                                 catenate_words: true
                                 type: word_delimiter
+                            my_asciifolding:
+                                type: asciifolding
+                                preserve_original: true
                             french:
                                 type:     "icu_collation"
                                 language: "fr"
-
 
 knp_paginator:
     page_range: 5                      # default page range used in pagination control
