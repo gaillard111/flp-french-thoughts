@@ -264,7 +264,7 @@ fos_elastica:
                         analyzer:
                             app_analyzer:
                                 type: custom
-                                tokenizer: standard
+                                tokenizer: whitespace
                                 filter   : [app_ngram, my_asciifolding, lowercase, my_word_delimiter]
                             app_sort_analizer:
                                 type: custom
