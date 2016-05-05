@@ -105,6 +105,7 @@ class ThoughtModel
                 $query = $this->searchExactly($words, $fields, $minWords, $maxWords, $sort);
             } else {
                 $words = mb_strtolower($words);
+                $words = preg_replace('/\-/', '', $words);
 
                 if (count(explode(' ', $words)) > 1) {
                     $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort);

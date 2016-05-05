@@ -207,6 +207,9 @@ fos_elastica:
                                     type:     "string"
                                     index:    "not_analyzed"
                                     analyzer: standard
+                                author_sort:
+                                    type:     "string"
+                                    analyzer: app_sort_analizer
                         tags:
                             type: "multi_field"
                             fields:
@@ -236,9 +239,12 @@ fos_elastica:
                                     index: "analyzed"
                                     analyzer: app_analyzer
                                 category_exact:
-                                    type:  "string"
-                                    index: "not_analyzed"
+                                    type:     "string"
+                                    index:    "not_analyzed"
                                     analyzer: standard
+                                category_sort:
+                                    type:     "string"
+                                    analyzer: app_sort_analizer
                         amount:
                             type: "integer"
                     persistence:
@@ -264,6 +270,10 @@ fos_elastica:
                                 type: custom
                                 tokenizer: whitespace
                                 filter   : [stopwords, asciifolding, lowercase, my_word_delimiter]
+                            app_sort_analizer:
+                                type: custom
+                                tokenizer: keyword
+                                filter   : [lowercase, french]
                         tokenizer:
                             #nGram:
                             #    type:     "nGram"
@@ -279,8 +289,12 @@ fos_elastica:
                                 stopwords: [_french_]
                                 ignore_case : true
                             my_word_delimiter:
-                                preserve_original: true
+                                catenate_words: true
                                 type: word_delimiter
+                            french:
+                                type:     "icu_collation"
+                                language: "fr"
+
 
 knp_paginator:
     page_range: 5                      # default page range used in pagination control

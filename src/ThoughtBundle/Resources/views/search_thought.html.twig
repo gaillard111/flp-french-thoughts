@@ -53,10 +53,10 @@
                         <option {{ search.sorting is defined and search.sorting == 'amount' ? 'selected' : '' }} value="amount">
                             {{ 'thought.filter.sorting.options.amount'|trans }}
                         </option>
-                        <option {{ search.sorting is defined and search.sorting == 'category' ? 'selected' : '' }} value="category">
+                        <option {{ search.sorting is defined and search.sorting == 'category_sort' ? 'selected' : '' }} value="category_sort">
                             {{ 'thought.filter.sorting.options.category'|trans }}
                         </option>
-                        <option {{ search.sorting is defined and search.sorting == 'author' ? 'selected' : '' }} value="author">
+                        <option {{ search.sorting is defined and search.sorting == 'author_sort' ? 'selected' : '' }} value="author_sort">
                             {{ 'thought.filter.sorting.options.author'|trans }}
                         </option>
                     </select>
