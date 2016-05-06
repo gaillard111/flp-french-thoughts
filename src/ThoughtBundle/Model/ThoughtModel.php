@@ -275,46 +275,30 @@ class ThoughtModel
     {
         $query = new \Elastica\Query();
 
-        $arrFields = array();
-
-        foreach ($fields as $field) {
-            $arrWords = array();
-
-            foreach (explode(' ', $words) as $word) {
-                $dashFlag = preg_match('/\-/', $word);
-
-                $arrWords[] = array(
-                    'term' => array(
-                        ($dashFlag ? $field : $field) => $word,
-                    ),
-                );
-            }
-
-            $arrFields[] = array(
-                'bool' => array(
-                    'must' => $arrWords,
+        $query->setParams(array(
+            'query' => array(
+                'multi_match' => array(
+                    'query'                => $words,
+                    'fields'               => $fields,
+                    'minimum_should_match' => '100%',
+                    'type'                 => 'cross_fields',
+                    'operator'             => 'and',
+                    'tie_breaker'          => '1.0',
+                    'analyzer'             => 'standard',
                 ),
-            );
-        }
-
-        $arr = array(
+            ),
             'filter' => array(
-                'bool' => array(
-                    'should' => $arrFields,
-                    'must' => array(
-                        'range' => array(
-                            'amount' => array(
-                                'gte' => $minWords,
-                                'lte' => $maxWords,
-                            ),
-                        ),
+                'range' => array(
+                    'amount' => array(
+                        'gte' => $minWords,
+                        'lte' => $maxWords,
                     ),
                 ),
             ),
             'sort' => $sort,
-        );
+        ));
 
-        return $query->setParams($arr);
+        return $query;
     }
 
     /**
