@@ -1,5 +1,6 @@
 <div class="row">
     {% set search = app.request.get('search') %}
+    {% set is_fields = search.field is defined ? true : false %}
 
     <form class="col-sm-12" method="get">
         <div class="row">
@@ -11,19 +12,19 @@
         <div class="row">
             <div class="checkbox col-sm-12">
                 <label>
-                    <input type="checkbox" {{ search.field is defined and 'content' in search.field|keys ? 'checked' : '' }} name="search[field][content]"> {{ 'thought.filter.fields.content.label'|trans }}
+                    <input type="checkbox" {{ (is_fields and 'content' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][content]"> {{ 'thought.filter.fields.content.label'|trans }}
                 </label>
                 <label>
-                    <input type="checkbox" {{ search.field is defined and 'category' in search.field|keys ? 'checked' : '' }} name="search[field][category]"> {{ 'thought.filter.fields.category.label'|trans }}
+                    <input type="checkbox" {{ (is_fields and 'category' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][category]"> {{ 'thought.filter.fields.category.label'|trans }}
                 </label>
                 <label>
-                    <input type="checkbox" {{ search.field is defined and 'tags' in search.field|keys ? 'checked' : '' }} name="search[field][tags]"> {{ 'thought.filter.fields.tags.label'|trans }}
+                    <input type="checkbox" {{ (is_fields and 'tags' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][tags]"> {{ 'thought.filter.fields.tags.label'|trans }}
                 </label>
                 <label>
-                    <input type="checkbox" {{ search.field is defined and 'author' in search.field|keys ? 'checked' : '' }} name="search[field][author]"> {{ 'thought.filter.fields.author.label'|trans }}
+                    <input type="checkbox" {{ (is_fields and 'author' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][author]"> {{ 'thought.filter.fields.author.label'|trans }}
                 </label>
                 <label>
-                    <input type="checkbox" {{ search.field is defined and 'thoughtInfo' in search.field|keys ? 'checked' : '' }} name="search[field][thoughtInfo]"> {{ 'thought.filter.fields.thoughtInfo.label'|trans }}
+                    <input type="checkbox" {{ (is_fields and 'thoughtInfo' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][thoughtInfo]"> {{ 'thought.filter.fields.thoughtInfo.label'|trans }}
                 </label>
             </div>
         </div>
