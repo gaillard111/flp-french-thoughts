@@ -30,7 +30,7 @@
         </div>
         <div class="row">
             <div class="form-group col-sm-12 row">
-                <label for="search_max_words" class="col-sm-2 control-label">
+                <label for="search_max_words" class="col-sm-2 with_sort_label control-label">
                     {{ 'thought.filter.max_words.label'|trans }}
                     <select id="search_max_words" name="search[max_words]" class="form-control">
                         <option value="0">{{ 'thought.filter.max_words.options.unlimited'|trans }}</option>
@@ -39,7 +39,7 @@
                     </select>
                 </label>
 
-                <label for="search_min_words" class="col-sm-2 control-label">
+                <label for="search_min_words" class="col-sm-2 with_sort_label control-label">
                     {{ 'thought.filter.min_words.label'|trans }}
                     <select id="search_min_words" name="search[min_words]" class="form-control">
                         <option value="0">{{ 'thought.filter.min_words.options.unlimited'|trans }}</option>
@@ -47,7 +47,7 @@
                     </select>
                 </label>
 
-                <label for="search_sorting" class="col-sm-2 control-label">
+                <label for="search_sorting" class="col-sm-2 with_sort_label control-label">
                     {{ 'thought.filter.sorting.label'|trans }}
                     <select id="search_sorting" name="search[sorting]" class="form-control">
                         <option value>--</option>
@@ -62,7 +62,7 @@
                         </option>
                     </select>
                 </label>
-                <div class="checkbox col-sm-2">
+                <div class="checkbox col-sm-2 with_sort_label">
                     <label class="margin-top-17">
                         <input {{ search.sorting_desc is defined and 'on' == search.sorting_desc ? 'checked' : '' }} type="checkbox" name="search[sorting_desc]"> {{ 'thought.filter.sorting_desc.label'|trans }}
                     </label>
