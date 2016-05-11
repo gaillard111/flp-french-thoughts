@@ -34,6 +34,10 @@ a.underline:hover{
     .field_block .row{
         padding-top: 18px;
     }
+    .filter_block .checkbox{
+        padding-right: 0;
+        text-align: right;
+    }
 }
 .form-error{
     list-style: none;
@@ -69,4 +73,10 @@ label.required:after{
 }
 .quote_title, .quote_content {
     font-size: 17.5px !important;
+}
+.quote_content {
+    font-family: "Courier New" !important;
+}
+.filter_block .form-group{
+    padding-right: 0;
 }
