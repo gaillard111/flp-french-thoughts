@@ -31,8 +31,9 @@ class ThoughtModel
     protected $repository;
 
     /**
-     * ServiceMedia constructor.
+     * ThoughtModel constructor.
      * @param EntityManager $em
+     * @param Container     $container
      */
     public function __construct(EntityManager $em, Container $container)
     {
@@ -100,20 +101,37 @@ class ThoughtModel
 
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
+        $arrWords = explode(' ', $words);
+
+        $wordExceptions = array();
+
+        foreach ($arrWords as $keyArrWords => $valueArrWords) {
+            if (!empty($valueArrWords)) {
+                if ($valueArrWords[0] == '-') {
+                    $wordExceptions[] = $this->filterWord($valueArrWords);
+                    unset($arrWords[$keyArrWords]);
+                }
+            }
+        }
+
+        $words = implode(' ', $arrWords);
+
+        $filterException = $this->compileExceptions($fields, $wordExceptions);
+
         if ($words) {
             if ($strict) {
                 $query = $this->searchExactly($words, $fields, $minWords, $maxWords, $sort);
             } else {
-                $words = preg_replace('/\-/', '', $words);
+                $words = $this->filterWord($words);
 
                 if (count(explode(' ', $words)) > 1) {
-                    $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort);
+                    $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException);
                 } else {
-                    $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort);
+                    $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException);
                 }
             }
         } else {
-            $query = $this->searchDefault($minWords, $maxWords, $sort);
+            $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException);
         }
 
         $thoughts = $finder->createPaginatorAdapter($query);
@@ -268,34 +286,42 @@ class ThoughtModel
      * @param int    $minWords
      * @param int    $maxWords
      * @param array  $sort
+     * @param array  $filterException
      * @return $this
      */
-    public function searchFullText($words, $fields, $minWords, $maxWords, $sort)
+    public function searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException)
     {
         $query = new \Elastica\Query();
 
-        $query->setParams(array(
-            'query' => array(
-                'multi_match' => array(
-                    'query'                => $words,
-                    'fields'               => $fields,
-                    'minimum_should_match' => '100%',
-                    'type'                 => 'cross_fields',
-                    'operator'             => 'and',
-                    'tie_breaker'          => '1.0',
-                    'analyzer'             => 'standard',
-                ),
-            ),
-            'filter' => array(
-                'range' => array(
-                    'amount' => array(
-                        'gte' => $minWords,
-                        'lte' => $maxWords,
+        $query->setParams(
+            array(
+                'query' => array(
+                    'multi_match' => array(
+                        'query'                => $words,
+                        'fields'               => $fields,
+                        'minimum_should_match' => '100%',
+                        'type'                 => 'cross_fields',
+                        'operator'             => 'and',
+                        'tie_breaker'          => '1.0',
+                        'analyzer'             => 'standard',
                     ),
                 ),
-            ),
-            'sort' => $sort,
-        ));
+                'filter' => array(
+                    'bool' => array(
+                        'must_not' => $filterException,
+                        'must' => array(
+                            'range' => array(
+                                'amount' => array(
+                                    'gte' => $minWords,
+                                    'lte' => $maxWords,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                'sort' => $sort,
+            )
+        );
 
         return $query;
     }
@@ -306,31 +332,39 @@ class ThoughtModel
      * @param int    $minWords
      * @param int    $maxWords
      * @param array  $sort
+     * @param array  $filterException
      * @return Query
      */
-    public function searchWord($words, $fields, $minWords, $maxWords, $sort)
+    public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException)
     {
         $query = new \Elastica\Query();
 
-        $query->setParams(array(
-            'query' => array(
-                'multi_match' => array(
-                    'query'  => $words,
-                    'fields' => $fields,
-                    'operator' => 'and',
-                    'minimum_should_match' => '100%',
-                ),
-            ),
-            'filter' => array(
-                'range' => array(
-                    'amount' => array(
-                        'gte' => $minWords,
-                        'lte' => $maxWords,
+        $query->setParams(
+            array(
+                'query' => array(
+                    'multi_match' => array(
+                        'query'                => $words,
+                        'fields'               => $fields,
+                        'operator'             => 'and',
+                        'minimum_should_match' => '100%',
                     ),
                 ),
-            ),
-            'sort' => $sort,
-        ));
+                'filter' => array(
+                    'bool' => array(
+                        'must_not' => $filterException,
+                        'must' => array(
+                            'range' => array(
+                                'amount' => array(
+                                    'gte' => $minWords,
+                                    'lte' => $maxWords,
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+                'sort' => $sort,
+            )
+        );
 
         return $query;
     }
@@ -339,25 +373,73 @@ class ThoughtModel
      * @param int   $minWords
      * @param int   $maxWords
      * @param array $sort
+     * @param array $filterException
      * @return Query
      */
-    public function searchDefault($minWords, $maxWords, $sort)
+    public function searchDefault($minWords, $maxWords, $sort, $filterException)
     {
         $query = new \Elastica\Query();
 
-        $query->setRawQuery(array(
-            'filter' => array(
-                'range' => array(
-                    'amount' => array(
-                        'gte' => $minWords,
-                        'lte' => $maxWords,
+        $query->setRawQuery(
+            array(
+                'filter' => array(
+                    'bool' => array(
+                        'must_not' => $filterException,
+                        'must' => array(
+                            'range' => array(
+                                'amount' => array(
+                                    'gte' => $minWords,
+                                    'lte' => $maxWords,
+                                ),
+                            ),
+                        ),
                     ),
                 ),
-            ),
-            'sort' => $sort,
-        ));
+                'sort' => $sort,
+            )
+        );
 
         return $query;
+    }
+
+    /**
+     * @param string $word
+     * @return string
+     */
+    private function filterWord($word)
+    {
+        $word = preg_replace('/\'/', '', $word);
+        $word = preg_replace('/\-/', '', $word);
+
+        return $word;
+    }
+
+    /**
+     * @param array $fields
+     * @param array $words
+     * @return array
+     */
+    private function compileExceptions($fields, $words)
+    {
+        $result = array();
+
+        if (count($words)) {
+            foreach ($fields as $field) {
+                $arrWords = array();
+
+                foreach ($words as $word) {
+                    $arrWords[] = array(
+                        'term' => array(
+                            $field => $word,
+                        ),
+                    );
+                }
+
+                $result[] = $arrWords;
+            }
+        }
+
+        return $result;
     }
 
     /**
