@@ -45,7 +45,8 @@ class ContentAdmin extends Admin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('title')
+            ->addIdentifier('contentType')
+            ->add('title')
             ->add('content')
         ;
     }

@@ -25,6 +25,8 @@ class HomepageController extends Controller
     {
         $start = microtime(true);
 
+        $em = $this->getDoctrine()->getManager();
+
         $page = $request->query->getInt('page', 1);
 
         $countItem = 10;
@@ -42,11 +44,16 @@ class HomepageController extends Controller
             $countItem
         );
 
+        $welcomeText = $em->getRepository('ThoughtBundle:Content')->findOneBy(array(
+            'contentType' => 'welcome',
+        ));
+
         $timeExecute = microtime(true) - $start;
 
         return $this->render('ThoughtBundle::homepage.html.twig', array(
             'thoughts'    => $pagination,
             'timeExecute' => $timeExecute,
+            'welcomeText' => $welcomeText,
         ));
     }
 

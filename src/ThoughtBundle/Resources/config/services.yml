@@ -10,7 +10,7 @@ services:
     thoudght.admin.content:
         class: ThoughtBundle\Admin\ContentAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content, label: "Instruction" }
+            - { name: sonata.admin, manager_type: orm, group: Content, label: "Content" }
         arguments:
             - ~
             - ThoughtBundle\Entity\Content

@@ -34,8 +34,14 @@ class LoadContentData implements FixtureInterface
             <p>Place maintenant au retour des internautes utilisateurs dans l&rsquo;espoir, gr&acirc;ce &agrave; leurs critiques, de porter de sensibles am&eacute;liorations &agrave; ce logiciel.</p>
         ');
         $content->setContentType('instruction');
-
         $manager->persist($content);
+
+        $content = new Content();
+        $content->setTitle('Welcome text');
+        $content->setContent('Ami Internaute, si par chance tu as trouvé ici une citation ou un extrait... pense qu\'il s\'agit d\'une oeuvre collective. Aussi, n\'hésite pas à nous proposer quelque chose à ton tour : citation, modification de tag ou de catégorie... comme tu le sens...');
+        $content->setContentType('welcome');
+        $manager->persist($content);
+
         $manager->flush();
     }
 }

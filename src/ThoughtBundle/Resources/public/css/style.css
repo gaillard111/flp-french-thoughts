@@ -24,6 +24,9 @@ a.underline:hover{
 .margin-top-17{
     margin-top: 17px;
 }
+.margin-bottom-17{
+    margin-bottom: 17px;
+}
 @media (min-width: 1200px) {
     .with_sort_label{
         width: 13%;

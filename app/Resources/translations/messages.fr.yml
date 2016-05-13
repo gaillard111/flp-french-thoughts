@@ -109,10 +109,12 @@ navbar:
     brand:        Les fils de la pensée
     profile:      Profile
     sign_out:     Déconnexion
-    sign_in:      S'inscrire
-    registration: Registration
+    sign_in:      Login
+    registration: S'inscrire pour participer
     instruction:  Mode d'emploi
     super_admin:  Admin dashboard
+
+welcome_text: "Ami Internaute, si par chance tu as trouvé ici une citation ou un extrait... pense qu'il s'agit d'une oeuvre collective. Aussi, n'hésite pas à nous proposer quelque chose à ton tour : citation, modification de tag ou de catégorie... comme tu le sens..."
 
 sonata:
     admin:

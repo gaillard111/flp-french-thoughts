@@ -108,7 +108,7 @@ sonata_admin:
                     - thoudght.admin.thought
             Content:
                 label: Content
-                items: {Instruction: thoudght.admin.content}
+                items: {Content: thoudght.admin.content}
 
 
 sonata_user:
