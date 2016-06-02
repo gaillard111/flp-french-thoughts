@@ -83,3 +83,15 @@ label.required:after{
 .filter_block .form-group{
     padding-right: 0;
 }
+.quote_edit{
+    float: right;
+}
+.quote_edit a{
+    font-size: 0.8em;
+    color: red;
+}
+.footer{
+    position: relative;
+    min-height: 50px;
+    border: 1px solid transparent;
+}

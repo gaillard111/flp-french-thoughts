@@ -22,13 +22,18 @@
     {% for thought in thoughts %}
         <div class="jumbotron">
             <p class="quote_title">
-                {#<strong class="col-sm-2">{{ 'thought.property.category'|trans|capitalize }}</strong>#}
                 <span>
                     <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">{{ thought.category }}</a>
                 </span>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <span class="quote_edit">
+                        <a href="{{ path('admin_thought_thought_edit', {'id': thought.id}) }}">
+                            {{ 'user.thought.list_page.link.edit'|trans }}
+                        </a>
+                    </span>
+                {% endif %}
             </p>
             <p class="quote_content">
-                {#<strong class="col-sm-12">{{ 'thought.property.content'|trans|capitalize }}</strong>#}
                 <span><em>{{ thought.content|raw|nl2br }}</em></span>
             </p>
             <p>
