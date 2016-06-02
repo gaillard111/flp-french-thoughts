@@ -88,7 +88,8 @@ label.required:after{
 }
 .quote_edit a{
     font-size: 0.8em;
-    color: red;
+    color: #337ab7;
+    text-decoration: underline;
 }
 .footer{
     position: relative;
