@@ -207,6 +207,7 @@ fos_elastica:
                                     analyzer: standard
                                 content_sort:
                                     type:     "string"
+                                    index:    "analyzed"
                                     analyzer: app_sort_analizer
                                 content_phrase:
                                     type:     "string"
