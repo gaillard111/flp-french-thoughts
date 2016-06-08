@@ -195,7 +195,23 @@ fos_elastica:
                 thought:
                     mappings:
                         content:
-                            analyzer: app_analyzer
+                            type: "multi_field"
+                            fields:
+                                content:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_analyzer
+                                content_exact:
+                                    type:     "string"
+                                    index:    "not_analyzed"
+                                    analyzer: standard
+                                content_sort:
+                                    type:     "string"
+                                    analyzer: app_sort_analizer
+                                content_phrase:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_phrase_analyzer
                         author:
                             type: "multi_field"
                             fields:
@@ -210,6 +226,11 @@ fos_elastica:
                                 author_sort:
                                     type:     "string"
                                     analyzer: app_sort_analizer
+                                author_phrase:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_phrase_analyzer
+
                         tags:
                             type: "multi_field"
                             fields:
@@ -221,6 +242,14 @@ fos_elastica:
                                     type:     "string"
                                     index:    "not_analyzed"
                                     analyzer: standard
+                                tags_sort:
+                                    type:     "string"
+                                    analyzer: app_sort_analizer
+                                tags_phrase:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_phrase_analyzer
+
                         thoughtInfo:
                             type: "multi_field"
                             fields:
@@ -231,6 +260,12 @@ fos_elastica:
                                 thoughtInfo_exact:
                                     type:  "string"
                                     index: "not_analyzed"
+                                thoughtInfo_sort:
+                                    type:  "string"
+                                    analyzer: app_sort_analizer
+                                thoughtInfo_phrase:
+                                    type:  "string"
+                                    analyzer: app_phrase_analyzer
                         category:
                             type: "multi_field"
                             fields:
@@ -245,6 +280,10 @@ fos_elastica:
                                 category_sort:
                                     type:     "string"
                                     analyzer: app_sort_analizer
+                                category_phrase:
+                                    type:     "string"
+                                    index: "analyzed"
+                                    analyzer: app_phrase_analyzer
                         amount:
                             type: "integer"
                     persistence:
@@ -270,6 +309,10 @@ fos_elastica:
                                 type: custom
                                 tokenizer: keyword
                                 filter   : [lowercase, french]
+                            app_phrase_analyzer:
+                                type: custom
+                                tokenizer: whitespace
+                                filter   : [my_asciifolding, lowercase, my_word_delimiter]
                         tokenizer:
                             #nGram:
                             #    type:     "nGram"

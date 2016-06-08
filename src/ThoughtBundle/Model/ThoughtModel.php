@@ -101,6 +101,16 @@ class ThoughtModel
 
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
+        $countQuote = explode('"', $words);
+
+        if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
+            $query = $this->searchQuoteString($countQuote[1], $fields, $minWords, $maxWords, $sort);
+
+            $thoughts = $finder->createPaginatorAdapter($query);
+
+            return $thoughts;
+        }
+
         $arrWords = explode(' ', $words);
 
         $wordExceptions = array();
@@ -401,6 +411,86 @@ class ThoughtModel
 
         return $query;
     }
+
+    /**
+     * @param string $string
+     * @param array  $fields
+     * @param int    $minWords
+     * @param int    $maxWords
+     * @param array  $sort
+     * @return $this|Query
+     */
+    public function searchQuoteString($string, $fields, $minWords, $maxWords, $sort)
+    {
+        $query = new \Elastica\Query();
+
+        if (count(explode(' ', $string)) > 1) {
+            $phraseFields = array();
+
+            foreach ($fields as $field) {
+                $phraseFields[] = $field . '_phrase';
+            }
+
+            $query->setParams(
+                array(
+                    'query' => array(
+                        'multi_match' => array(
+                            'query'                => $string,
+                            'fields'               => $phraseFields,
+                            'operator'             => 'and',
+                            'minimum_should_match' => '100%',
+                            'type'                 => 'phrase',
+                        ),
+                    ),
+                    'filter' => array(
+                        'bool' => array(
+                            'must' => array(
+                                'range' => array(
+                                    'amount' => array(
+                                        'gte' => $minWords,
+                                        'lte' => $maxWords,
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                    'sort' => $sort,
+                )
+            );
+
+            return $query;
+        }
+
+        $arrFields = array();
+
+        foreach ($fields as $field) {
+            $arrFields[] = array(
+                'prefix' => array(
+                    ($field . '_phrase') => $string,
+                ),
+            );
+        }
+
+        $arr = array(
+            'filter' => array(
+                'bool' => array(
+                    'should' => $arrFields,
+                    'must' => array(
+                        'range' => array(
+                            'amount' => array(
+                                'gte' => $minWords,
+                                'lte' => $maxWords,
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            'sort' => $sort,
+        );
+
+        return $query->setParams($arr);
+    }
+
 
     /**
      * @param string $word
