@@ -56,6 +56,9 @@ user:
                 delete: Delete
             table:
                 action: Action
+    search:
+        need_logged: To use search you need to login.
+        try: Not authorized users can use the search only 3 times.
 
 thought:
     property:

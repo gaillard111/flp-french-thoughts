@@ -40,3 +40,7 @@ services:
 
     thought.service.export:
         class: ThoughtBundle\Service\Export
+
+    thought.service.search_service:
+        class: ThoughtBundle\Service\Search
+        arguments: ["@service_container"]
