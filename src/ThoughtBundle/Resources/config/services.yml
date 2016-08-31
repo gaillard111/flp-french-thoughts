@@ -44,3 +44,9 @@ services:
     thought.service.search_service:
         class: ThoughtBundle\Service\Search
         arguments: ["@service_container"]
+
+    thought.twig_extension:
+        class: ThoughtBundle\Twig\AppExtension
+        public: false
+        tags:
+            - { name: twig.extension }

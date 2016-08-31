@@ -34,7 +34,7 @@
                 {% endif %}
             </p>
             <p class="quote_content">
-                <span><em>{{ thought.content|raw|nl2br }}</em></span>
+                <span><em>{{ thought.content|customTag|raw|nl2br }}</em></span>
             </p>
             <p>
                 <strong>{{ 'thought.property.author'|trans|capitalize }}:</strong>
