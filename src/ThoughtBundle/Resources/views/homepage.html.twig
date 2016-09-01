@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-sm-12 margin-bottom-17">{{ welcomeText ? welcomeText.content : '' }}</div>
+        <div class="col-sm-12 margin-bottom-17">{{ welcomeText ? welcomeText.content|raw : '' }}</div>
     </div>
 
     {% include '@Thought/search_thought.html.twig' %}

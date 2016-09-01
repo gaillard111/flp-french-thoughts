@@ -57,8 +57,7 @@ user:
             table:
                 action: Action
     search:
-        need_logged: To use search you need to login.
-        try: Not authorized users can use the search only 3 times.
+        need_logged: Au-delà de 3 recherches vous devez vous inscrire pour poursuivre. C'est gratuit. Votre mail restera confidentiel et ne sera utilisé'qu'en cas de changement sur le site.
 
 thought:
     property:

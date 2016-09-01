@@ -51,11 +51,6 @@ class Search
                         ->getFlashBag()
                         ->add('success', $this->container->get('translator')->trans('user.search.need_logged'))
                     ;
-                } else {
-                    $request->getSession()
-                        ->getFlashBag()
-                        ->add('success', $this->container->get('translator')->trans('user.search.try'))
-                    ;
                 }
             }
         }
