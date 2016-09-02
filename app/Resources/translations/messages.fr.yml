@@ -111,22 +111,22 @@ thought:
         time_counter : Search time counter
         result_counter : Search results
     comment:
-        add: Leave your comment
-        title: Comments
-        quantity_comments: Comments
-        page_quote: Quote page
+        add: Laisser un commentaire
+        title: Commentaires
+        quantity_comments: Commentaires
+        page_quote: Page de la Citation
         no_comments: No comments
-        send_comment: Send comment
+        send_comment: Laisser un commentaire
         not_add: Error adding comment check form fields.
         property:
             text:
-                label: Text comment
+                label: Un commentaire
             name:
-                label: Name
-                placeholder: Enter your name
+                label: Nom
+                placeholder: Entrez votre nom
             email:
                 label: Email
-                placeholder: Enter your email
+                placeholder: Entrez votre email
         not_found: Comment not found
         deleted: Comment successfully deleted
         added:   Comment successfully added

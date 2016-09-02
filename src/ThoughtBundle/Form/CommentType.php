@@ -19,6 +19,9 @@ class CommentType extends AbstractType
             ->add('name', 'text', array(
                 'required' => false,
                 'label'    => 'thought.comment.property.name.label',
+                'label_attr' => array(
+                    'class' => 'col-sm-3 control-label',
+                ),
                 'attr'     => array(
                     'class'       => 'form-control',
                     'placeholder' => 'thought.comment.property.name.placeholder',
@@ -34,6 +37,9 @@ class CommentType extends AbstractType
                         'message' => 'thought.comment.property.email.not_blank',
                     )),
                 ),
+                'label_attr' => array(
+                    'class' => 'col-sm-3 control-label',
+                ),
                 'attr' => array(
                     'class'       => 'form-control',
                     'placeholder' => 'thought.comment.property.email.placeholder',
@@ -43,6 +49,9 @@ class CommentType extends AbstractType
                 'attr' => array(
                     'class' => 'form-control',
                     'row'   => '3',
+                ),
+                'label_attr' => array(
+                    'class' => 'col-sm-3 control-label',
                 ),
                 'label' => 'thought.comment.property.text.label',
                 'constraints' => array(
