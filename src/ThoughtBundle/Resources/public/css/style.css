@@ -96,3 +96,6 @@ label.required:after{
     min-height: 50px;
     border: 1px solid transparent;
 }
+.block_comments{
+    margin-bottom: 20px;
+}

@@ -1,0 +1,55 @@
+<div class="jumbotron">
+    <p class="quote_title">
+            <span>
+                <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">{{ thought.category }}</a>
+            </span>
+        {% if is_granted('ROLE_ADMIN') %}
+            <span class="quote_edit">
+                    <a href="{{ path('admin_thought_thought_edit', {'id': thought.id}) }}">
+                        {{ 'user.thought.list_page.link.edit'|trans }}
+                    </a>
+                </span>
+        {% endif %}
+    </p>
+    <p class="quote_content">
+        <span><em>{{ thought.content|customTag|raw|nl2br }}</em></span>
+    </p>
+    <p>
+        <strong>{{ 'thought.property.author'|trans|capitalize }}:</strong>
+            <span>
+                <a href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">{{ thought.author }}</a>
+            </span>
+    </p>
+    <p>
+        <strong>{{ 'thought.property.thoughtInfo'|trans|capitalize }}:</strong>
+        <span>{{ thought.thoughtInfo|raw }}</span>
+    </p>
+    <p class="quote_tags">
+            <span>
+                {% for tag in thought.tags|split(' , ') %}
+                    {% if tag|trim|length > 0 %}
+                        [<a href="{{ path('thought_homepage_index', {'search[words]': tag, 'search[field][tags]': 'on'}) }}">
+                        <span>{{ tag }}</span>
+                    </a>]
+                    {% endif %}
+                {% endfor %}
+            </span>
+    </p>
+    <p>
+        {% set liked = (thought.id in app.request.cookies.get('quotes')|split(',')) ? true : false %}
+        <button class="btn btn-info btn-sm like-quote" data-quote="{{ thought.id }}" type="button">
+                <span class="badge-text">
+                    {{ liked ? 'thought.property.liked'|trans : 'thought.property.like'|trans }}
+                </span> <span class="badge" style="display: {{ (thought.liked > 0) ? 'inline-block' : 'none' }}">{{ thought.liked }}</span>
+        </button>
+    </p>
+    <p>{{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}</p>
+
+    {% if app.request.get('thoughtId') == null %}
+        <p>
+            <a class="btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">
+                {{ 'thought.comment.page_quote'|trans }}
+            </a>
+        </p>
+    {% endif %}
+</div>

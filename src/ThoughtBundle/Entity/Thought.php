@@ -75,6 +75,11 @@ class Thought
     protected $liked = 0;
 
     /**
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Comment", mappedBy="thought")
+     */
+    protected $comments;
+
+    /**
      * Get id
      *
      * @return integer
@@ -380,5 +385,45 @@ class Thought
     public function getLiked()
     {
         return $this->liked;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \ThoughtBundle\Entity\Comment $comments
+     * @return Thought
+     */
+    public function addComment(\ThoughtBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \ThoughtBundle\Entity\Comment $comments
+     */
+    public function removeComment(\ThoughtBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

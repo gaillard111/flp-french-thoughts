@@ -45,6 +45,10 @@ services:
         class: ThoughtBundle\Service\Search
         arguments: ["@service_container"]
 
+    thought.service.mail_service:
+        class: ThoughtBundle\Service\Mail
+        arguments: ["@service_container"]
+
     thought.twig_extension:
         class: ThoughtBundle\Twig\AppExtension
         public: false

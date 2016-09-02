@@ -1,0 +1,61 @@
+{% extends 'ThoughtBundle::layout.html.twig' %}
+
+{% block page_title %}Les fils de la pensée{% endblock %}
+
+{% block content %}
+    {{ include('@Thought/quoteLayout.html.twig', {'thought': thought}) }}
+
+    <div class="row block_comments">
+        <div class="col-sm-12">
+            <h3>{{ 'thought.comment.title'|trans }}</h3>
+        </div>
+        <div class="col-sm-12">
+            {% for comment in thought.comments %}
+                <div class="panel panel-default comment-item col-sm-12">
+                    <div class="panel-heading row">
+                        <div class="col-sm-6">{{ comment.fullName }}</div>
+                        <div class="col-sm-6 text-right">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('thought_thoughtpage_deletecomment', {'commentId': comment.id}) }}">{{ 'user.comment.delete'|trans }}</a>
+                            {% endif %}
+                            {{ comment.createdAt|date('Y-m-d H:i') }}
+                        </div>
+                    </div>
+                    <div class="panel-body">{{ comment.text|nl2br }}</div>
+                </div>
+            {% else %}
+                {{ 'thought.comment.no_comments'|trans }}
+            {% endfor %}
+        </div>
+        <div class="col-sm-12 form_comments">
+            <h3>{{ 'thought.comment.add'|trans }}</h3>
+            <form method="post" {{ form_enctype(form) }}>
+                {{ form_errors(form.text) }}
+                {{ form_errors(form.email) }}
+
+                {% if app.user %}
+                    {{ form_widget(form.name, {'type': 'hidden'}) }}
+                    {{ form_widget(form.email, {'type': 'hidden'}) }}
+                {% else %}
+                    <div class="form-group">
+                        {{ form_label(form.name) }}
+                        {{ form_widget(form.name) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.email) }}
+                        {{ form_widget(form.email) }}
+                    </div>
+                {% endif %}
+                <div class="form-group">
+                    {{ form_label(form.text) }}
+                    {{ form_widget(form.text) }}
+                </div>
+                {{ form_rest(form) }}
+                <div class="form-group comment-button-block">
+                    <button class="btn btn-info pull-right">{{ 'thought.comment.send_comment'|trans }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

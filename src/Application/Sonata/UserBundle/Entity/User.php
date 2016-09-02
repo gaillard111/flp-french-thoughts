@@ -65,7 +65,7 @@ class User extends BaseUser
     /**
      * Get thoughts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getThoughts()
     {

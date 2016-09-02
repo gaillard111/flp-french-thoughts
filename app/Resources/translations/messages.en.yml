@@ -56,8 +56,12 @@ user:
                 action: Action
     search:
         need_logged: To use search you need to login.
+    comment:
+        not_logged: Login to post comments.
+        delete: Delete
 
 thought:
+    not_found: Quote not exist.
     property:
         content:     Quote
         category:    Category
@@ -102,6 +106,26 @@ thought:
             reset:  Clear filter
         time_counter : Search time counter
         result_counter : Search results
+    comment:
+        add: Leave your comment
+        title: Comments
+        quantity_comments: Comments
+        page_quote: Quote page
+        no_comments: No comments
+        send_comment: Send comment
+        not_add: Error adding comment check form fields.
+        property:
+            text:
+                label: Text comment
+            name:
+                label: Name
+                placeholder: Enter your name
+            email:
+                label: Email
+                placeholder: Enter your email
+        not_found: Comment not found
+        deleted: Comment successfully deleted
+        added:   Comment successfully added
 
 navbar:
     brand:        French thoughts

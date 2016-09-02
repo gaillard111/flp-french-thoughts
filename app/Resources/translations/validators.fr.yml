@@ -4,3 +4,11 @@ user:
             password:
                 mismatch: Les mots de passe ne correspondent pas
             email_unique: Adresse e-mail existe déjà.
+thought:
+    comment:
+        property:
+            text:
+                not_blank: Field Text comment must not be empty.
+            email:
+                not_blank: Field Email must not be empty.
+                email: Field Email must be valid email address.
