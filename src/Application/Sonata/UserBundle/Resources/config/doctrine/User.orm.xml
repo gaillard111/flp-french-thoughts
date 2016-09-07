@@ -14,6 +14,16 @@
                 target-entity="ThoughtBundle\Entity\Thought"
                 mapped-by="owner" />
 
+        <one-to-many
+                field="chains"
+                target-entity="ThoughtBundle\Entity\Chain"
+                mapped-by="user" />
+
+        <one-to-many
+                field="chainComments"
+                target-entity="ThoughtBundle\Entity\ChainComment"
+                mapped-by="user" />
+
     </entity>
 
 </doctrine-mapping>

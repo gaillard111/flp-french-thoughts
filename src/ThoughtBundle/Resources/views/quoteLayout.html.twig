@@ -1,14 +1,38 @@
-<div class="jumbotron">
+<div class="jumbotron" data-quote="{{ thought.id }}">
     <p class="quote_title">
-            <span>
-                <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">{{ thought.category }}</a>
-            </span>
+        <span>
+            <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">{{ thought.category }}</a>
+        </span>
         {% if is_granted('ROLE_ADMIN') %}
             <span class="quote_edit">
-                    <a href="{{ path('admin_thought_thought_edit', {'id': thought.id}) }}">
-                        {{ 'user.thought.list_page.link.edit'|trans }}
-                    </a>
-                </span>
+                <a href="{{ path('admin_thought_thought_edit', {'id': thought.id}) }}">
+                    {{ 'user.thought.list_page.link.edit'|trans }}
+                </a>
+            </span>
+        {% endif %}
+        {% if app.user %}
+            <span class="quote_chain">
+                {% set already_chains = [] %}
+                {% for arr_chain in thought.chainThoughts %}
+                    {% if arr_chain.chain.user.id == app.user.id %}
+                        {% set already_chains = already_chains|merge([arr_chain.chain.name]) %}
+                    {% endif %}
+                {% endfor %}
+                {% if already_chains|length %}
+                    <span data-toggle="tooltip" data-placement="bottom" title="{{ already_chains|join(', ') }}">
+                        <small>Already added</small>
+                    </span>
+                {% endif %}
+                <select name="quote_chain">
+                    <option value="">{{ 'thought.chain.add_quote'|trans }}</option>
+                    {% for chain in app.user.chains %}
+                        {% if chain.name not in already_chains %}
+                            <option value="{{ chain.id }}">{{ chain.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <a href="#" class="add_chain btn btn-info btn-xs">Add in chain</a>
+            </span>
         {% endif %}
     </p>
     <p class="quote_content">

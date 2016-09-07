@@ -12,3 +12,8 @@ thought:
             email:
                 not_blank: Field Email must not be empty.
                 email: Field Email must be valid email address.
+    chain:
+        comment:
+            property:
+                text:
+                    not_blank: Field Text comment must not be empty.

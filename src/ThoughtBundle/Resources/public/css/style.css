@@ -99,6 +99,74 @@ label.required:after{
 .block_comments{
     margin-bottom: 20px;
 }
+.quote_chain{
+    float: right;
+    margin-right: 15px;
+}
+.noticer-wrap {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 20%;
+    height: auto;
+}
+.noticer-item {
+    min-height: 80px;
+    opacity: 0.8;
+    margin-bottom: 15px;
+    padding: 7px 12px;
+    width: 100%;
+}
+
+.noticer-close{
+    float: right;
+    display: block;
+    cursor: pointer;
+    margin-top: -7px;
+}
+.noticer-body{
+    margin-top: 6px;
+}
+.noticer-item.noticer-success{
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+.noticer-item.noticer-success .noticer-body a{
+    color: #3c763d;
+    font-weight: 700;
+}
+.noticer-item.noticer-danger{
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+.noticer-item.noticer-danger .noticer-body a {
+    color: #a94442;
+    font-weight: 700;
+}
+.chain-quote-block{
+    position: relative;
+}
+.chain-quote-control{
+    position: absolute;
+    right: 3px;
+    top: 5px;
+    width: 20px;
+}
+.chain-quote-control div:last-child a{
+    margin-top: 10px;
+    display: inline-block;
+}
+.chain-quote-control div:last-child a:hover{
+    text-decoration: none;
+}
+.chain-quote-comment-form form textarea{
+    height: 120px;
+}
+.chain-quote-comment-form{
+    margin-bottom: 20px;
+}
 .form_comments form label {
     text-align: left !important;
 }

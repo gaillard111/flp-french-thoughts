@@ -80,6 +80,13 @@ class Thought
     protected $comments;
 
     /**
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtChain", mappedBy="thought")
+     */
+    protected $chainThoughts;
+
+
+
+    /**
      * Get id
      *
      * @return integer
@@ -425,5 +432,38 @@ class Thought
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Add chainThoughts
+     *
+     * @param \ThoughtBundle\Entity\ThoughtChain $chainThoughts
+     * @return Thought
+     */
+    public function addChainThought(\ThoughtBundle\Entity\ThoughtChain $chainThoughts)
+    {
+        $this->chainThoughts[] = $chainThoughts;
+
+        return $this;
+    }
+
+    /**
+     * Remove chainThoughts
+     *
+     * @param \ThoughtBundle\Entity\ThoughtChain $chainThoughts
+     */
+    public function removeChainThought(\ThoughtBundle\Entity\ThoughtChain $chainThoughts)
+    {
+        $this->chainThoughts->removeElement($chainThoughts);
+    }
+
+    /**
+     * Get chainThoughts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChainThoughts()
+    {
+        return $this->chainThoughts;
     }
 }

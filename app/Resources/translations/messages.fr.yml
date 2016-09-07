@@ -44,6 +44,7 @@ user:
             link_thoughts:  Citations
             link_profile:   Profil
             link_dashboard: Dashboard
+            link_chains:    Chains
     thought:
         create_page:
             title:  Citation Create
@@ -61,6 +62,21 @@ user:
     comment:
         not_logged: Login to post comments.
         delete: Delete
+    chain:
+        comment:
+            delete: Delete
+        create_page:
+            title: Chain create
+            submit: Submit
+        edit_page:
+            title: Chain edit
+            submit: Submit
+        list_page:
+            title: Chain list
+            link: Display my chain's
+            add_button: New chain
+        page:
+            title: Chain
 
 thought:
     not_found: Quote not exist.
@@ -130,6 +146,31 @@ thought:
         not_found: Comment not found
         deleted: Comment successfully deleted
         added:   Comment successfully added
+    chain:
+        add_quote: Add quote in chain
+        not_exist: Chain not found.
+        access_denied: Access to this chain forbidden.
+        quote_add_chain: Quote successfully added to chain.
+        successfully-removed: Quote successfully removed from chain.
+        successfully-remove: Chain successfully removed.
+        chain-thought-not-exist: The quote in this chain is not found.
+        successfully-upper: Quote successfully moved to the top of the chain.
+        successfully-lower: Quote successfully moved to the bottom of the chain.
+        error-move: Error moving quotes.
+        successfully-up: Quote successfully moved to the up of the chain.
+        successfully-down: Quote successfully moved to the down of the chain.
+        error-up-first-elem: Quote already in first place.
+        error-down-last-elem: Quote already in last place.
+        successfully-shared: This chain successfully shared.
+        successfully-private: This chain is private.
+        successfully-commented: Comment successfully added.
+        comment:
+            add: Laisser un commentaire
+            not_add: Error adding comment check form fields.
+            send_comment: Send comment
+            property:
+                text:
+                    label: Text comment
 
 navbar:
     brand:        Les fils de la pensée
@@ -157,3 +198,15 @@ sonata:
     user:
         change_password: Changer le mot de passe
         reset_password: Réinitialiser le mot de passe
+
+chain:
+    property:
+        name:
+            label: Chain name
+            title: Chain name
+            placeholder: Enter chain name
+        created: Created
+        private: Shared
+        quantity_quotes: Quantity Quotes
+        shared?: Shared?
+        private?: Private?

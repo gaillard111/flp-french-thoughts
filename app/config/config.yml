@@ -119,6 +119,7 @@ sonata_user:
             - { route: 'sonata_user_profile_show', label: 'user.dashboard.menu.link_dashboard', domain: 'messages'}
             - { route: 'sonata_user_profile_edit', label: 'user.dashboard.menu.link_profile', domain: 'messages'}
             - { route: 'sonata_user_thoughts', label: 'user.dashboard.menu.link_thoughts', domain: 'messages'}
+            - { route: 'sonata_user_chains', label: 'user.dashboard.menu.link_chains', domain: 'messages'}
         form:
             type:               application_sonata_user_profile
             handler:            sonata.user.profile.form.handler.default

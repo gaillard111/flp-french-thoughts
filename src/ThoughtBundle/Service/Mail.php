@@ -3,6 +3,7 @@
 namespace ThoughtBundle\Service;
 
 use Symfony\Component\DependencyInjection\Container;
+use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\Comment;
 
 /**
@@ -51,6 +52,32 @@ class Mail
         $emailUsers = $this->container->getParameter('admin_email');
 
         $this->sendMail($subject, $emailUsers, $body);
+    }
+
+    /**
+     * Send email - Add new chain comment
+     *
+     * @param ChainComment $comment
+     */
+    public function mailAddNewChainComment(ChainComment $comment)
+    {
+        $subject = 'French thought: add new comment to chain - ' . $comment->getChain()->getName();
+
+        $link = $this->container->get('router')->generate('chain_page', array('chainId' => $comment->getChain()->getId()), 0);
+
+        $body = 'User: ' . $comment->getUser()->getFullNameEmail() . ' in ' . $comment->getCreatedAt()->format('Y-m-d H:i') .
+            ' leave comment: ' . $comment->getText() . '<br>' .
+            'To view the review click on the ' . '<a href="' . $link . '">link</a>'
+        ;
+
+        $emails = array($this->container->getParameter('admin_email'));
+        $emailUser = ($comment->getUser()->getId() != $comment->getChain()->getUser()->getId()) ? $comment->getChain()->getUser()->getEmail() : null;
+var_dump($emailUser);
+        if ($emailUser) {
+            array_push($emails, $emailUser);
+        }
+
+        $this->sendMail($subject, $emails, $body);
     }
 
     /**

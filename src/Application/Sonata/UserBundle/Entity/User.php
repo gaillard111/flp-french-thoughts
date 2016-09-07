@@ -30,6 +30,16 @@ class User extends BaseUser
     protected $thoughts;
 
     /**
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Chain", mappedBy="user")
+     */
+    protected $chains;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ChainComment", mappedBy="user")
+     */
+    protected $chainComments;
+
+    /**
      * Get id
      *
      * @return int $id
@@ -88,5 +98,83 @@ class User extends BaseUser
     {
         parent::preUpdate();
         $this->username = $this->email;
+    }
+
+    /**
+     * Add chains
+     *
+     * @param \ThoughtBundle\Entity\Chain $chains
+     * @return User
+     */
+    public function addChain(\ThoughtBundle\Entity\Chain $chains)
+    {
+        $this->chains[] = $chains;
+
+        return $this;
+    }
+
+    /**
+     * Remove chains
+     *
+     * @param \ThoughtBundle\Entity\Chain $chains
+     */
+    public function removeChain(\ThoughtBundle\Entity\Chain $chains)
+    {
+        $this->chains->removeElement($chains);
+    }
+
+    /**
+     * Get chains
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChains()
+    {
+        return $this->chains;
+    }
+
+    /**
+     * Add chainComments
+     *
+     * @param \ThoughtBundle\Entity\ChainComment $chainComments
+     * @return User
+     */
+    public function addChainComment(\ThoughtBundle\Entity\ChainComment $chainComments)
+    {
+        $this->chainComments[] = $chainComments;
+
+        return $this;
+    }
+
+    /**
+     * Remove chainComments
+     *
+     * @param \ThoughtBundle\Entity\ChainComment $chainComments
+     */
+    public function removeChainComment(\ThoughtBundle\Entity\ChainComment $chainComments)
+    {
+        $this->chainComments->removeElement($chainComments);
+    }
+
+    /**
+     * Get chainComments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChainComments()
+    {
+        return $this->chainComments;
+    }
+
+    /**
+     * Get fullName + email
+     *
+     * @return string
+     */
+    public function getFullNameEmail()
+    {
+        $fullName = trim(parent::getFullname());
+
+        return  (!empty($fullName) ? $fullName . ', ' : '') . $this->getEmail();
     }
 }

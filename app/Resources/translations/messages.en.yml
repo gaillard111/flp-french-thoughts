@@ -42,6 +42,7 @@ user:
             link_thoughts:  Thoughts
             link_profile:   Profile
             link_dashboard: Dashboard
+            link_chains:    Chains
     thought:
         create_page:
             title: Thought Create
@@ -59,7 +60,11 @@ user:
     comment:
         not_logged: Login to post comments.
         delete: Delete
-
+    chain:
+        list_page:
+            title: Chain list
+            link: Display all chain's
+            add_button: New chain
 thought:
     not_found: Quote not exist.
     property:
@@ -126,6 +131,8 @@ thought:
         not_found: Comment not found
         deleted: Comment successfully deleted
         added:   Comment successfully added
+    chain:
+        add_quote: Add quote in chain
 
 navbar:
     brand:        French thoughts
@@ -147,3 +154,10 @@ sonata:
             title:   Export thoughts
             upload_success: Successfully uploaded %count% quotes!
             not_suported:   "Upload file format not supported!"
+
+chain:
+    property:
+        name: Name
+        created: Created
+        private: Is private
+        quantity_quotes: Quantity Quotes

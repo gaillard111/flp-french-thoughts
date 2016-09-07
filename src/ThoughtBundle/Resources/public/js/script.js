@@ -1,4 +1,6 @@
 $(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+
     $('.jumbotron .like-quote').on('click', function(e){
         e.preventDefault();
         var button = $(this),
@@ -23,8 +25,201 @@ $(function(){
                 } else {
                     badgeText.text("J'aime");
                 }
+            }
+        });
+    });
 
-                console.log(data);
+    $('.jumbotron .add_chain').on('click', function(e){
+        e.preventDefault();
+
+        var chain = $(this).closest('.quote_chain').find('[name="quote_chain"]').val(),
+            quote = $(this).closest('.jumbotron').data('quote');
+
+        $.ajax({
+            url : Routing.generate('chain_add_quote'),
+            data: {
+                quote: quote,
+                chain: chain
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    noticer.success(data.message[0]);
+                } else {
+                    var error = '';
+                    $.each(data.message, function(k, v){
+                        error += '<p>' + v + '</p>';
+                    });
+
+                    noticer.alert(error);
+                }
+            }
+        });
+    });
+
+    $('.chain-quote-control a.chain-quote-remove').on('click', function(e){
+        e.preventDefault();
+
+        var $quoteElem = $(this).closest('.chain-quote-block'),
+            $blockControl = $(this).closest('.chain-quote-control'),
+            quote = $blockControl.data('target'),
+            chain = $blockControl.data('chain-id')
+        ;
+
+        $.ajax({
+            url : Routing.generate('chain_remove_quote'),
+            data: {
+                quote: quote,
+                chain: chain
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    $quoteElem.remove();
+
+                    noticer.success(data.message[0]);
+                } else {
+                    var error = '';
+                    $.each(data.message, function(k, v){
+                        error += '<p>' + v + '</p>';
+                    });
+
+                    noticer.alert(error);
+                }
+            }
+        });
+    });
+
+    $('.chain-quote-control a.chain-quote-upper').on('click', function(e){
+        e.preventDefault();
+
+        var $quoteElem = $(this).closest('.chain-quote-block'),
+            $blockControl = $(this).closest('.chain-quote-control'),
+            quote = $blockControl.data('target'),
+            chain = $blockControl.data('chain-id')
+        ;
+
+        $.ajax({
+            url : Routing.generate('chain_upper_quote'),
+            data: {
+                quote: quote,
+                chain: chain
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    $quoteElem.detach().prependTo('.chain-quote-wrapper');
+
+                    noticer.success(data.message[0]);
+                } else {
+                    var error = '';
+                    $.each(data.message, function(k, v){
+                        error += '<p>' + v + '</p>';
+                    });
+
+                    noticer.alert(error);
+                }
+            }
+        });
+    });
+
+    $('.chain-quote-control a.chain-quote-lower').on('click', function(e){
+        e.preventDefault();
+
+        var $quoteElem = $(this).closest('.chain-quote-block'),
+            $blockControl = $(this).closest('.chain-quote-control'),
+            quote = $blockControl.data('target'),
+            chain = $blockControl.data('chain-id')
+        ;
+
+        $.ajax({
+            url : Routing.generate('chain_lower_quote'),
+            data: {
+                quote: quote,
+                chain: chain
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    $quoteElem.detach().appendTo('.chain-quote-wrapper');
+
+                    noticer.success(data.message[0]);
+                } else {
+                    var error = '';
+                    $.each(data.message, function(k, v){
+                        error += '<p>' + v + '</p>';
+                    });
+
+                    noticer.alert(error);
+                }
+            }
+        });
+    });
+
+    $('.chain-quote-control a.chain-quote-up').on('click', function(e){
+        e.preventDefault();
+
+        var $quoteElem = $(this).closest('.chain-quote-block'),
+            $blockControl = $(this).closest('.chain-quote-control'),
+            quote = $blockControl.data('target'),
+            chain = $blockControl.data('chain-id'),
+            $sibling = $quoteElem.prev('.chain-quote-block')
+            ;
+
+        $.ajax({
+            url : Routing.generate('chain_up_quote'),
+            data: {
+                quote: quote,
+                chain: chain
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    $quoteElem.detach().insertBefore($sibling);
+
+                    noticer.success(data.message[0]);
+                } else {
+                    var error = '';
+                    $.each(data.message, function(k, v){
+                        error += '<p>' + v + '</p>';
+                    });
+
+                    noticer.alert(error);
+                }
+            }
+        });
+    });
+
+    $('.chain-quote-control a.chain-quote-down').on('click', function(e){
+        e.preventDefault();
+
+        var $quoteElem = $(this).closest('.chain-quote-block'),
+            $blockControl = $(this).closest('.chain-quote-control'),
+            quote = $blockControl.data('target'),
+            chain = $blockControl.data('chain-id'),
+            $sibling = $quoteElem.next('.chain-quote-block')
+            ;
+
+        $.ajax({
+            url : Routing.generate('chain_down_quote'),
+            data: {
+                quote: quote,
+                chain: chain
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    $quoteElem.detach().insertAfter($sibling);
+
+                    noticer.success(data.message[0]);
+                } else {
+                    var error = '';
+                    $.each(data.message, function(k, v){
+                        error += '<p>' + v + '</p>';
+                    });
+
+                    noticer.alert(error);
+                }
             }
         });
     });
