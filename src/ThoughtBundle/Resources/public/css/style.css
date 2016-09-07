@@ -173,3 +173,13 @@ label.required:after{
 .form_comments form textarea {
     height: 120px;
 }
+.add_chain{
+    padding: 2px 5px;
+}
+.quote_chain select{
+    padding: 2px 5px;
+    font-size: 14px;
+}
+.chain-quote-control a{
+    color: #28a4c9;
+}

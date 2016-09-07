@@ -73,7 +73,7 @@ user:
             submit: Submit
         list_page:
             title: Chain list
-            link: Display my chain's
+            link: << Back to Chains list
             add_button: New chain
         page:
             title: Chain
@@ -147,6 +147,7 @@ thought:
         deleted: Comment successfully deleted
         added:   Comment successfully added
     chain:
+        add_to_chain: Add to chain
         add_quote: Add quote in chain
         not_exist: Chain not found.
         access_denied: Access to this chain forbidden.
@@ -167,7 +168,8 @@ thought:
         comment:
             add: Laisser un commentaire
             not_add: Error adding comment check form fields.
-            send_comment: Send comment
+            comments: Commentair
+            send_comment: Laisser un commentaire
             property:
                 text:
                     label: Text comment
@@ -206,7 +208,7 @@ chain:
             title: Chain name
             placeholder: Enter chain name
         created: Created
-        private: Shared
+        private: Quote Chain sharing
         quantity_quotes: Quantity Quotes
-        shared?: Shared?
-        private?: Private?
+        shared?: Make Publick
+        private?: Make Private

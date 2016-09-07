@@ -3,11 +3,12 @@
 {% block page_title %}Les fils de la pensée{% endblock %}
 
 {% block content %}
+    <div>
+        <a href="{{ path('sonata_user_chains') }}">{{ 'user.chain.list_page.link'|trans }}</a>
+    </div>
     <h2>
         {{ 'user.chain.page.title'|trans }} - "{{ chain.name }}"
-        <small>
-            <a href="{{ path('sonata_user_chains') }}">{{ 'user.chain.list_page.link'|trans }}</a>
-        </small>
+
     </h2>
 
     <div class="row">
@@ -41,6 +42,7 @@
         </div>
         <div class="col-sm-12 chain-quote-comments">
             <div class="chain-quote-comment-block">
+                <h5>{{ 'thought.chain.comment.comments'|trans }}: {{ chain.comments|length }}</h5>
                 {% for comment in chain.comments %}
                     <div class="panel panel-info comment-item col-sm-12">
                         <div class="panel-heading row">
@@ -56,8 +58,6 @@
                         </div>
                         <div class="panel-body">{{ comment.text|nl2br }}</div>
                     </div>
-                {% else %}
-                    {{ 'thought.comment.no_comments'|trans }}
                 {% endfor %}
             </div>
             <div class="row chain-quote-comment-form col-sm-12 col-md-6">
