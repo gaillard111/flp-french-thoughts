@@ -1,0 +1,80 @@
+{% extends 'ThoughtBundle::layout.html.twig' %}
+
+{% block page_title %}Les fils de la pensée{% endblock %}
+
+{% block content %}
+    <h2>
+        {{ 'user.chain.page.title'|trans }} - "{{ chain.name }}"
+        <small>
+            <a href="{{ path('sonata_user_chains') }}">{{ 'user.chain.list_page.link'|trans }}</a>
+        </small>
+    </h2>
+
+    <div class="row">
+        <div class="col-sm-12 chain-quote-wrapper">
+            {% for thoughtChain in thoughtChains %}
+                <div class="chain-quote-block">
+                    <div class="chain-quote-control" data-chain-id="{{ thoughtChain.chain.id }}" data-target="{{ thoughtChain.thought.id }}">
+                        <div>
+                            <a class="chain-quote-remove" href="#">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="#" class="chain-quote-upper">
+                                <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+                            </a>
+                            <a href="#" class="chain-quote-up">
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                            </a>
+                            <a href="#" class="chain-quote-down">
+                                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                            </a>
+                            <a href="#" class="chain-quote-lower">
+                                <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    </div>
+                    {{ include('@Thought/quoteLayout.html.twig', {'thought': thoughtChain.thought}) }}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-sm-12 chain-quote-comments">
+            <div class="chain-quote-comment-block">
+                {% for comment in chain.comments %}
+                    <div class="panel panel-info comment-item col-sm-12">
+                        <div class="panel-heading row">
+                            <div class="col-sm-6">{{ comment.user.getFullNameEmail }}</div>
+                            <div class="col-sm-6 text-right">
+                                {% if app.user.id == comment.user.id or is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('chain_comment_remove', {'commentId': comment.id}) }}">
+                                        {{ 'user.chain.comment.delete'|trans }}
+                                    </a>
+                                {% endif %}
+                                {{ comment.createdAt|date('Y-m-d H:i') }}
+                            </div>
+                        </div>
+                        <div class="panel-body">{{ comment.text|nl2br }}</div>
+                    </div>
+                {% else %}
+                    {{ 'thought.comment.no_comments'|trans }}
+                {% endfor %}
+            </div>
+            <div class="row chain-quote-comment-form col-sm-12 col-md-6">
+                <h3>{{ 'thought.chain.comment.add'|trans }}</h3>
+                <form method="post" {{ form_enctype(form) }}>
+                    {{ form_errors(form.text) }}
+
+                    <div class="form-group">
+                        {{ form_widget(form.text) }}
+                    </div>
+                    {{ form_rest(form) }}
+                    <div class="form-group comment-button-block">
+                        <button class="btn btn-info pull-right">{{ 'thought.chain.comment.send_comment'|trans }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
