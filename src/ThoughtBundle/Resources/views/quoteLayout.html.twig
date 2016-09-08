@@ -19,7 +19,7 @@
                     {% endif %}
                 {% endfor %}
                 {% if already_chains|length %}
-                    <span data-toggle="tooltip" data-placement="bottom" title="{{ already_chains|join(', ') }}">
+                    <span data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
                         <small>Already added</small>
                     </span>
                 {% endif %}
