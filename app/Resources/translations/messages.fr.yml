@@ -44,7 +44,7 @@ user:
             link_thoughts:  Citations
             link_profile:   Profil
             link_dashboard: Dashboard
-            link_chains:    Chains
+            link_chains:    Chaines
     thought:
         create_page:
             title:  Citation Create
@@ -74,7 +74,7 @@ user:
         list_page:
             title: Chain list
             link: << Back to Chains list
-            add_button: New chain
+            add_button: Chaine nouvelle
         page:
             title: Chain
 
@@ -130,7 +130,7 @@ thought:
         add: Laisser un commentaire
         title: Commentaires
         quantity_comments: Commentaires
-        page_quote: Page de la Citation
+        page_quote: Commenter
         no_comments: No comments
         send_comment: Laisser un commentaire
         not_add: Error adding comment check form fields.
@@ -147,9 +147,10 @@ thought:
         deleted: Comment successfully deleted
         added:   Comment successfully added
     chain:
-        add_to_chain: Add to chain
+        add_to_chain: Ajouter
+        already_added: Déjà intégré
         added_to_chain: The quote is already added to
-        add_quote: Add quote in chain
+        add_quote: Mettre dans la chaine
         not_exist: Chain not found.
         access_denied: Access to this chain forbidden.
         quote_add_chain: Quote successfully added to chain.
@@ -205,11 +206,11 @@ sonata:
 chain:
     property:
         name:
-            label: Chain name
-            title: Chain name
+            label: Nom de la chaine
+            title: Nom de la chaine
             placeholder: Enter chain name
-        created: Created
+        created: établi
         private: Quote Chain sharing
-        quantity_quotes: Quantity Quotes
+        quantity_quotes: Nombre de chaines
         shared?: Make Publick
         private?: Make Private
