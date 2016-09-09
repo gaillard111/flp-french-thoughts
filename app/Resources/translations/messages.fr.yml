@@ -209,8 +209,8 @@ chain:
             label: Nom de la chaine
             title: Nom de la chaine
             placeholder: Enter chain name
-        created: établi
+        created: Établi
         private: Quote Chain sharing
-        quantity_quotes: Nombre de chaines
+        quantity_quotes: Nombre de citations
         shared?: Make Publick
         private?: Make Private
