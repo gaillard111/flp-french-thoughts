@@ -47,7 +47,7 @@ class ContentAdmin extends Admin
         $listMapper
             ->addIdentifier('contentType')
             ->add('title')
-            ->add('content')
+            ->add('content', 'html')
         ;
     }
 

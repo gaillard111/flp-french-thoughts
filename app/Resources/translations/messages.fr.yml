@@ -43,7 +43,7 @@ user:
         menu:
             link_thoughts:  Citations
             link_profile:   Profil
-            link_dashboard: Dashboard
+            link_dashboard: Tableau de bord
             link_chains:    Chaines
     thought:
         create_page:
@@ -58,7 +58,7 @@ user:
             table:
                 action: Action
     search:
-        need_logged: Au-delà de 3 recherches vous devez vous inscrire pour poursuivre. C'est gratuit. Votre mail restera confidentiel et ne sera utilisé'qu'en cas de changement sur le site.
+        need_logged: <strong>Au-delà de 3 recherches vous devez vous inscrire pour poursuivre. C'est gratuit. Votre mail restera confidentiel et ne sera utilisé'qu'en cas de changement sur le site.</strong>
     comment:
         not_logged: Login to post comments.
         delete: Delete
@@ -72,8 +72,8 @@ user:
             title: Chain edit
             submit: Submit
         list_page:
-            title: Chain list
-            link: << Back to Chains list
+            title: Mes chaines
+            link: << Back to Mes chaines
             add_button: Chaine nouvelle
         page:
             title: Chain
@@ -178,7 +178,7 @@ thought:
 
 navbar:
     brand:        Les fils de la pensée
-    profile:      Profile
+    profile:      Profil
     sign_out:     Déconnexion
     sign_in:      Login
     registration: S'inscrire pour participer
