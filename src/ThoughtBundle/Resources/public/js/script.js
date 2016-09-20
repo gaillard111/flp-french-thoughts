@@ -223,4 +223,13 @@ $(function(){
             }
         });
     });
+
+    $('.chain-list .chain-remove').on('click', function(e){
+        e.preventDefault();
+
+        var link = $(this).attr('href'),
+            body = '<form action="' + link + '">Are you sure you want to delete it?</form>';
+
+        modal_boot.confirmation('Confirmation', body, 'confirm-remove-chain', true);
+    });
 });

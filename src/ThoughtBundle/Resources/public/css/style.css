@@ -3,6 +3,13 @@
     border: solid 1px #ccc;
     background-color: transparent;
 }
+.modal{
+    width: 30%;
+    margin: 0 auto;
+    background-color: #fff;
+    top: 10%;
+    bottom: initial;
+}
 a.underline{
     text-decoration: underline;
 }
