@@ -76,7 +76,7 @@ user:
             link: << Back to Mes chaines
             add_button: Chaine nouvelle
         page:
-            title: Chain
+            title: Chaine
 
 thought:
     not_found: Quote not exist.

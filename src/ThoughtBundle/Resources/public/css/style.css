@@ -155,6 +155,9 @@ label.required:after{
 .chain-quote-block{
     position: relative;
 }
+.chain-quote-title span{
+    font-size: 20px;
+}
 .chain-quote-control{
     position: absolute;
     right: 3px;
@@ -189,4 +192,7 @@ label.required:after{
 }
 .chain-quote-control a{
     color: #28a4c9;
+}
+.chain-list .chain-remove {
+    margin-left: 20px;
 }
