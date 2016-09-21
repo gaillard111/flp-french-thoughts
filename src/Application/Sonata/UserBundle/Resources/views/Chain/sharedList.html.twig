@@ -1,0 +1,54 @@
+{% extends 'ApplicationSonataUserBundle:Profile:action.html.twig' %}
+
+{% block sonata_profile_title %}{{ 'user.chain.shared_list_page.title'|trans }}{% endblock %}
+
+{% block sonata_profile_content %}
+    <div class="row">
+        <div class="col-sm-12 chain-list">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{{ 'chain.property.name.title'|trans }}</th>
+                    <th>{{ 'chain.property.created'|trans }}</th>
+                    <th>{{ 'chain.property.private'|trans }}</th>
+                    <th>{{ 'chain.property.quantity_quotes'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for chain in chains %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>
+                            <a href="{{ path('chain_page', {'chainId': chain.id}) }}">{{ chain.name }}</a>
+                            {% if chain.isPrivate == false %}
+                                ( {{ url('chain_page', {'chainId': chain.id}) }} )
+                            {% endif %}
+                        </td>
+                        <td>{{ chain.createdAt|date('Y-m-d') }}</td>
+                        <td>
+                            <span class="label label-{{ chain.isPrivate ? 'danger' : 'success' }}">
+                                {{ chain.isPrivate ? 'Private' : 'Public' }}
+                            </span>
+                            {% if chain.isPrivate %}
+                                &nbsp;<a href="{{ path('sonata_user_chain_share', {'chainId': chain.id, 'share': 1}) }}">
+                                {{ 'chain.property.shared?'|trans }}
+                            </a>
+                            {% else %}
+                                &nbsp;<a href="{{ path('sonata_user_chain_share', {'chainId': chain.id, 'share': 0}) }}">
+                                {{ 'chain.property.private?'|trans }}
+                            </a>
+                            {% endif %}
+                        </td>
+                        <td>{{ chain.chainThoughts|length }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(chains) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

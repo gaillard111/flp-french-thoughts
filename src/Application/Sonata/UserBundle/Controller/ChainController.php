@@ -179,6 +179,30 @@ class ChainController extends Controller
     }
 
     /**
+     * @Route("/shared-chains", name="sonata_user_shared_chains")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function listSharedAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $chains = $em->getRepository('ThoughtBundle:Chain')->getAllSharedChains();
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $chains,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('ApplicationSonataUserBundle:Chain:sharedList.html.twig', array(
+            'chains' => $pagination,
+        ));
+    }
+
+    /**
      * Check owner chain
      *
      * @param Chain $chain

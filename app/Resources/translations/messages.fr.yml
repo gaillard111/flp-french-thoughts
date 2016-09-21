@@ -41,10 +41,11 @@ user:
             button:          Mettre à jour
     dashboard:
         menu:
-            link_thoughts:  Citations
-            link_profile:   Profil
-            link_dashboard: Tableau de bord
-            link_chains:    Chaines
+            link_thoughts:      Citations
+            link_profile:       Profil
+            link_dashboard:     Tableau de bord
+            link_chains:        Chaines
+            link_shared_chains: Shared chaines
     thought:
         create_page:
             title:  Citation Create
@@ -75,6 +76,8 @@ user:
             title: Mes chaines
             link: << Back to Mes chaines
             add_button: Chaine nouvelle
+        shared_list_page:
+            title: Shared chains
         page:
             title: Chaine
 

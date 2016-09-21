@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Chain
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ThoughtBundle\Repository\ChainRepository")
  * @ORM\Table(name="chain")
  * @ORM\HasLifecycleCallbacks()
  */
