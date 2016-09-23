@@ -30,15 +30,6 @@
                             <span class="label label-{{ chain.isPrivate ? 'danger' : 'success' }}">
                                 {{ chain.isPrivate ? 'Private' : 'Public' }}
                             </span>
-                            {% if chain.isPrivate %}
-                                &nbsp;<a href="{{ path('sonata_user_chain_share', {'chainId': chain.id, 'share': 1}) }}">
-                                {{ 'chain.property.shared?'|trans }}
-                            </a>
-                            {% else %}
-                                &nbsp;<a href="{{ path('sonata_user_chain_share', {'chainId': chain.id, 'share': 0}) }}">
-                                {{ 'chain.property.private?'|trans }}
-                            </a>
-                            {% endif %}
                         </td>
                         <td>{{ chain.chainThoughts|length }}</td>
                     </tr>

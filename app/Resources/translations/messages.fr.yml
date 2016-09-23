@@ -77,7 +77,7 @@ user:
             link: << Back to Mes chaines
             add_button: Chaine nouvelle
         shared_list_page:
-            title: Shared chains
+            title: Chaines partagées
         page:
             title: Chaine
 
