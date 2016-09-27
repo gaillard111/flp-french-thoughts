@@ -56,5 +56,6 @@ services:
     thought.twig_extension:
         class: ThoughtBundle\Twig\AppExtension
         public: false
+        arguments: ["@service_container"]
         tags:
             - { name: twig.extension }

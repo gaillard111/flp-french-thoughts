@@ -3,6 +3,7 @@
 namespace ThoughtBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -12,19 +13,27 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContentController extends Controller
 {
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("content/{code}", name="content")
      *
-     * @Route("instruction", name="content-instruction")
+     * @param Request $request
+     * @param string  $code
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function instructionAction()
+    public function indexAction(Request $request, $code)
     {
         $em = $this->getDoctrine()->getManager();
 
         $content = $em->getRepository('ThoughtBundle:Content')->findOneBy(array(
-            'contentType' => 'instruction',
+            'contentType' => $code,
         ));
 
-        return $this->render('@Thought/instruction.html.twig', array(
+        if (!$content) {
+            $this->addFlash('errors', $this->get('translator')->trans('content.page_not_found'));
+
+            return $this->redirect($this->generateUrl('thought_homepage_index'));
+        }
+
+        return $this->render('@Thought/content.html.twig', array(
             'content' => $content,
         ));
     }

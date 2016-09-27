@@ -45,7 +45,7 @@ user:
             link_profile:       Profil
             link_dashboard:     Tableau de bord
             link_chains:        Chaines
-            link_shared_chains: Shared chaines
+            link_shared_chains: Chaines partagées
     thought:
         create_page:
             title:  Citation Create
@@ -193,7 +193,9 @@ footer:
     link2: Réclamations pour abus de copyright et demande de retrait
     link3: Contact
 
-welcome_text: "Ami Internaute, si par chance tu as trouvé ici une citation ou un extrait... pense qu'il s'agit d'une oeuvre collective. Aussi, n'hésite pas à nous proposer quelque chose à ton tour : citation, modification de tag ou de catégorie... comme tu le sens..."
+content:
+    link_more: Lire la suite >>
+    page_not_found: 404 - content not found
 
 sonata:
     admin:
@@ -213,6 +215,7 @@ chain:
             title: Nom de la chaine
             placeholder: Enter chain name
         created: Établi
+        emailAuthor: Email auteur
         private: Quote Chain sharing
         quantity_quotes: Nombre de citations
         shared?: Make Publick

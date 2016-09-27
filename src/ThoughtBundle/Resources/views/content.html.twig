@@ -1,0 +1,8 @@
+{% extends 'ThoughtBundle::layout.html.twig' %}
+
+{% block page_title %}{{ content.title }}{% endblock %}
+
+{% block content %}
+    <h1>{{ content.title }}</h1>
+    {{ content.content|raw }}
+{% endblock %}
