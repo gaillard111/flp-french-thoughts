@@ -43,31 +43,43 @@ class AppExtension extends \Twig_Extension
      */
     public function customShortText($string, $length = 1, $link = null)
     {
-        $words = explode(' ', strip_tags($string));
+        $string = strip_tags($string, '<a>');
 
-        $countLetters = 0;
+        $splitTag = explode('</a>', $string);
 
-        foreach ($words as $key => $word) {
-            $countLetters += mb_strlen($word) + 1;
+        $count = 0;
 
-            if ($countLetters > $length) {
-                $words = array_slice($words, 0, $key + 1);
+        $flag = false;
 
+        $resultString = '';
+
+        $lastSimbol = $length;
+
+        foreach ($splitTag as $item) {
+            $countItem = mb_strlen(strip_tags($item));
+            $count += $countItem;
+
+            if ($count > $length) {
+                $chunk = explode('<a ', $item);
+
+                $resultString .= substr($chunk[0], 0, $lastSimbol);
                 break;
             }
+
+            $resultString .= $item . '</a>';
+
+            $lastSimbol -= $countItem;
         }
 
-        $string = implode(' ', $words);
-
-        if ($countLetters > $length && $link) {
-            $string .= '... ' .
+        if (mb_strlen($resultString) > $length && $link) {
+            $resultString .= '... ' .
                 '<a href="' . $link . '">' .
                 $this->container->get('translator')->trans('content.link_more') .
                 '</a>'
             ;
         }
 
-        return $string;
+        return $resultString;
     }
 
     /**
