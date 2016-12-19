@@ -44,7 +44,7 @@ class Search
                 $response->headers->setCookie($cookie);
                 $response->sendHeaders();
 
-                if ($countSearch > 3) {
+                if ($countSearch > $this->container->getParameter('quantity_search')) {
                     $searchParams = null;
 
                     $request->getSession()
