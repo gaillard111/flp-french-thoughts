@@ -59,7 +59,7 @@ user:
             table:
                 action: Action
     search:
-        need_logged: <strong>Au-delà de 3 recherches vous devez vous inscrire pour poursuivre. C'est gratuit. Votre mail restera confidentiel et ne sera utilisé'qu'en cas de changement sur le site.</strong>
+        need_logged: <strong>Au-delà de %quantity_search% recherches vous devez vous inscrire pour poursuivre. C'est gratuit. Votre mail restera confidentiel et ne sera utilisé'qu'en cas de changement sur le site.</strong>
     comment:
         not_logged: Login to post comments.
         delete: Delete
