@@ -50,7 +50,7 @@ class Search
                     $request->getSession()
                         ->getFlashBag()
                         ->add('success', $this->container->get('translator')->trans('user.search.need_logged', array(
-                            'quantity_search' => $this->container->getParameter('quantity_search'),
+                            '%quantity_search%' => $this->container->getParameter('quantity_search'),
                         )))
                     ;
                 }
