@@ -74,6 +74,26 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-sm-12 form-group ">
+                <label for="inputSearch">{{ 'Advanced search:'|trans }} </label>
+                </br>
+                <label>
+                    <input type="text" name="search[term][content]" class="form-control" placeholder="{{ 'thought.filter.fields.content.label'|trans }}">
+                </label>
+                <label>
+                    <input type="text" name="search[term][category]" class="form-control" placeholder="{{ 'thought.filter.fields.category.label'|trans }}">
+                </label>
+                <label>
+                    <input type="text" name="search[term][tags]" class="form-control" placeholder="{{ 'thought.filter.fields.tags.label'|trans }}">
+                </label>
+                <label>
+                    <input type="text"  name="search[term][author]" class="form-control" placeholder="{{ 'thought.filter.fields.author.label'|trans }}">
+                </label>
+                <label>
+                    <input type="text"  name="search[term][thoughtInfo]" class="form-control" placeholder="{{ 'thought.filter.fields.thoughtInfo.label'|trans }}">
+                </label>
+            </div>
         </div>
 
         {#<div class="row">

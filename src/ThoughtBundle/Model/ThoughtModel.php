@@ -85,6 +85,37 @@ class ThoughtModel
             $fields = array_keys($request['field']);
         }
 
+        $terms = array();
+
+        if (isset($request['term']) and count($request['term']) > 0) {
+            foreach ($request['term'] as $key => $val) {
+                if ($val) {
+                    $val = trim($val);
+
+                    $countQuote = explode('"', $val);
+
+                    if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
+                        $terms[] = array(
+                            'query' => array(
+                                'match_phrase' => array(
+                                    $key . '_phrase' => $val,
+                                )
+                            )
+                        );
+                    } else {
+                        $terms[] = array(
+                            'query' => array(
+                                'match' => array(
+                                    $key . '_phrase' => $val,
+                                )
+                            )
+                        );
+                    }
+                }
+            }
+        }
+
+
         $sort = array();
 
         if (isset($request['sorting']) && $request['sorting']) {
@@ -104,7 +135,7 @@ class ThoughtModel
         $countQuote = explode('"', $words);
 
         if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
-            $query = $this->searchQuoteString($countQuote[1], $fields, $minWords, $maxWords, $sort);
+            $query = $this->searchQuoteString($countQuote[1], $fields, $minWords, $maxWords, $sort, $terms);
 
             $thoughts = $finder->createPaginatorAdapter($query);
 
@@ -135,13 +166,13 @@ class ThoughtModel
                 $words = $this->filterWord($words);
 
                 if (count(explode(' ', $words)) > 1) {
-                    $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException);
+                    $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
                 } else {
-                    $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException);
+                    $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
                 }
             }
         } else {
-            $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException);
+            $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms);
         }
 
         if (!$this->container->get('security.context')->getToken()->getUser() instanceof \FOS\UserBundle\Model\User) {
@@ -303,9 +334,24 @@ class ThoughtModel
      * @param array  $filterException
      * @return $this
      */
-    public function searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException)
+    public function searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms)
     {
         $query = new \Elastica\Query();
+
+        $must = array(
+            array(
+                'range' => array(
+                    'amount' => array(
+                        'gte' => $minWords,
+                        'lte' => $maxWords,
+                    ),
+                ),
+            ),
+        );
+
+        if (!empty($terms)) {
+            $must[] = $terms;
+        }
 
         $query->setParams(
             array(
@@ -323,14 +369,7 @@ class ThoughtModel
                 'filter' => array(
                     'bool' => array(
                         'must_not' => $filterException,
-                        'must' => array(
-                            'range' => array(
-                                'amount' => array(
-                                    'gte' => $minWords,
-                                    'lte' => $maxWords,
-                                ),
-                            ),
-                        ),
+                        'must' => $must
                     ),
                 ),
                 'sort' => $sort,
@@ -349,10 +388,25 @@ class ThoughtModel
      * @param array  $filterException
      * @return Query
      */
-    public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException)
+    public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms)
     {
-        $query = new \Elastica\Query();
 
+        $must = array(
+            array(
+                'range' => array(
+                    'amount' => array(
+                        'gte' => $minWords,
+                        'lte' => $maxWords,
+                    ),
+                ),
+            ),
+        );
+
+        if (!empty($terms)) {
+            $must[] = $terms;
+        }
+
+        $query = new \Elastica\Query();
         $query->setParams(
             array(
                 'query' => array(
@@ -366,14 +420,7 @@ class ThoughtModel
                 'filter' => array(
                     'bool' => array(
                         'must_not' => $filterException,
-                        'must' => array(
-                            'range' => array(
-                                'amount' => array(
-                                    'gte' => $minWords,
-                                    'lte' => $maxWords,
-                                ),
-                            ),
-                        ),
+                        'must' => $must,
                     ),
                 ),
                 'sort' => $sort,
@@ -390,8 +437,23 @@ class ThoughtModel
      * @param array $filterException
      * @return Query
      */
-    public function searchDefault($minWords, $maxWords, $sort, $filterException)
+    public function searchDefault($minWords, $maxWords, $sort, $filterException, $terms)
     {
+        $must = array(
+            array(
+                'range' => array(
+                    'amount' => array(
+                        'gte' => $minWords,
+                        'lte' => $maxWords,
+                    ),
+                ),
+            ),
+        );
+
+        if (!empty($terms)) {
+            $must[] = $terms;
+        }
+
         $query = new \Elastica\Query();
 
         $query->setRawQuery(
@@ -399,14 +461,7 @@ class ThoughtModel
                 'filter' => array(
                     'bool' => array(
                         'must_not' => $filterException,
-                        'must' => array(
-                            'range' => array(
-                                'amount' => array(
-                                    'gte' => $minWords,
-                                    'lte' => $maxWords,
-                                ),
-                            ),
-                        ),
+                        'must' => $must
                     ),
                 ),
                 'sort' => $sort,
@@ -424,9 +479,24 @@ class ThoughtModel
      * @param array  $sort
      * @return $this|Query
      */
-    public function searchQuoteString($string, $fields, $minWords, $maxWords, $sort)
+    public function searchQuoteString($string, $fields, $minWords, $maxWords, $sort, $terms)
     {
         $query = new \Elastica\Query();
+
+        $must = array(
+            array(
+                'range' => array(
+                    'amount' => array(
+                        'gte' => $minWords,
+                        'lte' => $maxWords,
+                    ),
+                ),
+            ),
+        );
+
+        if (!empty($terms)) {
+            $must[] = $terms;
+        }
 
         if (count(explode(' ', $string)) > 1) {
             $phraseFields = array();
@@ -448,14 +518,7 @@ class ThoughtModel
                     ),
                     'filter' => array(
                         'bool' => array(
-                            'must' => array(
-                                'range' => array(
-                                    'amount' => array(
-                                        'gte' => $minWords,
-                                        'lte' => $maxWords,
-                                    ),
-                                ),
-                            ),
+                            'must' => $must
                         ),
                     ),
                     'sort' => $sort,
@@ -479,14 +542,7 @@ class ThoughtModel
             'filter' => array(
                 'bool' => array(
                     'should' => $arrFields,
-                    'must' => array(
-                        'range' => array(
-                            'amount' => array(
-                                'gte' => $minWords,
-                                'lte' => $maxWords,
-                            ),
-                        ),
-                    ),
+                    'must' => $must
                 ),
             ),
             'sort' => $sort,
