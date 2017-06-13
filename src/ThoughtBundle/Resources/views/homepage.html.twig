@@ -30,3 +30,20 @@
     </div>
 
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        function buttonToggle(source, target, show_val, hide_val) {
+            var display =  source.value === hide_val ? 'none' : 'block'; // or 'table'
+            target.style.display = display;
+            source.value = (source.value == show_val) ? hide_val : show_val;
+        }
+
+        document.getElementById('advanced_search_button').onclick = (function() {
+            var table = document.getElementById('advanced_search_block');
+            return function() {
+                buttonToggle(this, table, 'View', 'Hide');
+            };
+        }());
+    </script>
+{% endblock %}
