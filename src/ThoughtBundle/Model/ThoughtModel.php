@@ -175,10 +175,6 @@ class ThoughtModel
             $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms);
         }
 
-        if (!$this->container->get('security.context')->getToken()->getUser() instanceof \FOS\UserBundle\Model\User) {
-            return $finder->find($query);
-        }
-
         $thoughts = $finder->createPaginatorAdapter($query);
 
         return $thoughts;
