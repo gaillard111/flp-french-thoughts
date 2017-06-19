@@ -28,7 +28,7 @@ class ChainController extends Controller
         $pagination = $paginator->paginate(
             $chains,
             $request->query->getInt('page', 1),
-            10
+            100
         );
 
         return $this->render('ApplicationSonataUserBundle:Chain:list.html.twig', array(
