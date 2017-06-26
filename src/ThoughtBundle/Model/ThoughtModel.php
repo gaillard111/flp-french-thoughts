@@ -5,6 +5,7 @@ namespace ThoughtBundle\Model;
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Elastica\Query;
+use FOS\ElasticaBundle\Finder\FinderInterface;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
 use Symfony\Component\DependencyInjection\Container;
 use ThoughtBundle\Entity\Thought;
@@ -71,7 +72,7 @@ class ThoughtModel
      * @param TransformedFinder $finder
      * @return \Doctrine\ORM\Query|\FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface|\FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter
      */
-    public function getThoughtsFromElastic($request, TransformedFinder $finder)
+    public function getThoughtsFromElastic($request, TransformedFinder $finder, TransformedFinder $authorsFinder)
     {
         $fields = array(
             'tags',
@@ -85,9 +86,46 @@ class ThoughtModel
             $fields = array_keys($request['field']);
         }
 
+        $isAuthor = false;
         $terms = array();
 
+        if (isset($request['author']) and count($request['author']) > 0) {
+            foreach ($request['author'] as $key => $val) {
+                if ($val) {
+
+                    $isAuthor = true;
+
+                    $val = trim($val);
+
+                    $terms[] = array(
+                        'query' => array(
+                            'multi_match' => array(
+                                'query'                => $val . ' ',
+                                'fields'               => array(
+                                    $key
+                                ),
+                                'minimum_should_match' => '100%',
+                                'type'                 => 'cross_fields',
+                                'operator'             => 'and',
+                                'tie_breaker'          => '1.0',
+                                'analyzer'             => 'standard',
+                            ),
+                        )
+                    );
+                }
+            }
+        }
+
+        $names = [];
+
+        if ($isAuthor) {
+            $names = $this->getNames($terms, $authorsFinder);
+        }
+
         if (isset($request['term']) and count($request['term']) > 0) {
+
+            $terms = array();
+
             foreach ($request['term'] as $key => $val) {
                 if ($val) {
                     $val = trim($val);
@@ -115,6 +153,13 @@ class ThoughtModel
             }
         }
 
+        if ($isAuthor) {
+            $terms[] = array(
+                'terms' => array(
+                    'author_exact' => $names,
+                )
+            );
+        }
 
         $sort = array();
 
@@ -129,6 +174,8 @@ class ThoughtModel
         $maxWords = (isset($request['max_words']) && $request['max_words'] > 0) ? intval($request['max_words']) : 99999999;
 
         $minWords = isset($request['min_words']) ? intval($request['min_words']) : 0;
+
+        $minChars = isset($request['min_chars']) ? intval($request['min_chars']) : 0;
 
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
@@ -175,7 +222,20 @@ class ThoughtModel
             $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms);
         }
 
-        $thoughts = $finder->createPaginatorAdapter($query);
+
+        if ($minChars) {
+            $thoughts = $finder->find($query, 999999);
+
+            foreach ($thoughts as $key => $thought) {
+
+                if (count($thought->getContent()) < $minChars) {
+                    unset($thoughts[$key]);
+                }
+            }
+
+        } else {
+            $thoughts = $finder->createPaginatorAdapter($query);
+        }
 
         return $thoughts;
     }
@@ -547,6 +607,10 @@ class ThoughtModel
         return $query->setParams($arr);
     }
 
+    public function getLastThoughts($limit) {
+        return $this->repository->findBy(array(), array('createdAt' => 'ASC'), $limit);
+    }
+
 
     /**
      * @param string $word
@@ -626,5 +690,40 @@ class ThoughtModel
         }
 
         return false;
+    }
+
+    /**
+     * @param array $terms
+     * @param FinderInterface $finder
+     * @return mixed
+     */
+    private function getNames($terms, $finder) {
+        $query = new \Elastica\Query();
+
+        $must = array();
+
+        if (!empty($terms)) {
+            $must[] = $terms;
+        }
+
+        $query->setRawQuery(
+            array(
+                'filter' => array(
+                    'bool' => array(
+                        'must' => $must
+                    ),
+                ),
+            )
+        );
+
+        $authors = $finder->find($query, 100000);
+
+        $names = [];
+
+        foreach ($authors as $author) {
+            $names[] = trim($author->getName());
+        }
+
+        return $names;
     }
 }

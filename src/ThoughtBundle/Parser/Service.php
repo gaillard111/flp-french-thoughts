@@ -2,8 +2,10 @@
 
 namespace ThoughtBundle\Parser;
 
+use PHPExcel_IOFactory;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use ThoughtBundle\Entity\Author;
 
 /**
  * Class Service
@@ -120,5 +122,73 @@ class Service
         }
 
         return $this->container->get('thought.model.thought_model')->saveThoughts($data);
+    }
+
+    /**
+     * @param UploadedFile $file
+     * @return int
+     */
+    public function parseAuthorsFile(UploadedFile $file)
+    {
+
+        ini_set('max_execution_time', 300);
+
+        $filePath = $file->getPathname();
+
+        $excelReader = PHPExcel_IOFactory::createReaderForFile($filePath);
+
+        $file = $excelReader->load($filePath);
+
+        $sheet = $file->getActiveSheet();
+
+        $range = 'A1:F';
+        $highestRow = $sheet->getHighestRow();
+        $highestColumn = $sheet->getHighestColumn();
+
+        $sheetData = $sheet->rangeToArray(
+            $range . $highestRow,
+            NULL,TRUE,FALSE
+        );
+
+        $headings = array_shift($sheetData);
+
+        array_walk(
+            $sheetData,
+            function (&$row) use ($headings) {
+                $row = array_combine($headings, $row);
+            }
+        );
+
+        $batchSize = 20;
+        $i = 0;
+
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        foreach ($sheetData as $auth)
+        {
+            if (!$auth['nom prénom']) {
+                continue;
+            }
+
+            $i++;
+            $author = new Author();
+            $author->setName($auth['nom prénom']);
+            $author->setSex($auth['sex']);
+            $author->setBirthDate($auth['années']);
+            $author->setContinent($auth['continent - pays']);
+            $author->setCountry($auth['époque courant religieux']);
+            $author->setJob($auth['profession et précision(s)']);
+
+            $em->persist($author);
+
+            if (($i % $batchSize) == 0) {
+                $em->flush();
+                $em->clear();
+            }
+
+        }
+
+        $em->flush();
+
     }
 }

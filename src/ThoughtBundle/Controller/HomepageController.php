@@ -2,6 +2,14 @@
 
 namespace ThoughtBundle\Controller;
 
+use Elastica\Filter\Bool;
+use Elastica\Filter\Nested;
+use Elastica\Filter\Term;
+use Elastica\Query\Filtered;
+use Elastica\Query\MultiMatch;
+use Elastica\Query\QueryString;
+use FOS\ElasticaBundle\Elastica\Index;
+use FOS\ElasticaBundle\Finder\FinderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -37,9 +45,19 @@ class HomepageController extends Controller
 
         $search = $serviceSearch->preSearch($request->get('search'));
 
+        /** @var FinderInterface $authorsFinder */
+        $authorsFinder = $this->container->get('fos_elastica.finder.app.author');
+
+        /** @var FinderInterface $finder */
         $finder = $this->container->get('fos_elastica.finder.app.thought');
 
-        $thoughts = $modelThought->getThoughtsFromElastic($search, $finder);
+        $lastQuotes = $request->query->get('last_quotes');
+
+        if ($lastQuotes) {
+            $thoughts = $modelThought->getLastThoughts($lastQuotes);
+        } else {
+            $thoughts = $modelThought->getThoughtsFromElastic($search, $finder, $authorsFinder);
+        }
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(

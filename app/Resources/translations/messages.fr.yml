@@ -127,8 +127,11 @@ thought:
         buttons:
             search: Go!
             reset:  Reset
+            last_quotes: 20 last added quotes
         time_counter : Search time counter
         result_counter : Search results
+        search_min_chars:
+            label: Min quote size
     comment:
         add: Laisser un commentaire
         title: Commentaires
@@ -203,6 +206,8 @@ sonata:
             title:   Import citation
             upload_success: Téléchargée avec succès %count% citations!
             not_suported:   "Upload file format not supported!"
+        importAuthorPage:
+            title:   Import authors
 
     user:
         change_password: Changer le mot de passe
@@ -220,3 +225,20 @@ chain:
         quantity_quotes: Nombre de citations
         shared?: Make Publick
         private?: Make Private
+
+
+author:
+    filter:
+        fields:
+            birthDate:
+                label: Birth date
+            country:
+                label: Country
+            sex:
+                label: Sex
+            job:
+                label: Job
+            continent:
+                label: Continent
+            name:
+                label: Name

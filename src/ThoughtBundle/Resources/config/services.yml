@@ -16,6 +16,15 @@ services:
             - ThoughtBundle\Entity\Content
             - 'ThoughtBundle:ContentAdmin'
 
+    thoudght.admin.author:
+        class: ThoughtBundle\Admin\AuthorAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Authors, label: "Authors" }
+        arguments:
+            - ~
+            - ThoughtBundle\Entity\Author
+            - 'ThoughtBundle:AuthorAdmin'
+
     thought.parser.service:
         class: ThoughtBundle\Parser\Service
         arguments: ["@service_container"]

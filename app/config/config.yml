@@ -110,6 +110,10 @@ sonata_admin:
                 label: Content
                 items: {Content: thoudght.admin.content}
 
+            Authors:
+                label: Authors
+                items: {Content: thoudght.admin.author}
+
 
 sonata_user:
     #security_acl: true # Uncomment for ACL support
@@ -192,8 +196,129 @@ fos_elastica:
             port: "%elastica_port%"
     indexes:
         app:
-            index_name: thought
             types:
+                author:
+                    mappings:
+                        name:
+                            type: "multi_field"
+                            fields:
+                                name:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_analyzer
+                                name_exact:
+                                    type:     "string"
+                                    index:    "not_analyzed"
+                                    analyzer: standard
+                                name_sort:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_sort_analizer
+                                name_phrase:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_phrase_analyzer
+                        country:
+                            type: "multi_field"
+                            fields:
+                                country:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_analyzer
+                                country_exact:
+                                    type:     "string"
+                                    index:    "not_analyzed"
+                                    analyzer: standard
+                                country_sort:
+                                    type:     "string"
+                                    analyzer: app_sort_analizer
+                                country_phrase:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_phrase_analyzer
+                        sex:
+                            type: "multi_field"
+                            fields:
+                                sex:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_analyzer
+                                sex_exact:
+                                    type:     "string"
+                                    index:    "not_analyzed"
+                                    analyzer: standard
+                                sex_sort:
+                                    type:     "string"
+                                    analyzer: app_sort_analizer
+                                sex_phrase:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_phrase_analyzer
+                        birthDate:
+                            type: "multi_field"
+                            fields:
+                                birthDate:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_analyzer
+                                birthDate_exact:
+                                    type:     "string"
+                                    index:    "not_analyzed"
+                                    analyzer: standard
+                                birthDate_sort:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_sort_analizer
+                                birthDate_phrase:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_phrase_analyzer
+                        continent:
+                            type: "multi_field"
+                            fields:
+                                continent:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_analyzer
+                                continent_exact:
+                                    type:     "string"
+                                    index:    "not_analyzed"
+                                    analyzer: standard
+                                continent_sort:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_sort_analizer
+                                continent_phrase:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_phrase_analyzer
+                        job:
+                            type: "multi_field"
+                            fields:
+                                job:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_analyzer
+                                job_exact:
+                                    type:     "string"
+                                    index:    "not_analyzed"
+                                    analyzer: standard
+                                job_sort:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_sort_analizer
+                                job_phrase:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_phrase_analyzer
+                    persistence:
+                        # the driver can be orm, mongodb, phpcr or propel
+                        # listener and finder are not supported by
+                        # propel and should be removed
+                        driver: orm
+                        model: ThoughtBundle\Entity\Author
+                        provider: ~
+                        finder: ~
                 thought:
                     mappings:
                         content:

@@ -48,3 +48,7 @@ fos_js_routing:
 sonata_admin_custompage:
     pattern:  /admin/thought/import-thought
     defaults: { _controller: 'ThoughtBundle:ImportAdmin:importAdminPage' }
+
+sonata_admin_author_import:
+    pattern:  /admin/thought/import-author
+    defaults: { _controller: 'ThoughtBundle:ImportAdmin:importAdminPageAuthor' }

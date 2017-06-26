@@ -29,7 +29,8 @@
         "knplabs/knp-paginator-bundle": "^2.5",
         "pagerfanta/pagerfanta": "^1.0",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
-        "sonata-project/formatter-bundle": "^2.3"
+        "sonata-project/formatter-bundle": "^2.3",
+        "phpoffice/phpexcel": "^1.8"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
@@ -70,5 +71,7 @@
         "branch-alias": {
             "dev-master": "2.8-dev"
         }
-    }
+    },
+    "minimum-stability" : "dev",
+    "prefer-stable" : true
 }

@@ -3,31 +3,55 @@
 {% block page_title %}Les fils de la pensée{% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-sm-12 margin-bottom-17">{{ welcomeText ? welcomeText.content|shortText(350, path('content', {'code' : 'welcome'}))|raw : '' }}</div>
-    </div>
+     {% set search = app.request.get('search') %}
+    {% set is_fields = search.field is defined ? true : false %}
+    {% set open = false %}
+    {% if search.term is defined %}
+        {% for key,value in search.term %}
+            {% if value is not empty%}
+                {% set open = true %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <form method="get">
+        <div class="col-md-3">
+            {% include '@Thought/search_thought.html.twig' %}
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label for="inputSearch">{{ 'thought.filter.content.label'|trans }}</label>
+                    <input value="{{ search.words is defined ? search.words : '' }}" type="text" name="search[words]" class="form-control" id="inputSearch" placeholder="{{ 'thought.filter.content.placeholder'|trans }}">
+                </div>
+                <div class="form-group pull-right" style="padding-right: 15px;">
+                    <button class="btn btn-info">{{ 'thought.filter.buttons.search'|trans }}</button>
+                    <a href="/" class="btn btn-warning">{{ 'thought.filter.buttons.reset'|trans }}</a>
+                    <a href="/?last_quotes=20" class="btn btn-warning">{{ 'thought.filter.buttons.last_quotes'|trans }}</a>
+                </div>
+                <div class="col-sm-12 margin-bottom-17">{{ welcomeText ? welcomeText.content|shortText(350, path('content', {'code' : 'welcome'}))|raw : '' }}</div>
+            </div>
 
-    {% include '@Thought/search_thought.html.twig' %}
-
-    <div class="row">
-        <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ thoughts.getTotalItemCount() }}</div>
-        <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
-    </div>
+            <div class="row">
+                <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ thoughts.getTotalItemCount() }}</div>
+                <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
+            </div>
 
 
-    <div class="navigation text-center">
-        {{ knp_pagination_render(thoughts) }}
-    </div>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(thoughts) }}
+            </div>
 
-    {% for thought in thoughts %}
-        {{ include('@Thought/quoteLayout.html.twig', {'thought': thought}) }}
-    {% else %}
+            {% for thought in thoughts %}
+                {{ include('@Thought/quoteLayout.html.twig', {'thought': thought}) }}
+            {% else %}
 
-    {% endfor %}
+            {% endfor %}
 
-    <div class="navigation text-center">
-        {{ knp_pagination_render(thoughts) }}
-    </div>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(thoughts) }}
+            </div>
+        </div>
+    </form>
 
 {% endblock %}
 

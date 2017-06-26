@@ -47,4 +47,34 @@ class ImportAdminController extends CoreController
             'blocks'          => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
         ));
     }
+
+    public function importAdminPageAuthorAction(Request $request)
+    {
+        if ($request->getMethod() == 'POST') {
+            if ($request->files->get('export_file')) {
+
+                $upload = $request->files->get('export_file');
+
+                if ($upload->getError()) {
+                    $this->addFlash('sonata_user_error', $upload->getErrorMessage());
+                } else {
+                    $file = new UploadedFile($upload, 123, 'plain/text');
+
+                    $parser = $this->container->get('thought.parser.service');
+
+                    $result = $parser->parseAuthorsFile($file);
+
+                    $this->addFlash('sonata_user_success', $this->container->get('translator')->trans('sonata.admin.importPage.upload_success', array('%count%' => $result)));
+                }
+            } else {
+                $this->addFlash('sonata_user_error', $this->container->get('translator')->trans('sonata.admin.importPage.not_suported'));
+            }
+        }
+
+        return $this->render('@Thought/Sonata/Admin/importAuthorAdminPage.html.twig', array(
+            'base_template'   => $this->getBaseTemplate(),
+            'admin_pool'      => $this->container->get('sonata.admin.pool'),
+            'blocks'          => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
+        ));
+    }
 }
