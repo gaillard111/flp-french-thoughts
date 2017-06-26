@@ -331,11 +331,12 @@ fos_elastica:
                                 content_exact:
                                     type:     "string"
                                     index:    "not_analyzed"
+                                    ignore_above: 10000
                                     analyzer: standard
                                 content_sort:
                                     type:     "string"
                                     index:    "analyzed"
-                                    ignore_above: 20
+                                    ignore_above: 10000
                                     analyzer: app_sort_analizer
                                 content_phrase:
                                     type:     "string"
