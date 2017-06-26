@@ -86,7 +86,6 @@ class AuthorAdmin extends Admin
     public function getExportFormats()
     {
         return array(
-            'txt',
             'csv',
         );
     }

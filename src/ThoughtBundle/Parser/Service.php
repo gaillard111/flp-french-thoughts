@@ -130,9 +130,6 @@ class Service
      */
     public function parseAuthorsFile(UploadedFile $file)
     {
-
-        ini_set('max_execution_time', 300);
-
         $filePath = $file->getPathname();
 
         $excelReader = PHPExcel_IOFactory::createReaderForFile($filePath);
