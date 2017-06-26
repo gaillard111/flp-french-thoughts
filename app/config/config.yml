@@ -335,6 +335,7 @@ fos_elastica:
                                 content_sort:
                                     type:     "string"
                                     index:    "analyzed"
+                                    ignore_above: 20
                                     analyzer: app_sort_analizer
                                 content_phrase:
                                     type:     "string"
