@@ -227,8 +227,7 @@ class ThoughtModel
             $thoughts = $finder->find($query, 999999);
 
             foreach ($thoughts as $key => $thought) {
-
-                if (count($thought->getContent()) < $minChars) {
+                if (strlen($thought->getContent()) < $minChars) {
                     unset($thoughts[$key]);
                 }
             }
