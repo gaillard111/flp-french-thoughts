@@ -97,6 +97,13 @@ class ThoughtModel
 
                     $val = trim($val);
 
+                    $countQuote = explode('"', $val);
+
+                    if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
+                        $val = $countQuote[1];
+                        $key = $key . '_exect';
+                    }
+
                     $terms[] = array(
                         'query' => array(
                             'multi_match' => array(
@@ -222,19 +229,7 @@ class ThoughtModel
             $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms);
         }
 
-
-        if ($minChars) {
-            $thoughts = $finder->find($query, 999999);
-
-            foreach ($thoughts as $key => $thought) {
-                if (strlen($thought->getContent()) < $minChars) {
-                    unset($thoughts[$key]);
-                }
-            }
-
-        } else {
-            $thoughts = $finder->createPaginatorAdapter($query);
-        }
+        $thoughts = $finder->createPaginatorAdapter($query);
 
         return $thoughts;
     }
@@ -445,7 +440,6 @@ class ThoughtModel
      */
     public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms)
     {
-
         $must = array(
             array(
                 'range' => array(
@@ -478,7 +472,7 @@ class ThoughtModel
                         'must' => $must,
                     ),
                 ),
-                'sort' => $sort,
+                "sort" => $sort
             )
         );
 
