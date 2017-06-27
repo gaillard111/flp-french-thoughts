@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 class HomepageController extends Controller
 {
     /**
-     * @Route("/", methods={"GET"})
+     * @Route("/", methods={"GET"}, options={"sitemap" = true})
      *
      * @param Request $request
      * @return Response

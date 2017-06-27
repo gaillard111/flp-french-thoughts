@@ -52,3 +52,7 @@ sonata_admin_custompage:
 sonata_admin_author_import:
     pattern:  /admin/thought/import-author
     defaults: { _controller: 'ThoughtBundle:ImportAdmin:importAdminPageAuthor' }
+
+PrestaSitemapBundle:
+    resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
+    prefix:   /

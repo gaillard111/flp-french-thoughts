@@ -196,3 +196,22 @@ label.required:after{
 .chain-list .chain-remove {
     margin-left: 20px;
 }
+
+.error404 {
+    margin-bottom: 200px;
+}
+
+.error404 .title {
+    font-size: 200px;
+    text-align: center;
+    color: #337ab7;
+}
+
+.error404 .href {
+    text-align: center;
+    font-size: 40px;
+}
+
+.error404 .href a{
+    font-weight: bold;
+}
