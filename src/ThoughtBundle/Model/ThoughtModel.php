@@ -103,7 +103,7 @@ class ThoughtModel
                         $val = $countQuote[1];
 
                         $terms[] = array(
-                            'filter' => array(
+                            'query' => array(
                                 'bool' => array(
                                     'must' => array(
                                         'terms' => array(
