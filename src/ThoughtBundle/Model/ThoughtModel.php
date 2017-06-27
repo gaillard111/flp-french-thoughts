@@ -101,24 +101,29 @@ class ThoughtModel
 
                     if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
                         $val = $countQuote[1];
-                        $key = $key . '_exect';
-                    }
 
-                    $terms[] = array(
-                        'query' => array(
-                            'multi_match' => array(
-                                'query'                => $val . ' ',
-                                'fields'               => array(
-                                    $key
+                        $terms[] = array(
+                            'terms' => array(
+                                $key . '_exact' => $val,
+                            )
+                        );
+                    } else {
+                        $terms[] = array(
+                            'query' => array(
+                                'multi_match' => array(
+                                    'query'                => $val . ' ',
+                                    'fields'               => array(
+                                        $key
+                                    ),
+                                    'minimum_should_match' => '100%',
+                                    'type'                 => 'cross_fields',
+                                    'operator'             => 'and',
+                                    'tie_breaker'          => '1.0',
+                                    'analyzer'             => 'standard',
                                 ),
-                                'minimum_should_match' => '100%',
-                                'type'                 => 'cross_fields',
-                                'operator'             => 'and',
-                                'tie_breaker'          => '1.0',
-                                'analyzer'             => 'standard',
-                            ),
-                        )
-                    );
+                            )
+                        );
+                    }
                 }
             }
         }
