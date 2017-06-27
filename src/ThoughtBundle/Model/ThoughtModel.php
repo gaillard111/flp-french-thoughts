@@ -176,7 +176,9 @@ class ThoughtModel
             );
         }
 
-        $sort = array();
+        $sort = array(
+            'amount' => 'asc'
+        );
 
         if (isset($request['sorting']) && $request['sorting']) {
             $sort = array(
