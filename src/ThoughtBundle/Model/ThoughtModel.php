@@ -104,14 +104,10 @@ class ThoughtModel
 
                         $terms[] = array(
                             'query' => array(
-                                'bool' => array(
-                                    'must' => array(
-                                        'terms' => array(
-                                            $key . '_exact' => $val,
-                                        )
-                                    ),
-                                ),
-                            ),
+                                'term' => array(
+                                    $key . '_exact' => $val,
+                                )
+                            )
                         );
 
                     } else {
