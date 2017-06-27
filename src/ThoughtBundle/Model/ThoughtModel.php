@@ -103,10 +103,17 @@ class ThoughtModel
                         $val = $countQuote[1];
 
                         $terms[] = array(
-                            'terms' => array(
-                                $key . '_exact' => $val,
-                            )
+                            'filter' => array(
+                                'bool' => array(
+                                    'must' => array(
+                                        'terms' => array(
+                                            $key . '_exact' => $val,
+                                        )
+                                    ),
+                                ),
+                            ),
                         );
+
                     } else {
                         $terms[] = array(
                             'query' => array(
