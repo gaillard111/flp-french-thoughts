@@ -231,14 +231,14 @@ author:
     filter:
         fields:
             birthDate:
-                label: Birth date
+                label: Années
             country:
-                label: Country
+                label: Époque courant religieux
             sex:
                 label: Sex
             job:
-                label: Job
+                label: Profession et précision(s)
             continent:
-                label: Continent
+                label: Continent - pays
             name:
-                label: Name
+                label: Nom prénom
