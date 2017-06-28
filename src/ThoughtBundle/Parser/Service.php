@@ -169,12 +169,12 @@ class Service
 
             $i++;
             $author = new Author();
-            $author->setName($auth['nom prénom']);
-            $author->setSex($auth['sex']);
-            $author->setBirthDate($auth['années']);
-            $author->setContinent($auth['continent - pays']);
-            $author->setCountry($auth['époque courant religieux']);
-            $author->setJob($auth['profession et précision(s)']);
+            $author->setName(trim($auth['nom prénom']));
+            $author->setSex(trim($auth['sex']));
+            $author->setBirthDate(trim($auth['années']));
+            $author->setContinent(trim($auth['continent - pays']));
+            $author->setCountry(trim($auth['époque courant religieux']));
+            $author->setJob(trim($auth['profession et précision(s)']));
 
             $em->persist($author);
 

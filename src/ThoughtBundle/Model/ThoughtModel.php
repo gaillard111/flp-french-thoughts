@@ -114,7 +114,7 @@ class ThoughtModel
                         $terms[] = array(
                             'query' => array(
                                 'multi_match' => array(
-                                    'query'                => $val . ' ',
+                                    'query'                => $val,
                                     'fields'               => array(
                                         $key
                                     ),
