@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Elastica\Query;
 use FOS\ElasticaBundle\Finder\FinderInterface;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
+use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
 use ThoughtBundle\Entity\Thought;
 
@@ -16,6 +17,10 @@ use ThoughtBundle\Entity\Thought;
  */
 class ThoughtModel
 {
+    const CLOUD_MIN_FONT_SIZE   = 15;
+    const CLOUD_MIN_FONT_WEIGHT = 200;
+    const CLOUD_NUMBER_OF_WORDS = 30;
+
     /**
      * @var EntityManager
      */
@@ -614,6 +619,96 @@ class ThoughtModel
         return $this->repository->findBy(array(), array('createdAt' => 'ASC'), $limit);
     }
 
+    /**
+     * @param array $fields
+     * @param PaginatorAdapterInterface $thoughts
+     *
+     * @return array
+     */
+    public function getCloud($fields, $thoughts, $words) {
+        $cloud = $cloudStyle = [];
+
+        $words = (isset($words) && mb_strlen($words) > 0) ? trim($words) : null;
+
+        $countQuote = explode('"', $words);
+
+        $isQuoteWord = count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2]);
+
+        if ($isQuoteWord) {
+            $words = [$countQuote[1]];
+        } else {
+            $words = explode(' ', $words);
+        }
+
+        $words = array_map('strtolower', $words);
+
+        $isCloudOn = !is_array($thoughts) && $fields['tags'] == 'on' && $fields['category'] == 'on' && count($fields) == 2;
+
+        if ($isCloudOn) {
+
+            if ($thoughts->getTotalHits() > 0) {
+                $cloud = [];
+
+                /** @var Thought $thought */
+                foreach ($thoughts->getResults(0, $thoughts->getTotalHits())->toArray() as $thought) {
+
+                    $tags = explode(',', $thought->getTags());
+
+                    foreach ($tags as $tag) {
+                        if (!$tag || in_array(strtolower(trim($tag)), $words)) {
+                            continue;
+                        }
+
+                        $cloud[trim($tag)]++;
+                        $cloudStyle[trim($tag)]['font-size'] = $this->cloudFontSize($cloud[trim($tag)]);
+                        $cloudStyle[trim($tag)]['font-weight'] = $this->cloudFontWeight($cloud[trim($tag)]);
+                    }
+
+                    if (!$thought->getCategory()) {
+                        continue;
+                    }
+
+                    if (!in_array(strtolower(trim($thought->getCategory())), $words)) {
+
+                        $cloud[trim($thought->getCategory())]++;
+                        $cloudStyle[trim($thought->getCategory())]['font-size'] = $this->cloudFontSize($cloud[trim($thought->getCategory())]);
+                        $cloudStyle[trim($thought->getCategory())]['font-weight'] = $this->cloudFontWeight($cloud[trim($thought->getCategory())]);
+                    }
+                }
+            }
+
+            array_multisort($cloud);
+
+            $cloud = array_slice(array_reverse($cloud), 0, self::CLOUD_NUMBER_OF_WORDS);
+
+            ksort($cloud);
+        }
+
+        return [
+            'cloud'      => $cloud,
+            'cloudStyle' => $cloudStyle
+        ];
+    }
+
+    /**
+     * return value of font-size depends on popularity
+     *
+     * @param $val
+     * @return int
+     */
+    private function cloudFontSize($val) {
+        return self::CLOUD_MIN_FONT_SIZE + sqrt($val);
+    }
+
+    /**
+     * return value of font-weight depends on popularity
+     *
+     * @param $val
+     * @return int
+     */
+    private function cloudFontWeight($val) {
+        return ceil((self::CLOUD_MIN_FONT_WEIGHT * sqrt($val)/100))*100;
+    }
 
     /**
      * @param string $word

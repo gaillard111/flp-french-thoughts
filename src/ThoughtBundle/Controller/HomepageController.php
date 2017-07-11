@@ -10,12 +10,15 @@ use Elastica\Query\MultiMatch;
 use Elastica\Query\QueryString;
 use FOS\ElasticaBundle\Elastica\Index;
 use FOS\ElasticaBundle\Finder\FinderInterface;
+use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use ThoughtBundle\Entity\Thought;
+use ThoughtBundle\Model\ThoughtModel;
 
 /**
  * Class HomepageController
@@ -39,6 +42,7 @@ class HomepageController extends Controller
 
         $countItem = 10;
 
+        /** @var ThoughtModel $modelThought */
         $modelThought = $this->container->get('thought.model.thought_model');
 
         $serviceSearch = $this->container->get('thought.service.search_service');
@@ -56,8 +60,11 @@ class HomepageController extends Controller
         if ($lastQuotes) {
             $thoughts = $modelThought->getLastThoughts($lastQuotes);
         } else {
+            /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $modelThought->getThoughtsFromElastic($search, $finder, $authorsFinder);
         }
+
+        $cloud = $modelThought->getCloud($search['field'], $thoughts, $search['words']);
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -76,6 +83,8 @@ class HomepageController extends Controller
             'thoughts'    => $pagination,
             'timeExecute' => $timeExecute,
             'welcomeText' => $welcomeText,
+            'cloud'       => $cloud['cloud'],
+            'cloudStyle'  => $cloud['cloudStyle']
         ));
     }
 

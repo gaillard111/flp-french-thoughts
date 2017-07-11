@@ -13,7 +13,7 @@
             {% endif %}
         {% endfor %}
     {% endif %}
-    <form method="get">
+    <form method="get" xmlns="http://www.w3.org/1999/html">
         <div class="col-md-3">
             {% include '@Thought/search_thought.html.twig' %}
         </div>
@@ -31,11 +31,25 @@
                 <div class="col-sm-12 margin-bottom-17">{{ welcomeText ? welcomeText.content|shortText(350, path('content', {'code' : 'welcome'}))|raw : '' }}</div>
             </div>
 
+            {% if cloud|length > 0  %}
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                        <a id="cloud_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'Cloud tags'|trans }} </a>
+                    </div>
+                </div>
+                <div id="cloud_block" class="col-sm-12 margin-bottom-17" style="display: none;">
+                {% for word, size in cloud %}
+                    <a href="{{ path('thought_homepage_index', {'search[words]': word, 'search[field][category]': 'on', 'search[field][tags]': 'on'}) }}" style='color: #000; display: inline-block; margin-right: 10px; font-size: {{ cloudStyle[word]['font-size'] }}px ; font-weight: {{ cloudStyle[word]['font-weight'] }} ;'>
+                        {{ word }}
+                    </a>
+                {% endfor %}
+                </div>
+            {% endif %}
+
             <div class="row">
                 <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ thoughts.getTotalItemCount() }}</div>
                 <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
             </div>
-
 
             <div class="navigation text-center">
                 {{ knp_pagination_render(thoughts) }}
@@ -65,6 +79,13 @@
 
         document.getElementById('advanced_search_button').onclick = (function() {
             var table = document.getElementById('advanced_search_block');
+            return function() {
+                buttonToggle(this, table, 'View', 'Hide');
+            };
+        }());
+
+        document.getElementById('cloud_button').onclick = (function() {
+            var table = document.getElementById('cloud_block');
             return function() {
                 buttonToggle(this, table, 'View', 'Hide');
             };
