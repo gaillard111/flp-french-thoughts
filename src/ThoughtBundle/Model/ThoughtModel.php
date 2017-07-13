@@ -655,7 +655,7 @@ class ThoughtModel
                     $tags = explode(',', $thought->getTags());
 
                     foreach ($tags as $tag) {
-                        if (!$tag || in_array(strtolower(trim($tag)), $words)) {
+                        if (!$tag) {
                             continue;
                         }
 
@@ -668,12 +668,9 @@ class ThoughtModel
                         continue;
                     }
 
-                    if (!in_array(strtolower(trim($thought->getCategory())), $words)) {
-
-                        $cloud[trim($thought->getCategory())]++;
-                        $cloudStyle[trim($thought->getCategory())]['font-size'] = $this->cloudFontSize($cloud[trim($thought->getCategory())]);
-                        $cloudStyle[trim($thought->getCategory())]['font-weight'] = $this->cloudFontWeight($cloud[trim($thought->getCategory())]);
-                    }
+                    $cloud[trim($thought->getCategory())]++;
+                    $cloudStyle[trim($thought->getCategory())]['font-size'] = $this->cloudFontSize($cloud[trim($thought->getCategory())]);
+                    $cloudStyle[trim($thought->getCategory())]['font-weight'] = $this->cloudFontWeight($cloud[trim($thought->getCategory())]);
                 }
             }
 
@@ -707,7 +704,10 @@ class ThoughtModel
      * @return int
      */
     private function cloudFontWeight($val) {
-        return ceil((self::CLOUD_MIN_FONT_WEIGHT * sqrt($val)/100))*100;
+
+        $weight = ceil((self::CLOUD_MIN_FONT_WEIGHT * sqrt($val)/100))*100;
+
+        return $weight > 900 ? 900 : $weight;
     }
 
     /**
