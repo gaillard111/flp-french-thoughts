@@ -44,11 +44,11 @@ user:
             link_thoughts:      Citations
             link_profile:       Profil
             link_dashboard:     Tableau de bord
-            link_chains:        Chaines
+            link_chains:        Mes chaines
             link_shared_chains: Chaines partagées
     thought:
         create_page:
-            title:  Citation Create
+            title:  Insérer un citation
             submit: Créer
         list_page:
             title: Liste de citations
@@ -103,11 +103,15 @@ thought:
             category:
                 label: Catégorie
             tags:
-                label: Tag
+                label: Tag – étiquette
             author:
                 label: Auteur
             thoughtInfo:
                 label: Info
+            advancedSearch:
+                label: Recherches Avancées
+            authors:
+                label: Auteurs détails (recherche avancée avancée)
         max_words:
             label: nb max de mots
             options:
@@ -127,7 +131,7 @@ thought:
         buttons:
             search: Go!
             reset:  Reset
-            last_quotes: 20 last added quotes
+            last_quotes: 20 dernières citations
         time_counter : Search time counter
         result_counter : Search results
         cloud_tags: Nuage de corrélats
@@ -236,12 +240,12 @@ author:
             birthDate:
                 label: Années
             country:
-                label: Époque courant religieux
+                label: Epoque – Courant religieux
             sex:
-                label: Sex
+                label: Sexe
             job:
-                label: Profession et précision(s)
+                label: Profession et précisions
             continent:
-                label: Continent - pays
+                label: Continent – Pays
             name:
-                label: Nom prénom
+                label: Nom Prénom
