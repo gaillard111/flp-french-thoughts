@@ -84,7 +84,8 @@ class HomepageController extends Controller
             'timeExecute' => $timeExecute,
             'welcomeText' => $welcomeText,
             'cloud'       => $cloud['cloud'],
-            'cloudStyle'  => $cloud['cloudStyle']
+            'cloudStyle'  => $cloud['cloudStyle'],
+            'filtersOpen' => $search['filter_open']
         ));
     }
 

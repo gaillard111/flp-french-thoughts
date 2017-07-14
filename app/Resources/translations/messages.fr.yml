@@ -130,8 +130,11 @@ thought:
             last_quotes: 20 last added quotes
         time_counter : Search time counter
         result_counter : Search results
+        cloud_tags: Nuage de corrélats
+        activate_cloud: Pour l'activer, cochez seulement catégorie et tag dans la recherche avancée à gauche.
         search_min_chars:
             label: Min quote size
+        filters: Les filtres
     comment:
         add: Laisser un commentaire
         title: Commentaires

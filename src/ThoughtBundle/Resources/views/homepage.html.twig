@@ -34,7 +34,7 @@
             {% if cloud|length > 0  %}
                 <div class="row">
                     <div class="form-group col-sm-12">
-                        <a id="cloud_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'Cloud tags'|trans }} </a>
+                        <a id="cloud_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.cloud_tags'|trans }} </a>
                     </div>
                 </div>
                 <div id="cloud_block" class="col-sm-12 margin-bottom-17" style="display: none;">
@@ -43,6 +43,12 @@
                         {{ word }}
                     </a>
                 {% endfor %}
+                </div>
+            {% else %}
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                       <span style="font-size: 18px;">{{ 'thought.filter.activate_cloud'|trans }}</span>
+                    </div>
                 </div>
             {% endif %}
 
@@ -71,8 +77,12 @@
 
 {% block javascripts %}
     <script>
-        function buttonToggle(source, target, show_val, hide_val) {
+        function buttonToggle(source, target, show_val, hide_val, input) {
+            if (source.value === undefined && input != undefined) {
+                source.value = input.value == '1' ? 'View' : 'Hide';
+            }
             var display =  source.value === hide_val ? 'none' : 'block'; // or 'table'
+
             target.style.display = display;
             source.value = (source.value == show_val) ? hide_val : show_val;
         }
@@ -81,6 +91,16 @@
             var table = document.getElementById('advanced_search_block');
             return function() {
                 buttonToggle(this, table, 'View', 'Hide');
+            };
+        }());
+
+        document.getElementById('filters_button').onclick = (function() {
+            var table = document.getElementById('filters_block');
+            var filterOpen = document.getElementById('filter_block_open');
+
+            return function() {
+                filterOpen.getAttribute('value') == '1' ? filterOpen.setAttribute('value', '0') : filterOpen.setAttribute('value', '1');
+                buttonToggle(this, table, 'View', 'Hide', filterOpen);
             };
         }());
 
