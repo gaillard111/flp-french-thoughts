@@ -34,6 +34,7 @@ framework:
 
 # Twig Configuration
 twig:
+    cache: false
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
 
@@ -119,6 +120,9 @@ sonata_user:
     #security_acl: true # Uncomment for ACL support
     manager_type: orm # can be orm or mongodb
     profile:
+        dashboard:
+            blocks:
+                - { position: left, type: sonata.block.service.text, settings: { content: "<h2>Ami(e) du français bonjour!</h2> Merci d'avoir franchi cette première étape. Merci de donner le plus de détails possibles si vous proposez une citation. Pour indiquer catégories et tags, vous pouvez consulter"} }
         menu:
             - { route: 'sonata_user_profile_show', label: 'user.dashboard.menu.link_dashboard', domain: 'messages'}
             - { route: 'sonata_user_profile_edit', label: 'user.dashboard.menu.link_profile', domain: 'messages'}

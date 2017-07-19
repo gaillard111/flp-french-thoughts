@@ -5,6 +5,7 @@ namespace ThoughtBundle\Service;
 use Symfony\Component\DependencyInjection\Container;
 use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\Comment;
+use ThoughtBundle\Entity\Thought;
 
 /**
  * Class Mail
@@ -31,6 +32,27 @@ class Mail
         $this->container = $container;
 
         $this->translator = $container->get('translator');
+    }
+
+    /**
+     * Send email - Add new quote
+     *
+     * @param Thought $thought
+     */
+    public function mailAddNewThought(Thought $thought)
+    {
+        $subject = 'French thought: add new thought';
+
+        $link = $this->container->get('router')->generate('thought_thoughtpage_index', array('thoughtId' => $thought->getId()), 0);
+
+        $body = 'User: ' . $thought->getOwner()->getFullname() . ' in ' . $thought->getCreatedAt()->format('Y-m-d H:i') .
+            ' leave comment: ' . $thought->getContent() . '<br>' .
+            'To view the review click on the ' . '<a href="' . $link . '">link</a>'
+        ;
+
+        $emailUsers = $this->container->getParameter('admin_email');
+
+        $this->sendMail($subject, $emailUsers, $body);
     }
 
     /**

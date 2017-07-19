@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use ThoughtBundle\Entity\Thought;
+use ThoughtBundle\Service\Mail;
 
 /**
  * Class ThoughtController
@@ -57,6 +58,10 @@ class ThoughtController extends Controller
                 $thought->setOwner($this->getUser());
                 $em->persist($thought);
                 $em->flush();
+
+                /** @var Mail $serviceMail */
+                $serviceMail = $this->container->get('thought.service.mail_service');
+                $serviceMail->mailAddNewThought($thought);
 
                 return $this->redirect($this->generateUrl('sonata_user_thoughts'));
             }

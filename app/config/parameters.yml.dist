@@ -20,3 +20,7 @@ parameters:
 
     elastica_host: 127.0.0.1
     elastica_port: 9200
+
+    admin_email: 'example@example.com'
+
+    quantity_search: 10

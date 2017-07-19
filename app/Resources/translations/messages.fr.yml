@@ -52,7 +52,7 @@ user:
             submit: Créer
         list_page:
             title: Liste de citations
-            add_button: Ajouter la citation
+            add_button: Ajout de citation
             link:
                 edit:   Edit
                 delete: Delete
