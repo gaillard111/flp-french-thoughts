@@ -94,7 +94,7 @@ class Mail
 
         $emails = array($this->container->getParameter('admin_email'));
         $emailUser = ($comment->getUser()->getId() != $comment->getChain()->getUser()->getId()) ? $comment->getChain()->getUser()->getEmail() : null;
-var_dump($emailUser);
+
         if ($emailUser) {
             array_push($emails, $emailUser);
         }

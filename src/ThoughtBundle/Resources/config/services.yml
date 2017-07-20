@@ -40,6 +40,10 @@ services:
         class: ThoughtBundle\Model\ThoughtModel
         arguments: ["@doctrine.orm.entity_manager", "@service_container"]
 
+    thought.model.author_model:
+        class: ThoughtBundle\Model\AuthorModel
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+
     thought.model.thoughtChain_model:
         class: ThoughtBundle\Model\ThoughtChainModel
         arguments: ["@doctrine.orm.entity_manager", "@service_container"]

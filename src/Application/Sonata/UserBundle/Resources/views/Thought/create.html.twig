@@ -13,6 +13,27 @@
                 <div class="panel-body">
                     <form class="form-horizontal" method="post" {{ form_enctype(form) }}>
                         {{ form_widget(form) }}
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.sex.label'|trans }}</label>
+                            <div class="col-sm-5"><input type="text" id="sonata_user_author_create_sex" name="sonata_user_author_create[sex]"  class="form-control" ></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.job.label'|trans }}</label>
+                            <div class="col-sm-5"><input type="text" id="sonata_user_author_create_job" name="sonata_user_author_create[job]" class="form-control" ></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.continent.label'|trans }}</label>
+                            <div class="col-sm-5"><input type="text" id="sonata_user_author_create_continent" name="sonata_user_author_create[continent]" class="form-control" ></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.country.label'|trans }}</label>
+                            <div class="col-sm-5"><input type="text" id="sonata_user_author_create_country" name="sonata_user_author_create[country]" class="form-control" ></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.birthDate.label'|trans }}</label>
+                            <div class="col-sm-5"><input type="text" id="sonata_user_author_create_birthDate" name="sonata_user_author_create[birthDate]" class="form-control" ></div>
+                        </div>
+
                         <div class="pull-right">
                             <button class="btn btn-success">{{ 'user.thought.create_page.submit'|trans }}</button>
                         </div>
@@ -22,8 +43,58 @@
         </div>
     </div>
 
+{% endblock %}
 
+{% block javascripts %}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $('#sonata_user_thought_create_author').autocomplete({
+            source: function(request, response){
+                $.ajax({
+                    method: "POST",
+                    url: '{{ path('sonata_user_thought_autocomplete_author') }}',
+                    data:{
+                        nameStartsWith: request.term
+                    },
+                    success: function(data){
+                        response($.map(data, function(item){
+                            return {
+                                birthDate: item.birthDate,
+                                country: item.country,
+                                continent: item.continent,
+                                job: item.job,
+                                sex: item.sex,
+                                label: item.name
+                            }
+                        }));
+                    }
+                });
+            },
+            select: function( event, ui ) {
+
+                $('input#sonata_user_author_create_sex').val(ui.item.sex)
+                $('input#sonata_user_author_create_sex').attr('disabled', 'disabled')
+                $('input#sonata_user_author_create_job').val(ui.item.job)
+                $('input#sonata_user_author_create_job').attr('disabled', 'disabled')
+                $('input#sonata_user_author_create_name').val(ui.item.label)
+                $('input#sonata_user_author_create_name').attr('disabled', 'disabled')
+                $('input#sonata_user_author_create_continent').val(ui.item.continent)
+                $('input#sonata_user_author_create_continent').attr('disabled', 'disabled')
+                $('input#sonata_user_author_create_country').val(ui.item.country)
+                $('input#sonata_user_author_create_country').attr('disabled', 'disabled')
+                $('input#sonata_user_author_create_birthDate').val(ui.item.birthDate)
+                $('input#sonata_user_author_create_birthDate').attr('disabled', 'disabled')
+
+            },
+            minLength: 2
+        });
+    </script>
 
 {% endblock %}
+
+
+
 
 

@@ -4,10 +4,13 @@ namespace Application\Sonata\UserBundle\Controller;
 
 use Application\Sonata\UserBundle\Form\Type\ThoughtType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use ThoughtBundle\Entity\Author;
 use ThoughtBundle\Entity\Thought;
+use ThoughtBundle\Model\AuthorModel;
 use ThoughtBundle\Service\Mail;
 
 /**
@@ -55,6 +58,27 @@ class ThoughtController extends Controller
 
         if ($request->getMethod() == 'POST') {
             if ($form->isValid()) {
+                /** @var AuthorModel $authorModel */
+                $authorModel = $this->container->get('thought.model.author_model');
+
+                $authorName = $thought->getAuthor();
+
+                if (!$authorModel->findAuthorByName($authorName)) {
+
+                    $authorData = $request->get('sonata_user_author_create');
+
+                    $author = new Author();
+
+                    $author->setName($authorName);
+                    $author->setSex($authorData['sex']);
+                    $author->setJob($authorData['job']);
+                    $author->setContinent($authorData['continent']);
+                    $author->setBirthDate($authorData['birthDate']);
+                    $author->setCountry($authorData['country']);
+
+                    $em->persist($author);
+                }
+
                 $thought->setOwner($this->getUser());
                 $em->persist($thought);
                 $em->flush();
@@ -70,5 +94,38 @@ class ThoughtController extends Controller
         return $this->render('ApplicationSonataUserBundle:Thought:create.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * @Route("/thought/autocomplete/author", name="sonata_user_thought_autocomplete_author")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function autocompleteThoughtAuthorAction(Request $request) {
+
+        $nameStartsWith = $request->get('nameStartsWith');
+
+        /** @var AuthorModel $authorModel */
+        $authorModel = $this->container->get('thought.model.author_model');
+
+        $authors = $authorModel->getAuthorsByStringStart($nameStartsWith);
+
+        $data = array();
+        /** @var Author $author */
+        foreach($authors as $author){
+            $authorData = array();
+
+            $authorData["name"]      = $author->getName();
+            $authorData["birthDate"] = $author->getBirthDate();
+            $authorData["sex"]       = $author->getSex();
+            $authorData["country"]   = $author->getCountry();
+            $authorData["continent"] = $author->getContinent();
+            $authorData["job"]       = $author->getJob();
+
+            $data[] = $authorData;
+        }
+
+        return new JsonResponse($data);
     }
 }

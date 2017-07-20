@@ -19,11 +19,6 @@ class ThoughtType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('author', 'text', array(
-                'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr'       => array('class' => 'form-control'),
-                'label'      => 'thought.filter.fields.author.label',
-            ))
             ->add('category', 'text', array(
                 'label_attr' => array('class' => 'control-label col-sm-2'),
                 'attr'       => array('class' => 'form-control'),
@@ -45,6 +40,11 @@ class ThoughtType extends AbstractType
                 'attr'       => array('class' => 'form-control', 'data-role' => 'tagsinput'),
                 'required'   => false,
                 'label'      => 'thought.filter.fields.tags.label',
+            ))
+            ->add('author', 'text', array(
+                'label_attr' => array('class' => 'control-label col-sm-2'),
+                'attr'       => array('class' => 'form-control'),
+                'label'      => 'thought.filter.fields.author.label',
             ))
         ;
     }
