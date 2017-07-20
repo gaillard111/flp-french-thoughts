@@ -12,6 +12,11 @@
                 </a>
             </li>
             {% if app.user %}
+                <li>
+                    <a href="{{ path('sonata_user_chains') }}">
+                        {{ 'user.dashboard.menu.link_chains'|trans }}
+                    </a>
+                </li>
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <li>
                         <a href="{{ path('sonata_admin_dashboard') }}">
@@ -31,6 +36,12 @@
                     </a>
                 </li>
             {% else %}
+
+                <li>
+                    <a href="{{ path('public_sonata_user_shared_chains') }}">
+                        {{ 'user.dashboard.menu.link_shared_chains'|trans }}
+                    </a>
+                </li>
                 <li>
                     <a href="{{ path('fos_user_registration_register') }}">
                         {{ 'navbar.registration'|trans }}

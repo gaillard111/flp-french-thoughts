@@ -8,6 +8,9 @@ sonata:
     type:     annotation
     prefix:   /profile
 
+public_sonata_user_shared_chains:
+    pattern:  /shared-chains
+    defaults: { _controller: 'ApplicationSonataUserBundle:Chain:publicListShared' }
 
 sonata_user_security:
     resource: "@SonataUserBundle/Resources/config/routing/sonata_security_1.xml"
