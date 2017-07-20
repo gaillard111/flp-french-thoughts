@@ -48,7 +48,7 @@ user:
             link_shared_chains: Chaines partagées
     thought:
         create_page:
-            title:  Insérer un citation
+            title:  Insérer une citation
             submit: Créer
         list_page:
             title: Liste de citations
