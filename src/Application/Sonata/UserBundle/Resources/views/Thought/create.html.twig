@@ -73,7 +73,6 @@
                 });
             },
             select: function( event, ui ) {
-
                 $('input#sonata_user_author_create_sex').val(ui.item.sex)
                 $('input#sonata_user_author_create_sex').attr('disabled', 'disabled')
                 $('input#sonata_user_author_create_job').val(ui.item.job)
@@ -86,7 +85,21 @@
                 $('input#sonata_user_author_create_country').attr('disabled', 'disabled')
                 $('input#sonata_user_author_create_birthDate').val(ui.item.birthDate)
                 $('input#sonata_user_author_create_birthDate').attr('disabled', 'disabled')
+            },
+            search: function( event, ui ) {
+                $('input#sonata_user_author_create_sex').val('');
+                $('input#sonata_user_author_create_job').val('');
+                $('input#sonata_user_author_create_name').val('');
+                $('input#sonata_user_author_create_continent').val('');
+                $('input#sonata_user_author_create_country').val('');
+                $('input#sonata_user_author_create_birthDate').val('');
 
+                $('input#sonata_user_author_create_sex').removeAttr('disabled');
+                $('input#sonata_user_author_create_job').removeAttr('disabled');
+                $('input#sonata_user_author_create_name').removeAttr('disabled');
+                $('input#sonata_user_author_create_continent').removeAttr('disabled');
+                $('input#sonata_user_author_create_country').removeAttr('disabled');
+                $('input#sonata_user_author_create_birthDate').removeAttr('disabled');
             },
             minLength: 2
         });
