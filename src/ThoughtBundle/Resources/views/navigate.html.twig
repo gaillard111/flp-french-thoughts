@@ -6,12 +6,13 @@
             </a>
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a href="{{ path('content', {'code' : 'instruction'}) }}">
-                    {{ 'navbar.instruction'|trans }}
-                </a>
-            </li>
             {% if app.user %}
+                <li>
+                    <a href="{{ path('content', {'code' : 'instruction'}) }}">
+                        {{ 'navbar.instruction'|trans }}
+                    </a>
+                </li>
+
                 <li>
                     <a href="{{ path('sonata_user_chains') }}">
                         {{ 'user.dashboard.menu.link_chains'|trans }}
@@ -39,9 +40,16 @@
 
                 <li>
                     <a href="{{ path('public_sonata_user_shared_chains') }}">
-                        {{ 'user.dashboard.menu.link_shared_chains'|trans }}
+                        {{ 'navbar.link_shared_chains'|trans }}
                     </a>
                 </li>
+
+                <li>
+                    <a href="{{ path('content', {'code' : 'instruction'}) }}">
+                        {{ 'navbar.instruction'|trans }}
+                    </a>
+                </li>
+
                 <li>
                     <a href="{{ path('fos_user_registration_register') }}">
                         {{ 'navbar.registration'|trans }}

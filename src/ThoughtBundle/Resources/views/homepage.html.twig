@@ -14,10 +14,10 @@
         {% endfor %}
     {% endif %}
     <form method="get" xmlns="http://www.w3.org/1999/html">
-        <div class="col-md-3">
+        <div class="col-md-2">
             {% include '@Thought/search_thought.html.twig' %}
         </div>
-        <div class="col-md-9">
+        <div class="col-md-10">
             <div class="row">
                 <div class="form-group col-sm-12">
                     <label for="inputSearch">{{ 'thought.filter.content.label'|trans }}</label>
@@ -47,7 +47,7 @@
             {% else %}
                 <div class="row">
                     <div class="form-group col-sm-12">
-                       <span style="font-size: 18px;">{{ 'thought.filter.activate_cloud'|trans }}</span>
+                       <span style="border-bottom: 1px dashed #000;">{{ 'thought.filter.cloud_tags'|trans }}</span> : {{ 'thought.filter.activate_cloud'|trans }}
                     </div>
                 </div>
             {% endif %}

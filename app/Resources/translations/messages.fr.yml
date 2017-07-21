@@ -135,7 +135,7 @@ thought:
         time_counter : Search time counter
         result_counter : Search results
         cloud_tags: Nuage de corrélats
-        activate_cloud: Pour l'activer, cochez seulement catégorie et tag dans la recherche avancée à gauche.
+        activate_cloud: pour l'activer, cochez seulement catégorie et tag dans la recherche avancée à gauche.
         search_min_chars:
             label: Min quote size
         filters: Les filtres
@@ -194,9 +194,10 @@ navbar:
     profile:      Profil
     sign_out:     Déconnexion
     sign_in:      Login
-    registration: S'inscrire pour participer
+    registration: S'inscrire
     instruction:  Mode d'emploi
     super_admin:  Admin dashboard
+    link_shared_chains: Ooh les beaux enfants !
 
 footer:
     link1: Besoin d'aide pour décider de la catégorie ou du tag ?
@@ -249,3 +250,5 @@ author:
                 label: Continent – Pays
             name:
                 label: Nom Prénom
+            instruction:
+                label: instruction

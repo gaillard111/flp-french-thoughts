@@ -46,7 +46,7 @@ class Mail
         $link = $this->container->get('router')->generate('thought_thoughtpage_index', array('thoughtId' => $thought->getId()), 0);
 
         $body = 'User: ' . $thought->getOwner()->getFullname() . ' in ' . $thought->getCreatedAt()->format('Y-m-d H:i') .
-            ' leave comment: ' . $thought->getContent() . '<br>' .
+            ' leave thought: ' . $thought->getContent() . '<br>' .
             'To view the review click on the ' . '<a href="' . $link . '">link</a>'
         ;
 
