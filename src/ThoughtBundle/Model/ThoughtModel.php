@@ -616,7 +616,7 @@ class ThoughtModel
     }
 
     public function getLastThoughts($limit) {
-        return $this->repository->findBy(array(), array('createdAt' => 'ASC'), $limit);
+        return $this->repository->findBy(array(), array('createdAt' => 'DESC'), $limit);
     }
 
     /**
