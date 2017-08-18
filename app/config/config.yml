@@ -78,6 +78,9 @@ swiftmailer:
     host:       "%mailer_host%"
     username:   "%mailer_user%"
     password:   "%mailer_password%"
+    encryption: "%mailer_encryption%"
+    auth_mode:  "%mailer_auth_mode%"
+    port:       "%mailer_port%"
 
 sonata_block:
     default_contexts: [cms]
@@ -323,6 +326,8 @@ fos_elastica:
                         model: ThoughtBundle\Entity\Author
                         provider: ~
                         finder: ~
+                        elastica_to_model_transformer:
+                            ignore_missing: true
                 thought:
                     mappings:
                         content:
@@ -431,6 +436,8 @@ fos_elastica:
                             is_indexable_callback: "thought.isPublish()"
                             #immediate: ~
                         finder: ~
+                        elastica_to_model_transformer:
+                            ignore_missing: true
             settings:
                 index:
                     analysis:
