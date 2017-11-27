@@ -5,14 +5,6 @@
 {% block content %}
      {% set search = app.request.get('search') %}
     {% set is_fields = search.field is defined ? true : false %}
-    {% set open = false %}
-    {% if search.term is defined %}
-        {% for key,value in search.term %}
-            {% if value is not empty%}
-                {% set open = true %}
-            {% endif %}
-        {% endfor %}
-    {% endif %}
     <form method="get" xmlns="http://www.w3.org/1999/html">
         <div class="col-md-2">
             {% include '@Thought/search_thought.html.twig' %}
@@ -26,7 +18,7 @@
                 <div class="form-group pull-right" style="padding-right: 15px;">
                     <button class="btn btn-info">{{ 'thought.filter.buttons.search'|trans }}</button>
                     <a href="/" class="btn btn-warning">{{ 'thought.filter.buttons.reset'|trans }}</a>
-                    <a href="/?last_quotes=20" class="btn btn-warning">{{ 'thought.filter.buttons.last_quotes'|trans }}</a>
+                    <a href="/?default=1" class="btn btn-warning">{{ 'thought.filter.buttons.last_quotes'|trans }}</a>
                 </div>
                 <div class="col-sm-12 margin-bottom-17" style="clear: both;">{{ welcomeText ? welcomeText.content|shortText(350, path('content', {'code' : 'welcome'}))|raw : '' }}</div>
             </div>
@@ -89,6 +81,27 @@
 
         document.getElementById('advanced_search_button').onclick = (function() {
             var table = document.getElementById('advanced_search_block');
+            return function() {
+                buttonToggle(this, table, 'View', 'Hide');
+            };
+        }());
+
+        document.getElementById('1_search_button').onclick = (function() {
+            var table = document.getElementById('1_search_block');
+            return function() {
+                buttonToggle(this, table, 'View', 'Hide');
+            };
+        }());
+
+        document.getElementById('2_search_button').onclick = (function() {
+            var table = document.getElementById('2_search_block');
+            return function() {
+                buttonToggle(this, table, 'View', 'Hide');
+            };
+        }());
+
+        document.getElementById('3_search_button').onclick = (function() {
+            var table = document.getElementById('3_search_block');
             return function() {
                 buttonToggle(this, table, 'View', 'Hide');
             };

@@ -110,6 +110,12 @@ thought:
                 label: Info
             advancedSearch:
                 label: Recherches Avancées
+            1Search:
+                label: Filters 1
+            2Search:
+                label: Auteurs détails
+            3Search:
+                label: Filters 4
             authors:
                 label: Auteurs détails (recherche avancée avancée)
         max_words:
@@ -131,7 +137,7 @@ thought:
         buttons:
             search: Go!
             reset:  Reset
-            last_quotes: 20 dernières citations
+            last_quotes: Quotes by size
         time_counter : Search time counter
         result_counter : Search results
         cloud_tags: Nuage de corrélats

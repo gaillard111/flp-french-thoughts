@@ -55,13 +55,18 @@ class HomepageController extends Controller
         /** @var FinderInterface $finder */
         $finder = $this->container->get('fos_elastica.finder.app.thought');
 
-        $lastQuotes = $request->query->get('last_quotes');
+        $default = $request->query->get('default');
 
-        if ($lastQuotes) {
-            $thoughts = $modelThought->getLastThoughts($lastQuotes);
-        } else {
+        if ($search || $default) {
             /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $modelThought->getThoughtsFromElastic($search, $finder, $authorsFinder);
+        } else {
+
+            if (!$page) {
+                $page = 1;
+            }
+
+            $thoughts = $modelThought->getLastThoughts(50 * $page);
         }
 
         $cloud = $modelThought->getCloud($search['field'], $thoughts, $search['words']);

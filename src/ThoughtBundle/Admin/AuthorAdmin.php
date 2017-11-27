@@ -24,8 +24,14 @@ class AuthorAdmin extends Admin
             ->add('name')
             ->add('birthDate')
             ->add('sex')
-            ->add('country')
-            ->add('continent')
+            ->add('country', 'text', [
+                'label'    => 'Religion-époque',
+                'required' => false
+            ])
+            ->add('continent', 'text', [
+                'label'    => 'Continent pays',
+                'required' => false
+            ])
             ->add('job');
     }
 

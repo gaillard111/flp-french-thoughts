@@ -138,9 +138,16 @@ class ThoughtModel
 
         $names = [];
 
+        $time_start = microtime(true);
+
         if ($isAuthor) {
             $names = $this->getNames($terms, $authorsFinder);
         }
+
+        $time_end = microtime(true);
+        $time = $time_end - $time_start;
+
+
 
         if (isset($request['term']) and count($request['term']) > 0) {
 

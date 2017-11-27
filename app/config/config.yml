@@ -244,7 +244,7 @@ fos_elastica:
                                     index:    "analyzed"
                                     analyzer: app_phrase_analyzer
                         sex:
-                            type: "multi_field"
+                            type: "string"
                             fields:
                                 sex:
                                     type:     "string"
