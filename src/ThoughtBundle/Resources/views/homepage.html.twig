@@ -70,13 +70,12 @@
 {% block javascripts %}
     <script>
         function buttonToggle(source, target, show_val, hide_val, input) {
-            if (source.value === undefined && input != undefined) {
-                source.value = input.value == '1' ? 'View' : 'Hide';
-            }
-            var display =  source.value === hide_val ? 'none' : 'block'; // or 'table'
 
-            target.style.display = display;
-            source.value = (source.value == show_val) ? hide_val : show_val;
+            if (target.offsetWidth === 0 && target.offsetHeight === 0) {
+                target.style.display = 'block';
+            } else {
+                target.style.display = 'none';
+            }
         }
 
         document.getElementById('advanced_search_button').onclick = (function() {

@@ -109,15 +109,15 @@ thought:
             thoughtInfo:
                 label: Info
             advancedSearch:
-                label: Recherches Avancées
+                label: Recherche  avancée
             1Search:
-                label: Filters 1
+                label: Filtres
             2Search:
-                label: Auteurs détails
+                label: Présentation, tri
             3Search:
-                label: Filters 4
+                label: Détail auteurs
             authors:
-                label: Auteurs détails (recherche avancée avancée)
+                label: Détail auteurs
         max_words:
             label: nb max de mots
             options:
@@ -137,7 +137,7 @@ thought:
         buttons:
             search: Go!
             reset:  Reset
-            last_quotes: Quotes by size
+            last_quotes: Préférées
         time_counter : Search time counter
         result_counter : Search results
         cloud_tags: Nuage de corrélats
