@@ -38,7 +38,7 @@ class ThoughtPageController extends Controller
 
         $form = $this->createForm(new CommentType(), $comment);
 
-        if ($request->getMethod() == 'POST') {
+        /*if ($request->getMethod() == 'POST') {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -55,7 +55,7 @@ class ThoughtPageController extends Controller
             } else {
                 $this->addFlash('success', $this->get('translator')->trans('thought.comment.not_add'));
             }
-        }
+        }*/
 
         if (!$thought) {
             $this->addFlash('success', $this->get('translator')->trans('thought.not_found'));
