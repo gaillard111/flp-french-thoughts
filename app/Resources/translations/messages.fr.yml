@@ -113,9 +113,9 @@ thought:
             1Search:
                 label: Filtres
             2Search:
-                label: Présentation, tri
-            3Search:
                 label: Détail auteurs
+            3Search:
+                label: Présentation, tri
             authors:
                 label: Détail auteurs
         max_words:
