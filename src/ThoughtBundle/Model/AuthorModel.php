@@ -4,6 +4,7 @@ namespace ThoughtBundle\Model;
 
 use Doctrine\ORM\EntityManager;
 use Elastica\Query;
+use FOS\ElasticaBundle\Finder\TransformedFinder;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
@@ -54,6 +55,17 @@ class AuthorModel
     }
 
     /**
+     * @param string            $nameStartsWith
+     * @param TransformedFinder $finder
+     */
+    public function getAuthorsByStringStartElastic($nameStartsWith, TransformedFinder $finder)
+    {
+        $result = $finder->createPaginatorAdapter($this->searchDefault($nameStartsWith));
+
+        return $result;
+    }
+
+    /**
      * @param $name
      * @return null|object
      */
@@ -61,6 +73,39 @@ class AuthorModel
         return $this->repository->findOneBy(array(
             'name' => $name
         ));
+    }
+
+    /**
+     * @param string $nameStartsWith
+     * @return Query
+     */
+    public function searchDefault($nameStartsWith)
+    {
+        $query = new \Elastica\Query();
+
+        $terms[] = array(
+            'query' => array(
+                'match_phrase_prefix' => array(
+                    'name_prefix' => $nameStartsWith,
+                ),
+            )
+        );
+
+        $must[] = $terms;
+
+        $query = new \Elastica\Query();
+
+        $query->setRawQuery(
+            array(
+                'filter' => array(
+                    'bool' => array(
+                        'must' => $must
+                    ),
+                ),
+            )
+        );
+
+        return $query;
     }
 
 

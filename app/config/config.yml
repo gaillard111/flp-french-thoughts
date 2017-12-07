@@ -225,6 +225,10 @@ fos_elastica:
                                     type:     "string"
                                     index:    "analyzed"
                                     analyzer: app_phrase_analyzer
+                                name_prefix:
+                                    type:     "string"
+                                    index:    "analyzed"
+                                    analyzer: app_prefix_analizer
                         country:
                             type: "multi_field"
                             fields:
@@ -450,6 +454,10 @@ fos_elastica:
                                 type: custom
                                 tokenizer: keyword
                                 filter   : [lowercase, french]
+                            app_prefix_analizer:
+                                type: custom
+                                tokenizer: keyword
+                                filter   : [lowercase, my_asciifolding]
                             app_phrase_analyzer:
                                 type: custom
                                 tokenizer: whitespace

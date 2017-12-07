@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ThoughtBundle\Entity\Thought;
+use ThoughtBundle\Model\AuthorModel;
 use ThoughtBundle\Model\ThoughtModel;
 
 /**
@@ -40,6 +41,8 @@ class HomepageController extends Controller
 
         $page = $request->query->getInt('page', 1);
 
+        $alpha = $request->query->getAlpha('alpha', 1);
+
         $countItem = 10;
 
         /** @var ThoughtModel $modelThought */
@@ -57,9 +60,36 @@ class HomepageController extends Controller
 
         $default = $request->query->get('default');
 
+        $paginator  = $this->get('knp_paginator');
+
         if ($search || $default) {
             /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $modelThought->getThoughtsFromElastic($search, $finder, $authorsFinder);
+        } elseif ($alpha) {
+            /** @var AuthorModel $authorModel */
+            $authorModel = $this->container->get('thought.model.author_model');
+
+            $authors = $authorModel->getAuthorsByStringStartElastic($alpha, $authorsFinder);
+
+            $pagination = $paginator->paginate(
+                $authors,
+                $page,
+                $countItem
+            );
+
+            $welcomeText = $em->getRepository('ThoughtBundle:Content')->findOneBy(array(
+                'contentType' => 'welcome',
+            ));
+
+            $timeExecute = microtime(true) - $start;
+
+            return $this->render('ThoughtBundle::homepage.html.twig', array(
+                'authors'     => $pagination,
+                'timeExecute' => $timeExecute,
+                'welcomeText' => $welcomeText,
+                'filtersOpen' => $search['filter_open']
+            ));
+
         } else {
 
             if (!$page) {
@@ -71,7 +101,6 @@ class HomepageController extends Controller
 
         $cloud = $modelThought->getCloud($search['field'], $thoughts, $search['words']);
 
-        $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $thoughts,
             $page,

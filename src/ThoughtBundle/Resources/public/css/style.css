@@ -215,3 +215,11 @@ label.required:after{
 .error404 .href a{
     font-weight: bold;
 }
+
+div.alphas {
+    text-align: center;
+}
+
+div.alphas a {
+    padding: 10px;
+}

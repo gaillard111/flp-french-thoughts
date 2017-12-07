@@ -31,6 +31,7 @@ class AppExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFilter('customTag', array($this, 'customTagFilter')),
             new \Twig_SimpleFilter('shortText', array($this, 'customShortText')),
+            new \Twig_SimpleFilter('alphabetAuthersLinks', array($this, 'alphabetAuthersLinks'), array('is_safe' => array('html'))),
 
         );
     }
@@ -107,6 +108,22 @@ class AppExtension extends \Twig_Extension
         }
 
         return $string;
+    }
+
+    public function alphabetAuthersLinks($alphas)
+    {
+        $result = '';
+
+        foreach ($alphas as $alpha) {
+
+            $link = $this->container->get('router')->generate('thought_homepage_index', array(
+                'alpha' => $alpha,
+            ));
+
+            $result .= "<a href='$link'>$alpha</a>";
+        }
+
+        return $result;
     }
 
     /**
