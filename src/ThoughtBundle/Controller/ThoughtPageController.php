@@ -31,31 +31,34 @@ class ThoughtPageController extends Controller
         $comment = new Comment();
         $comment->setThought($thought);
 
+        $form = $this->createForm(new CommentType(), $comment);
+
         if ($this->getUser()) {
             $comment->setName($this->getUser()->getFirstName());
             $comment->setEmail($this->getUser()->getEmail());
-        }
 
-        $form = $this->createForm(new CommentType(), $comment);
+            $form = $this->createForm(new CommentType(), $comment);
 
-        /*if ($request->getMethod() == 'POST') {
-            $form->handleRequest($request);
+            if ($request->getMethod() == 'POST') {
+                $form->handleRequest($request);
 
-            if ($form->isValid()) {
-                $em->persist($comment);
-                $em->flush();
+                if ($form->isValid()) {
+                    $em->persist($comment);
+                    $em->flush();
 
-                $serviceMail = $this->container->get('thought.service.mail_service');
+                    $serviceMail = $this->container->get('thought.service.mail_service');
 
-                $serviceMail->mailAddNewComment($comment);
+                    $serviceMail->mailAddNewComment($comment);
 
-                $this->addFlash('success', $this->get('translator')->trans('thought.comment.added'));
+                    $this->addFlash('success', $this->get('translator')->trans('thought.comment.added'));
 
-                return $this->redirect($this->generateUrl('thought_thoughtpage_index', array('thoughtId' => $thoughtId)));
-            } else {
-                $this->addFlash('success', $this->get('translator')->trans('thought.comment.not_add'));
+                    return $this->redirect($this->generateUrl('thought_thoughtpage_index', array('thoughtId' => $thoughtId)));
+
+                } else {
+                    $this->addFlash('success', $this->get('translator')->trans('thought.comment.not_add'));
+                }
             }
-        }*/
+        }
 
         if (!$thought) {
             $this->addFlash('success', $this->get('translator')->trans('thought.not_found'));

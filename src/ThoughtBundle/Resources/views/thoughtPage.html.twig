@@ -27,41 +27,30 @@
                 {{ 'thought.comment.no_comments'|trans }}
             {% endfor %}
         </div>
-        <!--<div class="col-sm-12 col-md-6 form_comments">
-            <h3>{{ 'thought.comment.add'|trans }}</h3>
-            <form method="post" class="form-horizontal" {{ form_enctype(form) }}>
-                {{ form_errors(form.text) }}
-                {{ form_errors(form.email) }}
+        {% if app.user %}
+            <div class="col-sm-12 col-md-6 form_comments">
+                <h3>{{ 'thought.comment.add'|trans }}</h3>
+                <form method="post" class="form-horizontal" {{ form_enctype(form) }}>
+                    {{ form_errors(form.text) }}
+                    {{ form_errors(form.email) }}
 
-                {% if app.user %}
+
                     {{ form_widget(form.name, {'type': 'hidden'}) }}
                     {{ form_widget(form.email, {'type': 'hidden'}) }}
-                {% else %}
+
                     <div class="form-group">
-                        {{ form_label(form.name) }}
+                        {{ form_label(form.text) }}
                         <div class="col-sm-9">
-                            {{ form_widget(form.name) }}
+                            {{ form_widget(form.text) }}
                         </div>
                     </div>
-                    <div class="form-group">
-                        {{ form_label(form.email) }}
-                        <div class="col-sm-9">
-                            {{ form_widget(form.email) }}
-                        </div>
+                    {{ form_rest(form) }}
+                    <div class="comment-button-block">
+                        <button class="btn btn-info pull-right">{{ 'thought.comment.send_comment'|trans }}</button>
                     </div>
-                {% endif %}
-                <div class="form-group">
-                    {{ form_label(form.text) }}
-                    <div class="col-sm-9">
-                        {{ form_widget(form.text) }}
-                    </div>
-                </div>
-                {{ form_rest(form) }}
-                <div class="comment-button-block">
-                    <button class="btn btn-info pull-right">{{ 'thought.comment.send_comment'|trans }}</button>
-                </div>
-            </form>
-        </div>-->
+                </form>
+            </div>
+        {% endif %}
     </div>
 
 {% endblock %}
