@@ -43,51 +43,25 @@
                     </div>
                 </div>
             {% endif %}
+
             <div class="row">
-                <div class="form-group col-sm-12 alphas">
-                    {{ range('A', 'Z')|alphabetAuthersLinks}}
-                </div>
+                <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ thoughts.getTotalItemCount() }}</div>
+                <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
             </div>
-            {% if thoughts %}
-                <div class="row">
-                    <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ thoughts.getTotalItemCount() }}</div>
-                    <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
-                </div>
 
-                <div class="navigation text-center">
-                    {{ knp_pagination_render(thoughts) }}
-                </div>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(thoughts) }}
+            </div>
 
-                {% for thought in thoughts %}
-                    {{ include('@Thought/quoteLayout.html.twig', {'thought': thought}) }}
-                {% else %}
+            {% for thought in thoughts %}
+                {{ include('@Thought/quoteLayout.html.twig', {'thought': thought}) }}
+            {% else %}
 
-                {% endfor %}
+            {% endfor %}
 
-                <div class="navigation text-center">
-                    {{ knp_pagination_render(thoughts) }}
-                </div>
-            {% elseif authors %}
-                <div class="row">
-                    <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ authors.getTotalItemCount() }}</div>
-                    <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
-                </div>
-
-                <div class="navigation text-center">
-                    {{ knp_pagination_render(authors) }}
-                </div>
-
-                {% for author in authors %}
-                    {{ include('@Thought/authorLayout.html.twig', {'author': author}) }}
-                {% else %}
-
-                {% endfor %}
-
-                <div class="navigation text-center">
-                    {{ knp_pagination_render(authors) }}
-                </div>
-
-            {% endif %}
+            <div class="navigation text-center">
+                {{ knp_pagination_render(thoughts) }}
+            </div>
         </div>
     </form>
 

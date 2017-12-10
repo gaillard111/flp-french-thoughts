@@ -1,0 +1,116 @@
+{% extends 'ThoughtBundle::layout.html.twig' %}
+
+{% block page_title %}Les fils de la pensée{% endblock %}
+
+{% block content %}
+     {% set search = app.request.get('search') %}
+    {% set is_fields = search.field is defined ? true : false %}
+    <form method="get" xmlns="http://www.w3.org/1999/html">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="form-group col-sm-12 alphas">
+                    {{ range('A', 'Z')|alphabetAuthersLinks}}
+                </div>
+            </div>
+            {% if thoughts %}
+                <div class="row">
+                    <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ thoughts.getTotalItemCount() }}</div>
+                    <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
+                </div>
+
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(thoughts) }}
+                </div>
+
+                {% for thought in thoughts %}
+                    {{ include('@Thought/quoteLayout.html.twig', {'thought': thought}) }}
+                {% else %}
+
+                {% endfor %}
+
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(thoughts) }}
+                </div>
+            {% elseif authors %}
+                <div class="row">
+                    <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ authors.getTotalItemCount() }}</div>
+                    <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
+                </div>
+
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(authors) }}
+                </div>
+
+                {% for author in authors %}
+                    {{ include('@Thought/authorLayout.html.twig', {'author': author}) }}
+                {% else %}
+
+                {% endfor %}
+
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(authors) }}
+                </div>
+
+            {% endif %}
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function buttonToggle(source, target, show_val, hide_val, input) {
+
+            if (target.offsetWidth === 0 && target.offsetHeight === 0) {
+                target.style.display = 'block';
+            } else {
+                target.style.display = 'none';
+            }
+        }
+
+        document.getElementById('advanced_search_button').onclick = (function() {
+            var table = document.getElementById('advanced_search_block');
+            return function() {
+                buttonToggle(this, table, 'View', 'Hide');
+            };
+        }());
+
+        document.getElementById('1_search_button').onclick = (function() {
+            var table = document.getElementById('1_search_block');
+            return function() {
+                buttonToggle(this, table, 'View', 'Hide');
+            };
+        }());
+
+        document.getElementById('2_search_button').onclick = (function() {
+            var table = document.getElementById('2_search_block');
+            return function() {
+                buttonToggle(this, table, 'View', 'Hide');
+            };
+        }());
+
+        document.getElementById('3_search_button').onclick = (function() {
+            var table = document.getElementById('3_search_block');
+            return function() {
+                buttonToggle(this, table, 'View', 'Hide');
+            };
+        }());
+
+        document.getElementById('filters_button').onclick = (function() {
+            var table = document.getElementById('filters_block');
+            var filterOpen = document.getElementById('filter_block_open');
+
+            return function() {
+                filterOpen.getAttribute('value') == '1' ? filterOpen.setAttribute('value', '0') : filterOpen.setAttribute('value', '1');
+                buttonToggle(this, table, 'View', 'Hide', filterOpen);
+            };
+        }());
+
+        document.getElementById('cloud_button').onclick = (function() {
+            var table = document.getElementById('cloud_block');
+            return function() {
+                buttonToggle(this, table, 'View', 'Hide');
+            };
+        }());
+    </script>
+{% endblock %}

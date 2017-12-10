@@ -6,6 +6,11 @@
             </a>
         </div>
         <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="{{ path('thought_author_index') }}">
+                    {{ 'navbar.authors'|trans }}
+                </a>
+            </li>
             {% if app.user %}
                 <li>
                     <a href="{{ path('content', {'code' : 'instruction'}) }}">

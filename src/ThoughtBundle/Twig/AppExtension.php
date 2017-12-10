@@ -116,7 +116,7 @@ class AppExtension extends \Twig_Extension
 
         foreach ($alphas as $alpha) {
 
-            $link = $this->container->get('router')->generate('thought_homepage_index', array(
+            $link = $this->container->get('router')->generate('thought_author_index', array(
                 'alpha' => $alpha,
             ));
 

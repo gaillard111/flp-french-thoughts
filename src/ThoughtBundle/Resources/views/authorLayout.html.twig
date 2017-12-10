@@ -1,4 +1,4 @@
-<div class="jumbotron" data-quote="{{ author.id }}">
+<div class="jumbotron author_jumbotron" data-quote="{{ author.id }}">
     <p class="quote_title">
         <a href="{{ path('thought_homepage_index', {'search[words]': author.name, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">
             {{ author.name }}
