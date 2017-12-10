@@ -65,31 +65,6 @@ class HomepageController extends Controller
         if ($search || $default) {
             /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $modelThought->getThoughtsFromElastic($search, $finder, $authorsFinder);
-        } elseif ($alpha) {
-            /** @var AuthorModel $authorModel */
-            $authorModel = $this->container->get('thought.model.author_model');
-
-            $authors = $authorModel->getAuthorsByStringStartElastic($alpha, $authorsFinder);
-
-            $pagination = $paginator->paginate(
-                $authors,
-                $page,
-                $countItem
-            );
-
-            $welcomeText = $em->getRepository('ThoughtBundle:Content')->findOneBy(array(
-                'contentType' => 'welcome',
-            ));
-
-            $timeExecute = microtime(true) - $start;
-
-            return $this->render('ThoughtBundle::homepage.html.twig', array(
-                'authors'     => $pagination,
-                'timeExecute' => $timeExecute,
-                'welcomeText' => $welcomeText,
-                'filtersOpen' => $search['filter_open']
-            ));
-
         } else {
 
             if (!$page) {

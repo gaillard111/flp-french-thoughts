@@ -138,6 +138,7 @@ thought:
             search: Go!
             reset:  Reset
             last_quotes: Préférées
+            most_popular: Citations populaires
         time_counter : Search time counter
         result_counter : Search results
         cloud_tags: Nuage de corrélats

@@ -19,6 +19,7 @@
                     <button class="btn btn-info">{{ 'thought.filter.buttons.search'|trans }}</button>
                     <a href="/" class="btn btn-warning">{{ 'thought.filter.buttons.reset'|trans }}</a>
                     <a href="/?default=1" class="btn btn-warning">{{ 'thought.filter.buttons.last_quotes'|trans }}</a>
+                    <a href="{{ path('thought_homepage_index', {'search[words]': '', 'search[field][content]': 'on', 'search[field][category]': 'on', 'search[field][tags]': 'on', 'search[field][author]': 'on', 'search[field][thoughtInfo]': 'on', 'search[sorting]': 'liked', 'search[sorting_desc]':'true'}) }}" class="btn btn-warning">{{ 'thought.filter.buttons.most_popular'|trans }}</a>
                 </div>
                 <div class="col-sm-12 margin-bottom-17" style="clear: both;">{{ welcomeText ? welcomeText.content|shortText(350, path('content', {'code' : 'welcome'}))|raw : '' }}</div>
             </div>

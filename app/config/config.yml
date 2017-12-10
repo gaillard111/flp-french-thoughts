@@ -429,6 +429,8 @@ fos_elastica:
                                     analyzer: app_phrase_analyzer
                         amount:
                             type: "integer"
+                        liked:
+                            type: "integer"
                     persistence:
                         # the driver can be orm, mongodb, phpcr or propel
                         # listener and finder are not supported by
