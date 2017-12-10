@@ -635,57 +635,76 @@ class ThoughtModel
     public function getCloud($fields, $thoughts, $words) {
         $cloud = $cloudStyle = [];
 
-        $words = (isset($words) && mb_strlen($words) > 0) ? trim($words) : null;
-
-        $countQuote = explode('"', $words);
-
-        $isQuoteWord = count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2]);
-
-        if ($isQuoteWord) {
-            $words = [$countQuote[1]];
-        } else {
-            $words = explode(' ', $words);
-        }
-
-        $words = array_map('strtolower', $words);
-
-        $isCloudOn = !is_array($thoughts) && $fields['tags'] == 'on' && $fields['category'] == 'on' && count($fields) == 2;
-
-        if ($isCloudOn) {
+        if (!is_array($thoughts) && $words) {
 
             if ($thoughts->getTotalHits() > 0) {
                 $cloud = [];
+                $cloudContent = [];
 
                 /** @var Thought $thought */
                 foreach ($thoughts->getResults(0, $thoughts->getTotalHits())->toArray() as $thought) {
 
                     $tags = explode(',', $thought->getTags());
+                    $words = explode(' ', $thought->getContent());
+
+                    if (count($words) <= 80) {
+                        foreach ($words as $word) {
+                            if (strlen($word) >= 3) {
+                                if (!isset($cloudContent[trim(strtolower($word))])) {
+                                    $cloudContent[trim(strtolower($word))] = 0;
+                                }
+
+                                $cloudContent[trim(strtolower($word))]++;
+                            }
+                        }
+                    }
+
 
                     foreach ($tags as $tag) {
                         if (!$tag) {
                             continue;
                         }
 
-                        $cloud[trim($tag)]++;
-                        $cloudStyle[trim($tag)]['font-size'] = $this->cloudFontSize($cloud[trim($tag)]);
-                        $cloudStyle[trim($tag)]['font-weight'] = $this->cloudFontWeight($cloud[trim($tag)]);
+                        if (!isset($cloud[trim(strtolower($tag))])) {
+                            $cloud[trim(strtolower($tag))] = 0;
+                        }
+
+                        $cloud[trim(strtolower($tag))]++;
                     }
 
                     if (!$thought->getCategory()) {
                         continue;
                     }
 
-                    $cloud[trim($thought->getCategory())]++;
-                    $cloudStyle[trim($thought->getCategory())]['font-size'] = $this->cloudFontSize($cloud[trim($thought->getCategory())]);
-                    $cloudStyle[trim($thought->getCategory())]['font-weight'] = $this->cloudFontWeight($cloud[trim($thought->getCategory())]);
+                    if (!isset($cloud[trim(strtolower($thought->getCategory()))])) {
+                        $cloud[trim(strtolower($thought->getCategory()))] = 0;
+                    }
+
+                    $cloud[trim(strtolower($thought->getCategory()))]++;
                 }
             }
 
-            array_multisort($cloud);
+            array_multisort($cloud, SORT_DESC);
+            array_multisort($cloudContent, SORT_DESC);
 
-            $cloud = array_slice(array_reverse($cloud), 0, self::CLOUD_NUMBER_OF_WORDS);
+
+            $cloud        = array_slice($cloud, 0, self::CLOUD_NUMBER_OF_WORDS/2);
+            $cloudContent = array_slice($cloudContent, 0, self::CLOUD_NUMBER_OF_WORDS/2);
+
+            $cloud = array_merge($cloud, $cloudContent);
 
             ksort($cloud);
+
+            foreach ($cloud as $word => $count) {
+                if (!isset($cloudStyle[$word])) {
+                    $cloudStyle[$word]                = [];
+                    $cloudStyle[$word]['font-size']   = 0;
+                    $cloudStyle[$word]['font-weight'] = 0;
+                }
+
+                $cloudStyle[$word]['font-size']   = $this->cloudFontSize($cloud[$word]);
+                $cloudStyle[$word]['font-weight'] = $this->cloudFontWeight($cloud[$word]);
+            }
         }
 
         return [

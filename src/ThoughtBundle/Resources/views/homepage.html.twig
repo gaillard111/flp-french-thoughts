@@ -31,7 +31,7 @@
                 </div>
                 <div id="cloud_block" class="col-sm-12 margin-bottom-17" style="display: none;">
                 {% for word, size in cloud %}
-                    <a href="{{ path('thought_homepage_index', {'search[words]': word, 'search[field][category]': 'on', 'search[field][tags]': 'on'}) }}" style='color: #000; display: inline-block; margin-right: 10px; font-size: {{ cloudStyle[word]['font-size'] }}px ; font-weight: {{ cloudStyle[word]['font-weight'] }} ;'>
+                    <a href="{{ path('thought_homepage_index', {'search[words]': word, 'search[field][content]': 'on', 'search[field][category]': 'on', 'search[field][tags]': 'on', 'search[field][author]': 'on', 'search[field][thoughtInfo]': 'on'}) }}" style='color: #000; display: inline-block; margin-right: 10px; font-size: {{ cloudStyle[word]['font-size'] }}px ; font-weight: {{ cloudStyle[word]['font-weight'] }} ;'>
                         {{ word }}
                     </a>
                 {% endfor %}
@@ -106,21 +106,26 @@
             };
         }());
 
-        document.getElementById('filters_button').onclick = (function() {
-            var table = document.getElementById('filters_block');
-            var filterOpen = document.getElementById('filter_block_open');
+        if (document.getElementById('filters_button')) {
+            document.getElementById('filters_button').onclick = (function() {
+                var table = document.getElementById('filters_block');
+                var filterOpen = document.getElementById('filter_block_open');
 
-            return function() {
-                filterOpen.getAttribute('value') == '1' ? filterOpen.setAttribute('value', '0') : filterOpen.setAttribute('value', '1');
-                buttonToggle(this, table, 'View', 'Hide', filterOpen);
-            };
-        }());
+                return function() {
+                    filterOpen.getAttribute('value') == '1' ? filterOpen.setAttribute('value', '0') : filterOpen.setAttribute('value', '1');
+                    buttonToggle(this, table, 'View', 'Hide', filterOpen);
+                };
+            }());
+        }
 
-        document.getElementById('cloud_button').onclick = (function() {
-            var table = document.getElementById('cloud_block');
-            return function() {
-                buttonToggle(this, table, 'View', 'Hide');
-            };
-        }());
+        if (document.getElementById('cloud_button')) {
+            document.getElementById('cloud_button').onclick = (function() {
+                var table = document.getElementById('cloud_block');
+                return function() {
+                    buttonToggle(this, table, 'View', 'Hide');
+                };
+            }());
+        }
+
     </script>
 {% endblock %}
