@@ -1,7 +1,18 @@
 <div class="jumbotron author_jumbotron" data-quote="{{ author.id }}">
     <p class="quote_title">
-        <a href="{{ path('thought_homepage_index', {'search[words]': author.name, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">
+        <a class="author_name">
             {{ author.name }}
         </a>
     </p>
+    <div class="dropdown">
+        <p><strong>{{ 'author.filter.fields.birthDate.label'|trans }}:</strong> <span>{{ author.birthDate }}</span></p>
+        <p><strong>{{ 'author.filter.fields.country.label'|trans }}:</strong> <span>{{ author.country }}</span></p>
+        <p><strong>{{ 'author.filter.fields.sex.label'|trans }}:</strong> <span>{{ author.sex }}</span></p>
+        <p><strong>{{ 'author.filter.fields.job.label'|trans }}:</strong> <span>{{ author.job }}</span></p>
+        <p><strong>{{ 'author.filter.fields.continent.label'|trans }}:</strong> <span>{{ author.continent }}</span></p>
+
+        <a href="{{ path('thought_homepage_index', {'search[words]': author.name, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">
+            {{ 'Author thoughts'|trans }}
+        </a>
+    </div>
 </div>

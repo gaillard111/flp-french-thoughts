@@ -231,3 +231,11 @@ div.author_jumbotron {
     border: solid 1px #fff;
     background-color: transparent;
 }
+
+div.author_jumbotron .dropdown{
+    display: none;
+}
+
+p.quote_title a {
+    cursor: pointer;
+}

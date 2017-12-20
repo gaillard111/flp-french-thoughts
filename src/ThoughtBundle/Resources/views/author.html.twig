@@ -59,58 +59,13 @@
 
 {% block javascripts %}
     <script>
-        function buttonToggle(source, target, show_val, hide_val, input) {
+        $(document).ready(function() {
 
-            if (target.offsetWidth === 0 && target.offsetHeight === 0) {
-                target.style.display = 'block';
-            } else {
-                target.style.display = 'none';
-            }
-        }
+            $('p.quote_title').on('click', 'a.author_name', function (){
+                $(this).parents('.jumbotron').find('div.dropdown').slideToggle();
+            });
 
-        document.getElementById('advanced_search_button').onclick = (function() {
-            var table = document.getElementById('advanced_search_block');
-            return function() {
-                buttonToggle(this, table, 'View', 'Hide');
-            };
-        }());
+        });
 
-        document.getElementById('1_search_button').onclick = (function() {
-            var table = document.getElementById('1_search_block');
-            return function() {
-                buttonToggle(this, table, 'View', 'Hide');
-            };
-        }());
-
-        document.getElementById('2_search_button').onclick = (function() {
-            var table = document.getElementById('2_search_block');
-            return function() {
-                buttonToggle(this, table, 'View', 'Hide');
-            };
-        }());
-
-        document.getElementById('3_search_button').onclick = (function() {
-            var table = document.getElementById('3_search_block');
-            return function() {
-                buttonToggle(this, table, 'View', 'Hide');
-            };
-        }());
-
-        document.getElementById('filters_button').onclick = (function() {
-            var table = document.getElementById('filters_block');
-            var filterOpen = document.getElementById('filter_block_open');
-
-            return function() {
-                filterOpen.getAttribute('value') == '1' ? filterOpen.setAttribute('value', '0') : filterOpen.setAttribute('value', '1');
-                buttonToggle(this, table, 'View', 'Hide', filterOpen);
-            };
-        }());
-
-        document.getElementById('cloud_button').onclick = (function() {
-            var table = document.getElementById('cloud_block');
-            return function() {
-                buttonToggle(this, table, 'View', 'Hide');
-            };
-        }());
     </script>
 {% endblock %}
