@@ -102,6 +102,9 @@ class AuthorModel
                         'must' => $must
                     ),
                 ),
+                'sort' => array(
+                    'name_prefix' => 'asc'
+                ),
             )
         );
 
