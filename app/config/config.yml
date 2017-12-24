@@ -94,6 +94,18 @@ sonata_block:
 
 sonata_admin:
     title: 'French thoughts'
+    security:
+        handler: sonata.admin.security.handler.role
+        information:
+            EDIT: EDIT
+            LIST: LIST
+            CREATE: CREATE
+            VIEW: VIEW
+            DELETE: DELETE
+            EXPORT: EXPORT
+            OPERATOR: OPERATOR
+            MASTER: MASTER
+            ALL: ALL
     templates:
         # default global templates
         layout:  ThoughtBundle::Sonata/Admin/layout.html.twig

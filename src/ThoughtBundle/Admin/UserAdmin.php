@@ -56,6 +56,16 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
             ->with('Profile')
             ->add('firstname', null, array('required' => false))
             ->add('lastname', null, array('required' => false))
+            ->add('roles', 'choice', array(
+                'choices' => array(
+                    'ROLE_ADMIN' => 'Admin',
+                    'ROLE_MODERATOR' => 'Moderator',
+                    'ROLE_USER' => 'User'
+                ),
+                'expanded' => false,
+                'multiple' => true,
+                'required' => false
+            ))
             ->end()
             ->end()
         ;

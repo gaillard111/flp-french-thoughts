@@ -21,20 +21,22 @@
 
 {% block side_bar_nav %}
     {{ parent() }}
-    <ul class="sidebar-menu">
-        <li class="treeview">
-            <a href="{{ path('sonata_admin_custompage') }}">
-                <i class="fa fa-folder"></i>
-                <span>{{ 'sonata.admin.importPage.title'|trans }}</span>
-            </a>
-        </li>
-        <li class="sidebar-menu">
-            <a href="{{ path('sonata_admin_author_import') }}">
-                <i class="fa fa-folder"></i>
-                <span>{{ 'sonata.admin.importAuthorPage.title'|trans }}</span>
-            </a>
-        </li>
-    </ul>
+    {% if is_granted('ROLE_ADMIN') %}
+        <ul class="sidebar-menu">
+            <li class="treeview">
+                <a href="{{ path('sonata_admin_custompage') }}">
+                    <i class="fa fa-folder"></i>
+                    <span>{{ 'sonata.admin.importPage.title'|trans }}</span>
+                </a>
+            </li>
+            <li class="sidebar-menu">
+                <a href="{{ path('sonata_admin_author_import') }}">
+                    <i class="fa fa-folder"></i>
+                    <span>{{ 'sonata.admin.importAuthorPage.title'|trans }}</span>
+                </a>
+            </li>
+        </ul>
+    {% endif %}
 {% endblock side_bar_nav%}
 
 {% block sonata_sidebar_search %}{% endblock sonata_sidebar_search %}
