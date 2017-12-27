@@ -649,7 +649,7 @@ class ThoughtModel
 
                     if (count($words) <= 80) {
                         foreach ($words as $word) {
-                            if (strlen($word) >= 3) {
+                            if (strlen($word) >= 5) {
                                 if (!isset($cloudContent[trim(strtolower($word))])) {
                                     $cloudContent[trim(strtolower($word))] = 0;
                                 }
