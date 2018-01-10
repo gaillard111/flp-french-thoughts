@@ -208,7 +208,9 @@ class ThoughtModel
 
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
-        $words = $words[mb_strlen($words) - 1] == ',' ? mb_substr($words, 0, -1) : $words;
+        $lastChar = $words[mb_strlen($words) - 1];
+
+        $words = ($lastChar == ',' || $lastChar == '.' || $lastChar == '!') ? mb_substr($words, 0, -1) : $words;
 
         $countQuote = explode('"', $words);
 
