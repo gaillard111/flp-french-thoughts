@@ -665,7 +665,7 @@ class ThoughtModel
 
 
                     foreach ($tags as $tag) {
-                        if (!$tag) {
+                        if (!$tag || strlen($tag) < 5) {
                             continue;
                         }
 
