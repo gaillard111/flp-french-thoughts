@@ -681,10 +681,10 @@ class ThoughtModel
                     }
 
                     if (!isset($cloud[trim(strtolower($thought->getCategory()))])) {
-                        $cloud[trim(strtolower($thought->getCategory()))] = 0;
+                        //$cloud[trim(strtolower($thought->getCategory()))] = 0;
                     }
 
-                    $cloud[trim(strtolower($thought->getCategory()))]++;
+                    //$cloud[trim(strtolower($thought->getCategory()))]++;
                 }
             }
 
