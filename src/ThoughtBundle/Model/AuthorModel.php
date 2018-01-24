@@ -86,7 +86,10 @@ class AuthorModel
         $terms[] = array(
             'query' => array(
                 'match_phrase_prefix' => array(
-                    'name_prefix' => $nameStartsWith,
+                    'name_prefix' => array(
+                        'query' => $nameStartsWith,
+                        "max_expansions" => 10000
+                    )
                 ),
             )
         );
