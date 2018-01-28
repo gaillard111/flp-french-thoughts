@@ -639,6 +639,14 @@ class ThoughtModel
     public function getCloud($fields, $thoughts, $words) {
         $cloud = $cloudStyle = [];
 
+        $trimChars = "\:\"\'\.\,\; \t\n\r\0\x0B";
+
+        $avoidWords = [
+            'alors', 'aussi', 'celui', 'celle', 'cette',
+            'contre', 'comme', 'depuis', 'elles', 'leurs',
+            'même', 'moins', 'notre', 'quand', 'votre', 'toute'
+        ];
+
         if (!is_array($thoughts) && $words) {
 
             if ($thoughts->getTotalHits() > 0) {
@@ -653,34 +661,39 @@ class ThoughtModel
 
                     if (count($words) <= 80) {
                         foreach ($words as $word) {
-                            if (mb_strlen(trim(strtolower($word)), 'UTF-8') >= 5) {
-                                if (!isset($cloudContent[trim(strtolower($word))])) {
-                                    $cloudContent[trim(strtolower($word))] = 0;
+
+                            if (in_array(trim(strtolower($word), $trimChars), $avoidWords)) {
+                                continue;
+                            }
+
+                            if (mb_strlen(trim(strtolower($word), $trimChars), 'UTF-8') >= 5) {
+                                if (!isset($cloudContent[trim(strtolower($word), $trimChars)])) {
+                                    $cloudContent[trim(strtolower($word), $trimChars)] = 0;
                                 }
 
-                                $cloudContent[trim(strtolower($word))]++;
+                                $cloudContent[trim(strtolower($word), $trimChars)]++;
                             }
                         }
                     }
 
 
                     foreach ($tags as $tag) {
-                        if (!$tag || mb_strlen(trim(strtolower($tag), 'UTF-8')) < 5) {
+                        if (!$tag || mb_strlen(trim(strtolower($tag), $trimChars), 'UTF-8') < 5 || in_array(trim(strtolower($word), $trimChars), $avoidWords)) {
                             continue;
                         }
 
-                        if (!isset($cloud[trim(strtolower($tag))])) {
-                            $cloud[trim(strtolower($tag))] = 0;
+                        if (!isset($cloud[trim(strtolower($tag), $trimChars)])) {
+                            $cloud[trim(strtolower($tag), $trimChars)] = 0;
                         }
 
-                        $cloud[trim(strtolower($tag))]++;
+                        $cloud[trim(strtolower($tag), $trimChars)]++;
                     }
 
                     if (!$thought->getCategory()) {
                         continue;
                     }
 
-                    if (!isset($cloud[trim(strtolower($thought->getCategory()))])) {
+                    if (!isset($cloud[trim(strtolower($thought->getCategory()), $trimChars)])) {
                         //$cloud[trim(strtolower($thought->getCategory()))] = 0;
                     }
 
