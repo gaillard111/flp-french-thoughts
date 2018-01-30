@@ -639,7 +639,7 @@ class ThoughtModel
     public function getCloud($fields, $thoughts, $words) {
         $cloud = $cloudStyle = [];
 
-        $trimChars = "\:\"\'\.\,\; \t\n\r\0\x0B";
+
 
         $avoidWords = [
             'alors', 'aussi', 'celui', 'celle', 'cette',
@@ -662,38 +662,38 @@ class ThoughtModel
                     if (count($words) <= 80) {
                         foreach ($words as $word) {
 
-                            if (in_array(trim(strtolower($word), $trimChars), $avoidWords)) {
+                            if (in_array($this->formatCloudWord($word), $avoidWords)) {
                                 continue;
                             }
 
-                            if (mb_strlen(trim(strtolower($word), $trimChars), 'UTF-8') >= 5) {
-                                if (!isset($cloudContent[trim(strtolower($word), $trimChars)])) {
-                                    $cloudContent[trim(strtolower($word), $trimChars)] = 0;
+                            if (mb_strlen($this->formatCloudWord($word), 'UTF-8') >= 5) {
+                                if (!isset($cloudContent[$this->formatCloudWord($word)])) {
+                                    $cloudContent[$this->formatCloudWord($word)] = 0;
                                 }
 
-                                $cloudContent[trim(strtolower($word), $trimChars)]++;
+                                $cloudContent[$this->formatCloudWord($word)]++;
                             }
                         }
                     }
 
 
                     foreach ($tags as $tag) {
-                        if (!$tag || mb_strlen(trim(strtolower($tag), $trimChars), 'UTF-8') < 5 || in_array(trim(strtolower($word), $trimChars), $avoidWords)) {
+                        if (!$tag || mb_strlen($this->formatCloudWord($tag), 'UTF-8') < 5 || in_array($this->formatCloudWord($tag), $avoidWords)) {
                             continue;
                         }
 
-                        if (!isset($cloud[trim(strtolower($tag), $trimChars)])) {
-                            $cloud[trim(strtolower($tag), $trimChars)] = 0;
+                        if (!isset($cloud[$this->formatCloudWord($tag)])) {
+                            $cloud[$this->formatCloudWord($tag)] = 0;
                         }
 
-                        $cloud[trim(strtolower($tag), $trimChars)]++;
+                        $cloud[$this->formatCloudWord($tag)]++;
                     }
 
                     if (!$thought->getCategory()) {
                         continue;
                     }
 
-                    if (!isset($cloud[trim(strtolower($thought->getCategory()), $trimChars)])) {
+                    if (!isset($cloud[$this->formatCloudWord($thought->getCategory())])) {
                         //$cloud[trim(strtolower($thought->getCategory()))] = 0;
                     }
 
@@ -831,6 +831,19 @@ class ThoughtModel
         }
 
         return false;
+    }
+
+    private function formatCloudWord($word)
+    {
+        $trimChars = "\:\"\'\.\,\; \t\n\r\0\x0B";
+
+        $word = trim(strtolower($word), $trimChars);
+
+        if (strpos($word, "'") !== false) {
+            return '';
+        }
+
+        return $word;
     }
 
     /**
