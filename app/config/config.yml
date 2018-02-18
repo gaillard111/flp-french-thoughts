@@ -340,6 +340,10 @@ fos_elastica:
                         # propel and should be removed
                         driver: orm
                         model: ThoughtBundle\Entity\Author
+                        listener:
+                            insert: true
+                            update: true
+                            delete: true
                         provider: ~
                         finder: ~
                         elastica_to_model_transformer:
