@@ -1,3 +1,24 @@
+.mainsearch {
+    padding-right: 30px;
+    margin: 0 0 10px 0;
+}
+
+@media (max-device-width: 1024px){
+    .mainsearch {
+        padding-right: 30px;
+        margin: 0 0 10px 0;
+    }
+}
+
+@media (max-device-width: 768px){
+    .mainsearch {
+        padding-right: 15px;
+        margin: 0 0 10px 0;
+    }
+}
+
+
+
 .quote .quote_content em {
     font-size: 14px;
     font-style: normal;
