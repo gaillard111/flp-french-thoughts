@@ -227,12 +227,14 @@ div.alphas a {
 }
 
 div.author_jumbotron {
-    padding: 5px 30px !important;
+    margin-bottom: 0;
+    padding: 0 30px !important;
     border: solid 1px #fff;
     background-color: transparent;
 }
 
 div.author_jumbotron .dropdown{
+    margin-bottom: 10px;
     display: none;
 }
 
