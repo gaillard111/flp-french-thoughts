@@ -21,7 +21,12 @@
                         <td>
                             <a href="{{ path('chain_page', {'chainId': chain.id}) }}">{{ chain.name }}</a>
                             {% if chain.isPrivate == false %}
-                                ( {{ url('chain_page', {'chainId': chain.id}) }} )
+                                {#( {{ url('chain_page', {'chainId': chain.id}) }} )#}
+                                {% if chain.user.firstname != null %}
+                                    ({{ chain.user.firstname }}, {{ chain.id }})
+                                {% else %}
+                                    ( - , {{ chain.id }})
+                                {% endif %}
                             {% endif %}
                         </td>
                         <td>{{ chain.createdAt|date('Y-m-d') }}</td>

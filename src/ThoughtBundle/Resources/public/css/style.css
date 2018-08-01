@@ -1,3 +1,7 @@
+.quote .quote_content em {
+    font-size: 14px;
+    font-style: normal;
+}
 .jumbotron{
     padding: 30px !important;
     border: solid 1px #ccc;
@@ -85,7 +89,7 @@ label.required:after{
     font-size: 17.5px !important;
 }
 .quote_content {
-    font-family: "Courier New" !important;
+    font-family: "Arial" !important;
 }
 .filter_block .form-group{
     padding-right: 0;
