@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouteCompiler;
 use ThoughtBundle\Entity\Author;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Model\AuthorModel;
@@ -19,6 +20,33 @@ use ThoughtBundle\Service\Mail;
  */
 class ThoughtController extends Controller
 {
+    /**
+     * @param $routeName
+     * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function menuAction($routeName)
+    {
+        $menu = array(
+            'sonata_user_profile_show'     =>  'Tableau de bord',
+            'sonata_user_profile_edit'     =>  'Profil',
+            'sonata_user_thought_create'   =>  'Insérer une citation',
+            'sonata_user_thoughts'         =>  'Mes citations',
+            'sonata_user_chains'           =>  'Mes chaines',
+            'sonata_user_shared_chains'    =>  'Chaines partagées'
+        );
+
+        $thoughts = $this->container
+            ->get('thought.model.thought_model')->getCountUserThoughts($this->getUser());
+
+
+        return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', array(
+            'menu'      => $menu,
+            'routeName' => $routeName,
+            'thoughts'  => $thoughts
+        ));
+    }
+
     /**
      * @Route("/thoughts", name="sonata_user_thoughts")
      * @param Request $request
@@ -36,7 +64,13 @@ class ThoughtController extends Controller
             $request->query->getInt('page', 1),
             10
         );
+        //dump($pagination->getTotalCount()); die;
+        //dump($this->container-);
 
+        //$menu = $this->menu();
+        //$totalCount = $this->container->get('thought.model.thought_model')->getUserThoughts($this->getUser());
+//        $this->getDoctrine()->getEntityManager()->createQuery($totalCount);
+//        dump(); die;
         return $this->render('ApplicationSonataUserBundle:Thought:list.html.twig', array(
             'thoughts' => $pagination,
         ));
@@ -83,14 +117,13 @@ class ThoughtController extends Controller
                 $em->persist($thought);
                 $em->flush();
 
-                /** @var Mail $serviceMail */
-                $serviceMail = $this->container->get('thought.service.mail_service');
-                $serviceMail->mailAddNewThought($thought);
+//                /** @var Mail $serviceMail */
+//                $serviceMail = $this->container->get('thought.service.mail_service');
+//                $serviceMail->mailAddNewThought($thought);
 
                 return $this->redirect($this->generateUrl('sonata_user_thoughts'));
             }
         }
-
         return $this->render('ApplicationSonataUserBundle:Thought:create.html.twig', array(
             'form' => $form->createView(),
         ));
