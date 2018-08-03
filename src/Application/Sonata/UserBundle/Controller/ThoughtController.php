@@ -56,23 +56,15 @@ class ThoughtController extends Controller
     {
         $thoughts = $this->container
             ->get('thought.model.thought_model')
-            ->getUserThoughts($this->getUser());
-
-        $paginator  = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $thoughts,
-            $request->query->getInt('page', 1),
-            10
-        );
-        //dump($pagination->getTotalCount()); die;
-        //dump($this->container-);
-
-        //$menu = $this->menu();
-        //$totalCount = $this->container->get('thought.model.thought_model')->getUserThoughts($this->getUser());
-//        $this->getDoctrine()->getEntityManager()->createQuery($totalCount);
-//        dump(); die;
+            ->getUserThoughts($this->getUser())
+            ->getResult();
+//        $paginator  = $this->get('knp_paginator');
+//        $pagination = $paginator->paginate(
+//            $thoughts,
+//            $request->query->getInt('page', 1)
+//        );
         return $this->render('ApplicationSonataUserBundle:Thought:list.html.twig', array(
-            'thoughts' => $pagination,
+            'thoughts' => $thoughts,
         ));
     }
 
