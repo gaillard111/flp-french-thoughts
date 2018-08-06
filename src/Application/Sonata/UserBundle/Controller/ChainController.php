@@ -11,6 +11,57 @@ use ThoughtBundle\Entity\Chain;
 
 class ChainController extends Controller
 {
+
+    /**
+     * @Route("/chains/favorite", name="sonata_user_favorite_chains")
+     * @param Request $request
+     * @return Response
+     */
+    public function favoriteAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $chains = $em->getRepository('ThoughtBundle:Chain')->getAllFavoriteChains($this->getUser());
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $chains,
+            $request->query->getInt('page', 1),
+            100
+        );
+        return $this->render('ApplicationSonataUserBundle:Chain:list.html.twig', array(
+            'chains' => $pagination,
+        ));
+    }
+
+    /**
+     * @Route("/chains/changefavorite", name="sonata_user_change_favorite")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function changeFavoriteAction(Request $request)
+    {
+        $em    = $this->getDoctrine()->getManager();
+        $id    = $request->get('id');
+        $chain = $em->getRepository('ThoughtBundle:Chain')->find($id);
+
+        if (!$chain) {
+            $this->addFlash('danger', $this->get('translator')->trans('thought.chain.not_exist'));
+            return $this->redirect($this->generateUrl('sonata_user_favorite_chains'));
+        }
+
+        $favorite = $chain->getFavorite() ? false : true;
+        $message  = $favorite ? 'thought.chain.successfully-removed-from-favorites' : 'thought.chain.successfully-added-to-favorites';
+
+        $chain->setFavorite($favorite);
+
+        $em->persist($chain);
+        $em->flush();
+
+        $this->addFlash('success', $this->get('translator')->trans($message));
+
+        return $this->redirect($this->generateUrl('sonata_user_favorite_chains'));
+    }
+
+
     /**
      * @Route("/chains", name="sonata_user_chains")
      * @param Request $request
@@ -30,7 +81,6 @@ class ChainController extends Controller
             $request->query->getInt('page', 1),
             100
         );
-
         return $this->render('ApplicationSonataUserBundle:Chain:list.html.twig', array(
             'chains' => $pagination,
         ));
@@ -199,6 +249,7 @@ class ChainController extends Controller
 
         return $this->render('ApplicationSonataUserBundle:Chain:sharedList.html.twig', array(
             'chains' => $pagination,
+
         ));
     }
 

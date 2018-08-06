@@ -10,6 +10,12 @@
     {% endif %}
     <h2 class="chain-quote-title">
         {{ 'user.chain.page.title'|trans }} - <span>"{{ chain.name }}"</span>
+
+        {% if chain.favorite == false %}
+            <a href="{{ path('sonata_user_change_favorite', { 'id': chain.id }) }}" class="btn btn-info">{{ 'user.chain.list_page.favorite_button'|trans }}</a>
+        {% else %}
+            <a href="{{ path('sonata_user_change_favorite', { 'id': chain.id }) }}" class="btn btn-danger">{{ 'user.chain.list_page.remote_from_favorites_button'|trans }}</a>
+        {% endif %}
     </h2>
     <div class="row">
         <div class="col-sm-12 chain-quote-wrapper">

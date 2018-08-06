@@ -33,6 +33,7 @@ class ThoughtController extends Controller
             'sonata_user_thought_create'   =>  'Insérer une citation',
             'sonata_user_thoughts'         =>  'Mes citations',
             'sonata_user_chains'           =>  'Mes chaines',
+            'sonata_user_favorite_chains'  =>  'Mes chaînes préférées',
             'sonata_user_shared_chains'    =>  'Chaines partagées'
         );
 
@@ -70,9 +71,9 @@ class ThoughtController extends Controller
 
     /**
      * @Route("/thought/create", name="sonata_user_thought_create")
-     *
      * @param Request $request
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @throws \Exception
      */
     public function createAction(Request $request)
     {
@@ -83,6 +84,7 @@ class ThoughtController extends Controller
         $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST') {
+
             if ($form->isValid()) {
                 /** @var AuthorModel $authorModel */
                 $authorModel = $this->container->get('thought.model.author_model');
@@ -108,10 +110,10 @@ class ThoughtController extends Controller
                 $thought->setOwner($this->getUser());
                 $em->persist($thought);
                 $em->flush();
-
-//                /** @var Mail $serviceMail */
-//                $serviceMail = $this->container->get('thought.service.mail_service');
-//                $serviceMail->mailAddNewThought($thought);
+                //dump($thought); die;
+                /** @var Mail $serviceMail */
+                $serviceMail = $this->container->get('thought.service.mail_service');
+                $serviceMail->mailAddNewThought($thought);
 
                 return $this->redirect($this->generateUrl('sonata_user_thoughts'));
             }

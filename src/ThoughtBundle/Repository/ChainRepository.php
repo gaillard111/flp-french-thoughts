@@ -21,4 +21,17 @@ class ChainRepository extends EntityRepository
             ->where('c.isPrivate = false')
             ->getQuery()->getResult();
     }
+
+    /**
+     * @param $user
+     * @return \Doctrine\ORM\Query
+     */
+    public function getAllFavoriteChains($user)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.favorite = true')
+            ->andWhere('c.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery();
+    }
 }

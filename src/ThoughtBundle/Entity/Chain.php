@@ -52,6 +52,27 @@ class Chain
     protected $chainThoughts;
 
     /**
+     * @ORM\Column(name="favorite", type="boolean")
+     */
+    protected $favorite = false;
+
+    /**
+     * @return mixed
+     */
+    public function getFavorite()
+    {
+        return $this->favorite;
+    }
+
+    /**
+     * @param mixed $favorite
+     */
+    public function setFavorite($favorite)
+    {
+        $this->favorite = $favorite;
+    }
+
+    /**
      * @ORM\PrePersist
      */
     public function setCreatedAtValue()
