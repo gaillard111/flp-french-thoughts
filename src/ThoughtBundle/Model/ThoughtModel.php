@@ -73,6 +73,21 @@ class ThoughtModel
     }
 
     /**
+     * @param User $user
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getCountUserThoughts(User $user)
+    {
+        return $this->repository->createQueryBuilder('t')
+            ->select('count(t.owner)')
+            ->andWhere('t.owner = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * @param array             $request
      * @param TransformedFinder $finder
      * @return \Doctrine\ORM\Query|\FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface|\FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter
@@ -651,10 +666,10 @@ class ThoughtModel
 
         if (!is_array($thoughts) && $words) {
 
-            if ($thoughts->getTotalHits() > 0) {
-                $cloud = [];
-                $cloudContent = [];
+            $cloud = [];
+            $cloudContent = [];
 
+            if ($thoughts->getTotalHits() > 0) {
                 /** @var Thought $thought */
                 foreach ($thoughts->getResults(0, $thoughts->getTotalHits())->toArray() as $thought) {
 

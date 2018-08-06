@@ -43,6 +43,7 @@
             {% else %}
                 <div class="row">
                     <div class="form-group col-sm-12">
+                        <p><a href="{{ path('sonata_user_thought_create') }}" class="btn btn-info">{{ 'user.thought.list_page.add_button'|trans }}</a></p>
                        <span style="border-bottom: 1px dashed #000;">{{ 'thought.filter.cloud_tags'|trans }}</span> : {{ 'thought.filter.activate_cloud'|trans }}
                     </div>
                 </div>

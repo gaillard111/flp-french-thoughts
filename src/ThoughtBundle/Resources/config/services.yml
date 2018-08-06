@@ -16,6 +16,19 @@ services:
             - ThoughtBundle\Entity\Content
             - 'ThoughtBundle:ContentAdmin'
 
+    thoudght.admin.mail:
+        class: ThoughtBundle\Admin\MailAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Content, label: "Thought" }
+        arguments:
+        - ~
+        - ThoughtBundle\Entity\GeneralMail
+        - ~
+        calls:
+            - method: setMyRootPath
+              arguments:
+                  - '%kernel.root_dir%'
+
     thoudght.admin.author:
         class: ThoughtBundle\Admin\AuthorAdmin
         tags:

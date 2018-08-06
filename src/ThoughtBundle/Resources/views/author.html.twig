@@ -12,7 +12,7 @@
                     {{ range('A', 'Z')|alphabetAuthersLinks}}
                 </div>
             </div>
-            {% if thoughts %}
+            {% if thoughts is defined %}
                 <div class="row">
                     <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ thoughts.getTotalItemCount() }}</div>
                     <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>

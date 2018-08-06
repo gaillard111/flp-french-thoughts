@@ -117,6 +117,7 @@ sonata_admin:
                 label: Users
                 items:
                     - sonata.user.admin.user
+                    - thoudght.admin.mail
             Thoughts:
                 label: Thoughts
                 items:
@@ -140,7 +141,8 @@ sonata_user:
         menu:
             - { route: 'sonata_user_profile_show', label: 'user.dashboard.menu.link_dashboard', domain: 'messages'}
             - { route: 'sonata_user_profile_edit', label: 'user.dashboard.menu.link_profile', domain: 'messages'}
-            - { route: 'sonata_user_thoughts', label: 'user.thought.create_page.title', domain: 'messages'}
+            - { route: 'sonata_user_thought_create', label: 'user.thought.create_page.title', domain: 'messages'}
+            - { route: 'sonata_user_thoughts', label: 'user.thought.list_page.title', domain: 'messages'}
             - { route: 'sonata_user_chains', label: 'user.dashboard.menu.link_chains', domain: 'messages'}
             - { route: 'sonata_user_shared_chains', label: 'user.dashboard.menu.link_shared_chains', domain: 'messages'}
 

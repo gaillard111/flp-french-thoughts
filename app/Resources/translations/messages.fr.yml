@@ -51,7 +51,7 @@ user:
             title:  Insérer une citation
             submit: Créer
         list_page:
-            title: Liste de citations
+            title: Mes citations
             add_button: Ajout de citation
             link:
                 edit:   Edit
