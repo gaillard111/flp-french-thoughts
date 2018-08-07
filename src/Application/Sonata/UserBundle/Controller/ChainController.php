@@ -191,40 +191,77 @@ class ChainController extends Controller
     }
 
     /**
-     * @Route("/chain/{chainId}/share/{share}", name="sonata_user_chain_share", requirements={"chainId"="\d+", "share"="0|1"})
+     * @Route("/chain/{chainId}/share", name="sonata_user_chain_share", requirements={"chainId"="\d+"})
      *
      * @param int $chainId
-     * @param int $share
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function shareAction($chainId, $share)
+    public function shareAction($chainId)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $share = $share ? false: true;
-
-        $shareMessage = $share ? 'successfully-private' : 'successfully-shared';
 
         $chain = $em->getRepository('ThoughtBundle:Chain')->find($chainId);
 
         if (!$chain) {
-            $this->addFlash('success', $this->get('translator')->trans('thought.chain.not_exist'));
 
+            $this->addFlash('success', $this->get('translator')->trans('thought.chain.not_exist'));
             return $this->redirect($this->generateUrl('sonata_user_chains'));
         }
 
         if (!$this->checkOwner($chain)) {
-            $this->addFlash('success', $this->get('translator')->trans('thought.chain.access_denied'));
 
+            $this->addFlash('success', $this->get('translator')->trans('thought.chain.access_denied'));
             return $this->redirect($this->generateUrl('sonata_user_chains'));
         }
 
-        $chain->setIsPrivate($share);
+        $private = $chain->getIsPrivate();
+
+        if ($private == true) {
+
+            $chain->setIsPrivate(false);
+        } else {
+
+            $chain->setIsPrivate(true);
+            $chain->setIsCollective(false);
+        }
+
+        $shareMessage = $private ? 'successfully-shared' : 'successfully-private';
+
         $em->persist($chain);
         $em->flush();
 
         $this->addFlash('success', $this->get('translator')->trans('thought.chain.' . $shareMessage));
 
+        return $this->redirect($this->generateUrl('sonata_user_chains'));
+    }
+
+    /**
+     * @Route("/chain/{chainId}/collective", name="sonata_user_chain_collective", requirements={"chainId"="\d+"})
+     * @param int $chainId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function collectiveAction($chainId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $chain = $em->getRepository('ThoughtBundle:Chain')->find($chainId);
+        if ($chain->getIsPrivate() == false) {
+
+            if (!$this->checkOwner($chain)) {
+
+                $this->addFlash('danger', $this->get('translator')->trans('thought.chain.access_denied'));
+                return $this->redirect($this->generateUrl('sonata_user_chains'));
+            }
+
+            $collective = $chain->getisCollective();
+            $collective = $collective ? false: true;
+            $collectiveMessage = $collective ? 'successfully-collectiveded' : 'successfully-personalised';
+
+            $chain->setIsCollective($collective);
+
+            $em->persist($chain);
+            $em->flush();
+            $this->addFlash('success', $this->get('translator')->trans('thought.chain.' . $collectiveMessage));
+        }
         return $this->redirect($this->generateUrl('sonata_user_chains'));
     }
 

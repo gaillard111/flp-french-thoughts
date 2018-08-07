@@ -170,6 +170,7 @@ thought:
         added:   Comment successfully added
     chain:
         add_to_chain: Ajouter
+        add_to_collective_chain: Add to chain
         already_added: Déjà intégré
         added_to_chain: The quote is already added to
         add_quote: Mettre dans la chaine
@@ -188,6 +189,8 @@ thought:
         successfully-down: Quote successfully moved to the down of the chain.
         error-up-first-elem: Quote already in first place.
         error-down-last-elem: Quote already in last place.
+        successfully-collectiveded: Chain successfully added to collective chains.
+        successfully-personalised: Chain successfully added to personal chains.
         successfully-shared: This chain successfully shared.
         successfully-private: This chain is private.
         successfully-commented: Comment successfully added.
@@ -245,6 +248,8 @@ chain:
         quantity_quotes: Nombre de citations
         shared?: Make Publick
         private?: Make Private
+        collective?: Make Collective
+        personally?: Make Personally
 
 
 author:

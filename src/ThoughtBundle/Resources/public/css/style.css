@@ -211,6 +211,9 @@ label.required:after{
 .add_chain{
     padding: 2px 5px;
 }
+.add_collective_chain{
+    padding: 2px 5px;
+}
 .quote_chain select{
     padding: 2px 5px;
     font-size: 14px;

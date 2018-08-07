@@ -37,6 +37,11 @@ class Chain
     protected $isPrivate = true;
 
     /**
+     * @ORM\Column(name="is_collective", type="boolean")
+     */
+    protected $isCollective = false;
+
+    /**
      * @ORM\Column(name="created_at", type="datetime")
      */
     protected $createdAt;
@@ -55,6 +60,22 @@ class Chain
      * @ORM\Column(name="favorite", type="boolean")
      */
     protected $favorite = false;
+
+    /**
+     * @return mixed
+     */
+    public function getisCollective()
+    {
+        return $this->isCollective;
+    }
+
+    /**
+     * @param mixed $isCollective
+     */
+    public function setIsCollective($isCollective)
+    {
+        $this->isCollective = $isCollective;
+    }
 
     /**
      * @return mixed

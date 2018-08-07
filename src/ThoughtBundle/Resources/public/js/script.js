@@ -57,6 +57,34 @@ $(function(){
         });
     });
 
+    $('.jumbotron .add_collective_chain').on('click', function(e){
+        e.preventDefault();
+
+        var chain = $(this).closest('.quote_chain').find('[name="quote_collective_chain"]').val(),
+            quote = $(this).closest('.jumbotron').data('quote');
+
+        $.ajax({
+            url : Routing.generate('chain_add_quote'),
+            data: {
+                quote: quote,
+                chain: chain
+            },
+            dataType: "json",
+            success: function(data) {
+                if (data.success) {
+                    noticer.success(data.message[0]);
+                } else {
+                    var error = '';
+                    $.each(data.message, function(k, v){
+                        error += '<p>' + v + '</p>';
+                    });
+
+                    noticer.alert(error);
+                }
+            }
+        });
+    });
+
     $('.chain-quote-control a.chain-quote-remove').on('click', function(e){
         e.preventDefault();
 

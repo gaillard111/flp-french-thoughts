@@ -23,8 +23,23 @@
                         <small>{{ 'thought.chain.already_added'|trans }}</small>
                     </span>
                 {% endif %}
+
+
+                <select name="quote_collective_chain">
+                    <option value="">{{ 'thought.chain.add_quote'|trans }}</option>
+                    {% for chain in colChains %}
+                        {% if chain.name not in already_chains %}
+                            <option value="{{ chain.id }}">{{ chain.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <a href="#" class="add_collective_chain btn btn-info btn-xs">{{ 'thought.chain.add_to_collective_chain'|trans }}</a>
+
+
+
                 <select name="quote_chain">
                     <option value="">{{ 'thought.chain.add_quote'|trans }}</option>
+
                     {% for chain in app.user.chains %}
                         {% if chain.name not in already_chains %}
                             <option value="{{ chain.id }}">{{ chain.name }}</option>
@@ -32,6 +47,8 @@
                     {% endfor %}
                 </select>
                 <a href="#" class="add_chain btn btn-info btn-xs">{{ 'thought.chain.add_to_chain'|trans }}</a>
+
+
             </span>
         {% endif %}
     </p>

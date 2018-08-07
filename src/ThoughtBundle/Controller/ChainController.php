@@ -23,18 +23,19 @@ class ChainController extends Controller
      * @Route("/{chainId}", name="chain_page", requirements={"chainId"="\d+"})
      *
      * @param Request $request
-     * @param int     $chainId
+     * @param int $chainId
+     * @throws \Exception
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function chainListAction(Request $request, $chainId)
     {
+
         $em = $this->getDoctrine()->getManager();
 
         $chain = $em->getRepository('ThoughtBundle:Chain')->find($chainId);
 
         if (!$chain) {
             $this->get('translator')->trans('thought.chain.not_exist');
-
             return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
 
@@ -43,6 +44,7 @@ class ChainController extends Controller
 
             return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
+
 
         $chainComment = new ChainComment();
         $chainComment->setChain($chain);
@@ -69,10 +71,15 @@ class ChainController extends Controller
 
         $thoughtChains = $em->getRepository('ThoughtBundle:ThoughtChain')->getSortingThoughtChain($chain);
 
+        $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->findBy([
+            'isCollective'  => true
+        ]);
+
         return $this->render('@Thought/chainPage.html.twig', array(
             'chain'         => $chain,
             'form'          => $form->createView(),
             'thoughtChains' => $thoughtChains,
+            'colChains'     => $collectiveChains,
         ));
     }
 
@@ -81,13 +88,19 @@ class ChainController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function addQuoteToChain(Request $request)
     {
         $success = true;
         $message = array();
 
-        $chainId = $request->query->get('chain');
+        $chainId = $request->query->get('collective_chain');
+
+        if (!$chainId) {
+            $chainId = $request->query->get('chain');
+        }
+
         $thoughtId = $request->query->get('quote');
 
         if (!$chainId) {
@@ -132,7 +145,6 @@ class ChainController extends Controller
                 $em->persist($chainThought);
                 $em->flush();
             }
-
             $message[] = $this->get('translator')->trans('thought.chain.quote_add_chain');
         }
 
@@ -270,9 +282,9 @@ class ChainController extends Controller
 
     /**
      * @Route("/lower-quote", name="chain_lower_quote", options={"expose"=true})
-     *
      * @param Request $request
      * @return JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function lowerQuoteToChain(Request $request)
     {

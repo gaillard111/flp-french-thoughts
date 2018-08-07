@@ -59,7 +59,7 @@
             </div>
 
             {% for thought in thoughts %}
-                {{ include('@Thought/quoteLayout.html.twig', {'thought': thought}) }}
+                {{ include('@Thought/quoteLayout.html.twig', {'thought': thought, 'colChains': colChains }) }}
             {% else %}
 
             {% endfor %}

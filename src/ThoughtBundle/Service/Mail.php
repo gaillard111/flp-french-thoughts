@@ -2,6 +2,7 @@
 
 namespace ThoughtBundle\Service;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\Container;
 use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\Comment;
@@ -35,14 +36,15 @@ class Mail
     }
 
     /**
-     * Send email - Add new quote
-     *
      * @param Thought $thought
+     * @throws \Exception
      */
     public function mailAddNewThought(Thought $thought)
     {
-        $subject = 'French thought: add new thought';
 
+        $subject = 'French thought: add new thought';
+//        dump($subject); die;
+//        die('123');
         $link = $this->container->get('router')->generate('thought_thoughtpage_index', array('thoughtId' => $thought->getId()), 0);
 
         $body = 'User: ' . $thought->getOwner()->getFullname() . ' in ' . $thought->getCreatedAt()->format('Y-m-d H:i') .
@@ -52,6 +54,7 @@ class Mail
 
         $emailUsers = $this->container->getParameter('admin_email');
 
+        //dump($subject, $emailUsers, $body); die;
         $this->sendMail($subject, $emailUsers, $body);
     }
 
@@ -78,8 +81,8 @@ class Mail
 
     /**
      * Send email - Add new chain comment
-     *
      * @param ChainComment $comment
+     * @throws \Exception
      */
     public function mailAddNewChainComment(ChainComment $comment)
     {
@@ -103,9 +106,27 @@ class Mail
     }
 
     /**
-     * @param string $subject
-     * @param array $emailUsers
-     * @param string $body
+     * @param $users
+     * @throws \Exception
+     */
+    public function generalMail($users, $subject, $body)
+    {
+        /**
+         * @var User $user
+         */
+        foreach ($users as $key => $user) {
+            $userEmails[$key] = $user->getEmail();
+        }
+
+        $this->sendMail($subject, $userEmails, $body);
+    }
+
+    /**
+     * @param $subject
+     * @param $emailUsers
+     * @param $body
+     * @param null $cc
+     * @throws \Exception
      */
     private function sendMail($subject, $emailUsers, $body, $cc = null)
     {

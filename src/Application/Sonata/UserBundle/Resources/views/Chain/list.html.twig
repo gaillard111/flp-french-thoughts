@@ -29,17 +29,35 @@
                         </td>
                         <td>{{ chain.createdAt|date('Y-m-d') }}</td>
                         <td>
-                            <span class="label label-{{ chain.isPrivate ? 'danger' : 'success' }}">
-                                {{ chain.isPrivate ? 'Private' : 'Public' }}
-                            </span>
+                            <p>
+                                <span class="label label-{{ chain.isPrivate ? 'danger' : 'success' }}">
+                                    {{ chain.isPrivate ? 'Private' : 'Public' }}
+                                </span>&nbsp;
                             {% if chain.isPrivate %}
-                                &nbsp;<a href="{{ path('sonata_user_chain_share', {'chainId': chain.id, 'share': 1}) }}">
-                                {{ 'chain.property.shared?'|trans }}
-                            </a>
-                            {% else %}
-                                &nbsp;<a href="{{ path('sonata_user_chain_share', {'chainId': chain.id, 'share': 0}) }}">
-                                {{ 'chain.property.private?'|trans }}
-                            </a>
+                                    <a href="{{ path('sonata_user_chain_share', {'chainId': chain.id}) }}">
+                                        {{ 'chain.property.shared?'|trans }}
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('sonata_user_chain_share', {'chainId': chain.id }) }}">
+                                        {{ 'chain.property.private?'|trans }}
+                                    </a>
+                            </p>
+
+                            <p>
+                                <span class="label label-{{ chain.isCollective ? 'success' : 'danger' }}">
+                                    {{ chain.isCollective ? 'Collective' : 'Personally' }}
+                                </span>&nbsp;
+                                {% if chain.isCollective %}
+                                    <a href="{{ path('sonata_user_chain_collective', {'chainId': chain.id }) }}">
+                                        {{ 'chain.property.personally?'|trans }}
+                                    </a>
+                                {% else %}
+                                    <a href="{{ path('sonata_user_chain_collective', {'chainId': chain.id }) }}">
+                                        {{ 'chain.property.collective?'|trans }}
+                                    </a>
+                                {% endif %}
+                            </p>
+
                             {% endif %}
                         </td>
                         <td>{{ chain.chainThoughts|length }}</td>
