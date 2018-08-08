@@ -128,13 +128,14 @@ class Mail
      * @param Chain $chain
      * @throws \Twig_Error
      */
-    public function notificationMail(User $user, Chain $chain)
+    public function notificationMail(User $user, Chain $chain, User $curUser)
     {
         $userEmail = $user->getEmail();
         $subject   = 'In your chain added new citation';
         $body      =
             $this->container->get('templating')->render('@ApplicationSonataUser/Mail/chainNotification.html.twig', [
-                'chain'  =>  $chain
+                'chain'   =>  $chain,
+                'curUser' =>  $curUser
             ]);
         $this->sendMail($subject, $userEmail, $body);
     }

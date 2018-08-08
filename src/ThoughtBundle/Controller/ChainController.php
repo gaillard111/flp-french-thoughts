@@ -147,10 +147,11 @@ class ChainController extends Controller
                 /** @var Mail $serviceMail */
 //                $user = $this->getUser();
                 $user = $chain->getUser();
+                $curUser = $this->getUser();
                 if ($chain->getisCollective() == true) {
 
                     $serviceMail = $this->container->get('thought.service.mail_service');
-                    $serviceMail->notificationMail($user, $chain);
+                    $serviceMail->notificationMail($user, $chain, $curUser);
                 }
 
                 $em->persist($chainThought);
