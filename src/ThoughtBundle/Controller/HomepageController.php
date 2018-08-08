@@ -2,7 +2,8 @@
 
 namespace ThoughtBundle\Controller;
 
-use Elastica\Filter\Bool;
+//use Elastica\Filter\Bool;
+//use Elastica\Filter\BoolFilter;
 use Elastica\Filter\Nested;
 use Elastica\Filter\Term;
 use Elastica\Query\Filtered;
@@ -88,14 +89,20 @@ class HomepageController extends Controller
 
         $timeExecute = microtime(true) - $start;
 
-        return $this->render('ThoughtBundle::homepage.html.twig', array(
+        $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->
+        findBy([
+            'isCollective'  => true
+        ]);
+
+        return $this->render('ThoughtBundle::homepage.html.twig', [
             'thoughts'    => $pagination,
             'timeExecute' => $timeExecute,
             'welcomeText' => $welcomeText,
             'cloud'       => $cloud['cloud'],
             'cloudStyle'  => $cloud['cloudStyle'],
-            'filtersOpen' => $search['filter_open']
-        ));
+            'filtersOpen' => $search['filter_open'],
+            'colChains'   => $collectiveChains
+        ]);
     }
 
     /**

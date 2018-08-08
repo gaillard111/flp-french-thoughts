@@ -10,6 +10,7 @@ use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\ThoughtChain;
 use ThoughtBundle\Form\ChainCommentType;
+use ThoughtBundle\Service\Mail;
 
 /**
  * Class ChainController
@@ -141,6 +142,16 @@ class ChainController extends Controller
                 $chainThought->setThought($thought);
                 $chainThought->setChain($chain);
                 $chainThought->setSortIndex($sortIndex);
+
+
+                /** @var Mail $serviceMail */
+//                $user = $this->getUser();
+                $user = $chain->getUser();
+                if ($chain->getisCollective() == true) {
+
+                    $serviceMail = $this->container->get('thought.service.mail_service');
+                    $serviceMail->notificationMail($user, $chain);
+                }
 
                 $em->persist($chainThought);
                 $em->flush();

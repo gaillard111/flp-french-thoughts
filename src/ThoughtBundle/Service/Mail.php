@@ -3,7 +3,9 @@
 namespace ThoughtBundle\Service;
 
 use Application\Sonata\UserBundle\Entity\User;
+use http\Env\Response;
 use Symfony\Component\DependencyInjection\Container;
+use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\Thought;
@@ -119,6 +121,22 @@ class Mail
         }
 
         $this->sendMail($subject, $userEmails, $body);
+    }
+
+    /**
+     * @param User $user
+     * @param Chain $chain
+     * @throws \Twig_Error
+     */
+    public function notificationMail(User $user, Chain $chain)
+    {
+        $userEmail = $user->getEmail();
+        $subject   = 'In your chain added new citation';
+        $body      =
+            $this->container->get('templating')->render('@ApplicationSonataUser/Mail/chainNotification.html.twig', [
+                'chain'  =>  $chain
+            ]);
+        $this->sendMail($subject, $userEmail, $body);
     }
 
     /**
