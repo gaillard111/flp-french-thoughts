@@ -41,7 +41,7 @@ class ProfileType extends AbstractType
                 'attr' => array(
                     'class' => 'form-control',
                 ),
-                'required' => false,
+//                'required' => false,
                 'translation_domain' => 'messages',
             ))
             ->add('lastname', null, array(
@@ -52,7 +52,7 @@ class ProfileType extends AbstractType
                 'attr' => array(
                     'class' => 'form-control',
                 ),
-                'required' => false,
+//                'required' => false,
                 'translation_domain' => 'messages',
             ))
             ->add('email', null, array(
@@ -75,6 +75,7 @@ class ProfileType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => $this->class,
+            'validation_groups' => 'user_profile'
         ));
     }
 

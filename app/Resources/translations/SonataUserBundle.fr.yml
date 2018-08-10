@@ -1,0 +1,4 @@
+user.about.not_blank: Field "About" is required
+user.country.not_blank: Field "Country" is required
+user.interests.not_blank: Field "Interests" is required
+user.gender.not_blank: Field "Gender" is required

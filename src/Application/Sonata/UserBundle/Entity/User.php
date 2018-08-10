@@ -13,8 +13,10 @@ namespace Application\Sonata\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Sonata\UserBundle\Entity\BaseUser as BaseUser;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
  */
 class User extends BaseUser
@@ -38,6 +40,36 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ChainComment", mappedBy="user")
      */
     protected $chainComments;
+
+    /**
+     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.about.not_blank")
+     */
+    protected $about;
+
+    /**
+     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.country.not_blank")
+     */
+    protected $country;
+
+    /**
+     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.interests.not_blank")
+     */
+    protected $interests;
+
+    /**
+     * @Assert\NotBlank(groups={"CustomProfile"})
+     */
+    protected $firstname;
+
+    /**
+     * @Assert\NotBlank(groups={"CustomProfile"})
+     */
+    protected $lastname;
+
+    /**
+     * @Assert\NotBlank(groups={"profileInfo"}, message="user.gender.not_blank")
+     */
+    protected $gender;
 
     /**
      * Get id
@@ -176,5 +208,74 @@ class User extends BaseUser
         $fullName = trim(parent::getFullname());
 
         return  (!empty($fullName) ? $fullName . ', ' : '') . $this->getEmail();
+    }
+
+    /**
+     * Set about
+     *
+     * @param string $about
+     * @return User
+     */
+    public function setAbout($about)
+    {
+        $this->about = $about;
+
+        return $this;
+    }
+
+    /**
+     * Get about
+     *
+     * @return string 
+     */
+    public function getAbout()
+    {
+        return $this->about;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     * @return User
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string 
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set interests
+     *
+     * @param string $interests
+     * @return User
+     */
+    public function setInterests($interests)
+    {
+        $this->interests = $interests;
+
+        return $this;
+    }
+
+    /**
+     * Get interests
+     *
+     * @return string 
+     */
+    public function getInterests()
+    {
+        return $this->interests;
     }
 }

@@ -1,0 +1,18 @@
+<div class="list-group">
+    {% for item in menu %}
+            <a class="list-group-item
+                    {% if routeName == item.route  %}
+                         active
+                    {% endif %}
+                    {% if item.parameters is defined %}
+                    " href="{{ path(item.route, item.parameters) }}
+                    {% else %}
+                    " href="{{ path(item.route) }}
+                    {% endif %}
+                    ">{{ item.label }}
+                {% if item.route == 'sonata_user_thoughts' %}
+                        ({{ thoughts[1] }})
+                {% endif %}
+            </a>
+    {% endfor %}
+</div>

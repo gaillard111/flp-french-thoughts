@@ -27,15 +27,50 @@ class ThoughtController extends Controller
      */
     public function menuAction($routeName)
     {
-        $menu = array(
-            'sonata_user_profile_show'     =>  'Tableau de bord',
-            'sonata_user_profile_edit'     =>  'Profil',
-            'sonata_user_thought_create'   =>  'Insérer une citation',
-            'sonata_user_thoughts'         =>  'Mes citations',
-            'sonata_user_chains'           =>  'Mes chaines',
-            'sonata_user_favorite_chains'  =>  'Mes chaînes préférées',
-            'sonata_user_shared_chains'    =>  'Chaines partagées'
-        );
+        $menu = [];
+
+        $menu[] = [
+            'label' => 'Tableau de bord',
+            'route' => 'fos_user_profile_show',
+        ];
+
+        $menu[] = [
+            'label' => 'Profil',
+            'route' => 'fos_user_profile_edit',
+        ];
+
+        $menu[] = [
+            'label' => 'My profile',
+            'route' => 'throught_profile',
+            'parameters' => [
+                'userId' => $this->getUser()->getId(),
+            ]
+        ];
+
+        $menu[] = [
+            'label' => 'Insérer une citation',
+            'route' => 'sonata_user_thought_create',
+        ];
+
+        $menu[] = [
+            'label' => 'Mes citations',
+            'route' => 'sonata_user_thoughts',
+        ];
+
+        $menu[] = [
+            'label' => 'Mes chaines',
+            'route' => 'sonata_user_chains',
+        ];
+
+        $menu[] = [
+            'label' => 'Mes chaînes préférées',
+            'route' => 'sonata_user_favorite_chains',
+        ];
+
+        $menu[] = [
+            'label' => 'Chaines partagées',
+            'route' => 'sonata_user_shared_chains',
+        ];
 
         $thoughts = $this->container
             ->get('thought.model.thought_model')->getCountUserThoughts($this->getUser());
@@ -44,7 +79,7 @@ class ThoughtController extends Controller
         return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', array(
             'menu'      => $menu,
             'routeName' => $routeName,
-            'thoughts'  => $thoughts
+            'thoughts'  => $thoughts,
         ));
     }
 
@@ -82,7 +117,6 @@ class ThoughtController extends Controller
 
         $form = $this->createForm(new ThoughtType(), $thought);
         $form->handleRequest($request);
-
         if ($request->getMethod() == 'POST') {
 
             if ($form->isValid()) {
@@ -110,7 +144,7 @@ class ThoughtController extends Controller
                 $thought->setOwner($this->getUser());
                 $em->persist($thought);
                 $em->flush();
-                //dump($thought); die;
+
                 /** @var Mail $serviceMail */
                 $serviceMail = $this->container->get('thought.service.mail_service');
                 $serviceMail->mailAddNewThought($thought);

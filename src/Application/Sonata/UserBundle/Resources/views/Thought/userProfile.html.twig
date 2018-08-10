@@ -1,0 +1,67 @@
+{% extends 'ApplicationSonataUserBundle:Profile:action.html.twig' %}
+
+{% block sonata_profile_title %}My Profile{% endblock %}
+
+{% block sonata_profile_content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <label class="control-label">
+                    About
+                </label>
+
+            </div>
+            <div class="col-sm-5">
+                <p>
+                    {{ user.about }}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <label class="control-label">
+                    Country
+                </label>
+
+            </div>
+            <div class="col-sm-5">
+                <p>
+                    {{ user.country }}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <label class="control-label">
+                    Gender
+                </label>
+
+            </div>
+            <div class="col-sm-5">
+                <p>
+                    {% if (user.gender == 'u') %}
+                        Undefined
+                    {% elseif user.gender == 'm' %}
+                        Male
+                    {% elseif user.gender == 'f' %}
+                        Female
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <label class="control-label">
+                    My interests
+                </label>
+
+            </div>
+            <div class="col-sm-5">
+                <p>
+                    {{ user.interests }}
+                </p>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

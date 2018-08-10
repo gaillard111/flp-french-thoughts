@@ -134,6 +134,8 @@ sonata_admin:
 sonata_user:
     #security_acl: true # Uncomment for ACL support
     manager_type: orm # can be orm or mongodb
+    class:
+        user: Application\Sonata\UserBundle\Entity\User
     profile:
         dashboard:
             blocks:

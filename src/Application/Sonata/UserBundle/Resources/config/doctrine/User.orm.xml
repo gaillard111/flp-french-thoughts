@@ -24,6 +24,10 @@
                 target-entity="ThoughtBundle\Entity\ChainComment"
                 mapped-by="user" />
 
+        <field name="about" type="text" />
+        <field name="country" type="string" length="255"/>
+        <field name="interests" type="text" />
+
     </entity>
 
 </doctrine-mapping>
