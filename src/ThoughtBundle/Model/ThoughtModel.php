@@ -661,7 +661,10 @@ class ThoughtModel
         $avoidWords = [
             'alors', 'aussi', 'celui', 'celle', 'cette',
             'contre', 'comme', 'depuis', 'elles', 'leurs',
-            'même', 'moins', 'notre', 'quand', 'votre', 'toute'
+            'même', 'moins', 'notre', 'quand', 'votre', 'toute',
+            'avait', 'avaient', 'autre', 'beaucoup', 'chose', 'choses',
+            'entre', 'encore', 'était', 'étaient', 'lequel', 'parce',
+            'parle', 'parlent', 'quelque', 'sommes', 'seule', 'toutes',
         ];
 
         if (!is_array($thoughts) && $words) {
