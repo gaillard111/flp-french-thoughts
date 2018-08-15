@@ -11,7 +11,10 @@
                     {% endif %}
                     ">{{ item.label }}
                 {% if item.route == 'sonata_user_thoughts' %}
-                        ({{ thoughts[1] }})
+                        ({{ thoughts }})
+                {% endif %}
+                {% if item.route == 'friend_requests' %}
+                    ({{ requestsCount }})
                 {% endif %}
             </a>
     {% endfor %}

@@ -72,6 +72,16 @@ class User extends BaseUser
     protected $gender;
 
     /**
+     * @ORM\OneToMany(targetEntity="Application\Sonata\UserBundle\Entity\Friendship", mappedBy="user")
+     */
+    protected $friendship;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Application\Sonata\UserBundle\Entity\Friendship", mappedBy="friend")
+     */
+    protected $friends;
+
+    /**
      * Get id
      *
      * @return int $id

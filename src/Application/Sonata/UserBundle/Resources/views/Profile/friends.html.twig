@@ -1,0 +1,22 @@
+{% extends "SonataUserBundle:Profile:action.html.twig" %}
+
+{% block sonata_profile_title %}
+    My friends
+{% endblock %}
+
+{% block sonata_profile_content %}
+    <div class="row">
+        <div class="col-sm-8">
+            {% include 'ApplicationSonataUserBundle:Profile:friendnavs.html.twig' %}
+        </div>
+    </div>
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            {% render(controller('ApplicationSonataUserBundle:ProfileFOSUser1:friendList') ) %}
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            {% render(controller('ApplicationSonataUserBundle:ProfileFOSUser1:friendRequests') ) %}
+        </div>
+    </div>
+
+{% endblock %}

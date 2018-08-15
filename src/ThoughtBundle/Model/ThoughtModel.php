@@ -75,7 +75,7 @@ class ThoughtModel
     /**
      * @param User $user
      * @return mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\Query\QueryException
      */
     public function getCountUserThoughts(User $user)
     {
@@ -84,7 +84,7 @@ class ThoughtModel
             ->andWhere('t.owner = :user')
             ->setParameter('user', $user)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getSingleScalarResult();
     }
 
     /**

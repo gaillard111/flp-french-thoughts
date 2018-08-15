@@ -132,12 +132,30 @@ class Mail
     {
         $userEmail = $user->getEmail();
         $subject   = 'In your chain added new citation';
-        $body      =
+        $body =
             $this->container->get('templating')->render('@ApplicationSonataUser/Mail/chainNotification.html.twig', [
                 'chain'   =>  $chain,
                 'curUser' =>  $curUser
             ]);
         $this->sendMail($subject, $userEmail, $body);
+    }
+
+    /**
+     * @param User $user
+     * @param $requestId
+     * @throws \Twig_Error
+     */
+    public function friendNotificationMail(User $user, User $friend, $requestId)
+    {
+        $friendEmail = $friend->getEmail();
+        $subject   = 'User ' . $user->getFirstname() . ' ' . $user->getLastname() . ' wants to be friends with you!';
+        $body =
+            $this->container->get('templating')->render('@ApplicationSonataUser/Mail/friendNotification.html.twig', [
+                'user'  => $user,
+                'reqId' => $requestId
+            ]);
+        $this->sendMail($subject, $friendEmail, $body);
+
     }
 
     /**

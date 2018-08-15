@@ -1,19 +1,41 @@
 {% extends 'ApplicationSonataUserBundle:Profile:action.html.twig' %}
 
-{% block sonata_profile_title %}My Profile{% endblock %}
+{% block sonata_profile_title %}
+    {% if user != app.user %}
+        Profile - {{ user.firstname }} {{ user.lastname }}
+    {% else %}
+        My profile
+    {% endif %}
+{% endblock %}
 
 {% block sonata_profile_content %}
-    <div class="container">
+        <div class="row pull-right">
+            <div class="col-sm-12">
+                {% if friendship %}
+                    {% if friendship.accepted == false %}
+                        {% if friendship.user != app.user %}
+                            <a href="{{ path('accept_friend_request', { 'requestId': friendship.id }) }}" class="btn btn-info">Accept</a>
+                        {% endif %}
+                    {% endif %}
+                    <a href="{{ path('delete_friend', { 'userId': user.id }) }}" class="btn btn-danger">Remove</a>
+                {% else %}
+                    {% if user.id != app.user.id %}
+
+                        <a href="{{ path('friend_request', { 'userId': user.id }) }}" class="btn btn-info">Add</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
         <div class="row">
             <div class="col-sm-3">
                 <label class="control-label">
-                    About
+                    My interests
                 </label>
 
             </div>
             <div class="col-sm-5">
                 <p>
-                    {{ user.about }}
+                    {{ user.interests }}
                 </p>
             </div>
         </div>
@@ -52,16 +74,15 @@
         <div class="row">
             <div class="col-sm-3">
                 <label class="control-label">
-                    My interests
+                    About
                 </label>
 
             </div>
             <div class="col-sm-5">
                 <p>
-                    {{ user.interests }}
+                    {{ user.about }}
                 </p>
             </div>
-        </div>
 
-    </div>
+        </div>
 {% endblock %}

@@ -1,3 +1,16 @@
+.table-borderless td,
+.table-borderless th {
+    border: 0 !important;
+}
+
+.my-custom-menu {
+    padding: 8px 0;
+}
+
+.profile-topkek {
+    padding-top: 8px;
+}
+
 .mainsearch {
     padding-right: 30px;
     margin: 0 0 10px 0;
@@ -16,8 +29,6 @@
         margin: 0 0 10px 0;
     }
 }
-
-
 
 .quote .quote_content em {
     font-size: 14px;

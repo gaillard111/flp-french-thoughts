@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="table-responsive">
+                <table class="table table-borderless">
+
+                    <tbody>
+                    {% for friendship in friendships %}
+                        {% if friendship.user.id == app.user.id %}
+                            {% set friend = friendship.friend %}
+                        {% else %}
+                            {% set friend = friendship.user %}
+                        {% endif %}
+                        <tr>
+                            <td><a href="{{ path('thought_profile', { 'userId': friend.id  } ) }}">{{ friend.firstname }} {{ friend.lastname }}</a></td>
+                            <td>{{ friend.email }}</td>
+                            <th><a href="{{ path('delete_friend', { 'userId': friend.id }) }}">Remove</a></th>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

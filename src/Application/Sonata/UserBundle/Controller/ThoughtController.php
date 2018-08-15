@@ -2,6 +2,7 @@
 
 namespace Application\Sonata\UserBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\Friendship;
 use Application\Sonata\UserBundle\Form\Type\ThoughtType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +24,7 @@ class ThoughtController extends Controller
     /**
      * @param $routeName
      * @return Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\Query\QueryException
      */
     public function menuAction($routeName)
     {
@@ -40,11 +41,16 @@ class ThoughtController extends Controller
         ];
 
         $menu[] = [
-            'label' => 'My profile',
-            'route' => 'throught_profile',
+            'label' => 'Public profile',
+            'route' => 'thought_profile',
             'parameters' => [
                 'userId' => $this->getUser()->getId(),
             ]
+        ];
+
+        $menu[] = [
+            'label' => 'My friends',
+            'route' => 'friends',
         ];
 
         $menu[] = [
@@ -76,10 +82,11 @@ class ThoughtController extends Controller
             ->get('thought.model.thought_model')->getCountUserThoughts($this->getUser());
 
 
+
         return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', array(
-            'menu'      => $menu,
-            'routeName' => $routeName,
-            'thoughts'  => $thoughts,
+            'menu'          => $menu,
+            'routeName'     => $routeName,
+            'thoughts'      => $thoughts,
         ));
     }
 

@@ -16,14 +16,11 @@
 
     <div class="sonata-user-show row row-fluid">
 
-        <div class="span2 col-lg-2" style="padding: 8px 0;">
-            {#{% block sonata_profile_menu %}#}
-                {#{{ sonata_block_render({'type': 'sonata.user.block.menu'}, {'current_uri': app.request.requestUri}) }}#}
-            {#{% endblock %}#}
+        <div class="span2 col-lg-2 my-custom-menu">
             {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
         </div>
 
-        <div class="span10 col-lg-10">
+        <div class="span10 col-lg-10 profile-topkek">
             {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
 
             {% block sonata_profile_content '' %}

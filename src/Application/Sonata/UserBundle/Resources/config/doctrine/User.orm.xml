@@ -24,9 +24,21 @@
                 target-entity="ThoughtBundle\Entity\ChainComment"
                 mapped-by="user" />
 
-        <field name="about" type="text" />
-        <field name="country" type="string" length="255"/>
-        <field name="interests" type="text" />
+        <one-to-many
+                field="friendship"
+                target-entity="Application\Sonata\UserBundle\Entity\Friendship"
+                mapped-by="user"
+                 />
+
+        <one-to-many
+                field="friends"
+                target-entity="Application\Sonata\UserBundle\Entity\Friendship"
+                mapped-by="friend"
+        />
+
+        <field name="about" type="text" nullable="true"/>
+        <field name="country" type="string" length="255" nullable="true"/>
+        <field name="interests" type="text" nullable="true"/>
 
     </entity>
 
