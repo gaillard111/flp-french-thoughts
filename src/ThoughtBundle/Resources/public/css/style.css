@@ -16,14 +16,14 @@
     margin: 0 0 10px 0;
 }
 
-@media (max-device-width: 1024px){
+@media (max-device-width: 1024px) {
     .mainsearch {
         padding-right: 30px;
         margin: 0 0 10px 0;
     }
 }
 
-@media (max-device-width: 768px){
+@media (max-device-width: 768px) {
     .mainsearch {
         padding-right: 15px;
         margin: 0 0 10px 0;
@@ -34,69 +34,82 @@
     font-size: 14px;
     font-style: normal;
 }
-.jumbotron{
+
+.jumbotron {
     padding: 30px !important;
     border: solid 1px #ccc;
     background-color: transparent;
 }
-.modal{
+
+.modal {
     width: 30%;
     margin: 0 auto;
     background-color: #fff;
     top: 10%;
     bottom: initial;
 }
-a.underline{
+
+a.underline {
     text-decoration: underline;
 }
-a.underline:hover{
+
+a.underline:hover {
     text-decoration: none;
 }
-.jumbotron a:hover{
+
+.jumbotron a:hover {
     text-decoration: none;
 }
-.jumbotron p{
+
+.jumbotron p {
     font-size: 14px;
     margin-bottom: 10px;
     overflow: auto;
 }
-.jumbotron strong{
+
+.jumbotron strong {
     padding: 0;
 }
 
-.margin-top-17{
+.margin-top-17 {
     margin-top: 17px;
 }
-.margin-bottom-17{
+
+.margin-bottom-17 {
     margin-bottom: 17px;
 }
+
 @media (min-width: 1200px) {
-    .with_sort_label{
+    .with_sort_label {
         width: 13%;
     }
-    .checkbox label + label{
+
+    .checkbox label + label {
         margin-left: 30px;
     }
-    .field_block .row{
+
+    .field_block .row {
         padding-top: 18px;
     }
-    .filter_block .checkbox{
+
+    .filter_block .checkbox {
         padding-right: 0;
         text-align: right;
     }
 }
-.form-error{
+
+.form-error {
     list-style: none;
     padding-left: 5px;
     font-size: 1.2rem;
     color: red;
 }
 
-label.required:after{
+label.required:after {
     content: '*';
 }
 
-.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
     background-color: #2aabd2;
     border-color: #2aabd2;
 }
@@ -104,48 +117,58 @@ label.required:after{
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
     text-shadow: 0 -1px 0 #286090;
     border-color: #28a4c9;
-    background-image: -webkit-linear-gradient(top,#5bc0de 0,#2aabd2 100%);
-    background-image: -o-linear-gradient(top,#5bc0de 0,#2aabd2 100%);
-    background-image: -webkit-gradient(linear,left top,left bottom,from(#5bc0de),to(#2aabd2));
-    background-image: linear-gradient(to bottom,#5bc0de 0,#2aabd2 100%);
+    background-image: -webkit-linear-gradient(top, #5bc0de 0, #2aabd2 100%);
+    background-image: -o-linear-gradient(top, #5bc0de 0, #2aabd2 100%);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#5bc0de), to(#2aabd2));
+    background-image: linear-gradient(to bottom, #5bc0de 0, #2aabd2 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de', endColorstr='#ff2aabd2', GradientType=0);
     filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
     background-repeat: repeat-x;
 }
+
 .navbar .navbar-brand {
     font-size: 30px;
     padding: 10px 15px;
     line-height: 30px;
 }
+
 .quote_title, .quote_content {
     font-size: 17.5px !important;
 }
+
 .quote_content {
     font-family: "Arial" !important;
 }
-.filter_block .form-group{
+
+.filter_block .form-group {
     padding-right: 0;
 }
-.quote_edit{
+
+.quote_edit {
     float: right;
 }
-.quote_edit a{
+
+.quote_edit a {
     font-size: 0.8em;
     color: #337ab7;
     text-decoration: underline;
 }
-.footer{
+
+.footer {
     position: relative;
     min-height: 50px;
     border: 1px solid transparent;
 }
-.block_comments{
+
+.block_comments {
     margin-bottom: 20px;
 }
-.quote_chain{
+
+.quote_chain {
     float: right;
     margin-right: 15px;
 }
+
 .noticer-wrap {
     position: fixed;
     top: 0;
@@ -153,6 +176,7 @@ label.required:after{
     width: 20%;
     height: auto;
 }
+
 .noticer-item {
     min-height: 80px;
     opacity: 0.8;
@@ -161,77 +185,96 @@ label.required:after{
     width: 100%;
 }
 
-.noticer-close{
+.noticer-close {
     float: right;
     display: block;
     cursor: pointer;
     margin-top: -7px;
 }
-.noticer-body{
+
+.noticer-body {
     margin-top: 6px;
 }
-.noticer-item.noticer-success{
+
+.noticer-item.noticer-success {
     color: #3c763d;
     background-color: #dff0d8;
     border-color: #d6e9c6;
 }
-.noticer-item.noticer-success .noticer-body a{
+
+.noticer-item.noticer-success .noticer-body a {
     color: #3c763d;
     font-weight: 700;
 }
-.noticer-item.noticer-danger{
+
+.noticer-item.noticer-danger {
     color: #a94442;
     background-color: #f2dede;
     border-color: #ebccd1;
 }
+
 .noticer-item.noticer-danger .noticer-body a {
     color: #a94442;
     font-weight: 700;
 }
-.chain-quote-block{
+
+.chain-quote-block {
     position: relative;
 }
-.chain-quote-title span{
+
+.chain-quote-title span {
     font-size: 20px;
 }
-.chain-quote-control{
+
+.chain-quote-control {
     position: absolute;
     right: 3px;
     top: 5px;
     width: 20px;
 }
-.chain-quote-control div:last-child a{
+
+.chain-quote-control div:last-child a {
     margin-top: 10px;
     display: inline-block;
 }
-.chain-quote-control div:last-child a:hover{
+
+.chain-quote-control div:last-child a:hover {
     text-decoration: none;
 }
-.chain-quote-comment-form form textarea{
+
+.chain-quote-comment-form form textarea {
     height: 120px;
 }
-.chain-quote-comment-form{
+
+.chain-quote-comment-form {
     margin-bottom: 20px;
 }
+
 .form_comments form label {
     text-align: left !important;
 }
+
 .form_comments form textarea {
     height: 120px;
 }
-.add_chain{
+
+.add_chain {
     padding: 2px 5px;
 }
-.add_collective_chain{
+
+.add_collective_chain {
     padding: 2px 5px;
 }
-.quote_chain select{
+
+.quote_chain select {
     padding: 2px 5px;
     font-size: 14px;
 }
-.chain-quote-control a{
+
+.chain-quote-control a {
     color: #28a4c9;
 }
+
 .chain-list .chain-remove {
     margin-left: 20px;
 }
@@ -251,7 +294,7 @@ label.required:after{
     font-size: 40px;
 }
 
-.error404 .href a{
+.error404 .href a {
     font-weight: bold;
 }
 
@@ -272,11 +315,24 @@ div.author_jumbotron {
     background-color: transparent;
 }
 
-div.author_jumbotron .dropdown{
+div.author_jumbotron .dropdown {
     margin-bottom: 10px;
     display: none;
 }
 
 p.quote_title a {
     cursor: pointer;
+}
+
+div.authors_info {
+    border: inherit;
+    padding: 10px;
+    border-radius: inherit;
+    margin-left: -10px;
+    margin-bottom: 10px;
+    padding-bottom: 0;
+}
+
+span.hoverable_name {
+    font-size: 12px;
 }

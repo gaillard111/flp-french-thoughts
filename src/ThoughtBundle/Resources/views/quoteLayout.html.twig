@@ -57,10 +57,29 @@
     </p>
     <p>
         <strong>{{ 'thought.property.author'|trans|capitalize }}:</strong>
-            <span>
-                <a href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">{{ thought.author }}</a>
-            </span>
+        <span class="author">
+            <a href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">{{ thought.author }}</a>
+        </span>
+
+        {% set author = thought.author|authorsInfo %}
+
+        {% if author %}
+            <span class="hoverable_name">({{ 'thought.property.hoverable'|trans}})</span>
+        {% endif %}
     </p>
+
+    {% if author %}
+        <div class="authors_info" style="display: none;">
+
+            <p><strong>{{ 'author.filter.fields.birthDate.label'|trans }}:</strong> <span>{{ author.birthDate }}</span></p>
+            <p><strong>{{ 'author.filter.fields.country.label'|trans }}:</strong> <span>{{ author.country }}</span></p>
+            <p><strong>{{ 'author.filter.fields.sex.label'|trans }}:</strong> <span>{{ author.sex }}</span></p>
+            <p><strong>{{ 'author.filter.fields.job.label'|trans }}:</strong> <span>{{ author.job }}</span></p>
+            <p><strong>{{ 'author.filter.fields.continent.label'|trans }}:</strong> <span>{{ author.continent }}</span></p>
+        </div>
+    {% endif %}
+
+
     <p>
         <strong>{{ 'thought.property.thoughtInfo'|trans|capitalize }}:</strong>
         <span>{{ thought.thoughtInfo }}</span>

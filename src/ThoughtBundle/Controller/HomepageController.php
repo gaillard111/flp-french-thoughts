@@ -100,7 +100,7 @@ class HomepageController extends Controller
             'welcomeText' => $welcomeText,
             'cloud'       => $cloud['cloud'],
             'cloudStyle'  => $cloud['cloudStyle'],
-            'filtersOpen' => $search['filter_open'],
+            'filtersOpen' => isset($search['filter_open']) ? $search['filter_open'] : false,
             'colChains'   => $collectiveChains
         ]);
     }

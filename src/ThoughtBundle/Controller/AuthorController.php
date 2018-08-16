@@ -18,6 +18,8 @@ use ThoughtBundle\Model\AuthorModel;
  */
 class AuthorController extends Controller
 {
+    const AUTHOR_FIRST_LETTER = 'A';
+
     /**
      * @Route("/authors-list", methods={"GET"}, options={"sitemap" = true})
      *
@@ -41,7 +43,7 @@ class AuthorController extends Controller
 
 
         if (!$alpha) {
-            $alpha = 'A';
+            $alpha = self::AUTHOR_FIRST_LETTER;
         }
 
         /** @var AuthorModel $authorModel */
