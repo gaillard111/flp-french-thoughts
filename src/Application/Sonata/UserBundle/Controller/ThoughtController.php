@@ -3,6 +3,7 @@
 namespace Application\Sonata\UserBundle\Controller;
 
 use Application\Sonata\UserBundle\Entity\Friendship;
+use Application\Sonata\UserBundle\Entity\User;
 use Application\Sonata\UserBundle\Form\Type\ThoughtType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -53,6 +54,14 @@ class ThoughtController extends Controller
             'route' => 'friends',
         ];
 
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $menu[] = [
+            'label' => 'Dialogs',
+            'route' => 'dialog_list',
+        ];
+
         $menu[] = [
             'label' => 'Insérer une citation',
             'route' => 'sonata_user_thought_create',
@@ -87,6 +96,7 @@ class ThoughtController extends Controller
             'menu'          => $menu,
             'routeName'     => $routeName,
             'thoughts'      => $thoughts,
+            'dialogsCount'  => $user->getDialogs()->count()
         ));
     }
 

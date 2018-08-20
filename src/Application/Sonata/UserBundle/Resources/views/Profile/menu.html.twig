@@ -16,6 +16,9 @@
                 {% if item.route == 'friend_requests' %}
                     ({{ requestsCount }})
                 {% endif %}
+                {% if item.route == 'dialog_list' %}
+                    ({{ dialogsCount }})
+                {% endif %}
             </a>
     {% endfor %}
 </div>

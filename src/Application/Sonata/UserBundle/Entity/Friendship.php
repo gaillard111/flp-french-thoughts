@@ -98,4 +98,14 @@ class Friendship
     {
         return $this->id;
     }
+
+    /**
+     * Get accepted
+     *
+     * @return boolean 
+     */
+    public function getAccepted()
+    {
+        return $this->accepted;
+    }
 }

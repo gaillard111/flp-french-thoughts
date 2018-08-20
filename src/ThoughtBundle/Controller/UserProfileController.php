@@ -3,6 +3,7 @@
 namespace ThoughtBundle\Controller;
 
 
+use Application\Sonata\UserBundle\Entity\Dialog;
 use Application\Sonata\UserBundle\Entity\Friendship;
 use Application\Sonata\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,12 +23,14 @@ class UserProfileController extends Controller
         $possibleFriend = $entityManager->getRepository(User::class)->find($userId);
 
         if ($user) {
+            if ($possibleFriend) {
 
-            $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
-            return $this->render('@ApplicationSonataUser/Thought/userProfile.html.twig', [
-                'user'          =>  $possibleFriend,
-                'friendship'   =>  $friendship
-            ]);
+                $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
+                return $this->render('@ApplicationSonataUser/Thought/userProfile.html.twig', [
+                    'user'          =>  $possibleFriend,
+                    'friendship'   =>  $friendship
+                ]);
+            }
         }
         return $this->redirectToRoute('sonata_user_profile_edit');
     }
@@ -89,5 +92,57 @@ class UserProfileController extends Controller
         }
 
         return $this->redirectToRoute('friends');
+    }
+
+    /**
+     * @Route("/newdialog/{userId}", name="new_dialog")
+     */
+    public function newDialogAction($userId)
+    {
+        $entityManager = $this->getDoctrine()->getEntityManager();
+        /** @var User $user */
+        $user = $entityManager->getRepository(User::class)->findOneBy([ 'id' => $userId]);
+        /** @var User $curUser */
+        $curUser = $this->getUser();
+
+        if ($user != $curUser) {
+
+            $users = [];
+            $users[] = $user->getId();
+            $users[] = $curUser->getId();
+
+
+            $dialog = $entityManager->getRepository(Dialog::class)->findUsersDialog($users);
+
+            if ($user) {
+
+                if (!$dialog) {
+
+                    /** @var Dialog $dialog */
+                    $dialog = new Dialog();
+
+                    $dialog->addUser($curUser);
+                    $dialog->addUser($user);
+
+                    $curUser->getDialogs()->add($dialog);
+                    $user->getDialogs()->add($dialog);
+
+                    $entityManager->persist($dialog);
+                    $entityManager->persist($curUser);
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+                }
+
+
+                $dialogId = $dialog->getId();
+
+
+                return $this->redirectToRoute('dialog', [
+                    'dialogId'  => $dialogId
+                ]);
+            }
+        }
+
+        return $this->redirectToRoute('dialog_list');
     }
 }

@@ -311,6 +311,7 @@ class ThoughtModel
     /**
      * @param Thought $thought
      * @return Thought
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function addLike(Thought  $thought)
     {
@@ -325,6 +326,7 @@ class ThoughtModel
     /**
      * @param Thought $thought
      * @return Thought
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function removeLike(Thought  $thought)
     {

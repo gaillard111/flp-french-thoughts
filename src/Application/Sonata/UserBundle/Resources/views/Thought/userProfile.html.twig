@@ -24,6 +24,9 @@
                         <a href="{{ path('friend_request', { 'userId': user.id }) }}" class="btn btn-info">Add</a>
                     {% endif %}
                 {% endif %}
+                {% if user != app.user %}
+                    <a href="{{ path('new_dialog', { 'userId': user.id }) }}" class="btn btn-info">Send message</a>
+                {% endif %}
             </div>
         </div>
         <div class="row">
