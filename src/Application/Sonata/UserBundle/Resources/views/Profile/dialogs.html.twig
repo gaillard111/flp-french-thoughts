@@ -1,0 +1,47 @@
+{% extends "SonataUserBundle:Profile:action.html.twig" %}
+
+{% block sonata_profile_title %}
+    Messages
+{% endblock %}
+
+{% block sonata_profile_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="media">
+                {% for dialog in dialogs %}
+                    {#{{ dump(dialog.users) }}#}
+
+                        {#{{ dump(user) }}#}
+                        {#{% if user != app.user %}#}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                {#<div class="media-left">#}
+                                    {#<a href="#">#}
+                                    {#<img class="media-object" src="..." alt="...">#}
+                                    {#</a>#}
+                                {#</div>#}
+                                <div class="media-body">
+                                    <h4 class="media-heading">
+
+                                    <a href="{{ path('dialog', { 'dialogId': dialog.id }) }}">
+                                        {% for user in dialog.users %}
+                                            {% if user != app.user %}
+                                                Dialog #{{ dialog.id }} with #{{ user.id }} {{ user.firstname }} {{ user.lastname }}
+                                            {% endif %}
+                                        {% endfor %}
+                                        {#{% dump dialog.users %}#}
+                                    </a>
+                                    </h4>
+                                    <p>
+                                        {#{{ message.messageText }}#}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        {#{% endif %}#}
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

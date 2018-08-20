@@ -1,0 +1,60 @@
+{% extends "SonataUserBundle:Profile:action.html.twig" %}
+
+{% block sonata_profile_title %}
+    Messages
+{% endblock %}
+
+{% block sonata_profile_content %}
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="media">
+                    {{ form_start(form) }}
+                        <div class="form-group">
+                            {{ form_label(form.messageText) }}
+                            {{ form_widget(form.messageText) }}
+                        </div>
+                    {{ form_end(form) }}
+                {% for user in dialog.users %}
+                    {% if user == app.user %}
+                        {% if messages %}
+                            {% for message in messages.items %}
+
+                                {#{% for user in mess.dialog.users %}#}
+                                {#{%  if user == app.user %}#}
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        {#<div class="media-left">#}
+                                        {#<a href="#">#}
+                                        {#<img class="media-object" src="..." alt="...">#}
+                                        {#</a>#}
+                                        {#</div>#}
+                                        <div class="media-body" >
+                                            <h4 class="media-heading">
+                                                Message #{{ message.id }} by
+                                                <a href="{{ path('thought_profile', { 'userId': message.sender.id }) }}">
+                                                    #{{ message.sender.id }} {{ message.sender.firstname }} {{ message.sender.lastname }}
+                                                </a>
+                                                {#{% if receiver %}#}
+                                                {#to#}
+                                                {#<a href="{{ path('thought_profile', { 'userId': receiver.id }) }}">#}
+                                                {#{{ receiver.firstname }} {{ receiver.lastname }}#}
+                                                {#</a>#}
+                                                {#{% endif %}#}
+                                            </h4>
+                                            <p>
+                                                {{ message.messageText }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+    {{ knp_pagination_render(messages) }}
+{% endblock %}
