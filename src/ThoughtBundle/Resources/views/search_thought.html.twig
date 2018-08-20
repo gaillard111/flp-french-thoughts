@@ -106,9 +106,10 @@
         <div class="col-sm-12 form-group ">
             <a id="3_search_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.fields.3Search.label'|trans }} </a>
         </div>
+
         {% set open = false %}
         {% if search is defined %}
-            {% if search.max_words is not empty or search.min_words is not empty or search.sorting is not empty or search.sorting_desc is not empty%}
+            {% if search.max_words is defined or search.min_words is defined  or search.sorting is defined or search.sorting_desc is defined %}
                 {% set open = true %}
             {% endif %}
         {% endif %}

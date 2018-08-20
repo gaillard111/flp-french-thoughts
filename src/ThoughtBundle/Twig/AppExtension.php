@@ -1,7 +1,10 @@
 <?php
 
 namespace ThoughtBundle\Twig;
+use FOS\ElasticaBundle\Finder\FinderInterface;
 use Symfony\Component\DependencyInjection\Container;
+use ThoughtBundle\Entity\Author;
+use ThoughtBundle\Model\AuthorModel;
 
 /**
  * Class AppExtension
@@ -32,6 +35,7 @@ class AppExtension extends \Twig_Extension
             new \Twig_SimpleFilter('customTag', array($this, 'customTagFilter')),
             new \Twig_SimpleFilter('shortText', array($this, 'customShortText')),
             new \Twig_SimpleFilter('alphabetAuthersLinks', array($this, 'alphabetAuthersLinks'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFilter('authorsInfo', array($this, 'authorsInfo')),
 
         );
     }
@@ -124,6 +128,26 @@ class AppExtension extends \Twig_Extension
         }
 
         return $result;
+    }
+
+    public function authorsInfo($name)
+    {
+        /** @var FinderInterface $authorsFinder */
+        $authorsFinder = $this->container->get('fos_elastica.finder.app.author');
+
+        /** @var AuthorModel $authorModel */
+        $authorModel = $this->container->get('thought.model.author_model');
+
+        $authors = $authorsFinder->find($authorModel->searchDefault($name));
+
+        if (!isset($authors[0])) {
+            return null;
+        }
+
+        /** @var Author $author */
+        $author = $authors[0];
+
+        return $author;
     }
 
     /**

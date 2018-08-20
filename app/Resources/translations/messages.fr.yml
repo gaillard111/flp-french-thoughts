@@ -94,6 +94,7 @@ thought:
         publish:     Publish
         like:        J'aime
         liked:       Aimé
+        hoverable:   survolez pour voir plus d'infos
 
     filter:
         content:

@@ -74,6 +74,7 @@ thought:
         tags:        Tags
         thoughtInfo: Info
         publish:     Publish
+        hoverable:   hover to see more info
 
     filter:
         content:
