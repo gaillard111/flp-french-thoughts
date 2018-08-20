@@ -57,12 +57,12 @@ class User extends BaseUser
     protected $interests;
 
     /**
-     * @Assert\NotBlank(groups={"CustomProfile"})
+     * @Assert\NotBlank(groups={"CustomProfile", "CustomRegistration"})
      */
     protected $firstname;
 
     /**
-     * @Assert\NotBlank(groups={"CustomProfile"})
+     * @Assert\NotBlank(groups={"CustomProfile", "CustomRegistration"})
      */
     protected $lastname;
 

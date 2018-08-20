@@ -2,6 +2,7 @@
 
 namespace Application\Sonata\UserBundle\Form\Type;
 
+use Application\Sonata\UserBundle\Entity\User;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -27,11 +28,11 @@ class RegisterType extends RegistrationFormType
             ))
             ->add('firstname', null, array(
                 'label'    => 'user.form.registration.firstname.label',
-                'required' => false,
+                'required' => true,
             ))
             ->add('lastname', null, array(
                 'label'    => 'user.form.registration.lastname.label',
-                'required' => false,
+                'required' => true,
             ))
             ->add('plainPassword', 'repeated', array(
                 'type'            => 'password',
@@ -48,8 +49,8 @@ class RegisterType extends RegistrationFormType
     public function setDefaultOption(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            //'validation_groups' => array('Default', 'Register'),
             'validation_groups' => array('CustomRegistration'),
+            'data_class'        => User::class
         ));
     }
 
