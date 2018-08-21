@@ -39,13 +39,17 @@ class ChainController extends Controller
             $this->get('translator')->trans('thought.chain.not_exist');
             return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
-
-        if ($chain->getIsPrivate() && $this->getUser()->getId() != $chain->getUser()->getId()) {
-            $this->addFlash('success', $this->get('translator')->trans('thought.chain.access_denied'));
+        if (!$this->getUser()) {
 
             return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
+        else {
 
+            if ($chain->getIsPrivate() && $this->getUser()->getId() != $chain->getUser()->getId()) {
+                $this->addFlash('success', $this->get('translator')->trans('thought.chain.access_denied'));
+                return $this->redirect($this->generateUrl('thought_homepage_index'));
+            }
+        }
 
         $chainComment = new ChainComment();
         $chainComment->setChain($chain);
@@ -90,6 +94,7 @@ class ChainController extends Controller
      * @param Request $request
      * @return JsonResponse
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Twig_Error
      */
     public function addQuoteToChain(Request $request)
     {
