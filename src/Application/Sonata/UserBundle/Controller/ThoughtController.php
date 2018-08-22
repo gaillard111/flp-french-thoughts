@@ -41,7 +41,7 @@ class ThoughtController extends Controller
         ];
 
         $menu[] = [
-            'label' => 'Public profile',
+            'label' => 'My profile',
             'route' => 'thought_profile',
             'parameters' => [
                 'userId' => $this->getUser()->getId(),
@@ -81,12 +81,14 @@ class ThoughtController extends Controller
         $thoughts = $this->container
             ->get('thought.model.thought_model')->getCountUserThoughts($this->getUser());
 
-
+        /** @var RequestStack $requestStack */
+        $requestStack = $this->get('request_stack');
 
         return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', array(
             'menu'          => $menu,
             'routeName'     => $routeName,
             'thoughts'      => $thoughts,
+            'userProfileId' => $requestStack->getMasterRequest()->get('userId')
         ));
     }
 
