@@ -29,6 +29,7 @@ class Mail
     /**
      * Mail constructor.
      * @param Container $container
+     * @throws \Exception
      */
     public function __construct(Container $container)
     {
@@ -45,8 +46,6 @@ class Mail
     {
 
         $subject = 'French thought: add new thought';
-//        dump($subject); die;
-//        die('123');
         $link = $this->container->get('router')->generate('thought_thoughtpage_index', array('thoughtId' => $thought->getId()), 0);
 
         $body = 'User: ' . $thought->getOwner()->getFullname() . ' in ' . $thought->getCreatedAt()->format('Y-m-d H:i') .
@@ -64,6 +63,7 @@ class Mail
      * Send email - Add new comment
      *
      * @param Comment $comment
+     * @throws \Exception
      */
     public function mailAddNewComment(Comment $comment)
     {
@@ -128,14 +128,15 @@ class Mail
      * @param Chain $chain
      * @throws \Twig_Error
      */
-    public function notificationMail(User $user, Chain $chain, User $curUser)
+    public function notificationMail(User $user, User $curUser, Chain $chain, Thought $thought)
     {
         $userEmail = $user->getEmail();
-        $subject   = 'In your chain added new citation';
+        $subject   = 'You have a new quote in your chain';
         $body =
             $this->container->get('templating')->render('@ApplicationSonataUser/Mail/chainNotification.html.twig', [
                 'chain'   =>  $chain,
-                'curUser' =>  $curUser
+                'thought' =>  $thought,
+                'curUser' =>  $curUser,
             ]);
         $this->sendMail($subject, $userEmail, $body);
     }
@@ -148,7 +149,7 @@ class Mail
     public function friendNotificationMail(User $user, User $friend, $requestId)
     {
         $friendEmail = $friend->getEmail();
-        $subject   = 'User ' . $user->getFirstname() . ' ' . $user->getLastname() . ' wants to be friends with you!';
+        $subject   = 'User ' . $user->getFirstname() . ' ' . $user->getLastname() . ' has send you friend request';
         $body =
             $this->container->get('templating')->render('@ApplicationSonataUser/Mail/friendNotification.html.twig', [
                 'user'  => $user,

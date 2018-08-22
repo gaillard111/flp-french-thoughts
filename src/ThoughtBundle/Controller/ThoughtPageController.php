@@ -19,8 +19,9 @@ class ThoughtPageController extends Controller
      * @Route("/quote/{thoughtId}", requirements={"thoughtId"="\d+"})
      *
      * @param Request $request
-     * @param int     $thoughtId
+     * @param int $thoughtId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function indexAction(Request $request, $thoughtId)
     {
@@ -66,9 +67,15 @@ class ThoughtPageController extends Controller
             return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
 
+        $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->
+        findBy([
+            'isCollective'  => true
+        ]);
+
         return $this->render('@Thought/thoughtPage.html.twig', array(
             'thought' => $thought,
             'form'    => $form->createView(),
+            'colChains'   => $collectiveChains
         ));
     }
 

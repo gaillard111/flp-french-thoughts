@@ -2,7 +2,13 @@
     {% for item in menu %}
             <a class="list-group-item
                     {% if routeName == item.route  %}
-                         active
+                        {% if item.route == 'thought_profile' %}
+                            {% if userProfileId == app.user.id %}
+                             active
+                            {% endif %}
+                        {% else %}
+                            active
+                        {% endif %}
                     {% endif %}
                     {% if item.parameters is defined %}
                     " href="{{ path(item.route, item.parameters) }}

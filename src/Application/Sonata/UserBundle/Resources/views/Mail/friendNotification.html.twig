@@ -1,2 +1,12 @@
-<p>User <a href="{{ url('thought_profile', { 'userId': user.id }) }}">{{ user.firstname }} {{ user.lastname }}</a> has sent you friends requests.</p>
-<p>To accept the request view his <a href="{{ url('thought_profile', { 'userId': user.id }) }}">profile</a></p>.
+<p>
+    User <a href="{{ url('thought_profile', { 'userId': user.id }) }}">{{ user.firstname }} {{ user.lastname }}</a> has sent you friend request.
+</p>
+<p>
+    To accept the request view
+    {% if user.gender == 'm' or user.gender == '' %}
+    his
+    {% else %}
+    her
+    {% endif %}
+    <a href="{{ url('thought_profile', { 'userId': user.id }) }}">profile</a>
+</p>

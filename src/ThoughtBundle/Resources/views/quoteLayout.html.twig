@@ -18,15 +18,11 @@
                         {% set already_chains = already_chains|merge([arr_chain.chain.name]) %}
                     {% endif %}
                 {% endfor %}
-                {% if already_chains|length %}
-                    <span data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
-                        <small>{{ 'thought.chain.already_added'|trans }}</small>
-                    </span>
-                {% endif %}
+
 
 
                 <select name="quote_collective_chain">
-                    <option value="">{{ 'thought.chain.add_quote'|trans }}</option>
+                    <option value="">{{ 'thought.chain.add_quote_collective'|trans }}</option>
                     {% for chain in colChains %}
                         {% if chain.name not in already_chains %}
                             <option value="{{ chain.id }}">{{ chain.name }}</option>
@@ -53,7 +49,7 @@
         {% endif %}
     </p>
     <p class="quote_content">
-        <span><em>{{ thought.content|customTag|raw|nl2br }}</em></span>
+        <span>{{ thought.content|customTag|raw|nl2br }}</span>
     </p>
     <p>
         <strong>{{ 'thought.property.author'|trans|capitalize }}:</strong>
@@ -110,6 +106,15 @@
         {% endif %}
     </p>
     <p>{{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}</p>
+    {% if app.user %}
+    <p class="pull-right">
+        {% if already_chains|length %}
+            <span data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
+                <small class="is-added">{{ 'thought.chain.already_added'|trans }}</small>
+            </span>
+        {% endif %}
+    </p>
+    {% endif %}
 
     {#{% if app.request.get('thoughtId') == null %}
         <p>

@@ -43,7 +43,6 @@
             {% else %}
                 <div class="row">
                     <div class="form-group col-sm-12">
-                        <p><a href="{{ path('sonata_user_thought_create') }}" class="btn btn-info">{{ 'user.thought.list_page.add_button'|trans }}</a></p>
                        <span style="border-bottom: 1px dashed #000;">{{ 'thought.filter.cloud_tags'|trans }}</span> : {{ 'thought.filter.activate_cloud'|trans }}
                     </div>
                 </div>
@@ -57,6 +56,12 @@
             <div class="navigation text-center">
                 {{ knp_pagination_render(thoughts) }}
             </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="pull-right"><a href="{{ path('sonata_user_thought_create') }}" class="btn btn-info">{{ 'user.thought.list_page.add_button'|trans }}</a></p>
+                </div>
+            </div>
+
 
             {% for thought in thoughts %}
                 {{ include('@Thought/quoteLayout.html.twig', {'thought': thought, 'colChains': colChains }) }}

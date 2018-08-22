@@ -19,7 +19,7 @@ services:
     thoudght.admin.mail:
         class: ThoughtBundle\Admin\MailAdmin
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Content, label: "Thought" }
+            - { name: sonata.admin, manager_type: orm, group: Content, label: "Emails" }
         arguments:
         - ~
         - ThoughtBundle\Entity\GeneralMail
