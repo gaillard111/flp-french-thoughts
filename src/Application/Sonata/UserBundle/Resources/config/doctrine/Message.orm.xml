@@ -24,8 +24,7 @@
 
         <many-to-one
             field="sender"
-            target-entity="User"
-        >
+            target-entity="User">
 
             <join-column name="sender_id" referenced-column-name="id" />
         </many-to-one>

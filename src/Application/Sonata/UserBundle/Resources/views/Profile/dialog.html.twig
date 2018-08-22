@@ -5,97 +5,52 @@
 {% endblock %}
 
 {% block sonata_profile_content %}
-    {#<style>#}
-        {#.thumbnail {#}
-            {#padding:0px;#}
-        {#}#}
-        {#.panel {#}
-            {#position:relative;#}
-        {#}#}
-        {#.panel>.panel-heading:after,.panel>.panel-heading:before{#}
-            {#position:absolute;#}
-            {#top:11px;left:-16px;#}
-            {#right:100%;#}
-            {#width:0;#}
-            {#height:0;#}
-            {#display:block;#}
-            {#content:" ";#}
-            {#border-color:transparent;#}
-            {#border-style:solid solid outset;#}
-            {#pointer-events:none;#}
-        {#}#}
-        {#.panel>.panel-heading:after{#}
-            {#border-width:7px;#}
-            {#border-right-color:#f7f7f7;#}
-            {#margin-top:1px;#}
-            {#margin-left:2px;#}
-        {#}#}
-        {#.panel>.panel-heading:before{#}
-            {#border-right-color:#ddd;#}
-            {#border-width:8px;#}
-        {#}#}
-    {#</style>#}
     <div class="row">
-        <div class="col-sm-8">
-            <div class="media">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
                     {{ form_start(form) }}
-                        <div class="form-group">
-                            {{ form_label(form.messageText) }}
-                            {{ form_widget(form.messageText) }}
-                        </div>
+                    <div class="form-group">
+                        {{ form_label(form.messageText) }}
+                        {{ form_widget(form.messageText) }}
+                    </div>
                     {{ form_end(form) }}
+                </div>
+
+            </div>
+
+            <div class="media">
+
                 {% for user in dialog.users %}
                     {% if user == app.user %}
                         {% if messages %}
                             {% for message in messages.items %}
 
-                                {#{% for user in mess.dialog.users %}#}
-                                {#{%  if user == app.user %}#}
-
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        {#<div class="media-left">#}
-                                        {#<a href="#">#}
-                                        {#<img class="media-object" src="..." alt="...">#}
-                                        {#</a>#}
-                                        {#</div>#}
-                                        <div class="media-body" >
-                                            <h4 class="media-heading">
-                                                Message #{{ message.id }} by
-                                                <a href="{{ path('thought_profile', { 'userId': message.sender.id }) }}">
-                                                    #{{ message.sender.id }} {{ message.sender.firstname }} {{ message.sender.lastname }}
-                                                </a>
-                                                {#{% if receiver %}#}
-                                                {#to#}
-                                                {#<a href="{{ path('thought_profile', { 'userId': receiver.id }) }}">#}
-                                                {#{{ receiver.firstname }} {{ receiver.lastname }}#}
-                                                {#</a>#}
-                                                {#{% endif %}#}
-                                            </h4>
-                                            <p>
+                                        <div class="panel panel-info
+                                            {% if message.sender == app.user %}
+                                                pull-right
+                                            {% else %}
+                                                pull-left
+                                            {% endif %}
+                                            col-sm-10 col-md-9">
+                                            <div class="panel-heading">
+                                                <strong>
+                                                    {#Message #{{ message.id }} by#}
+                                                    <a href="{{ path('thought_profile', { 'userId': message.sender.id }) }}">
+                                                        {#{{ message.sender.id }}#} {{ message.sender.firstname }} {{ message.sender.lastname }}
+                                                    </a>
+                                                </strong>
+                                                {#<span class="text-muted">commented 5 days ago</span>#}
+                                            </div>
+                                            <div class="panel-body">
                                                 {{ message.messageText }}
-                                            </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-
-
-                                {#<div class="col-sm-12">#}
-                                    {#<div class="panel panel-info">#}
-                                        {#<div class="panel-heading">#}
-                                            {#<strong>#}
-                                                {#Message #{{ message.id }} by#}
-                                                {#<a href="{{ path('thought_profile', { 'userId': message.sender.id }) }}">#}
-                                                    {##{{ message.sender.id }} {{ message.sender.firstname }} {{ message.sender.lastname }}#}
-                                                {#</a>#}
-                                            {#</strong> #}{#<span class="text-muted">commented 5 days ago</span>#}
-                                        {#</div>#}
-                                        {#<div class="panel-body">#}
-                                            {#Panel content#}
-                                        {#</div><!-- /panel-body -->#}
-                                    {#</div><!-- /panel panel-default -->#}
-                                {#</div><!-- /col-sm-5 -->#}
                             {% endfor %}
                         {% endif %}
                     {% endif %}
@@ -104,5 +59,10 @@
             </div>
         </div>
     </div>
-    {{ knp_pagination_render(messages) }}
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            {{ knp_pagination_render(messages) }}
+        </div>
+    </div>
+
 {% endblock %}

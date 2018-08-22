@@ -23,7 +23,7 @@ class Dialog
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Application\Sonata\UserBundle\Entity\User", mappedBy="dialogs")
+     * @ORM\ManyToMany(targetEntity="Application\Sonata\UserBundle\Entity\User", inversedBy="dialogs")
      */
     private $users;
 

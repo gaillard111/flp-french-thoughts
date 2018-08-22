@@ -21,7 +21,7 @@ class MessageType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'attr'  =>  [
-                    'class' =>  'btn btn-info'
+                    'class' =>  'btn btn-info pull-right'
                 ]
             ]);
     }

@@ -24,10 +24,11 @@
         <many-to-one
                 field="friend"
                 target-entity="User"
-                inversed-by="friendship">
+                inversed-by="friends">
 
             <join-column name="friend_id" referenced-column-name="id" />
         </many-to-one>
+
 
         <field name="accepted" type="boolean" />
     </entity>

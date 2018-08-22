@@ -83,7 +83,7 @@ class User extends BaseUser
     protected $friends;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Application\Sonata\UserBundle\Entity\Dialog", inversedBy="users")
+     * @ORM\ManyToMany(targetEntity="Application\Sonata\UserBundle\Entity\Dialog", mappedBy="users")
      */
     protected $dialogs;
 
@@ -101,6 +101,18 @@ class User extends BaseUser
     public function setDialogs($dialogs)
     {
         $this->dialogs = $dialogs;
+    }
+
+    /**
+     * @param Dialog $dialog
+     * @return User
+     */
+    public function addDialog($dialog)
+    {
+        $dialog->addUser($this);
+        $this->dialogs[] = $dialog;
+
+        return $this;
     }
 
     public function __construct()

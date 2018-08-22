@@ -8,6 +8,7 @@ use Application\Sonata\UserBundle\Form\Type\ThoughtType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouteCompiler;
@@ -42,7 +43,7 @@ class ThoughtController extends Controller
         ];
 
         $menu[] = [
-            'label' => 'Public profile',
+            'label' => 'My profile',
             'route' => 'thought_profile',
             'parameters' => [
                 'userId' => $this->getUser()->getId(),
@@ -90,14 +91,17 @@ class ThoughtController extends Controller
         $thoughts = $this->container
             ->get('thought.model.thought_model')->getCountUserThoughts($this->getUser());
 
+        /** @var RequestStack $requestStack */
+        $requestStack = $this->get('request_stack');
 
 
-        return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', array(
+        return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
             'menu'          => $menu,
             'routeName'     => $routeName,
             'thoughts'      => $thoughts,
-            'dialogsCount'  => $user->getDialogs()->count()
-        ));
+            'dialogsCount'  => $user->getDialogs()->count(),
+            'userProfileId' => $requestStack->getMasterRequest()->get('userId')
+        ]);
     }
 
     /**

@@ -38,8 +38,8 @@
 
         <many-to-many
                 field="dialogs"
+                mappedBy="users"
                 target-entity="Application\Sonata\UserBundle\Entity\Dialog"
-                inversed-by="users"
         />
 
         <field name="about" type="text" nullable="true"/>
