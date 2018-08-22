@@ -6,9 +6,8 @@
 .is-added {
     cursor: pointer;
     font-size: 14px;
-    text-decoration: dashed;
+    border-bottom: 1px dashed;
     color: #337ab7;
-    
 }
 
 .my-custom-menu {
