@@ -17,7 +17,7 @@ class ProfileInfoType extends AbstractType
     {
         $builder
             ->add('about', TextareaType::class, [
-//                'label'    => 'user.form.profile.firstname.label',
+                'label'    => 'user.form.profile.about.label',
                 'label_attr' => [
                     'class' => 'control-label col-sm-2',
                 ],
@@ -28,6 +28,7 @@ class ProfileInfoType extends AbstractType
 //                'required' => false,
             ])
             ->add('country', TextType::class, [
+                'label'    => 'user.form.profile.country.label',
                 'label_attr' =>[
                     'class' => 'control-label col-sm-2',
                 ],
@@ -37,6 +38,7 @@ class ProfileInfoType extends AbstractType
 //                'required' => false,
             ])
             ->add('interests', TextType::class, [
+                'label'    => 'user.form.profile.interests.label',
                 'label_attr' => [
                     'class' => 'control-label col-sm-2',
                 ],
@@ -50,6 +52,7 @@ class ProfileInfoType extends AbstractType
                     User::GENDER_MALE  =>  'Male',
                     User::GENDER_FEMALE =>  'Female'
                 ],
+                'label'    => 'user.form.profile.gender.label',
                 'label_attr' => [
                     'class' => 'control-label col-sm-2',
                 ],
