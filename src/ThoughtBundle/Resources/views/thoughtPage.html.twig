@@ -13,7 +13,12 @@
             {% for comment in thought.comments %}
                 <div class="panel panel-info comment-item col-sm-12">
                     <div class="panel-heading row">
-                        <div class="col-sm-6">{{ comment.fullName }}</div>
+                        <div class="col-sm-6">
+                            {#<a href="{{ path('thought_profile', { 'userId': comment.user.id }) }}">#}
+                                {{ comment.fullName }}
+                            {#</a>#}
+                            {#{{ dump(comment) }}#}
+                        </div>
                         <div class="col-sm-6 text-right">
                             {% if is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('thought_thoughtpage_deletecomment', {'commentId': comment.id}) }}">{{ 'user.comment.delete'|trans }}</a>
