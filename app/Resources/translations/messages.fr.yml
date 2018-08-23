@@ -1,4 +1,9 @@
 user:
+    friendship:
+        request:     Send friend request
+        accept:      Accept
+        remove:      Remove
+
     form:
         registration:
             username:
@@ -38,7 +43,18 @@ user:
             email:
                 label:       Email
                 placeholder: Email
+            about:
+                label:       Me concernant
+            country:
+                label:       Pays
+            gender:
+                label:       Sexe
+            interests:
+                label:       Centres d'intérêts
             button:          Mettre à jour
+            profile_edit:    Mes parameters
+
+
     dashboard:
         menu:
             link_thoughts:      Citations
@@ -52,7 +68,7 @@ user:
             submit: Créer
         list_page:
             title: Mes citations
-            add_button: Ajout de citation
+            add_button: Ajouter la citation
             link:
                 edit:   Edit
                 delete: Delete
@@ -76,7 +92,7 @@ user:
             title: Mes chaines
             link: << Back to Mes chaines
             add_button: Chaine nouvelle
-            favorite_button: Faire des favoris
+            favorite_button: Ajouter aux favoris
             remote_from_favorites_button: À distance des favoris
         shared_list_page:
             title: Chaines partagées
@@ -94,6 +110,7 @@ thought:
         publish:     Publish
         like:        J'aime
         liked:       Aimé
+        hoverable:   survolez pour voir plus d'infos
 
     filter:
         content:
@@ -170,10 +187,12 @@ thought:
         added:   Comment successfully added
     chain:
         add_to_chain: Ajouter
-        add_to_collective_chain: Add to chain
-        already_added: Déjà intégré
+        add_to_collective_chain: Ajouter
+#        already_added: Déjà intégré
+        already_added: Is added to chains
         added_to_chain: The quote is already added to
-        add_quote: Mettre dans la chaine
+        add_quote: Mettre dans ma chaine
+        add_quote_collective: Mettre dans la chaine partagées
         not_exist: Chain not found.
         access_denied: Access to this chain forbidden.
         quote_add_chain: Quote successfully added to chain.
@@ -206,6 +225,7 @@ thought:
 navbar:
     brand:        Les fils de la pensée
     profile:      Profil
+    chat:         Chat
     sign_out:     Déconnexion
     sign_in:      Login
     registration: S'inscrire

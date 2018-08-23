@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-12 col-lg-10">
                     {{ form_start(form) }}
                     <div class="form-group">
                         {{ form_label(form.messageText) }}
@@ -27,7 +27,7 @@
                             {% for message in messages.items %}
 
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 col-lg-10">
                                         <div class="panel panel-info
                                             {% if message.sender == app.user %}
                                                 pull-right
@@ -56,7 +56,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             {% endfor %}
                         {% endif %}
                     {% endif %}
