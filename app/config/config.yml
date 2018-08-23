@@ -117,6 +117,9 @@ sonata_admin:
                 label: Users
                 items:
                     - sonata.user.admin.user
+            Emails:
+                label: Emails
+                items:
                     - thoudght.admin.mail
             Thoughts:
                 label: Thoughts
