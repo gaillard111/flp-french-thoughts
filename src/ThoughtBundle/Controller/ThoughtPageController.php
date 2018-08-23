@@ -66,9 +66,14 @@ class ThoughtPageController extends Controller
             return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
 
+        $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->findBy([
+            'isCollective'  => true
+        ]);
+
         return $this->render('@Thought/thoughtPage.html.twig', array(
             'thought' => $thought,
             'form'    => $form->createView(),
+            'colChains'     => $collectiveChains,
         ));
     }
 
