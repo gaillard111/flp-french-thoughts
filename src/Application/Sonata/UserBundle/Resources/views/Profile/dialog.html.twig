@@ -35,14 +35,20 @@
                                                 pull-left
                                             {% endif %}
                                             col-sm-10 col-md-9">
-                                            <div class="panel-heading">
-                                                <strong>
-                                                    {#Message #{{ message.id }} by#}
-                                                    <a href="{{ path('thought_profile', { 'userId': message.sender.id }) }}">
-                                                        {#{{ message.sender.id }}#} {{ message.sender.firstname }} {{ message.sender.lastname }}
-                                                    </a>
-                                                </strong>
+                                            <div class="panel-heading row">
+                                                <div class="col-sm-6">
+                                                    <strong>
+                                                        {#Message #{{ message.id }} by#}
+                                                        <a href="{{ path('thought_profile', { 'userId': message.sender.id }) }}">
+                                                            {#{{ message.sender.id }}#} {{ message.sender.firstname }} {{ message.sender.lastname }}
+                                                        </a>
+                                                    </strong>
+                                                </div>
+
                                                 {#<span class="text-muted">commented 5 days ago</span>#}
+                                                <div class="col-sm-6 text-right">
+                                                    {{ message.createdAt|date('Y-m-d H:i') }}
+                                                </div>
                                             </div>
                                             <div class="panel-body">
                                                 {{ message.messageText }}

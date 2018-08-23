@@ -7,7 +7,12 @@
     <entity
             name="Application\Sonata\UserBundle\Entity\Message"
             repository-class="Application\Sonata\UserBundle\Repository\MessageRepository"
-            table="messages">
+            table="messages"
+
+    >
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="setCreatedAtValue" />
+        </lifecycle-callbacks>
 
 
         <id name="id" column="id" type="integer">
@@ -31,6 +36,7 @@
 
 
         <field name="messageText" type="text" />
+        <field name="createdAt" type="datetime" />
     </entity>
 
 </doctrine-mapping>

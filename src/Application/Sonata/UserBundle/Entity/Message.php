@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="messages")
  * @ORM\Entity(repositoryClass="Application\Sonata\UserBundle\Repository\MessageRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Message
 {
@@ -38,6 +39,27 @@ class Message
      * @ORM\Column(name="message_text", type="text")
      */
     private $messageText;
+
+    /**
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * @return mixed
