@@ -106,7 +106,6 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
             $messages = $em->getRepository('ApplicationSonataUserBundle:Message')->getMessagesFromDialog($dialogId);
 
 
-
             if ($form->isSubmitted()) {
 
                 $message = $form->getData();
@@ -142,8 +141,6 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
                 }
             }
         }
-
-
 
         return $this->redirectToRoute('sonata_user_profile_edit');
 

@@ -105,41 +105,47 @@ class UserProfileController extends Controller
         /** @var User $curUser */
         $curUser = $this->getUser();
 
-        if ($user != $curUser) {
+        $friends = $entityManager->getRepository(Friendship::class)->isFriend($user, $curUser);
 
-            $users = [];
-            $users[] = $user->getId();
-            $users[] = $curUser->getId();
+//        dump($friends); die;
+        if ($friends) {
+
+            if ($user != $curUser) {
+
+                $users = [];
+                $users[] = $user->getId();
+                $users[] = $curUser->getId();
 
 
-            $dialog = $entityManager->getRepository(Dialog::class)->findUsersDialog($users);
+                $dialog = $entityManager->getRepository(Dialog::class)->findUsersDialog($users);
 
-            if ($user) {
+                if ($user) {
 
-                if (!$dialog) {
+                    if (!$dialog) {
 
-                    /** @var Dialog $dialog */
-                    $dialog = new Dialog();
+                        /** @var Dialog $dialog */
+                        $dialog = new Dialog();
 
-                    $dialog->addUser($curUser);
-                    $dialog->addUser($user);
+                        $dialog->addUser($curUser);
+                        $dialog->addUser($user);
 
-                    $curUser->getDialogs()->add($dialog);
-                    $user->getDialogs()->add($dialog);
+                        $curUser->getDialogs()->add($dialog);
+                        $user->getDialogs()->add($dialog);
 
-                    $entityManager->persist($dialog);
-                    $entityManager->persist($curUser);
-                    $entityManager->persist($user);
-                    $entityManager->flush();
+                        $entityManager->persist($dialog);
+                        $entityManager->persist($curUser);
+                        $entityManager->persist($user);
+                        $entityManager->flush();
+                    }
+
+
+                    $dialogId = $dialog->getId();
+
+
+                    return $this->redirectToRoute('dialog', [
+                        'dialogId'  => $dialogId
+                    ]);
                 }
-
-
-                $dialogId = $dialog->getId();
-
-
-                return $this->redirectToRoute('dialog', [
-                    'dialogId'  => $dialogId
-                ]);
             }
         }
 
