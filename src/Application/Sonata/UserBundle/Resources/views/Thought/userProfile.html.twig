@@ -2,90 +2,99 @@
 
 {% block sonata_profile_title %}
     {% if user != app.user %}
-       {{ user.firstname }} {{ user.lastname }} - Profile
+       {{ user.firstname }} {{ user.lastname }} - Profil
     {% else %}
         My profile
     {% endif %}
 {% endblock %}
 
 {% block sonata_profile_content %}
-        <div class="row pull-right">
-            <div class="col-sm-12">
-                {% if friendship %}
-                    {% if friendship.accepted == false %}
-                        {% if friendship.user != app.user %}
-                            <a href="{{ path('accept_friend_request', { 'requestId': friendship.id }) }}" class="btn btn-info">Accept</a>
+        <div class="row">
+
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-3">
+                    <label class="control-label">
+                        {{ 'user.form.profile.interests.label'|trans }}
+                    </label>
+
+                </div>
+                <div class="col-sm-8">
+                    <p>
+                        {{ user.interests }}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label class="control-label">
+                        {{ 'user.form.profile.country.label'|trans }}
+                    </label>
+
+                </div>
+                <div class="col-sm-8">
+                    <p>
+                        {{ user.country }}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label class="control-label">
+                        {{ 'user.form.profile.gender.label'|trans }}
+                    </label>
+
+                </div>
+                <div class="col-sm-8">
+                    <p>
+                        {% if (user.gender == 'u') %}
+                            Undefined
+                        {% elseif user.gender == 'm' %}
+                            Male
+                        {% elseif user.gender == 'f' %}
+                            Female
                         {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label class="control-label">
+                        {{ 'user.form.profile.about.label'|trans }}
+                    </label>
+
+                </div>
+                <div class="col-sm-8">
+                    <p>
+                        {{ user.about }}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-4">
+            {% if friendship %}
+                {% if friendship.accepted == false %}
+                    {% if friendship.user != app.user %}
+                        <a href="{{ path('accept_friend_request', { 'requestId': friendship.id }) }}" class="btn btn-info">{{ 'user.friendship.accept'|trans }}</a>
                     {% endif %}
-                    <a href="{{ path('delete_friend', { 'userId': user.id }) }}" class="btn btn-warning">Remove</a>
                 {% else %}
-                    {% if user.id != app.user.id %}
-
-                        <a href="{{ path('friend_request', { 'userId': user.id }) }}" class="btn btn-info">Send request</a>
-                    {% endif %}
+                    <p class="friend">
+                        <span class="glyphicon glyphicon-ok"></span>Amis
+                    </p>
                 {% endif %}
-                {#{% if user != app.user %}#}
-                    {#<a href="{{ path('new_dialog', { 'userId': user.id }) }}" class="btn btn-info">Send message</a>#}
-                {#{% endif %}#}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <label class="control-label">
-                    My interests
-                </label>
+                <a href="{{ path('delete_friend', { 'userId': user.id }) }}" class="btn btn-warning">{{ 'user.friendship.remove'|trans }}</a>
+            {% else %}
+                {% if user.id != app.user.id %}
 
-            </div>
-            <div class="col-sm-5">
-                <p>
-                    {{ user.interests }}
-                </p>
-            </div>
+                    <a href="{{ path('friend_request', { 'userId': user.id }) }}" class="btn btn-info">{{ 'user.friendship.request'|trans }}</a>
+                {% endif %}
+            {% endif %}
+            {#{% if user != app.user %}#}
+            {#<a href="{{ path('new_dialog', { 'userId': user.id }) }}" class="btn btn-info">Send message</a>#}
+            {#{% endif %}#}
         </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <label class="control-label">
-                    Country
-                </label>
+    </div>
 
-            </div>
-            <div class="col-sm-5">
-                <p>
-                    {{ user.country }}
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <label class="control-label">
-                    Gender
-                </label>
 
-            </div>
-            <div class="col-sm-5">
-                <p>
-                    {% if (user.gender == 'u') %}
-                        Undefined
-                    {% elseif user.gender == 'm' %}
-                        Male
-                    {% elseif user.gender == 'f' %}
-                        Female
-                    {% endif %}
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <label class="control-label">
-                    About
-                </label>
-
-            </div>
-            <div class="col-sm-5">
-                <p>
-                    {{ user.about }}
-                </p>
-            </div>
-
-        </div>
 {% endblock %}

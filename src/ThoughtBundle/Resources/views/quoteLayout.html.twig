@@ -14,9 +14,10 @@
             <span class="quote_chain">
                 {% set already_chains = [] %}
                 {% for arr_chain in thought.chainThoughts %}
-                    {% if arr_chain.chain.user.id == app.user.id %}
+                    {#{{ dump(arr_chain.chain.user.id) }}#}
+                    {#{% if arr_chain.chain.user.id == app.user.id %}#}
                         {% set already_chains = already_chains|merge([arr_chain.chain.name]) %}
-                    {% endif %}
+                    {#{% endif %}#}
                 {% endfor %}
 
 
@@ -105,22 +106,29 @@
             </a>
         {% endif %}
     </p>
-    <p>{{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}</p>
-    {% if app.user %}
-    <p class="pull-right">
-        {% if already_chains|length %}
-            <span data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
-                <small class="is-added">{{ 'thought.chain.already_added'|trans }}</small>
-            </span>
-        {% endif %}
-    </p>
-    {% endif %}
+    <div class="row">
+        <div class="col-sm-6">
+            {{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}
+        </div>
+        <div class="col-sm-6">
+            {% if app.user %}
 
-    {#{% if app.request.get('thoughtId') == null %}
-        <p>
-            <a class="btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">
-                {{ 'thought.comment.page_quote'|trans }}
-            </a>
-        </p>
-    {% endif %}#}
+                {% if already_chains|length %}
+                    <span class="pull-right" data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
+                        <small class="is-added ">{{ 'thought.chain.already_added'|trans }}</small>
+                    </span>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    {#{{ dump(already_chains) }}#}
+
+
+    {#{% if app.request.get('thoughtId') == null %}#}
+        {#<p>#}
+            {#<a class="btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">#}
+                {#{{ 'thought.comment.page_quote'|trans }}#}
+            {#</a>#}
+        {#</p>#}
+    {#{% endif %}#}
 </div>

@@ -149,7 +149,7 @@ class Mail
     public function friendNotificationMail(User $user, User $friend, $requestId)
     {
         $friendEmail = $friend->getEmail();
-        $subject   = 'User ' . $user->getFirstname() . ' ' . $user->getLastname() . ' has send you friend request';
+        $subject   = 'User ' . $user->getFirstname() . ' ' . $user->getLastname() . ' has sent you friend request';
         $body =
             $this->container->get('templating')->render('@ApplicationSonataUser/Mail/friendNotification.html.twig', [
                 'user'  => $user,

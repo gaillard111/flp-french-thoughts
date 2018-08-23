@@ -1,4 +1,9 @@
 user:
+    friendship:
+        request:     Send friend request
+        accept:      Accept
+        remove:      Remove
+
     form:
         registration:
             username:
@@ -48,6 +53,8 @@ user:
                 label:       Centres d'intérêts
             button:          Mettre à jour
             profile_edit:    Mes parameters
+
+
     dashboard:
         menu:
             link_thoughts:      Citations
@@ -218,6 +225,7 @@ thought:
 navbar:
     brand:        Les fils de la pensée
     profile:      Profil
+    chat:         Chat
     sign_out:     Déconnexion
     sign_in:      Login
     registration: S'inscrire

@@ -3,6 +3,12 @@
     border: 0 !important;
 }
 
+.friend {
+    display: inline-block;
+    color: #337ab7;
+    padding: 10px;
+}
+
 .is-added {
     cursor: pointer;
     font-size: 14px;
