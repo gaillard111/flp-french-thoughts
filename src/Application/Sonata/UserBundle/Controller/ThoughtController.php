@@ -36,7 +36,7 @@ class ThoughtController extends Controller
         ];
 
         $menu[] = [
-            'label' => 'Profil',
+            'label' => 'Mes paramètres',
             'route' => 'thought_profile',
             'parameters' => [
                 'userId' => $this->getUser()->getId(),
@@ -44,7 +44,7 @@ class ThoughtController extends Controller
         ];
 
         $menu[] = [
-            'label' => 'Mes paramètres',
+            'label' => 'Profil',
             'route' => 'fos_user_profile_edit',
         ];
 
