@@ -49,6 +49,8 @@ user:
                 label:       Pays
             gender:
                 label:       Sexe
+                genderm:     Homme
+                genderf:     Femme
             interests:
                 label:       Centres d'intérêts
             button:          Mettre à jour

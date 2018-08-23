@@ -49,8 +49,8 @@ class ProfileInfoType extends AbstractType
             ])
             ->add('gender', ChoiceType::class, [
                 'choices'   =>  [
-                    User::GENDER_MALE  =>  'Male',
-                    User::GENDER_FEMALE =>  'Female'
+                    User::GENDER_MALE  =>  'user.form.profile.gender.genderm',
+                    User::GENDER_FEMALE =>  'user.form.profile.gender.genderf',
                 ],
                 'label'    => 'user.form.profile.gender.label',
                 'label_attr' => [

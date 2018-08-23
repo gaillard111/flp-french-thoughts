@@ -50,9 +50,9 @@
                         {% if (user.gender == 'u') %}
                             Undefined
                         {% elseif user.gender == 'm' %}
-                            Male
+                            {{ 'user.form.profile.gender.genderm'|trans }}
                         {% elseif user.gender == 'f' %}
-                            Female
+                            {{ 'user.form.profile.gender.genderf'|trans }}
                         {% endif %}
                     </p>
                 </div>
