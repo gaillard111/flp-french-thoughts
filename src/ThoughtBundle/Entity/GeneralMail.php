@@ -48,23 +48,23 @@ class GeneralMail
         return $this->id;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getMailTo()
-    {
-        return $this->mailTo;
-    }
+//    /**
+//     * @return mixed
+//     */
+//    public function getMailTo()
+//    {
+//        return $this->mailTo;
+//    }
 
-    /**
-     * @param mixed $mailTo
-     * @return GeneralMail
-     */
-    public function setMailTo($mailTo)
-    {
-        $this->mailTo = $mailTo;
-        return $this;
-    }
+//    /**
+//     * @param mixed $mailTo
+//     * @return GeneralMail
+//     */
+//    public function setMailTo($mailTo)
+//    {
+//        $this->mailTo = $mailTo;
+//        return $this;
+//    }
 
     /**
      * @return mixed
