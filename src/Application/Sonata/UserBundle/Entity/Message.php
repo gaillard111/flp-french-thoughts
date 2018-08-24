@@ -3,6 +3,7 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Message
@@ -37,6 +38,7 @@ class Message
     /**
      * @var string
      * @ORM\Column(name="message_text", type="text")
+     * @Assert\NotBlank()
      */
     private $messageText;
 

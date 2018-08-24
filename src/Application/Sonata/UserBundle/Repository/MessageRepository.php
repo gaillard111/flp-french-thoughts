@@ -14,11 +14,28 @@ class MessageRepository extends EntityRepository
 {
     public function getMessagesFromDialog($dialogId)
     {
-        return $this->createQueryBuilder('m')
+        $qb = $this->createQueryBuilder('m');
+        $qb
             ->select('m')
             ->where('m.dialog = :dialog')
             ->setParameter('dialog', $dialogId)
             ->addOrderBy('m.id','DESC')
-            ->getQuery();
+        ;
+
+        return $qb->getQuery();
+    }
+
+    public function getLastMessageFromDialog($dialogId)
+    {
+        $qb = $this->createQueryBuilder('m');
+        $qb
+            ->select('m')
+            ->where('m.dialog = :dialog')
+            ->setParameter('dialog', $dialogId)
+            ->addOrderBy('m.id','DESC')
+            ->setMaxResults(1)
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

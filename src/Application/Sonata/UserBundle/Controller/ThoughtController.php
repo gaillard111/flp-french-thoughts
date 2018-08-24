@@ -59,7 +59,7 @@ class ThoughtController extends Controller
         $user = $this->getUser();
 
         $menu[] = [
-            'label' => 'Dialogs',
+            'label' => $this->get('translator')->trans('user.dialogs.title'),
             'route' => 'dialog_list',
         ];
 

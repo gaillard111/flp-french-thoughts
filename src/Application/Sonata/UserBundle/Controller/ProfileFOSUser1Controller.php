@@ -79,8 +79,14 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
 
         $dialogs = $user->getDialogs();
 
+        foreach ($dialogs as $key => $dialog) {
+            /** @var Dialog $dialog */
+            $lastMessages[$key] = $this->getDoctrine()->getRepository(Message::class)->getLastMessageFromDialog($dialog->getId());
+        }
+//        die;
         return $this->render('@ApplicationSonataUser/Profile/dialogs.html.twig', [
-            'dialogs'  => $dialogs
+            'dialogs'      => $dialogs,
+            'lastMessages' => $lastMessages
         ]);
     }
 
@@ -106,7 +112,7 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
             $messages = $em->getRepository('ApplicationSonataUserBundle:Message')->getMessagesFromDialog($dialogId);
 
 
-            if ($form->isSubmitted()) {
+            if ($form->isSubmitted() && $form->isValid()) {
 
                 $message = $form->getData();
                 $em->persist($message);

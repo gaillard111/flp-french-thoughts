@@ -2,6 +2,7 @@
 
 namespace Application\Sonata\UserBundle\Repository;
 
+use Application\Sonata\UserBundle\Entity\Dialog;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,6 +13,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class DialogRepository extends EntityRepository
 {
+    /**
+     * Finds a dialog between two given users
+     * @param $users
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findUsersDialog($users)
     {
         $qb = $this->createQueryBuilder('d');
@@ -27,5 +34,19 @@ class DialogRepository extends EntityRepository
             ])
         ;
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function findLastMessage($dialog)
+    {
+        $qb = $this->createQueryBuilder('d');
+        $qb
+            ->select('d')
+//            ->where('d = :dialog')
+//            ->setParameter('dialog', $dialog)
+//            ->orderBy('d.messages', 'DESC')
+//            ->setMaxResults(1)
+        ;
+//        dump($qb->getQuery()); die;
+        return $qb->getQuery()->getResult();
     }
 }

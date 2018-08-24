@@ -16,17 +16,19 @@
 
     <div class="sonata-user-show row row-fluid">
 
-        <div class="span2 col-lg-2 my-custom-menu">
-            {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
-        </div>
+        {% block my_custom_menu %}
+            <div class="span2 col-lg-2 my-custom-menu">
+                {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
+            </div>
+        {% endblock %}
 
         <div class="span10 col-lg-10 profile-topkek">
             {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
 
-            {% block sonata_profile_content '' %}
+            {% block sonata_profile_content %}
+
+            {% endblock %}
         </div>
 
     </div>
 {% endblock %}
-
-

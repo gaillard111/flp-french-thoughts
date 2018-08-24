@@ -7,10 +7,33 @@ use Application\Sonata\UserBundle\Entity\Dialog;
 use Application\Sonata\UserBundle\Entity\Friendship;
 use Application\Sonata\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserProfileController extends Controller
 {
+    /**
+     * @Route("/userlist", name="user_list")
+     */
+    public function userListAction(Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getEntityManager();
+        $usersRepository = $entityManager->getRepository(User::class);
+        $usersQuery = $usersRepository->createQueryBuilder('u')->select('u')->getQuery();
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $usersQuery,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+
+        return $this->render('@Thought/userList.html.twig', [
+            'users' =>  $pagination,
+        ]);
+    }
+
     /**
      * @Route("/userprofile/{userId}", name="thought_profile")
      * @param Int $userId

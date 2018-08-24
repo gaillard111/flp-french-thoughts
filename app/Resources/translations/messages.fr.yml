@@ -4,6 +4,11 @@ user:
         accept:      Accept
         remove:      Remove
 
+    dialogs:
+        title:          Mes messages
+        message_text:   Un message
+        message_submit: Envoyer un message
+
     form:
         registration:
             username:
@@ -68,7 +73,7 @@ user:
             submit: Créer
         list_page:
             title: Mes citations
-            add_button: Ajouter la citation
+            add_button: Insérer une citation
             link:
                 edit:   Edit
                 delete: Delete
@@ -225,6 +230,7 @@ thought:
 navbar:
     brand:        Les fils de la pensée
     profile:      Profil
+    users:        Users
     chat:         Chat
     sign_out:     Déconnexion
     sign_in:      Login
