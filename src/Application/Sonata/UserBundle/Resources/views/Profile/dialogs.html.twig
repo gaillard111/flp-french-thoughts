@@ -11,11 +11,6 @@
                 {% for dialog in dialogs %}
                         <div class="row">
                             <div class="col-sm-6">
-                                {#<div class="media-left">#}
-                                    {#<a href="#">#}
-                                    {#<img class="media-object" src="..." alt="...">#}
-                                    {#</a>#}
-                                {#</div>#}
                                 <div class="message_preview">
                                     <div class="media-body">
                                         <h4 class="media-heading">
@@ -26,26 +21,21 @@
                                                     {{ user.firstname }} {{ user.lastname }}
                                                 {% endif %}
                                             {% endfor %}
-                                            {#{% dump dialog.users %}#}
                                         </a>
                                         </h4>
-
-                                            <p>
-
-                                                {% for message in lastMessages %}
+                                        <p>
+                                            {% for message in lastMessages %}
+                                                {% if message %}
                                                     {% if message.dialog.id == dialog.id %}
                                                         {{ message.messageText }}
                                                     {% endif %}
-                                                {% endfor %}
-                                            </p>
-
-
+                                                {% endif %}
+                                            {% endfor %}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {#{% endif %}#}
-
                 {% endfor %}
             </div>
         </div>
