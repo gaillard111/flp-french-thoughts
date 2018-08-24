@@ -47,12 +47,6 @@ class ThoughtController extends Controller
                 'userId' => $this->getUser()->getId(),
             ]
         ];
-
-        $menu[] = [
-            'label' => 'Profil',
-            'route' => 'fos_user_profile_edit',
-        ];
-
         $menu[] = [
             'label' => 'Mes amis',
             'route' => 'friends',

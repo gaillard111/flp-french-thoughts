@@ -309,3 +309,6 @@ p.quote_title a {
     padding: 5px;
     border-bottom: 1px solid #ddd;
 }
+div.panel-heading {
+    margin: 0;
+}
