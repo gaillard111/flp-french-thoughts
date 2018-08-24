@@ -8,6 +8,7 @@ user:
         title:          Mes messages
         message_text:   Un message
         message_submit: Envoyer un message
+        send_message:   Send message
 
     form:
         registration:
