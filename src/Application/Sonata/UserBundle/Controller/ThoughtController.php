@@ -2,14 +2,14 @@
 
 namespace Application\Sonata\UserBundle\Controller;
 
-use Application\Sonata\UserBundle\Entity\Friendship;
+use Application\Sonata\UserBundle\Entity\User;
 use Application\Sonata\UserBundle\Form\Type\ThoughtType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouteCompiler;
 use ThoughtBundle\Entity\Author;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Model\AuthorModel;
@@ -36,6 +36,11 @@ class ThoughtController extends Controller
         ];
 
         $menu[] = [
+            'label' => 'Profil',
+            'route' => 'fos_user_profile_edit',
+        ];
+
+        $menu[] = [
             'label' => 'Mes paramètres',
             'route' => 'thought_profile',
             'parameters' => [
@@ -51,6 +56,14 @@ class ThoughtController extends Controller
         $menu[] = [
             'label' => 'Mes amis',
             'route' => 'friends',
+        ];
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $menu[] = [
+            'label' => $this->get('translator')->trans('user.dialogs.title'),
+            'route' => 'dialog_list',
         ];
 
         $menu[] = [
@@ -84,12 +97,14 @@ class ThoughtController extends Controller
         /** @var RequestStack $requestStack */
         $requestStack = $this->get('request_stack');
 
-        return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', array(
+
+        return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
             'menu'          => $menu,
             'routeName'     => $routeName,
             'thoughts'      => $thoughts,
+            'dialogsCount'  => $user->getDialogs()->count(),
             'userProfileId' => $requestStack->getMasterRequest()->get('userId')
-        ));
+        ]);
     }
 
     /**

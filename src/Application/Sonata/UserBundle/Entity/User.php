@@ -11,6 +11,7 @@
 
 namespace Application\Sonata\UserBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Sonata\UserBundle\Entity\BaseUser as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -80,6 +81,46 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="Application\Sonata\UserBundle\Entity\Friendship", mappedBy="friend")
      */
     protected $friends;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Application\Sonata\UserBundle\Entity\Dialog", mappedBy="users")
+     */
+    protected $dialogs;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getDialogs()
+    {
+        return $this->dialogs;
+    }
+
+    /**
+     * @param ArrayCollection $dialogs
+     */
+    public function setDialogs($dialogs)
+    {
+        $this->dialogs = $dialogs;
+    }
+
+    /**
+     * @param Dialog $dialog
+     * @return User
+     */
+    public function addDialog($dialog)
+    {
+        $dialog->addUser($this);
+        $this->dialogs[] = $dialog;
+
+        return $this;
+    }
+
+    public function __construct()
+    {
+        $this->dialogs = new ArrayCollection();
+        parent::__construct();
+    }
+
 
     /**
      * Get id
@@ -287,5 +328,71 @@ class User extends BaseUser
     public function getInterests()
     {
         return $this->interests;
+    }
+
+    /**
+     * Add friendship
+     *
+     * @param \Application\Sonata\UserBundle\Entity\Friendship $friendship
+     * @return User
+     */
+    public function addFriendship(\Application\Sonata\UserBundle\Entity\Friendship $friendship)
+    {
+        $this->friendship[] = $friendship;
+
+        return $this;
+    }
+
+    /**
+     * Remove friendship
+     *
+     * @param \Application\Sonata\UserBundle\Entity\Friendship $friendship
+     */
+    public function removeFriendship(\Application\Sonata\UserBundle\Entity\Friendship $friendship)
+    {
+        $this->friendship->removeElement($friendship);
+    }
+
+    /**
+     * Get friendship
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFriendship()
+    {
+        return $this->friendship;
+    }
+
+    /**
+     * Add friends
+     *
+     * @param \Application\Sonata\UserBundle\Entity\Friendship $friends
+     * @return User
+     */
+    public function addFriend(\Application\Sonata\UserBundle\Entity\Friendship $friends)
+    {
+        $this->friends[] = $friends;
+
+        return $this;
+    }
+
+    /**
+     * Remove friends
+     *
+     * @param \Application\Sonata\UserBundle\Entity\Friendship $friends
+     */
+    public function removeFriend(\Application\Sonata\UserBundle\Entity\Friendship $friends)
+    {
+        $this->friends->removeElement($friends);
+    }
+
+    /**
+     * Get friends
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getFriends()
+    {
+        return $this->friends;
     }
 }

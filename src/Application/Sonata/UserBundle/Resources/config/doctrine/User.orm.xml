@@ -36,9 +36,16 @@
                 mapped-by="friend"
         />
 
+        <many-to-many
+                field="dialogs"
+                mappedBy="users"
+                target-entity="Application\Sonata\UserBundle\Entity\Dialog"
+        />
+
         <field name="about" type="text" nullable="true"/>
         <field name="country" type="string" length="255" nullable="true"/>
         <field name="interests" type="text" nullable="true"/>
+
 
     </entity>
 

@@ -3,13 +3,37 @@
 namespace ThoughtBundle\Controller;
 
 
+use Application\Sonata\UserBundle\Entity\Dialog;
 use Application\Sonata\UserBundle\Entity\Friendship;
 use Application\Sonata\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class UserProfileController extends Controller
 {
+    /**
+     * @Route("/userlist", name="user_list")
+     */
+    public function userListAction(Request $request)
+    {
+        $entityManager = $this->getDoctrine()->getEntityManager();
+        $usersRepository = $entityManager->getRepository(User::class);
+        $usersQuery = $usersRepository->createQueryBuilder('u')->select('u')->getQuery();
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $usersQuery,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+
+        return $this->render('@Thought/userList.html.twig', [
+            'users' =>  $pagination,
+        ]);
+    }
+
     /**
      * @Route("/userprofile/{userId}", name="thought_profile")
      * @param Int $userId
@@ -22,12 +46,14 @@ class UserProfileController extends Controller
         $possibleFriend = $entityManager->getRepository(User::class)->find($userId);
 
         if ($user) {
+            if ($possibleFriend) {
 
-            $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
-            return $this->render('@ApplicationSonataUser/Thought/userProfile.html.twig', [
-                'user'          =>  $possibleFriend,
-                'friendship'   =>  $friendship
-            ]);
+                $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
+                return $this->render('@ApplicationSonataUser/Thought/userProfile.html.twig', [
+                    'user'          =>  $possibleFriend,
+                    'friendship'   =>  $friendship
+                ]);
+            }
         }
         return $this->redirectToRoute('sonata_user_profile_edit');
     }
@@ -89,5 +115,63 @@ class UserProfileController extends Controller
         }
 
         return $this->redirectToRoute('friends');
+    }
+
+    /**
+     * @Route("/newdialog/{userId}", name="new_dialog")
+     */
+    public function newDialogAction($userId)
+    {
+        $entityManager = $this->getDoctrine()->getEntityManager();
+        /** @var User $user */
+        $user = $entityManager->getRepository(User::class)->findOneBy([ 'id' => $userId]);
+        /** @var User $curUser */
+        $curUser = $this->getUser();
+
+        $friends = $entityManager->getRepository(Friendship::class)->isFriend($user, $curUser);
+
+//        dump($friends); die;
+        if ($friends) {
+
+            if ($user != $curUser) {
+
+                $users = [];
+                $users[] = $user->getId();
+                $users[] = $curUser->getId();
+
+
+                $dialog = $entityManager->getRepository(Dialog::class)->findUsersDialog($users);
+
+                if ($user) {
+
+                    if (!$dialog) {
+
+                        /** @var Dialog $dialog */
+                        $dialog = new Dialog();
+
+                        $dialog->addUser($curUser);
+                        $dialog->addUser($user);
+
+                        $curUser->getDialogs()->add($dialog);
+                        $user->getDialogs()->add($dialog);
+
+                        $entityManager->persist($dialog);
+                        $entityManager->persist($curUser);
+                        $entityManager->persist($user);
+                        $entityManager->flush();
+                    }
+
+
+                    $dialogId = $dialog->getId();
+
+
+                    return $this->redirectToRoute('dialog', [
+                        'dialogId'  => $dialogId
+                    ]);
+                }
+            }
+        }
+
+        return $this->redirectToRoute('dialog_list');
     }
 }

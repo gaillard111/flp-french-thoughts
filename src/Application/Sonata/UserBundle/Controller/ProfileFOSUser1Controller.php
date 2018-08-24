@@ -2,9 +2,13 @@
 
 namespace Application\Sonata\UserBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\Dialog;
+use Application\Sonata\UserBundle\Entity\Message;
 use Application\Sonata\UserBundle\Entity\User;
+use Application\Sonata\UserBundle\Form\Type\MessageType;
 use Application\Sonata\UserBundle\Form\Type\ProfileInfoType;
 use Application\Sonata\UserBundle\Repository\FriendshipRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,6 +69,88 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
         ]);
     }
 
+    /**
+     * @Route("/dialogs", name="dialog_list")
+     */
+    public function userDialogsAction()
+    {
+
+        $user = $this->getUser();
+
+        $dialogs = $user->getDialogs();
+
+        foreach ($dialogs as $key => $dialog) {
+            /** @var Dialog $dialog */
+            $lastMessages[$key] = $this->getDoctrine()->getRepository(Message::class)->getLastMessageFromDialog($dialog->getId());
+        }
+//        die;
+        return $this->render('@ApplicationSonataUser/Profile/dialogs.html.twig', [
+            'dialogs'      => $dialogs,
+            'lastMessages' => $lastMessages
+        ]);
+    }
+
+    /**
+     * @Route("/dialog/{dialogId}", name="dialog")
+     */
+    public function dialogAction($dialogId, Request $request)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $dialog = $em->getRepository('ApplicationSonataUserBundle:Dialog')->find($dialogId);
+
+        if ($dialog) {
+
+            $message = new Message();
+            $message->setSender($this->getUser());
+            $message->setDialog($dialog);
+
+
+            $form = $this->createForm(MessageType::class, $message);
+            $form->handleRequest($request);
+
+            $messages = $em->getRepository('ApplicationSonataUserBundle:Message')->getMessagesFromDialog($dialogId);
+
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $message = $form->getData();
+                $em->persist($message);
+                $em->persist($dialog);
+                $em->flush();
+                $em->clear(Dialog::class);
+                $em->clear(Message::class);
+
+                $messages = $em->getRepository('ApplicationSonataUserBundle:Message')->getMessagesFromDialog($dialogId);
+                $message->setMessageText('');
+
+                $form = $this->createForm(MessageType::class, $message);
+            }
+
+            $dialogUsers = $dialog->getUsers();
+
+            $paginator  = $this->get('knp_paginator');
+            $pagination = $paginator->paginate(
+                $messages,
+                $request->query->getInt('page', 1),
+                10
+            );
+
+            foreach ($dialogUsers as $user) {
+                if ($user == $this->getUser()) {
+                    return $this->render('ApplicationSonataUserBundle:Profile:dialog.html.twig', [
+                        'messages'  => $pagination,
+                        'dialog'    => $dialog,
+//                'receiver'  => $reciever,
+                        'form'  => $form->createView()
+                    ]);
+                }
+            }
+        }
+
+        return $this->redirectToRoute('sonata_user_profile_edit');
+
+    }
 
     public function friendListAction()
     {

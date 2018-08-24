@@ -294,6 +294,18 @@ div.author_jumbotron .dropdown{
     display: none;
 }
 
+div.user_jumbotron {
+    margin-bottom: 0;
+    padding: 0 !important;
+    border: solid 1px #fff;
+    background-color: transparent;
+}
+
 p.quote_title a {
     cursor: pointer;
+}
+
+.message_preview {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
 }

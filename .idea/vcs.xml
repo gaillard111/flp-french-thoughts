@@ -2,5 +2,12 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/sonata-project/admin-bundle" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/sonata-project/core-bundle" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/sonata-project/datagrid-bundle" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/sonata-project/doctrine-orm-admin-bundle" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/sonata-project/easy-extends-bundle" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/sonata-project/user-bundle" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/twig/extensions" vcs="Git" />
   </component>
 </project>

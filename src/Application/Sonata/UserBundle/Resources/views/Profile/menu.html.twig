@@ -2,11 +2,9 @@
     {% for item in menu %}
             <a class="list-group-item
                     {% if routeName == item.route  %}
-                        {% if item.route == 'thought_profile' %}
-                            {% if userProfileId == app.user.id %}
-                             active
-                            {% endif %}
-                        {% else %}
+                         active
+                    {% else %}
+                        {% if routeName == 'dialog' and item.route == 'dialog_list' %}
                             active
                         {% endif %}
                     {% endif %}
@@ -17,10 +15,13 @@
                     {% endif %}
                     ">{{ item.label }}
                 {% if item.route == 'sonata_user_thoughts' %}
-                        ({{ thoughts }})
+                    ({{ thoughts }})
                 {% endif %}
                 {% if item.route == 'friend_requests' %}
                     ({{ requestsCount }})
+                {% endif %}
+                {% if item.route == 'dialog_list' %}
+                    ({{ dialogsCount }})
                 {% endif %}
             </a>
     {% endfor %}
