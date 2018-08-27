@@ -1,28 +1,32 @@
 <div class="list-group">
     {% for item in menu %}
-            <a class="list-group-item
-                    {% if routeName == item.route  %}
-                         active
-                    {% else %}
-                        {% if routeName == 'dialog' and item.route == 'dialog_list' %}
-                            active
-                        {% endif %}
-                    {% endif %}
-                    {% if item.parameters is defined %}
-                    " href="{{ path(item.route, item.parameters) }}
-                    {% else %}
-                    " href="{{ path(item.route) }}
-                    {% endif %}
-                    ">{{ item.label }}
-                {% if item.route == 'sonata_user_thoughts' %}
-                    ({{ thoughts }})
+        <a class="list-group-item
+            {% if routeName == item.route  %}
+                {% if routeName != 'thought_profile' %}
+                    active
+                {% elseif userProfileId == app.user.id %}
+                    active
                 {% endif %}
-                {% if item.route == 'friend_requests' %}
-                    ({{ requestsCount }})
+            {% else %}
+                {% if routeName == 'dialog' and item.route == 'dialog_list' %}
+                    active
                 {% endif %}
-                {% if item.route == 'dialog_list' %}
-                    ({{ dialogsCount }})
-                {% endif %}
-            </a>
+            {% endif %}
+            {% if item.parameters is defined %}
+            " href="{{ path(item.route, item.parameters) }}
+            {% else %}
+            " href="{{ path(item.route) }}
+            {% endif %}
+            ">{{ item.label }}
+            {% if item.route == 'sonata_user_thoughts' %}
+                ({{ thoughts }})
+            {% endif %}
+            {% if item.route == 'friend_requests' %}
+                ({{ requestsCount }})
+            {% endif %}
+            {% if item.route == 'dialog_list' %}
+                ({{ dialogsCount }})
+            {% endif %}
+        </a>
     {% endfor %}
 </div>
