@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserProfileController extends Controller
 {
     /**
-     * @Route("/userlist", name="user_list")
+     * @Route("/userslist", name="user_list")
      */
     public function userListAction(Request $request)
     {
@@ -29,7 +29,7 @@ class UserProfileController extends Controller
         );
 
 
-        return $this->render('usersList.html.twig', [
+        return $this->render('@Thought/usersList.html.twig', [
             'users' =>  $pagination,
         ]);
     }
