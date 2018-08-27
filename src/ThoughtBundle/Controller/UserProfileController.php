@@ -29,7 +29,7 @@ class UserProfileController extends Controller
         );
 
 
-        return $this->render('@Thought/userList.html.twig', [
+        return $this->render('usersList.html.twig', [
             'users' =>  $pagination,
         ]);
     }

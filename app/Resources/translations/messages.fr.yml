@@ -1,14 +1,17 @@
 user:
     friendship:
-        request:     Send friend request
-        accept:      Accept
-        remove:      Remove
+        request:        Send friend request
+        accept:         Accept
+        remove:         Remove
 
     dialogs:
         title:          Mes messages
         message_text:   Un message
         message_submit: Envoyer un message
         send_message:   Send message
+
+    list:
+        title:          Users list
 
     form:
         registration:
