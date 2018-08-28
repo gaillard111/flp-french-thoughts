@@ -1,5 +1,6 @@
 user:
     friendship:
+        title:          Mes amis
         request:        Send friend request
         accept:         Accept
         remove:         Remove

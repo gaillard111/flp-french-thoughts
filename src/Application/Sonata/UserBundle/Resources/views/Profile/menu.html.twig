@@ -39,7 +39,7 @@
                 ({{ requestsCount }})
             {% endif %}
             {% if item.route == 'dialog_list' %}
-                ({{ dialogsCount }})
+                (+{{ newMessagesCount[1] }})
             {% endif %}
         </a>
     {% endfor %}

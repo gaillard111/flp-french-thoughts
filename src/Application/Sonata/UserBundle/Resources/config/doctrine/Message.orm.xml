@@ -37,6 +37,7 @@
 
         <field name="messageText" type="text" />
         <field name="createdAt" type="datetime" />
+        <field name="isViewed" type="boolean" nullable="true" />
     </entity>
 
 </doctrine-mapping>

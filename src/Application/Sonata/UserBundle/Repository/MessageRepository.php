@@ -2,6 +2,7 @@
 
 namespace Application\Sonata\UserBundle\Repository;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,6 +13,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class MessageRepository extends EntityRepository
 {
+    /**
+     * @param $dialogId
+     * @return \Doctrine\ORM\Query
+     */
     public function getMessagesFromDialog($dialogId)
     {
         $qb = $this->createQueryBuilder('m');
@@ -25,6 +30,55 @@ class MessageRepository extends EntityRepository
         return $qb->getQuery();
     }
 
+    public function getNewMessagesFromDialog($dialogId, $senderId)
+    {
+        $qb = $this->createQueryBuilder('m');
+        $qb
+            ->select('m')
+            ->where('m.dialog = :dialog')
+            ->andWhere('m.isViewed = :isViewed')
+            ->andWhere('m.sender != :user')
+            ->setParameters([
+                'dialog'    =>  $dialogId,
+                'isViewed'  =>  false,
+//                'null'      =>  null,
+                'user'      =>  $senderId,
+            ]);
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param User $user
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getCountNewMessages($user)
+    {
+//        foreach ($dialog->getUsers()) {
+//            $reciever =
+//        }
+        $qb = $this->createQueryBuilder('m');
+        $qb
+            ->select('count(m.id)')
+
+            ->leftJoin('m.dialog', 'd')
+            ->leftJoin('d.users', 'u')
+
+            ->andWhere('u=:user')
+            ->andWhere('m.isViewed = :isViewed')
+            ->andWhere('m.sender != :user')
+            ->setParameters([
+                'isViewed'  =>  false,
+                'user'      =>  $user,
+            ]);
+        return $qb->getQuery()->getOneOrNullResult();//->getResult();
+    }
+
+    /**
+     * @param $dialogId
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function getLastMessageFromDialog($dialogId)
     {
         $qb = $this->createQueryBuilder('m');

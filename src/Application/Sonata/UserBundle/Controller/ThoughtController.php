@@ -2,6 +2,7 @@
 
 namespace Application\Sonata\UserBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\Message;
 use Application\Sonata\UserBundle\Entity\User;
 use Application\Sonata\UserBundle\Form\Type\ThoughtType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -36,19 +37,19 @@ class ThoughtController extends Controller
 //        ];
 
         $menu[] = [
-            'label' => 'Profil',
+            'label' => $this->get('translator')->trans('navbar.profile'),
             'route' => 'fos_user_profile_edit',
         ];
 
         $menu[] = [
-            'label' => 'Mes paramètres',
+            'label' => $this->get('translator')->trans('user.form.profile.profile_edit'),
             'route' => 'thought_profile',
             'parameters' => [
                 'userId' => $this->getUser()->getId(),
             ]
         ];
         $menu[] = [
-            'label' => 'Mes amis',
+            'label' => $this->get('translator')->trans('user.friendship.title'),
             'route' => 'friends',
         ];
 
@@ -61,17 +62,17 @@ class ThoughtController extends Controller
         ];
 
         $menu[] = [
-            'label' => 'Insérer une citation',
+            'label' => $this->get('translator')->trans('user.thought.create_page.title'),
             'route' => 'sonata_user_thought_create',
         ];
 
         $menu[] = [
-            'label' => 'Mes citations',
+            'label' => $this->get('translator')->trans('user.thought.list_page.title'),
             'route' => 'sonata_user_thoughts',
         ];
 
         $menu[] = [
-            'label' => 'Mes chaines',
+            'label' => $this->get('translator')->trans('user.chain.list_page.title'),
             'route' => 'sonata_user_chains',
         ];
 
@@ -91,13 +92,18 @@ class ThoughtController extends Controller
         /** @var RequestStack $requestStack */
         $requestStack = $this->get('request_stack');
 
+        $dialogs = $user->getDialogs();
+
+        $count = $this->getDoctrine()->getRepository(Message::class)->getCountNewMessages($user);
+//        dump($this->getUser()->getId());
+//        dump($count); die;
 
         return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
-            'menu'          => $menu,
-            'routeName'     => $routeName,
-            'thoughts'      => $thoughts,
-            'dialogsCount'  => $user->getDialogs()->count(),
-            'userProfileId' => $requestStack->getMasterRequest()->get('userId')
+            'menu'             => $menu,
+            'routeName'        => $routeName,
+            'thoughts'         => $thoughts,
+            'newMessagesCount' => $count,
+            'userProfileId'    => $requestStack->getMasterRequest()->get('userId')
         ]);
     }
 

@@ -23,12 +23,14 @@ class ChainController extends Controller
             'label' => 'thought.chain.favorite_chains',
             'route' => 'sonata_user_favorite_chains',
         ];
-//        $navigation[] = [
-//            'label' => 'thought.chain.public_chains',
-//            'route' => 'sonata_user_chains',
-//        ];
+
+
         $navigation[] = [
             'label' => 'thought.chain.collective_chains',
+            'route' => 'chain_collective',
+        ];
+        $navigation[] = [
+            'label' => 'thought.chain.public_chains',
             'route' => 'sonata_user_shared_chains',
         ];
 
@@ -290,6 +292,30 @@ class ChainController extends Controller
             $this->addFlash('success', $this->get('translator')->trans('thought.chain.' . $collectiveMessage));
         }
         return $this->redirect($this->generateUrl('sonata_user_chains'));
+    }
+
+    /**
+     * @Route("/chain/collective", name="chain_collective")
+     */
+    public function listCollectiveAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $chains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains();
+
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $chains,
+            $request->query->getInt('page', 1),
+            10
+        );
+
+        return $this->render('ApplicationSonataUserBundle:Chain:sharedList.html.twig', array(
+            'chains' => $pagination,
+
+        ));
     }
 
     /**

@@ -100,6 +100,18 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
 
         if ($dialog) {
 
+            $newMessages = $em->getRepository(Message::class)->getNewMessagesFromDialog($dialogId, $this->getUser()->getId());
+            if ($newMessages) {
+                foreach ($newMessages as $newMessage) {
+
+                    /** @var Message $newMessage */
+                    $newMessage->setIsViewed(true);
+                    $em->persist($newMessage);
+                    $em->flush();
+                }
+            }
+//            dump($newMessages); die;
+
             $message = new Message();
             $message->setSender($this->getUser());
             $message->setDialog($dialog);
@@ -108,8 +120,8 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
             $form = $this->createForm(MessageType::class, $message);
             $form->handleRequest($request);
 
-            $messages = $em->getRepository('ApplicationSonataUserBundle:Message')->getMessagesFromDialog($dialogId);
 
+//            dump($messages->getResult()); die;
 
             if ($form->isSubmitted() && $form->isValid()) {
 
@@ -120,11 +132,17 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
                 $em->clear(Dialog::class);
                 $em->clear(Message::class);
 
-                $messages = $em->getRepository('ApplicationSonataUserBundle:Message')->getMessagesFromDialog($dialogId);
-                $message->setMessageText('');
 
-                $form = $this->createForm(MessageType::class, $message);
+//                $messages = $em->getRepository('ApplicationSonataUserBundle:Message')->getMessagesFromDialog($dialogId);
+//                $message->setMessageText('');
+
+                return $this->redirectToRoute('dialog', [
+                    'dialogId'  =>  $dialogId,
+                ]);
+//                $form = $this->createForm(MessageType::class, $message);
             }
+
+            $messages = $em->getRepository(Message::class)->getMessagesFromDialog($dialogId);
 
             $dialogUsers = $dialog->getUsers();
 

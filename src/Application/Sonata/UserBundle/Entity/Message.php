@@ -48,6 +48,29 @@ class Message
     private $createdAt;
 
     /**
+     * @ORM\Column(name="is_viewed", type="boolean", nullable=true)
+     */
+    private $isViewed = false;
+
+    /**
+     * @return mixed
+     */
+    public function getisViewed()
+    {
+        return $this->isViewed;
+    }
+
+    /**
+     * @param mixed $isViewed
+     * @return Message
+     */
+    public function setIsViewed($isViewed)
+    {
+        $this->isViewed = $isViewed;
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getCreatedAt()
