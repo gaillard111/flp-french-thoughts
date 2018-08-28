@@ -312,7 +312,7 @@ class ChainController extends Controller
             10
         );
 
-        return $this->render('ApplicationSonataUserBundle:Chain:sharedList.html.twig', array(
+        return $this->render('ApplicationSonataUserBundle:Chain:collectiveList.html.twig', array(
             'chains' => $pagination,
 
         ));

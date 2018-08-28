@@ -155,7 +155,7 @@ label.required:after{
 }
 
 .quote_title, .quote_content {
-    font-size: 17.5px !important;
+    font-size: 20px !important;
 }
 .quote_content {
     font-family: "Arial" !important;
@@ -179,9 +179,11 @@ label.required:after{
 .block_comments{
     margin-bottom: 20px;
 }
-.quote_chain{
-    float: right;
-    margin-right: 15px;
+.quote_chain {
+    padding: 10px;
+
+    /*float: right;*/
+    /*margin-right: 15px;*/
 }
 .noticer-wrap {
     position: fixed;
@@ -257,13 +259,13 @@ label.required:after{
     height: 120px;
 }
 .add_chain{
-    padding: 2px 5px;
+    padding: 5px 0;
 }
 .add_collective_chain{
-    padding: 2px 5px;
+    padding: 5px 0;
 }
 .quote_chain select{
-    padding: 2px 5px;
+    padding: 5px 0;
     font-size: 14px;
 }
 .chain-quote-control a{
@@ -336,12 +338,22 @@ div.panel-heading {
     padding-bottom: 20px;
 }
 
-/*.custom-brand {*/
-    /*padding: 228px;*/
-    /*display: inline-block;*/
-/*}*/
-
 .text-navbar {
     display: inline-block;
     padding: 20px 0;
+}
+
+.userslist {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.chains-buttons {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 15px;
+}
+
+.chain-button {
+    padding-left: 0;
 }

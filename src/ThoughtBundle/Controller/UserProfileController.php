@@ -25,7 +25,7 @@ class UserProfileController extends Controller
         $pagination = $paginator->paginate(
             $usersQuery,
             $request->query->getInt('page', 1),
-            10
+            30
         );
 
 

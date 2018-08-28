@@ -1,54 +1,75 @@
 <div class="jumbotron quote" data-quote="{{ thought.id }}">
-    <p class="quote_title">
-        <span>
-            <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">{{ thought.category }}</a>
-        </span>
-        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR') %}
-            <span class="quote_edit">
-                <a href="{{ path('admin_thought_thought_edit', {'id': thought.id}) }}">
-                    {{ 'user.thought.list_page.link.edit'|trans }}
-                </a>
-            </span>
-        {% endif %}
-        {% if app.user %}
-            <span class="quote_chain">
-                {% set already_chains = [] %}
-                {% for arr_chain in thought.chainThoughts %}
-                    {#{{ dump(arr_chain.chain.user.id) }}#}
-                    {#{% if arr_chain.chain.user.id == app.user.id %}#}
+    {% if app.user %}
+        <div class="row">
+            <div class="col-sm-12 col-lg-5">
+                <p class="quote_title">
+                    <span>
+                        <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">{{ thought.category }}</a>
+                    </span>
+                </p>
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR') %}
+                    <span class="quote_edit">
+                        <a href="{{ path('admin_thought_thought_edit', {'id': thought.id}) }}">
+                            {{ 'user.thought.list_page.link.edit'|trans }}
+                        </a>
+                    </span>
+                {% endif %}
+            </div>
+            <div class="col-sm-12 col-lg-7 chains-buttons">
+                <div class="quote_chain">
+                    {% set already_chains = [] %}
+
+                    {% for arr_chain in thought.chainThoughts %}
                         {% set already_chains = already_chains|merge([arr_chain.chain.name]) %}
-                    {#{% endif %}#}
-                {% endfor %}
-
-
-
-                <select name="quote_collective_chain">
-                    <option value="">{{ 'thought.chain.add_quote_collective'|trans }}</option>
-                    {% for chain in colChains %}
-                        {% if chain.name not in already_chains %}
-                            <option value="{{ chain.id }}">{{ chain.name }}</option>
-                        {% endif %}
                     {% endfor %}
-                </select>
-                <a href="#" class="add_collective_chain btn btn-info btn-xs">{{ 'thought.chain.add_to_collective_chain'|trans }}</a>
+
+
+                    <div class="col-xs-12 chains-buttons text-center">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <select class="form-control" name="quote_collective_chain">
+                                    <option value="">{{ 'thought.chain.add_quote_collective'|trans }}</option>
+                                    {% for chain in colChains %}
+                                        {% if chain.name not in already_chains %}
+                                            <option value="{{ chain.id }}">{{ chain.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-xs-2 chain-button">
+                                <a href="#" class="add_collective_chain btn btn-info form-control">{{ 'thought.chain.add_to_collective_chain'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 chains-buttons text-center">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <select class="form-control" name="quote_chain">
+                                    <option value="">{{ 'thought.chain.add_quote'|trans }}</option>
+
+                                    {% for chain in app.user.chains %}
+                                        {% if chain.name not in already_chains %}
+                                            <option value="{{ chain.id }}">{{ chain.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-xs-2 chain-button">
+                                <a href="#" class="add_chain btn btn-info form-control">{{ 'thought.chain.add_to_chain'|trans }}</a>
+                            </div>
+                        </div>
+
+                    </div>
 
 
 
-                <select name="quote_chain">
-                    <option value="">{{ 'thought.chain.add_quote'|trans }}</option>
+                </div>
+            </div>
 
-                    {% for chain in app.user.chains %}
-                        {% if chain.name not in already_chains %}
-                            <option value="{{ chain.id }}">{{ chain.name }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-                <a href="#" class="add_chain btn btn-info btn-xs">{{ 'thought.chain.add_to_chain'|trans }}</a>
+        </div>
 
-
-            </span>
-        {% endif %}
-    </p>
+    {% endif %}
     <p class="quote_content">
         <span>{{ thought.content|customTag|raw|nl2br }}</span>
     </p>
@@ -60,9 +81,9 @@
 
         {% set author = thought.author|authorsInfo %}
 
-        {% if author %}
-            <span class="hoverable_name">({{ 'thought.property.hoverable'|trans}})</span>
-        {% endif %}
+        {#{% if author %}#}
+            {#<span class="hoverable_name">({{ 'thought.property.hoverable'|trans}})</span>#}
+        {#{% endif %}#}
     </p>
 
     {% if author %}

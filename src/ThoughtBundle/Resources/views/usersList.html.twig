@@ -9,15 +9,17 @@
 
 {% block sonata_profile_content %}
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 userslist">
 
             {% for user in users %}
-                <div class="jumbotron user_jumbotron">
-                    <p class="quote_title">
-                        <a class="author_name" href="{{ path('thought_profile', { 'userId': user.id }) }}">
-                            {{ user.firstname }} {{ user.lastname }}
-                        </a>
-                    </p>
+                <div class="col-sm-4">
+                    <div class="jumbotron user_jumbotron">
+                        <p class="quote_title">
+                            <a class="author_name" href="{{ path('thought_profile', { 'userId': user.id }) }}">
+                                {{ user.firstname }} {{ user.lastname }}
+                            </a>
+                        </p>
+                    </div>
                 </div>
             {% endfor %}
 
