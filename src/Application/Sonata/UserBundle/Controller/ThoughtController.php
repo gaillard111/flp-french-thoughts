@@ -25,6 +25,7 @@ class ThoughtController extends Controller
     /**
      * @param $routeName
      * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\Query\QueryException
      */
     public function menuAction($routeName)

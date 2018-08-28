@@ -38,7 +38,7 @@
             {% if item.route == 'friend_requests' %}
                 ({{ requestsCount }})
             {% endif %}
-            {% if item.route == 'dialog_list' %}
+            {% if item.route == 'dialog_list' and newMessagesCount[1] != 0 %}
                 (+{{ newMessagesCount[1] }})
             {% endif %}
         </a>
