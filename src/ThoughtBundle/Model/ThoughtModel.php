@@ -646,7 +646,7 @@ class ThoughtModel
     }
 
     public function getLastThoughts($limit) {
-        return $this->em->getRepository(Thought::class)->getLastThoughts($limit);
+        return $this->repository->getLastThoughts($limit);
     }
 
     /**
