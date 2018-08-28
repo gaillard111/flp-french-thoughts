@@ -3,6 +3,9 @@
 {% block sonata_profile_title %}{{ 'user.chain.list_page.title'|trans }}{% endblock %}
 
 {% block sonata_profile_content %}
+    {% block chain_navigation %}
+        {{ render(controller('ApplicationSonataUserBundle:Chain:navigation', { 'routeName': app.request.get('_route') })) }}
+    {% endblock %}
     <div class="row">
         <div class="col-sm-12 chain-list">
             <p><a href="{{ path('sonata_user_chain_create') }}" class="btn btn-info">{{ 'user.chain.list_page.add_button'|trans }}</a></p>
@@ -24,7 +27,8 @@
                         <td>
                             <a href="{{ path('chain_page', {'chainId': chain.id}) }}">{{ chain.name }}</a>
                             {% if chain.isPrivate == false %}
-                                ( {{ url('chain_page', {'chainId': chain.id}) }} )
+                                {#( {{ url('chain_page', {'chainId': chain.id}) }} )#}
+                                (<a href="{{ path('thought_profile', { 'userId': chain.user.id }) }}">{{ chain.user.firstname }}</a>, {{ chain.id }})
                             {% endif %}
                         </td>
                         <td>{{ chain.createdAt|date('Y-m-d') }}</td>

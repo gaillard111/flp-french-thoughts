@@ -1,0 +1,14 @@
+{% block chains_navs %}
+    <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-pills chain-navigation">
+                {% for item in menu %}
+                    <li role="presentation"
+                        {% if item.route == routeName %}
+                            class="active"
+                        {% endif %}
+                    ><a href="{{ path(item.route) }}">{{ item.label|trans }}</a></li>
+                {% endfor %}
+        </div>
+    </div>
+{% endblock %}

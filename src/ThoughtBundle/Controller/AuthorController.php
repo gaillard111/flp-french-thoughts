@@ -34,7 +34,7 @@ class AuthorController extends Controller
 
         $alpha = $request->query->getAlpha('alpha', 1);
 
-        $countItem = 30;
+        $countItem = 60;
 
         /** @var TransformedFinder $authorsFinder */
         $authorsFinder = $this->container->get('fos_elastica.finder.app.author');

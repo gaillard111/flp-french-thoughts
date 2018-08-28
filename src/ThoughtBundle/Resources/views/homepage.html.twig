@@ -22,7 +22,7 @@
         <div class="col-md-2">
             {% include '@Thought/search_thought.html.twig' %}
         </div>
-        <div class="col-md-10">
+        <div class="col-md-8">
             <div class="row">
                 <div class="col-sm-12 margin-bottom-17" style="clear: both;">{{ welcomeText ? welcomeText.content|shortText(350, path('content', {'code' : 'welcome'}))|raw : '' }}</div>
             </div>
@@ -72,6 +72,9 @@
             <div class="navigation text-center">
                 {{ knp_pagination_render(thoughts) }}
             </div>
+        </div>
+        <div class="col-md-2 hidden-xs hidden-sm">
+            {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
         </div>
     </form>
 

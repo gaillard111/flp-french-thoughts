@@ -25,7 +25,7 @@ class ProfileInfoType extends AbstractType
                     'class' => 'form-control',
                     'rows'  => '7',
                 ),
-//                'required' => false,
+                'required' => false,
             ])
             ->add('country', TextType::class, [
                 'label'    => 'user.form.profile.country.label',
@@ -35,7 +35,7 @@ class ProfileInfoType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-//                'required' => false,
+                'required' => false,
             ])
             ->add('interests', TextType::class, [
                 'label'    => 'user.form.profile.interests.label',
@@ -45,7 +45,7 @@ class ProfileInfoType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-//                'required' => false,
+                'required' => false,
             ])
             ->add('gender', ChoiceType::class, [
                 'choices'   =>  [
@@ -59,7 +59,7 @@ class ProfileInfoType extends AbstractType
                 'attr' => [
                     'class' => 'form-control',
                 ],
-//                'required' => false,
+                'required' => false,
             ]);
     }
 

@@ -42,19 +42,19 @@ class User extends BaseUser
      */
     protected $chainComments;
 
-    /**
-     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.about.not_blank")
-     */
+//    /**
+//     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.about.not_blank")
+//     */
     protected $about;
 
-    /**
-     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.country.not_blank")
-     */
+//    /**
+//     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.country.not_blank")
+//     */
     protected $country;
 
-    /**
-     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.interests.not_blank")
-     */
+//    /**
+//     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.interests.not_blank")
+//     */
     protected $interests;
 
     /**
@@ -67,9 +67,9 @@ class User extends BaseUser
      */
     protected $lastname;
 
-    /**
-     * @Assert\NotBlank(groups={"profileInfo"}, message="user.gender.not_blank")
-     */
+//    /**
+//     * @Assert\NotBlank(groups={"profileInfo"}, message="user.gender.not_blank")
+//     */
     protected $gender;
 
     /**

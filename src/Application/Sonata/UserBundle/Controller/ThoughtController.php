@@ -30,10 +30,10 @@ class ThoughtController extends Controller
     {
         $menu = [];
 
-        $menu[] = [
-            'label' => 'Tableau de bord',
-            'route' => 'fos_user_profile_show',
-        ];
+//        $menu[] = [
+//            'label' => 'Tableau de bord',
+//            'route' => 'fos_user_profile_show',
+//        ];
 
         $menu[] = [
             'label' => 'Profil',
@@ -75,15 +75,15 @@ class ThoughtController extends Controller
             'route' => 'sonata_user_chains',
         ];
 
-        $menu[] = [
-            'label' => 'Mes chaînes préférées',
-            'route' => 'sonata_user_favorite_chains',
-        ];
-
-        $menu[] = [
-            'label' => 'Chaines partagées',
-            'route' => 'sonata_user_shared_chains',
-        ];
+//        $menu[] = [
+//            'label' => 'Mes chaînes préférées',
+//            'route' => 'sonata_user_favorite_chains',
+//        ];
+//
+//        $menu[] = [
+//            'label' => 'Chaines partagées',
+//            'route' => 'sonata_user_shared_chains',
+//        ];
 
         $thoughts = $this->container
             ->get('thought.model.thought_model')->getCountUserThoughts($this->getUser());

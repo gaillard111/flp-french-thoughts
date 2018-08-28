@@ -12,6 +12,33 @@ use ThoughtBundle\Entity\Chain;
 class ChainController extends Controller
 {
 
+    public function navigationAction(Request $request)
+    {
+        $navigation     = [];
+        $navigation[] = [
+            'label' => 'user.chain.list_page.title',
+            'route' => 'sonata_user_chains',
+        ];
+        $navigation[] = [
+            'label' => 'thought.chain.favorite_chains',
+            'route' => 'sonata_user_favorite_chains',
+        ];
+//        $navigation[] = [
+//            'label' => 'thought.chain.public_chains',
+//            'route' => 'sonata_user_chains',
+//        ];
+        $navigation[] = [
+            'label' => 'thought.chain.collective_chains',
+            'route' => 'sonata_user_shared_chains',
+        ];
+
+        return $this->render('@ApplicationSonataUser/Chain/chainNavigation.html.twig', [
+            'menu'      => $navigation,
+            'routeName' => $request->get('routeName')
+            ]
+        );
+    }
+
     /**
      * @Route("/chains/favorite", name="sonata_user_favorite_chains")
      * @param Request $request

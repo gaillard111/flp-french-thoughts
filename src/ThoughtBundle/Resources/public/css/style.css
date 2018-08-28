@@ -130,10 +130,30 @@ label.required:after{
     background-repeat: repeat-x;
 }
 .navbar .navbar-brand {
+    display: inline-block;
     font-size: 30px;
     padding: 10px 15px;
     line-height: 30px;
 }
+
+.navbar-toggle {
+    margin-top: 25px;
+    margin-bottom: 30px;
+}
+
+/*.navbar {*/
+    /*height: 90px;*/
+/*}*/
+
+.navbar-left {
+    padding-right: 10px;
+}
+
+.navbar-right {
+    padding: 19px;
+    font-size: 16px;
+}
+
 .quote_title, .quote_content {
     font-size: 17.5px !important;
 }
@@ -311,4 +331,17 @@ p.quote_title a {
 }
 div.panel-heading {
     margin: 0;
+}
+.chain-navigation {
+    padding-bottom: 20px;
+}
+
+/*.custom-brand {*/
+    /*padding: 228px;*/
+    /*display: inline-block;*/
+/*}*/
+
+.text-navbar {
+    display: inline-block;
+    padding: 20px 0;
 }
