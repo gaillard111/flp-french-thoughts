@@ -74,7 +74,9 @@
             </div>
         </div>
         <div class="col-md-2 hidden-xs hidden-sm">
-            {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
+            {% if is_granted('ROLE_USER') %}
+                {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
+            {% endif %}
         </div>
     </form>
 
