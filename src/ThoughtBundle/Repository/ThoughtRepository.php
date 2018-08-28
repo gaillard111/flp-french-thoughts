@@ -24,4 +24,17 @@ class ThoughtRepository extends EntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    public function getLastThoughts($limit)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb
+            ->select('t')
+            ->where('t.published = :published')
+            ->setParameter('published', true)
+            ->setMaxResults($limit)
+            ->orderBy('t.createdAt', 'DESC');
+
+        return $qb->getQuery();
+    }
 }
