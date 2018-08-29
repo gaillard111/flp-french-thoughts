@@ -71,7 +71,7 @@ user:
             link_thoughts:      Citations
             link_profile:       Profil
             link_dashboard:     Tableau de bord
-            link_chains:        Mes chaines
+            link_chains:        Chaines
             link_shared_chains: Chaines partagées
     thought:
         create_page:
@@ -103,7 +103,7 @@ user:
             title: Mes chaines
             link: << Back to Mes chaines
             add_button: Chaine nouvelle
-            favorite_button: Ajouter aux favoris
+            favorite_button: Ajouter  à mes chaines favorites
             remote_from_favorites_button: À distance des favoris
         shared_list_page:
             title: Chaines partagées

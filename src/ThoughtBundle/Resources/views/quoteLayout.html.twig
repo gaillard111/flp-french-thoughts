@@ -10,44 +10,7 @@
                 </a>
             </span>
         {% endif %}
-        {% if app.user %}
-            <span class="quote_chain">
-                {% set already_chains = [] %}
-                {% for arr_chain in thought.chainThoughts %}
-                    {#{{ dump(arr_chain.chain.user.id) }}#}
-                    {#{% if arr_chain.chain.user.id == app.user.id %}#}
-                        {% set already_chains = already_chains|merge([arr_chain.chain.name]) %}
-                    {#{% endif %}#}
-                {% endfor %}
 
-
-
-                <select name="quote_collective_chain">
-                    <option value="">{{ 'thought.chain.add_quote_collective'|trans }}</option>
-                    {% for chain in colChains %}
-                        {% if chain.name not in already_chains %}
-                            <option value="{{ chain.id }}">{{ chain.name }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-                <a href="#" class="add_collective_chain btn btn-info btn-xs">{{ 'thought.chain.add_to_collective_chain'|trans }}</a>
-
-
-
-                <select name="quote_chain">
-                    <option value="">{{ 'thought.chain.add_quote'|trans }}</option>
-
-                    {% for chain in app.user.chains %}
-                        {% if chain.name not in already_chains %}
-                            <option value="{{ chain.id }}">{{ chain.name }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-                <a href="#" class="add_chain btn btn-info btn-xs">{{ 'thought.chain.add_to_chain'|trans }}</a>
-
-
-            </span>
-        {% endif %}
     </p>
     <p class="quote_content">
         <span>{{ thought.content|customTag|raw|nl2br }}</span>
@@ -60,9 +23,9 @@
 
         {% set author = thought.author|authorsInfo %}
 
-        {% if author %}
-            <span class="hoverable_name">({{ 'thought.property.hoverable'|trans}})</span>
-        {% endif %}
+        {#{% if author %}#}
+            {#<span class="hoverable_name">({{ 'thought.property.hoverable'|trans}})</span>#}
+        {#{% endif %}#}
     </p>
 
     {% if author %}
@@ -106,6 +69,13 @@
             </a>
         {% endif %}
     </p>
+    {% set already_chains = [] %}
+    {% for arr_chain in thought.chainThoughts %}
+        {#{{ dump(arr_chain.chain.user.id) }}#}
+        {#{% if arr_chain.chain.user.id == app.user.id %}#}
+        {% set already_chains = already_chains|merge([arr_chain.chain.name]) %}
+        {#{% endif %}#}
+    {% endfor %}
     <div class="row">
         <div class="col-sm-6">
             {{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}
@@ -121,6 +91,55 @@
             {% endif %}
         </div>
     </div>
+
+    {% if app.user %}
+        <div class="row">
+            <div class="col-xs-12 col-lg-6 chain-row">
+                <div class="quote_chain">
+                    <div class="row">
+                        <div class="col-xs-9 col-lg-10">
+                            <select class="w100" name="quote_collective_chain">
+                                <option value="">{{ 'thought.chain.add_quote_collective'|trans }}</option>
+                                {% for chain in colChains %}
+                                    {% if chain.name not in already_chains %}
+                                        <option value="{{ chain.id }}">{{ chain.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-xs-3 col-lg-2 chain-button">
+                            <a href="#" class="add_collective_chain btn btn-info btn-xs w100">{{ 'thought.chain.add_to_collective_chain'|trans }}</a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-xs-12 col-lg-6 chain-row">
+                <div class="quote_chain">
+                    <div class="row">
+                        <div class="col-xs-9 col-lg-10">
+                            <select class="w100" name="quote_chain">
+                                <option value="">{{ 'thought.chain.add_quote'|trans }}</option>
+
+                                {% for chain in app.user.chains %}
+                                    {% if chain.name not in already_chains %}
+                                        <option value="{{ chain.id }}">{{ chain.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-xs-3 col-lg-2 chain-button">
+                            <a href="#" class="add_chain btn btn-info btn-xs w100">{{ 'thought.chain.add_to_chain'|trans }}</a>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
     {#{{ dump(already_chains) }}#}
 
 

@@ -3,11 +3,7 @@
 {% block page_title %}Les fils de la pensée{% endblock %}
 
 {% block content %}
-    {% if app.user %}
-        <div>
-            <a href="{{ path('sonata_user_chains') }}">{{ 'user.chain.list_page.link'|trans }}</a>
-        </div>
-    {% endif %}
+
     <h2 class="chain-quote-title">
         {{ 'user.chain.page.title'|trans }} - <span>"{{ chain.name }}"</span>
 
@@ -17,8 +13,19 @@
             <a href="{{ path('sonata_user_change_favorite', { 'id': chain.id }) }}" class="btn btn-danger">{{ 'user.chain.list_page.remote_from_favorites_button'|trans }}</a>
         {% endif %}
     </h2>
+    {% if app.user %}
+        <div>
+            <a href="{{ path('sonata_user_chains') }}">{{ 'user.chain.list_page.link'|trans }}</a>
+        </div>
+    {% endif %}
     <div class="row">
-        <div class="col-sm-12 chain-quote-wrapper">
+
+        {% block my_custom_menu %}
+            <div class="span2 col-sm-2 my-custom-menu">
+                {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
+            </div>
+        {% endblock %}
+        <div class="col-sm-10 chain-quote-wrapper" style="padding-top: 8px">
             {% for thoughtChain in thoughtChains %}
                 <div class="chain-quote-block">
                     {% if app.user.id == thoughtChain.chain.user.id %}
