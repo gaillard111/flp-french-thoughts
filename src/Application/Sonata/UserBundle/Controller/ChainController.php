@@ -16,23 +16,30 @@ class ChainController extends Controller
     {
         $navigation     = [];
         $navigation[] = [
-            'label' => 'user.chain.list_page.title',
+            'label' => $this->get('translator')->trans('user.chain.list_page.title'),
             'route' => 'sonata_user_chains',
         ];
         $navigation[] = [
-            'label' => 'thought.chain.favorite_chains',
+            'label' => $this->get('translator')->trans('thought.chain.favorite_chains'),
             'route' => 'sonata_user_favorite_chains',
         ];
 
-
         $navigation[] = [
-            'label' => 'thought.chain.collective_chains',
+            'label' => $this->get('translator')->trans('thought.chain.collective_chains'),
             'route' => 'chain_collective',
         ];
         $navigation[] = [
-            'label' => 'thought.chain.public_chains',
+            'label' => $this->get('translator')->trans('thought.chain.public_chains'),
             'route' => 'sonata_user_shared_chains',
         ];
+
+        if ($request->get('routeName') == 'chain_page') {
+
+            return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
+                'menu'             => $navigation,
+                'routeName'        => $request->get('routeName'),
+            ]);
+        }
 
         return $this->render('@ApplicationSonataUser/Chain/chainNavigation.html.twig', [
             'menu'      => $navigation,

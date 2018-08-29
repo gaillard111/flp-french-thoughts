@@ -22,7 +22,7 @@
 
         {% block my_custom_menu %}
             <div class="span2 col-sm-2 my-custom-menu">
-                {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
+                {{ render(controller('ApplicationSonataUserBundle:Chain:navigation', { 'routeName': app.request.get('_route') })) }}
             </div>
         {% endblock %}
         <div class="col-sm-10 chain-quote-wrapper" style="padding-top: 8px">
