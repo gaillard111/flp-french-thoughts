@@ -77,15 +77,15 @@
         <div class="col-sm-12">
             {{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}
         </div>
-        <div class="col-sm-12">
+        <div class="col-sm-6 pull-left">
             {% if chainId is defined %}
                 {% if app.user %}
                     {% if already_chains|length %}
                         {% for chainThought in thought.chainThoughts %}
                             {% if chainThought.user != null and chainThought.chain.id == chainId %}
                                 {#{{ dump(chainThought.chain.id) }}#}
-                                <span data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
-                                    {{ 'thought.chain.already_added'|trans }}
+                                <span>
+                                {{ 'thought.chain.added_by'|trans }}
                                     <a href="{{ path('thought_profile', { 'userId': chainThought.user.id } ) }}">
                                        {{ chainThought.user.firstname }}
                                     </a>
@@ -95,6 +95,11 @@
                     {% endif %}
                 {% endif %}
             {% endif %}
+        </div>
+        <div class="col-sm-6">
+            <span class="is-added pull-right" data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
+                {{ 'thought.chain.already_added'|trans }}
+            </span>
         </div>
     </div>
 
