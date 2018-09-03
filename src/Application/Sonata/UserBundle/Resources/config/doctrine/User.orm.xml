@@ -36,6 +36,12 @@
                 mapped-by="friend"
         />
 
+        <one-to-many
+                field="collectiveThoughtChains"
+                target-entity="ThoughtBundle\Entity\ThoughtChain"
+                mapped-by="user"
+        />
+
         <many-to-many
                 field="dialogs"
                 mappedBy="users"
