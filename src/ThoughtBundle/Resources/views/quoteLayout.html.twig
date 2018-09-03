@@ -84,9 +84,13 @@
             {% if app.user %}
 
                 {% if already_chains|length %}
-                    <span class="pull-right" data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
-                        <small class="is-added ">{{ 'thought.chain.already_added'|trans }}</small>
-                    </span>
+                    {% for chainThought in thought.chainThoughts %}
+                        {% if chainThought.user != null %}
+                            <span class="pull-right" data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
+                                <small class="is-added ">{{ 'thought.chain.already_added'|trans }} {{ chainThought.chain.name }} by {{ chainThought.user.firstname }}</small>
+                            </span>
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
             {% endif %}
         </div>
