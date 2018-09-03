@@ -79,7 +79,6 @@ class ChainController extends Controller
         $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->findBy([
             'isCollective'  => true
         ]);
-
         return $this->render('@Thought/chainPage.html.twig', array(
             'chain'         => $chain,
             'form'          => $form->createView(),
