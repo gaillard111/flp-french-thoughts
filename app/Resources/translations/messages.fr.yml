@@ -200,7 +200,7 @@ thought:
     chain:
         favorite_chains: Chaines préférées
         public_chains: Chaines publiques
-        collective_chains: Chaines partagées - collectives
+        collective_chains: Chaines collectives
         add_to_chain: Ajouter
         add_to_collective_chain: Ajouter
 #        already_added: Déjà intégré

@@ -25,12 +25,12 @@ class ChainController extends Controller
         ];
 
         $navigation[] = [
-            'label' => $this->get('translator')->trans('thought.chain.collective_chains'),
-            'route' => 'chain_collective',
-        ];
-        $navigation[] = [
             'label' => $this->get('translator')->trans('thought.chain.public_chains'),
             'route' => 'sonata_user_shared_chains',
+        ];
+        $navigation[] = [
+            'label' => $this->get('translator')->trans('thought.chain.collective_chains'),
+            'route' => 'chain_collective',
         ];
 
         if ($request->get('routeName') == 'chain_page') {
