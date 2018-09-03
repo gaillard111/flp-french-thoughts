@@ -85,6 +85,7 @@ class ChainController extends Controller
             'form'          => $form->createView(),
             'thoughtChains' => $thoughtChains,
             'colChains'     => $collectiveChains,
+            'chainId'       => $chainId
         ));
     }
 
