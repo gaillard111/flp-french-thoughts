@@ -100,7 +100,7 @@ user:
             title: Chain edit
             submit: Submit
         list_page:
-            title: Mes chaines
+            title: Chaines
             link: << Back to Mes chaines
             add_button: Chaine nouvelle
             favorite_button: Ajouter  à mes chaines favorites
@@ -197,7 +197,7 @@ thought:
         deleted: Comment successfully deleted
         added:   Comment successfully added
     chain:
-        favorite_chains: Mes chaînes préférées
+        favorite_chains: Chaines préférées
         public_chains: Chaines publiques
         collective_chains: Chaines partagées - collectives
         add_to_chain: Ajouter
