@@ -71,22 +71,28 @@
     </p>
     {% set already_chains = [] %}
     {% for arr_chain in thought.chainThoughts %}
-        {#{{ dump(arr_chain.chain.user.id) }}#}
-        {#{% if arr_chain.chain.user.id == app.user.id %}#}
         {% set already_chains = already_chains|merge([arr_chain.chain.name]) %}
-        {#{% endif %}#}
     {% endfor %}
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             {{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}
         </div>
-        <div class="col-sm-6">
-            {% if app.user %}
-
-                {% if already_chains|length %}
-                    <span class="pull-right" data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
-                        <small class="is-added ">{{ 'thought.chain.already_added'|trans }}</small>
-                    </span>
+        <div class="col-sm-12">
+            {% if chainId is defined %}
+                {% if app.user %}
+                    {% if already_chains|length %}
+                        {% for chainThought in thought.chainThoughts %}
+                            {% if chainThought.user != null and chainThought.chain.id == chainId %}
+                                {#{{ dump(chainThought.chain.id) }}#}
+                                <span data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
+                                    {{ 'thought.chain.already_added'|trans }}
+                                    <a href="{{ path('thought_profile', { 'userId': chainThought.user.id } ) }}">
+                                       {{ chainThought.user.firstname }}
+                                    </a>
+                                </span>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 {% endif %}
             {% endif %}
         </div>

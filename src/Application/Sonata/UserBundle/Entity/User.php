@@ -42,6 +42,11 @@ class User extends BaseUser
      */
     protected $chainComments;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtChain", mappedBy="user")
+     */
+    protected $collectiveThoughtChains;
+
 //    /**
 //     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.about.not_blank")
 //     */

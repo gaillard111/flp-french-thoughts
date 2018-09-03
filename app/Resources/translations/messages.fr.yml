@@ -107,6 +107,7 @@ user:
             remote_from_favorites_button: À distance des favoris
         shared_list_page:
             title: Chaines partagées
+            text: Les utilisateurs inscrits peuvent créer ces chaines de citation afin de développer une idée ou une réflexion donnée. Certaines de ces chaines sont collectives, ce qui est encore plus intéressant.
         page:
             title: Chaine
 
@@ -203,7 +204,7 @@ thought:
         add_to_chain: Ajouter
         add_to_collective_chain: Ajouter
 #        already_added: Déjà intégré
-        already_added: Is added to chains
+        already_added: Added by
         added_to_chain: The quote is already added to
         add_quote: Mettre dans ma chaine
         add_quote_collective: Mettre dans la chaine partagées

@@ -85,6 +85,7 @@ class ChainController extends Controller
             'form'          => $form->createView(),
             'thoughtChains' => $thoughtChains,
             'colChains'     => $collectiveChains,
+            'chainId'       => $chainId
         ));
     }
 
@@ -155,6 +156,8 @@ class ChainController extends Controller
                 $curUser = $this->getUser();
 
                 if ($chain->getisCollective() == true) {
+
+                    $chainThought->setUser($this->getUser());
 
                     $serviceMail = $this->container->get('thought.service.mail_service');
                     $serviceMail->notificationMail($user, $curUser, $chain, $thought);
