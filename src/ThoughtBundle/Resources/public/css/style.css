@@ -264,8 +264,16 @@ label.required:after{
     height: 120px;
 }
 .chain-quote-comment-form{
+    padding-left: 10px;
+    padding-right: 15px;
     margin-bottom: 20px;
 }
+
+.chain-quote-comment-block {
+    padding-left: 10px;
+    padding-right: 15px;
+}
+
 .form_comments form label {
     text-align: left !important;
 }
