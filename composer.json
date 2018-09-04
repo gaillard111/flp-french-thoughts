@@ -31,7 +31,8 @@
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "sonata-project/formatter-bundle": "^2.3",
         "phpoffice/phpexcel": "^1.8",
-        "presta/sitemap-bundle": "^1.5"
+        "presta/sitemap-bundle": "^1.5",
+        "doctrine/doctrine-migrations-bundle": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
