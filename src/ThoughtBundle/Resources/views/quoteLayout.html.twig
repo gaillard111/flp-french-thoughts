@@ -97,9 +97,11 @@
             {% endif %}
         </div>
         <div class="col-sm-6">
-            <span class="is-added pull-right" data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
-                {{ 'thought.chain.already_added'|trans }}
-            </span>
+            {% if already_chains|length %}
+                <span class="is-added pull-right" data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
+                    {{ 'thought.chain.already_added'|trans }}
+                </span>
+            {% endif %}
         </div>
     </div>
 
