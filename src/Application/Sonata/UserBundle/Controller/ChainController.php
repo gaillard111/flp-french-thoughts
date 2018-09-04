@@ -16,11 +16,11 @@ class ChainController extends Controller
     {
         $navigation     = [];
         $navigation[] = [
-            'label' => $this->get('translator')->trans('user.chain.list_page.title'),
+            'label' => $this->get('translator')->trans('user.chain.list_page.menu_title'),
             'route' => 'sonata_user_chains',
         ];
         $navigation[] = [
-            'label' => $this->get('translator')->trans('thought.chain.favorite_chains'),
+            'label' => $this->get('translator')->trans('thought.chain.menu_favorite_chains'),
             'route' => 'sonata_user_favorite_chains',
         ];
 

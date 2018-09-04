@@ -101,13 +101,14 @@ user:
             submit: Submit
         list_page:
             title: Chaines
+            menu_title: Mes Chaines
             link: << Back to Mes chaines
             add_button: Chaine nouvelle
             favorite_button: Ajouter  à mes chaines favorites
             remote_from_favorites_button: À distance des favoris
         shared_list_page:
-            title: Chaines partagées
-            text: Les utilisateurs inscrits peuvent créer ces chaines de citation afin de développer une idée ou une réflexion donnée. Certaines de ces chaines sont collectives, ce qui est encore plus intéressant.
+            title: Chaines publiques
+            text: Les utilisateurs inscrits peuvent créer ces chaines de citations afin de développer une idée ou une réflexion donnée. Certaines de ces chaines sont collectives, ce qui est encore plus intéressant.
         page:
             title: Chaine
 
@@ -199,6 +200,7 @@ thought:
         added:   Comment successfully added
     chain:
         favorite_chains: Chaines préférées
+        menu_favorite_chains: Mes chaines préférées
         public_chains: Chaines publiques
         collective_chains: Chaines collectives
         add_to_chain: Ajouter
