@@ -2,6 +2,18 @@
     width: 100%;
 }
 
+.dashed.collapsed {
+    border-bottom: 1px dashed rgb(51, 51, 51);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.dashed:hover {
+    border-bottom: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
 .table-borderless td,
 .table-borderless th {
     border: 0 !important;
