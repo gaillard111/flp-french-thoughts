@@ -142,6 +142,7 @@ thought:
                 label: Info
             advancedSearch:
                 label: Recherche  avancée
+            search: Search parameters
             1Search:
                 label: Filtres
             2Search:

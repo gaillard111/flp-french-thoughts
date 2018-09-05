@@ -1,165 +1,215 @@
-<div class="row list-group" style="border: 1px solid #eee; padding-top: 15px;">
-    <div class="col-sm-12 form-group ">
-        <!--<a id="filters_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.filters'|trans }} </a>-->
-    </div>
-    <div id="filters_block" class="" style="{% if false %}display: none;{% endif %}">
-        <input type="hidden" name="search[filter_open]" class="form-control" id="filter_block_open" value="{{ filtersOpen }}">
-        <div class="col-sm-12 form-group ">
-            <a id="1_search_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.fields.1Search.label'|trans }} </a>
-        </div>
-        {% set open = true %}
-        {% if search.field is defined %}
-            {% for key,value in search.field %}
-                {% if value is not empty%}
-                    {% set open = true %}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-        <div id="1_search_block" class="col-sm-12 form-group" style="{% if not open %} display: none; {% endif %}">
-            <div class="col-sm-12 form-group">
-                <div>
-                    <input type="checkbox" {{ (is_fields and 'content' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][content]"> {{ 'thought.filter.fields.content.label'|trans }}
-                </div>
-                <div>
-                    <input type="checkbox" {{ (is_fields and 'category' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][category]"> {{ 'thought.filter.fields.category.label'|trans }}
-                </div>
-                <div>
-                    <input type="checkbox" {{ (is_fields and 'tags' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][tags]"> {{ 'thought.filter.fields.tags.label'|trans }}
-                </div>
-                <div>
-                    <input type="checkbox" {{ (is_fields and 'author' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][author]"> {{ 'thought.filter.fields.author.label'|trans }}
-                </div>
-                <div>
-                    <input type="checkbox" {{ (is_fields and 'thoughtInfo' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][thoughtInfo]"> {{ 'thought.filter.fields.thoughtInfo.label'|trans }}
-                </div>
+<script>
+    $(
+        function() {
+            if ($(window).width() > 992) {
+                $("#collapseOne").attr('class', 'in');
+            }
+        }
+    );
+</script>
+<div class="row">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        {{ 'thought.filter.fields.search'|trans }}
+                    </a>
+                </h4>
             </div>
-        </div>
-        <div class="form-group col-sm-12">
-            <hr />
-        </div>
-        <div class="col-sm-12 form-group ">
-            <a id="advanced_search_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.fields.advancedSearch.label'|trans }} </a>
-        </div>
-        {% set open = false %}
-        {% if search.term is defined %}
-            {% for key,value in search.term %}
-                {% if value is not empty%}
-                    {% set open = true %}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-        <div id="advanced_search_block" class="col-sm-12 form-group" style="{% if not open %} display: none; {% endif %}">
-            <div class="form-group">
-                <input type="text" name="search[term][content]" class="form-control" placeholder="{{ 'thought.filter.fields.content.label'|trans }}" value="{{search.term is defined ? search.term.content : ''}}">
-            </div>
-            <div class="form-group">
-                <input type="text" name="search[term][category]" class="form-control" placeholder="{{ 'thought.filter.fields.category.label'|trans }}" value="{{search.term is defined ? search.term.category : ''}}">
-            </div>
-            <div class="form-group">
-                <input type="text"  name="search[term][author]" class="form-control" placeholder="{{ 'thought.filter.fields.author.label'|trans }}" value="{{search.term is defined ? search.term.author : ''}}">
-            </div>
-            <div class="form-group">
-                <input type="text" name="search[term][tags]" class="form-control" placeholder="{{ 'thought.filter.fields.tags.label'|trans }}" value="{{search.term is defined ? search.term.tags : ''}}">
-            </div>
-            <div class="form-group">
-                <input type="text"  name="search[term][thoughtInfo]" class="form-control" placeholder="{{ 'thought.filter.fields.thoughtInfo.label'|trans }}" value="{{search.term is defined ? search.term.thoughtInfo : ''}}">
-            </div>
-        </div>
-        <div class="form-group col-sm-12">
-            <hr />
-        </div>
-        <div class="col-sm-12 form-group ">
-            <a id="2_search_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.fields.2Search.label'|trans }} </a>
-        </div>
-        {% set open = true %}
-        {% if search.author is defined %}
-            {% for key,value in search.author %}
-                {% if value is not empty%}
-                    {% set open = true %}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-        <div id="2_search_block" class="col-sm-12 form-group" style="{% if not open %} display: none; {% endif %}">
+            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body padding-vertical-0">
 
-            <div class="form-group">
-                <input type="text" name="search[author][name]" class="form-control" placeholder="{{ 'author.filter.fields.name.label'|trans }}" value="{{search.author is defined ? search.author.name : ''}}">
-            </div>
-            <div class="form-group">
-                <input type="text" name="search[author][birthDate]" class="form-control" placeholder="{{ 'author.filter.fields.birthDate.label'|trans }}" value="{{search.author is defined ? search.author.birthDate : ''}}">
-            </div>
-            <div class="form-group">
-                <input type="text" name="search[author][sex]" class="form-control" placeholder="{{ 'author.filter.fields.sex.label'|trans }}" value="{{search.author is defined ? search.author.sex : ''}}">
-            </div>
-            <div class="form-group">
-                <input type="text"  name="search[author][country]" class="form-control" placeholder="{{ 'author.filter.fields.country.label'|trans }}" value="{{search.author is defined ? search.author.country : ''}}">
-            </div>
-            <div class="form-group">
-                <input type="text"  name="search[author][continent]" class="form-control" placeholder="{{ 'author.filter.fields.continent.label'|trans }}" value="{{search.author is defined ? search.author.continent : ''}}">
-            </div>
-            <div class="form-group">
-                <input type="text"  name="search[author][job]" class="form-control" placeholder="{{ 'author.filter.fields.job.label'|trans }}" value="{{search.author is defined ? search.author.job : ''}}">
-            </div>
-        </div>
-        <div class="form-group col-sm-12">
-            <hr />
-        </div>
-        <div class="col-sm-12 form-group ">
-            <a id="3_search_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.fields.3Search.label'|trans }} </a>
-        </div>
 
-        {% set open = false %}
-        {% if search is defined %}
-            {% if search.max_words is defined or search.min_words is defined  or search.sorting is defined or search.sorting_desc is defined %}
-                {% set open = true %}
-            {% endif %}
-        {% endif %}
-        <div id="3_search_block" class="col-sm-12 form-group" style="{% if not open %} display: none; {% endif %}">
-            <div class="col-sm-12 col-lg-12 filter_block">
-                <div class="row">
-                    <div class="form-group col-sm-12 row">
-                        <div for="search_max_words" class="form-group col-sm-12 control-label">
-                            {{ 'thought.filter.max_words.label'|trans }}
-                            <select id="search_max_words" name="search[max_words]" class="form-control">
-                                <option value="0">{{ 'thought.filter.max_words.options.unlimited'|trans }}</option>
-                                <option {{ search.max_words is defined and search.max_words == 320 ? 'selected' : '' }} value="320">320</option>
-                                <option {{ search.max_words is defined and search.max_words == 80 ? 'selected' : '' }} value="80">80</option>
-                            </select>
+                    <div class="row list-group">
+                        <div class="col-sm-12 form-group ">
+                            <!--<a id="filters_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.filters'|trans }} </a>-->
                         </div>
+                        <div id="filters_block" class="">
+                            <input type="hidden" name="search[filter_open]" class="form-control" id="filter_block_open" value="{{ filtersOpen }}">
+                            <div class="col-sm-12 form-group ">
+                                <a id="1_search_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.fields.1Search.label'|trans }} </a>
+                            </div>
+                            {% set open = true %}
+                            {% if search.field is defined %}
+                                {% for key,value in search.field %}
+                                    {% if value is not empty%}
+                                        {% set open = true %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            <div id="1_search_block" class="col-sm-12 form-group" style="{% if not open %} display: none; {% endif %}">
+                                <div class="col-sm-12 form-group">
+                                    <div>
+                                        <input type="checkbox" {{ (is_fields and 'content' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][content]"> {{ 'thought.filter.fields.content.label'|trans }}
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" {{ (is_fields and 'category' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][category]"> {{ 'thought.filter.fields.category.label'|trans }}
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" {{ (is_fields and 'tags' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][tags]"> {{ 'thought.filter.fields.tags.label'|trans }}
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" {{ (is_fields and 'author' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][author]"> {{ 'thought.filter.fields.author.label'|trans }}
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" {{ (is_fields and 'thoughtInfo' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][thoughtInfo]"> {{ 'thought.filter.fields.thoughtInfo.label'|trans }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <hr />
+                            </div>
+                            <div class="col-sm-12 form-group ">
+                                <a id="advanced_search_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.fields.advancedSearch.label'|trans }} </a>
+                            </div>
+                            {% set open = false %}
+                            {% if search.term is defined %}
+                                {% for key,value in search.term %}
+                                    {% if value is not empty%}
+                                        {% set open = true %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            <div id="advanced_search_block" class="col-sm-12 form-group" style="{% if not open %} display: none; {% endif %}">
+                                <div class="form-group">
+                                    <input type="text" name="search[term][content]" class="form-control" placeholder="{{ 'thought.filter.fields.content.label'|trans }}" value="{{search.term is defined ? search.term.content : ''}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="search[term][category]" class="form-control" placeholder="{{ 'thought.filter.fields.category.label'|trans }}" value="{{search.term is defined ? search.term.category : ''}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text"  name="search[term][author]" class="form-control" placeholder="{{ 'thought.filter.fields.author.label'|trans }}" value="{{search.term is defined ? search.term.author : ''}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="search[term][tags]" class="form-control" placeholder="{{ 'thought.filter.fields.tags.label'|trans }}" value="{{search.term is defined ? search.term.tags : ''}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text"  name="search[term][thoughtInfo]" class="form-control" placeholder="{{ 'thought.filter.fields.thoughtInfo.label'|trans }}" value="{{search.term is defined ? search.term.thoughtInfo : ''}}">
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <hr />
+                            </div>
+                            <div class="col-sm-12 form-group ">
+                                <a id="2_search_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.fields.2Search.label'|trans }} </a>
+                            </div>
+                            {% set open = true %}
+                            {% if search.author is defined %}
+                                {% for key,value in search.author %}
+                                    {% if value is not empty%}
+                                        {% set open = true %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            <div id="2_search_block" class="col-sm-12 form-group" style="{% if not open %} display: none; {% endif %}">
 
-                        <div for="search_min_words" class="form-group col-sm-12 control-label">
-                            {{ 'thought.filter.min_words.label'|trans }}
-                            <select id="search_min_words" name="search[min_words]" class="form-control">
-                                <option value="0">{{ 'thought.filter.min_words.options.unlimited'|trans }}</option>
-                                <option  {{ search.min_words is defined and search.min_words == 240 ? 'selected' : '' }} value="240">240</option>
-                            </select>
-                        </div>
+                                <div class="form-group">
+                                    <input type="text" name="search[author][name]" class="form-control" placeholder="{{ 'author.filter.fields.name.label'|trans }}" value="{{search.author is defined ? search.author.name : ''}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="search[author][birthDate]" class="form-control" placeholder="{{ 'author.filter.fields.birthDate.label'|trans }}" value="{{search.author is defined ? search.author.birthDate : ''}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="search[author][sex]" class="form-control" placeholder="{{ 'author.filter.fields.sex.label'|trans }}" value="{{search.author is defined ? search.author.sex : ''}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text"  name="search[author][country]" class="form-control" placeholder="{{ 'author.filter.fields.country.label'|trans }}" value="{{search.author is defined ? search.author.country : ''}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text"  name="search[author][continent]" class="form-control" placeholder="{{ 'author.filter.fields.continent.label'|trans }}" value="{{search.author is defined ? search.author.continent : ''}}">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text"  name="search[author][job]" class="form-control" placeholder="{{ 'author.filter.fields.job.label'|trans }}" value="{{search.author is defined ? search.author.job : ''}}">
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-12">
+                                <hr />
+                            </div>
+                            <div class="col-sm-12 form-group ">
+                                <a id="3_search_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.fields.3Search.label'|trans }} </a>
+                            </div>
 
-                        <div for="search_sorting" class="form-group col-sm-12 control-label">
-                            {{ 'thought.filter.sorting.label'|trans }}
-                            <select id="search_sorting" name="search[sorting]" class="form-control">
-                                <option value>--</option>
-                                <option {{ search.sorting is defined and search.sorting == 'amount' ? 'selected' : '' }} value="amount">
-                                    {{ 'thought.filter.sorting.options.amount'|trans }}
-                                </option>
-                                <option {{ search.sorting is defined and search.sorting == 'category_sort' ? 'selected' : '' }} value="category_sort">
-                                    {{ 'thought.filter.sorting.options.category'|trans }}
-                                </option>
-                                <option {{ search.sorting is defined and search.sorting == 'author_sort' ? 'selected' : '' }} value="author_sort">
-                                    {{ 'thought.filter.sorting.options.author'|trans }}
-                                </option>
-                            </select>
-                        </div>
-                        <div class="checkbox col-sm-2 form-group">
-                            <label>
-                                <input {{ search.sorting_desc is defined and 'on' == search.sorting_desc ? 'checked' : '' }} type="checkbox" name="search[sorting_desc]"> {{ 'thought.filter.sorting_desc.label'|trans }}
-                            </label>
+                            {% set open = false %}
+                            {% if search is defined %}
+                                {% if search.max_words is defined or search.min_words is defined  or search.sorting is defined or search.sorting_desc is defined %}
+                                    {% set open = true %}
+                                {% endif %}
+                            {% endif %}
+                            <div id="3_search_block" class="col-sm-12 form-group" style="{% if not open %} display: none; {% endif %}">
+                                <div class="col-sm-12 col-lg-12 filter_block">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div for="search_max_words" class="form-group col-sm-12 control-label">
+                                                        {{ 'thought.filter.max_words.label'|trans }}
+                                                        <select id="search_max_words" name="search[max_words]" class="form-control">
+                                                            <option value="0">{{ 'thought.filter.max_words.options.unlimited'|trans }}</option>
+                                                            <option {{ search.max_words is defined and search.max_words == 320 ? 'selected' : '' }} value="320">320</option>
+                                                            <option {{ search.max_words is defined and search.max_words == 80 ? 'selected' : '' }} value="80">80</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div for="search_min_words" class="form-group col-sm-12 control-label">
+                                                        {{ 'thought.filter.min_words.label'|trans }}
+                                                        <select id="search_min_words" name="search[min_words]" class="form-control">
+                                                            <option value="0">{{ 'thought.filter.min_words.options.unlimited'|trans }}</option>
+                                                            <option  {{ search.min_words is defined and search.min_words == 240 ? 'selected' : '' }} value="240">240</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div for="search_sorting" class="form-group col-sm-12 control-label">
+                                                        {{ 'thought.filter.sorting.label'|trans }}
+                                                        <select id="search_sorting" name="search[sorting]" class="form-control">
+                                                            <option value>--</option>
+                                                            <option {{ search.sorting is defined and search.sorting == 'amount' ? 'selected' : '' }} value="amount">
+                                                                {{ 'thought.filter.sorting.options.amount'|trans }}
+                                                            </option>
+                                                            <option {{ search.sorting is defined and search.sorting == 'category_sort' ? 'selected' : '' }} value="category_sort">
+                                                                {{ 'thought.filter.sorting.options.category'|trans }}
+                                                            </option>
+                                                            <option {{ search.sorting is defined and search.sorting == 'author_sort' ? 'selected' : '' }} value="author_sort">
+                                                                {{ 'thought.filter.sorting.options.author'|trans }}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="checkbox col-sm-2 form-group">
+                                                        <label class="padding-left-25">
+                                                            <input {{ search.sorting_desc is defined and 'on' == search.sorting_desc ? 'checked' : '' }} type="checkbox" name="search[sorting_desc]"> {{ 'thought.filter.sorting_desc.label'|trans }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+
+
 
 {#<div class="row">
     <div class="checkbox col-sm-12">

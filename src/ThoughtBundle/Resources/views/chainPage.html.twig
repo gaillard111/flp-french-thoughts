@@ -63,9 +63,7 @@
                             <h5 class="chain-quote-comment-block">{{ 'thought.chain.comment.comments'|trans }}: {{ chain.comments|length }}</h5>
                         </div>
                     </div>
-
                     <div class="chain-quote-comment-block">
-
                         {% for comment in chain.comments %}
                             <div class="row">
                                 <div class="col-sm-12">
@@ -91,9 +89,7 @@
                                         <div class="panel-body">{{ comment.text|nl2br }}</div>
                                     </div>
                                 </div>
-
                             </div>
-
                         {% endfor %}
                     </div>
                 </div>
