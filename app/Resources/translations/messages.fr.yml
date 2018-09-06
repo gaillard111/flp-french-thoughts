@@ -26,8 +26,8 @@ user:
                 label:       Nom
                 placeholder: Nom
             lastname:
-                label:       Prénom
-                placeholder: Prénom
+                label:       Prénom ou pseudo
+                placeholder: Prénom ou pseudo
             password:
                 label:       Mot de passe
                 placeholder: Mot de passe
@@ -45,8 +45,8 @@ user:
                 label:       Nom
                 placeholder: Nom
             lastname:
-                label:       Prénom
-                placeholder: Prénom
+                label:       Prénom ou pseudo
+                placeholder: Prénom ou pseudo
             username:
                 label:       Nom d'utilisateur
                 placeholder: Nom d'utilisateur
