@@ -6,7 +6,12 @@ use Doctrine\ORM\EntityRepository;
 
 class ThoughtRepository extends EntityRepository
 {
-
+    /**
+     * @param array $where
+     * @param null $sortOrder
+     * @param null $sortBy
+     * @return array
+     */
     public function getFilterThoughts(array $where = array(), $sortOrder = null, $sortBy = null)
     {
         $query = $this->createQueryBuilder('t')
@@ -25,6 +30,10 @@ class ThoughtRepository extends EntityRepository
         return $query->getQuery()->getResult();
     }
 
+    /**
+     * @param $limit
+     * @return \Doctrine\ORM\Query
+     */
     public function getLastThoughts($limit)
     {
         $qb = $this->createQueryBuilder('t');

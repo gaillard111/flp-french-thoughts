@@ -110,7 +110,6 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
                     $em->flush();
                 }
             }
-//            dump($newMessages); die;
 
             $message = new Message();
             $message->setSender($this->getUser());
@@ -120,8 +119,6 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
             $form = $this->createForm(MessageType::class, $message);
             $form->handleRequest($request);
 
-
-//            dump($messages->getResult()); die;
 
             if ($form->isSubmitted() && $form->isValid()) {
 
@@ -133,13 +130,9 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
                 $em->clear(Message::class);
 
 
-//                $messages = $em->getRepository('ApplicationSonataUserBundle:Message')->getMessagesFromDialog($dialogId);
-//                $message->setMessageText('');
-
                 return $this->redirectToRoute('dialog', [
                     'dialogId'  =>  $dialogId,
                 ]);
-//                $form = $this->createForm(MessageType::class, $message);
             }
 
             $messages = $em->getRepository(Message::class)->getMessagesFromDialog($dialogId);

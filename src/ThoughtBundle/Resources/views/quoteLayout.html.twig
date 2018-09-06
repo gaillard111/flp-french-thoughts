@@ -78,23 +78,43 @@
             {{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}
         </div>
         <div class="col-sm-6 pull-left">
-            {% if chainId is defined %}
-                {% if app.user %}
-                    {% if already_chains|length %}
-                        {% for chainThought in thought.chainThoughts %}
-                            {% if chainThought.user != null and chainThought.chain.id == chainId %}
-                                {#{{ dump(chainThought.chain.id) }}#}
-                                <span>
+            <div class="row">
+                <div class="col-sm-12">
+                    {% if thought.owner %}
+                        <span>
+                        {{ 'thought.chain.added_to_site'|trans }}
+                            <a href="{{ path('thought_profile', { 'userId': thought.owner.id } ) }}">
+                               {{ thought.owner.firstname }}
+                            </a>
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="col-sm-12">
+                    {% if chainId is defined %}
+                        {% if app.user %}
+                            {% if already_chains|length %}
+                                {% for chainThought in thought.chainThoughts %}
+                                    {% if chainThought.user != null and chainThought.chain.id == chainId %}
+
+                                        <span>
                                 {{ 'thought.chain.added_by'|trans }}
-                                    <a href="{{ path('thought_profile', { 'userId': chainThought.user.id } ) }}">
+                                            <a href="{{ path('thought_profile', { 'userId': chainThought.user.id } ) }}">
                                        {{ chainThought.user.firstname }}
                                     </a>
                                 </span>
+                                    {% endif %}
+                                {% endfor %}
                             {% endif %}
-                        {% endfor %}
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-            {% endif %}
+                </div>
+            </div>
+
+            {#{{ dump(thought.owner) }}#}
+
+
+
+
         </div>
         <div class="col-sm-6">
             {% if already_chains|length %}

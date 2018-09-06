@@ -22,6 +22,9 @@ class ChainRepository extends EntityRepository
             ->getQuery()->getResult();
     }
 
+    /**
+     * @return \Doctrine\ORM\Query
+     */
     public function getAllCollectiveChains()
     {
         $qb = $this->createQueryBuilder('c');

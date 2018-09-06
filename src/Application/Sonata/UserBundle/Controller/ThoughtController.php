@@ -32,11 +32,6 @@ class ThoughtController extends Controller
     {
         $menu = [];
 
-//        $menu[] = [
-//            'label' => 'Tableau de bord',
-//            'route' => 'fos_user_profile_show',
-//        ];
-
         $menu[] = [
             'label' => $this->get('translator')->trans('navbar.profile'),
             'route' => 'fos_user_profile_edit',
@@ -77,27 +72,13 @@ class ThoughtController extends Controller
             'route' => 'sonata_user_chains',
         ];
 
-//        $menu[] = [
-//            'label' => 'Mes chaînes préférées',
-//            'route' => 'sonata_user_favorite_chains',
-//        ];
-//
-//        $menu[] = [
-//            'label' => 'Chaines partagées',
-//            'route' => 'sonata_user_shared_chains',
-//        ];
-
         $thoughts = $this->container
             ->get('thought.model.thought_model')->getCountUserThoughts($this->getUser());
 
         /** @var RequestStack $requestStack */
         $requestStack = $this->get('request_stack');
 
-        $dialogs = $user->getDialogs();
-
         $count = $this->getDoctrine()->getRepository(Message::class)->getCountNewMessages($user);
-//        dump($this->getUser()->getId());
-//        dump($count); die;
 
         return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
             'menu'             => $menu,
