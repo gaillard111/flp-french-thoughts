@@ -6,11 +6,12 @@
 
     <h2 class="chain-quote-title">
         {{ 'user.chain.page.title'|trans }} - <span>"{{ chain.name }}"</span>
-
-        {% if chain.favorite == false %}
-            <a href="{{ path('sonata_user_change_favorite', { 'id': chain.id }) }}" class="btn btn-info">{{ 'user.chain.list_page.favorite_button'|trans }}</a>
-        {% else %}
-            <a href="{{ path('sonata_user_change_favorite', { 'id': chain.id }) }}" class="btn btn-warning">{{ 'user.chain.list_page.remote_from_favorites_button'|trans }}</a>
+        {% if app.user %}
+            {% if chain.favorite == false %}
+                <a href="{{ path('sonata_user_change_favorite', { 'id': chain.id }) }}" class="btn btn-info">{{ 'user.chain.list_page.favorite_button'|trans }}</a>
+            {% else %}
+                <a href="{{ path('sonata_user_change_favorite', { 'id': chain.id }) }}" class="btn btn-warning">{{ 'user.chain.list_page.remote_from_favorites_button'|trans }}</a>
+            {% endif %}
         {% endif %}
     </h2>
     {% if app.user %}
@@ -21,11 +22,19 @@
     <div class="row">
 
         {% block my_custom_menu %}
+            {% if app.user %}
             <div class="span2 col-sm-2 my-custom-menu">
                 {{ render(controller('ApplicationSonataUserBundle:Chain:navigation', { 'routeName': app.request.get('_route') })) }}
             </div>
+            {% endif %}
         {% endblock %}
-            <div class="col-sm-10 chain-quote-wrapper" style="padding-top: 8px">
+            <div class="
+            {% if app.user %}
+                col-sm-10
+            {% else %}
+                col-sm-12
+            {% endif %}
+            chain-quote-wrapper" style="padding-top: 8px">
             {% for thoughtChain in thoughtChains %}
                 <div class="chain-quote-block">
                     {% if app.user %}
