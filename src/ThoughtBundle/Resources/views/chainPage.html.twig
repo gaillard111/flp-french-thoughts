@@ -28,28 +28,30 @@
             <div class="col-sm-10 chain-quote-wrapper" style="padding-top: 8px">
             {% for thoughtChain in thoughtChains %}
                 <div class="chain-quote-block">
-                    {% if app.user.id == thoughtChain.chain.user.id %}
-                        <div class="chain-quote-control" data-chain-id="{{ thoughtChain.chain.id }}" data-target="{{ thoughtChain.thought.id }}">
-                            <div>
-                                <a class="chain-quote-remove" href="#">
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                </a>
+                    {% if app.user %}
+                        {% if app.user.id == thoughtChain.chain.user.id %}
+                            <div class="chain-quote-control" data-chain-id="{{ thoughtChain.chain.id }}" data-target="{{ thoughtChain.thought.id }}">
+                                <div>
+                                    <a class="chain-quote-remove" href="#">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="#" class="chain-quote-upper">
+                                        <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+                                    </a>
+                                    <a href="#" class="chain-quote-up">
+                                        <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                                    </a>
+                                    <a href="#" class="chain-quote-down">
+                                        <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                                    </a>
+                                    <a href="#" class="chain-quote-lower">
+                                        <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                                    </a>
+                                </div>
                             </div>
-                            <div>
-                                <a href="#" class="chain-quote-upper">
-                                    <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
-                                </a>
-                                <a href="#" class="chain-quote-up">
-                                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-                                </a>
-                                <a href="#" class="chain-quote-down">
-                                    <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-                                </a>
-                                <a href="#" class="chain-quote-lower">
-                                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
-                                </a>
-                            </div>
-                        </div>
+                        {% endif %}
                     {% endif %}
                     {{ include('@Thought/quoteLayout.html.twig', {'thought': thoughtChain.thought}) }}
                 </div>

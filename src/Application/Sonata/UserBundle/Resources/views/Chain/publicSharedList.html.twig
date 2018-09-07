@@ -23,7 +23,7 @@
                     <tr>
                         <td>{{ loop.index }}</td>
                         <td>
-                            {{ chain.name }}
+                            <a href="{{ path('chain_page', { 'chainId': chain.id }) }}">{{ chain.name }}</a>
                             {% if chain.isPrivate == false %}
                                 {#( {{ url('chain_page', {'chainId': chain.id}) }} )#}
                                 {% if chain.user.firstname != null %}

@@ -39,16 +39,16 @@ class ChainController extends Controller
             $this->get('translator')->trans('thought.chain.not_exist');
             return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
-        if (!$this->getUser()) {
 
-            return $this->redirect($this->generateUrl('thought_homepage_index'));
-        }
-        else {
-
+        if ($this->getUser()) {
             if ($chain->getIsPrivate() && $this->getUser()->getId() != $chain->getUser()->getId()) {
                 $this->addFlash('success', $this->get('translator')->trans('thought.chain.access_denied'));
                 return $this->redirect($this->generateUrl('thought_homepage_index'));
             }
+        }
+        elseif ($chain->getIsPrivate()) {
+            $this->addFlash('success', $this->get('translator')->trans('thought.chain.access_denied'));
+            return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
 
         $chainComment = new ChainComment();
