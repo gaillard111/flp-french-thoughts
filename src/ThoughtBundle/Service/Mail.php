@@ -168,17 +168,18 @@ class Mail
      */
     private function sendMail($subject, $emailUsers, $body, $cc = null)
     {
-        $message = \Swift_Message::newInstance()
-            ->setSubject($subject)
-            ->setFrom($this->container->getParameter('mailer_user'))
-            ->setTo($emailUsers)
-            ->setBody($body, 'text/html')
-        ;
-
-        if ($cc) {
-            $message->setCc($cc);
-        }
         try {
+            $message = \Swift_Message::newInstance()
+                ->setSubject($subject)
+                ->setFrom($this->container->getParameter('mailer_user'))
+                ->setTo($emailUsers)
+                ->setBody($body, 'text/html')
+            ;
+
+            if ($cc) {
+                $message->setCc($cc);
+            }
+
             $this->container->get('mailer')->send($message);
         } catch (\Exception $e) {}
     }
