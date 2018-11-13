@@ -178,7 +178,8 @@ class Mail
         if ($cc) {
             $message->setCc($cc);
         }
-
-        $this->container->get('mailer')->send($message);
+        try {
+            $this->container->get('mailer')->send($message);
+        } catch (\Exception $e) {}
     }
 }
