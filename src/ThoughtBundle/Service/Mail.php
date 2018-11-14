@@ -117,10 +117,9 @@ class Mail
          * @var User $user
          */
         foreach ($users as $key => $user) {
-            $userEmails[$key] = $user->getEmail();
+            //$userEmails[$key] = $user->getEmail();
+            $this->sendMail($subject, $user->getEmail(), $body);
         }
-
-        $this->sendMail($subject, $userEmails, $body);
     }
 
     /**
