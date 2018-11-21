@@ -67,13 +67,17 @@ class ThoughtPageController extends Controller
             return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
 
+        $comments[$thought->getId()][] = $em->getRepository(Comment::class)->getLastComments($thought);
+
+
         $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->findBy([
             'isCollective'  => true
         ]);
 
         return $this->render('@Thought/thoughtPage.html.twig', array(
-            'thought' => $thought,
-            'form'    => $form->createView(),
+            'thought'       => $thought,
+            'comments'      => $comments,
+            'form'          => $form->createView(),
             'colChains'     => $collectiveChains,
         ));
     }

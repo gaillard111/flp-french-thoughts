@@ -148,6 +148,17 @@
                 $(this).parents('div.quote').find('div.authors_info').fadeOut();
             });
 
+            $('.show-link').click(function () {
+                var $btn = $(this);
+                var thoughtId = $btn.data('id');
+                var $element = $('.comments[data-id=' + thoughtId + ']');
+                if ($element.hasClass('hidden')) {
+                    $element.removeClass('hidden');
+                } else {
+                    $element.addClass('hidden');
+                }
+            });
+
         });
 
     </script>

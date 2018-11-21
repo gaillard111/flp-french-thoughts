@@ -1,7 +1,9 @@
 <div class="jumbotron quote" data-quote="{{ thought.id }}">
     <p class="quote_title">
         <span>
-            <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">{{ thought.category }}</a>
+            <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">
+                {{ thought.category }}
+            </a>
         </span>
         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR') %}
             <span class="quote_edit">
@@ -18,7 +20,9 @@
     <p>
         <strong>{{ 'thought.property.author'|trans|capitalize }}:</strong>
         <span class="author">
-            <a href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">{{ thought.author }}</a>
+            <a href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">
+                {{ thought.author }}
+            </a>
         </span>
 
         {% set author = thought.author|authorsInfo %}
@@ -74,9 +78,26 @@
         {% set already_chains = already_chains|merge([arr_chain.chain.name]) %}
     {% endfor %}
     <div class="row">
+        {#{% if thought.comments.count > 0 %}#}
         <div class="col-sm-12">
-            {{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}
+            <div class="row">
+                <div class="col-sm-12 ">
+                    <a class="show-link" data-id="{{ thought.id }}">{{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 comments hidden" data-id="{{ thought.id }}">
+                    {% for thoughtComments in comments[thought.id] %}
+                        {% for comment in thoughtComments %}
+                            <p class="profile-link"><a href="">{{ comment.name }}</a></p>
+                            <p class="comment-data">{{ comment.createdAt|date('d.m.Y') }}</p>
+                            <p>{{ comment.text }}</p>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
         </div>
+        {#{% endif %}#}
         <div class="col-sm-6 pull-left">
             <div class="row">
                 <div class="col-sm-12">
@@ -95,13 +116,13 @@
                             {% if already_chains|length %}
                                 {% for chainThought in thought.chainThoughts %}
                                     {% if chainThought.user != null and chainThought.chain.id == chainId %}
-
                                         <span>
-                                {{ 'thought.chain.added_by'|trans }}
+                                            {{ 'thought.chain.added_by'|trans }}
                                             <a href="{{ path('thought_profile', { 'userId': chainThought.user.id } ) }}">
-                                       {{ chainThought.user.firstname }}
-                                    </a>
-                                </span>
+                                               {{ chainThought.user.firstname }}
+                                            </a>
+
+                                        </span>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
@@ -109,12 +130,6 @@
                     {% endif %}
                 </div>
             </div>
-
-            {#{{ dump(thought.owner) }}#}
-
-
-
-
         </div>
         <div class="col-sm-6">
             {% if already_chains|length %}
@@ -123,6 +138,7 @@
                 </span>
             {% endif %}
         </div>
+
     </div>
 
     {% if app.user %}

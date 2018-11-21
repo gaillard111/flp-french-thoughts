@@ -19,6 +19,33 @@
     border: 0 !important;
 }
 
+.show-link:hover {
+    cursor: pointer;
+}
+
+.show-link {
+    text-decoration-line: underline;
+    text-decoration-style: dashed;
+}
+
+.profile-link {
+    margin-bottom: 0 !important;
+}
+
+.comments {
+    margin-top: 10px;
+}
+
+.comment-data {
+    font-size: small !important;
+    color: #9e9393;
+}
+
+.reply-button {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
 .friend {
     display: inline-block;
     color: #337ab7;

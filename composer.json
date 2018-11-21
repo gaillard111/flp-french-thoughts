@@ -37,7 +37,8 @@
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
         "symfony/phpunit-bridge": "~2.7",
-        "doctrine/doctrine-fixtures-bundle": "^2.3"
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "symfony/var-dumper": "^2.8"
     },
     "scripts": {
         "post-install-cmd": [

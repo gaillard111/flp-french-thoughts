@@ -3,6 +3,7 @@
 namespace ThoughtBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use ThoughtBundle\Entity\Thought;
 
 class ThoughtRepository extends EntityRepository
 {

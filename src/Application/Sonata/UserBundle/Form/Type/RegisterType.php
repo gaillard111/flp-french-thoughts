@@ -23,23 +23,29 @@ class RegisterType extends RegistrationFormType
             /*->add('username', null, array(
                 'label'    => 'user.form.registration.username.label',
             ))*/
-            ->add('email', 'email', array(
+            ->add('email', 'email', [
                 'label'    => 'user.form.registration.email.label',
-            ))
-            ->add('firstname', null, array(
+            ])
+            ->add('firstname', null, [
                 'label'    => 'user.form.registration.firstname.label',
                 'required' => true,
-            ))
-            ->add('lastname', null, array(
+            ])
+            ->add('lastname', null, [
                 'label'    => 'user.form.registration.lastname.label',
                 'required' => true,
-            ))
-            ->add('plainPassword', 'repeated', array(
+            ])
+            ->add('plainPassword', 'repeated', [
                 'type'            => 'password',
-                'first_options'   => array('label' => 'user.form.registration.password.label'),
-                'second_options'  => array('label' => 'user.form.registration.verification.label'),
+                'first_options'   => ['label' => 'user.form.registration.password.label'],
+                'second_options'  => ['label' => 'user.form.registration.verification.label'],
                 'invalid_message' => 'user.form.registration.password.mismatch',
-            ))
+            ])
+            ->add('reCaptcha', 'hidden', [
+                'mapped'    =>  false,
+                'attr'      =>  [
+                    'class'     =>  'g-recaptcha'
+                ]
+            ])
         ;
     }
 

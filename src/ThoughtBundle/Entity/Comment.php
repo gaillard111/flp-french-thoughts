@@ -7,9 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class Comment
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ThoughtBundle\Repository\CommentRepository")
  * @ORM\Table(name="comment")
  * @ORM\HasLifecycleCallbacks()
+ *
  */
 class Comment
 {

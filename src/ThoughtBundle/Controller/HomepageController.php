@@ -12,15 +12,18 @@ use Elastica\Query\QueryString;
 use FOS\ElasticaBundle\Elastica\Index;
 use FOS\ElasticaBundle\Finder\FinderInterface;
 use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Model\AuthorModel;
 use ThoughtBundle\Model\ThoughtModel;
+use ThoughtBundle\Repository\CommentRepository;
 
 /**
  * Class HomepageController
@@ -77,11 +80,17 @@ class HomepageController extends Controller
 
         $cloud = $modelThought->getCloud($search['field'], $thoughts, $search['words']);
 
+        /** @var Thought[]|PaginationInterface $pagination */
         $pagination = $paginator->paginate(
             $thoughts,
             $page,
             $countItem
         );
+        $comments = [];
+        foreach ($pagination as $thought) {
+            $comments[$thought->getId()][] = $em->getRepository(Comment::class)->getLastComments($thought);
+
+        }
 
         $welcomeText = $em->getRepository('ThoughtBundle:Content')->findOneBy(array(
             'contentType' => 'welcome',
@@ -96,6 +105,7 @@ class HomepageController extends Controller
 
         return $this->render('ThoughtBundle::homepage.html.twig', [
             'thoughts'    => $pagination,
+            'comments'    => $comments,
             'timeExecute' => $timeExecute,
             'welcomeText' => $welcomeText,
             'cloud'       => $cloud['cloud'],

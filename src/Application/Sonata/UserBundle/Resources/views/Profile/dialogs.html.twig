@@ -13,25 +13,35 @@
                             <div class="col-sm-6">
                                 <div class="message_preview">
                                     <div class="media-body">
-                                        <h4 class="media-heading">
+                                        <div class="row">
+                                            <div class="col-sm-10">
+                                                <h4 class="media-heading">
+                                                    <a href="{{ path('dialog', { 'dialogId': dialog.id }) }}">
+                                                        {% for user in dialog.users %}
+                                                            {% if user != app.user %}
+                                                                {{ user.firstname }} {{ user.lastname }}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </a>
+                                                </h4>
 
-                                        <a href="{{ path('dialog', { 'dialogId': dialog.id }) }}">
-                                            {% for user in dialog.users %}
-                                                {% if user != app.user %}
-                                                    {{ user.firstname }} {{ user.lastname }}
-                                                {% endif %}
-                                            {% endfor %}
-                                        </a>
-                                        </h4>
-                                        <p>
-                                            {% for message in lastMessages %}
-                                                {% if message %}
-                                                    {% if message.dialog.id == dialog.id %}
-                                                        {{ message.messageText }}
-                                                    {% endif %}
-                                                {% endif %}
-                                            {% endfor %}
-                                        </p>
+                                                <p>
+                                                    {% for message in lastMessages %}
+                                                        {% if message %}
+                                                            {% if message.dialog.id == dialog.id %}
+                                                                {{ message.messageText }}
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </p>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <a href="{{ path('dialog', { 'dialogId': dialog.id }) }}" class="btn btn-info pull-right reply-button">
+                                                    Reply
+                                                </a>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>

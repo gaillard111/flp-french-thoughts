@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "95af90da300ee692b92d820c087083ad",
-    "content-hash": "2b75a760de7eb4b6ec3f90ddb5582677",
+    "hash": "fe3dfebce8e88893e2b63079fd6cede0",
+    "content-hash": "ea795c5ede7d6bd50fd253d2c30e309e",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -2296,7 +2296,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/1a40728ba8b7524ad34410ce217f236eb90af932",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/57a4c4ec8961d910ec8f4087cc96b7d77df6da33",
                 "reference": "1c6a15f39ea7f41d9bc0a5f712932da0c47be27b",
                 "shasum": ""
             },
@@ -2518,7 +2518,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/9e712975375332b02c55697b964fc5eb8c23f7b6",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/d571fdd3dfe0d258098b4e66466a54d13a451798",
                 "reference": "ee2ff39fb84a8a83554061588e76578eaae0424b",
                 "shasum": ""
             },
@@ -2587,7 +2587,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataDatagridBundle/zipball/7d4c89dbce886040152abbaeb414eff5cdec5f2c",
+                "url": "https://api.github.com/repos/sonata-project/SonataDatagridBundle/zipball/403e4940c52f96aaec206c9c59f0ec790b5804c8",
                 "reference": "0749e710b936bf84736c648eee16bc45e2c04607",
                 "shasum": ""
             },
@@ -2693,7 +2693,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/93ea1a4d2f3b60a824973570196dd18c822b8319",
+                "url": "https://api.github.com/repos/sonata-project/SonataDoctrineORMAdminBundle/zipball/1914b4f99ce4ff8b49cd6a4099b1777e5902d7e0",
                 "reference": "e8eb83f7dc5b64113892cbf7367705864c651691",
                 "shasum": ""
             },
@@ -2767,7 +2767,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataEasyExtendsBundle/zipball/f639369d7f13e19f0a44ab779dd41def8f53caa2",
+                "url": "https://api.github.com/repos/sonata-project/SonataEasyExtendsBundle/zipball/5d845bab2a7fa7fc60df96d660b603a305d49b64",
                 "reference": "36a217bcdae06dc887a5fb942f6d93438137e951",
                 "shasum": ""
             },
@@ -3001,7 +3001,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataUserBundle/zipball/338456f82ff76376e578a4b597835811f0bba9d3",
+                "url": "https://api.github.com/repos/sonata-project/SonataUserBundle/zipball/63082df28cf8defff5cf187eff5218043417ecb8",
                 "reference": "08f90d95a5be0db7fc619514f5b942c7e8c226dd",
                 "shasum": ""
             },
@@ -3753,16 +3753,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.4",
+            "version": "v2.8.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "9e14f9f4869c19188a376eab61d9a1c1f1fee347"
+                "reference": "f588c92c3e263b2eaa2f96a7b1359199eb209b3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/9e14f9f4869c19188a376eab61d9a1c1f1fee347",
-                "reference": "9e14f9f4869c19188a376eab61d9a1c1f1fee347",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/f588c92c3e263b2eaa2f96a7b1359199eb209b3d",
+                "reference": "f588c92c3e263b2eaa2f96a7b1359199eb209b3d",
                 "shasum": ""
             },
             "require": {
@@ -3777,7 +3777,7 @@
                 "symfony/polyfill-php56": "~1.0",
                 "symfony/polyfill-php70": "~1.0",
                 "symfony/polyfill-util": "~1.0",
-                "symfony/security-acl": "~2.7",
+                "symfony/security-acl": "~2.7|~3.0.0",
                 "twig/twig": "~1.23|~2.0"
             },
             "conflict": {
@@ -3836,7 +3836,7 @@
                 "doctrine/dbal": "~2.4",
                 "doctrine/doctrine-bundle": "~1.2",
                 "doctrine/orm": "~2.4,>=2.4.5",
-                "egulias/email-validator": "~1.2",
+                "egulias/email-validator": "~1.2,>=1.2.1",
                 "monolog/monolog": "~1.11",
                 "ocramius/proxy-manager": "~0.4|~1.0|~2.0",
                 "phpdocumentor/reflection": "^1.0.7"
@@ -3849,7 +3849,11 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Symfony\\Bridge\\": "src/Symfony/Bridge/",
+                    "Symfony\\Bridge\\Doctrine\\": "src/Symfony/Bridge/Doctrine/",
+                    "Symfony\\Bridge\\Monolog\\": "src/Symfony/Bridge/Monolog/",
+                    "Symfony\\Bridge\\ProxyManager\\": "src/Symfony/Bridge/ProxyManager/",
+                    "Symfony\\Bridge\\Swiftmailer\\": "src/Symfony/Bridge/Swiftmailer/",
+                    "Symfony\\Bridge\\Twig\\": "src/Symfony/Bridge/Twig/",
                     "Symfony\\Bundle\\": "src/Symfony/Bundle/",
                     "Symfony\\Component\\": "src/Symfony/Component/"
                 },
@@ -3879,7 +3883,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-03-27 12:57:53"
+            "time": "2016-09-07 02:04:25"
         },
         {
             "name": "twig/extensions",
