@@ -117,10 +117,9 @@ class Mail
          * @var User $user
          */
         foreach ($users as $key => $user) {
-            $userEmails[$key] = $user->getEmail();
+            //$userEmails[$key] = $user->getEmail();
+            $this->sendMail($subject, $user->getEmail(), $body);
         }
-
-        $this->sendMail($subject, $userEmails, $body);
     }
 
     /**
@@ -168,17 +167,19 @@ class Mail
      */
     private function sendMail($subject, $emailUsers, $body, $cc = null)
     {
-        $message = \Swift_Message::newInstance()
-            ->setSubject($subject)
-            ->setFrom($this->container->getParameter('mailer_user'))
-            ->setTo($emailUsers)
-            ->setBody($body, 'text/html')
-        ;
+        try {
+            $message = \Swift_Message::newInstance()
+                ->setSubject($subject)
+                ->setFrom($this->container->getParameter('mailer_user'))
+                ->setTo($emailUsers)
+                ->setBody($body, 'text/html')
+            ;
 
-        if ($cc) {
-            $message->setCc($cc);
-        }
+            if ($cc) {
+                $message->setCc($cc);
+            }
 
-        $this->container->get('mailer')->send($message);
+            $this->container->get('mailer')->send($message);
+        } catch (\Exception $e) {}
     }
 }
