@@ -30,6 +30,7 @@ class Search
     /**
      * @param array|null $searchParams
      * @return mixed
+     * @throws \Exception
      */
     public function preSearch($searchParams)
     {
@@ -44,16 +45,16 @@ class Search
                 $response->headers->setCookie($cookie);
                 $response->sendHeaders();
 
-                if ($countSearch > $this->container->getParameter('quantity_search')) {
-                    $searchParams = null;
-
-                    $request->getSession()
-                        ->getFlashBag()
-                        ->add('success', $this->container->get('translator')->trans('user.search.need_logged', array(
-                            '%quantity_search%' => $this->container->getParameter('quantity_search'),
-                        )))
-                    ;
-                }
+//                if ($countSearch > $this->container->getParameter('quantity_search')) {
+//                    $searchParams = null;
+//
+//                    $request->getSession()
+//                        ->getFlashBag()
+//                        ->add('success', $this->container->get('translator')->trans('user.search.need_logged', array(
+//                            '%quantity_search%' => $this->container->getParameter('quantity_search'),
+//                        )))
+//                    ;
+//                }
             }
         }
 
