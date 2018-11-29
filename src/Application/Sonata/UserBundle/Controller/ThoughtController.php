@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use ThoughtBundle\Entity\Author;
 use ThoughtBundle\Entity\Thought;
+use ThoughtBundle\Entity\Topic;
 use ThoughtBundle\Model\AuthorModel;
 use ThoughtBundle\Service\Mail;
 
@@ -72,19 +73,26 @@ class ThoughtController extends Controller
             'route' => 'sonata_user_chains',
         ];
 
+        $menu[] = [
+            'label' => $this->get('translator')->trans('user.topic.list_page.title'),
+            'route' => 'sonata_user_topics',
+        ];
+
         $thoughts = $this->container
             ->get('thought.model.thought_model')->getCountUserThoughts($this->getUser());
 
         /** @var RequestStack $requestStack */
         $requestStack = $this->get('request_stack');
 
-        $count = $this->getDoctrine()->getRepository(Message::class)->getCountNewMessages($user);
+        $count          = $this->getDoctrine()->getRepository(Message::class)->getCountNewMessages($user);
+        $countTopics    = $this->getDoctrine()->getRepository(Topic::class)->getCountUserTopics($user);
 
         return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
             'menu'             => $menu,
             'routeName'        => $routeName,
             'thoughts'         => $thoughts,
             'newMessagesCount' => $count,
+            'countTopics'      => $countTopics,
             'userProfileId'    => $requestStack->getMasterRequest()->get('userId')
         ]);
     }

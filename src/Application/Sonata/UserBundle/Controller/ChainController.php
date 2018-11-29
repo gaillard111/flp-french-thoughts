@@ -2,6 +2,7 @@
 
 namespace Application\Sonata\UserBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Application\Sonata\UserBundle\Form\Type\ChainType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,6 +47,31 @@ class ChainController extends Controller
             'routeName' => $request->get('routeName')
             ]
         );
+    }
+
+    public function rightSidebarAction(Request $request, $curTopicId)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $topics = $user->getTopics();
+        $sidebar    = [];
+
+        foreach ($topics as $topic) {
+            $sidebar[]  = [
+                'label'     =>  $topic->getName(),
+                'route'     =>  'sonata_user_chain_by_topic',
+                'parameters' => [
+                    'topicId' => $topic->getId(),
+                ]
+            ];
+        }
+
+        return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
+            'menu'             => $sidebar,
+            'routeName'        => $request->get('routeName'),
+            'curTopicId'       => $curTopicId
+        ]);
+
     }
 
     /**
@@ -117,9 +143,35 @@ class ChainController extends Controller
             $request->query->getInt('page', 1),
             100
         );
-        return $this->render('ApplicationSonataUserBundle:Chain:list.html.twig', array(
+        return $this->render('ApplicationSonataUserBundle:Chain:list.html.twig', [
             'chains' => $pagination,
-        ));
+        ]);
+    }
+
+    /**
+     * @Route("/chains/{topicId}", name="sonata_user_chain_by_topic", requirements={"chainId"="\d+"})
+     * @param int $topicId
+     * @return Response
+     */
+    public function listByTopicAction($topicId, Request $request)
+    {
+        $chains = $this->getDoctrine()->getRepository(Chain::class)->findBy([
+            'topic' =>  $topicId
+        ]);
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $chains,
+            $request->query->getInt('page', 1),
+            100
+        );
+
+        $routeName = $request->get('_route');
+
+        return $this->render('ApplicationSonataUserBundle:Chain:list.html.twig', [
+            'chains'    => $pagination,
+            'routeName' => $routeName
+        ]);
     }
 
     /**

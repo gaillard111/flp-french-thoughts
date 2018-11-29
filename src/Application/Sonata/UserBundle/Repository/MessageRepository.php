@@ -54,9 +54,6 @@ class MessageRepository extends EntityRepository
      */
     public function getCountNewMessages($user)
     {
-//        foreach ($dialog->getUsers()) {
-//            $reciever =
-//        }
         $qb = $this->createQueryBuilder('m');
         $qb
             ->select('count(m.id)')

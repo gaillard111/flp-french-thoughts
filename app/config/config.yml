@@ -125,6 +125,7 @@ sonata_admin:
                 label: Thoughts
                 items:
                     - thoudght.admin.thought
+                    - thoudght.admin.topic
             Content:
                 label: Content
                 items: {Content: thoudght.admin.content}

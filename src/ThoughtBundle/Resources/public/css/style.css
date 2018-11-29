@@ -343,6 +343,15 @@ label.required:after{
 .chain-quote-control a{
     color: #28a4c9;
 }
+
+.chain-item {
+    margin-top: 30px !important;
+}
+
+.chain-list {
+    margin-top: 20px !important;
+}
+
 .chain-list .chain-remove {
     margin-left: 20px;
 }

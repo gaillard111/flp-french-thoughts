@@ -21,14 +21,16 @@
                 {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
             </div>
         {% endblock %}
+            <div class="span10 col-lg-8 profile-topkek">
+                {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
 
-        <div class="span10 col-lg-10 profile-topkek">
-            {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
+                {% block sonata_profile_content %}{% endblock %}
+            </div>
+            <div class="col-lg-2">{% block right_sidebar %}{% endblock %}</div>
 
-            {% block sonata_profile_content %}
 
-            {% endblock %}
-        </div>
+
+
 
     </div>
 {% endblock %}

@@ -47,6 +47,11 @@ class User extends BaseUser
      */
     protected $collectiveThoughtChains;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Topic", mappedBy="user")
+     */
+    protected $topics;
+
 //    /**
 //     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.about.not_blank")
 //     */
@@ -231,6 +236,24 @@ class User extends BaseUser
     {
         $this->chainComments[] = $chainComments;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTopics()
+    {
+        return $this->topics;
+    }
+
+    /**
+     * @param mixed $topics
+     * @return User
+     */
+    public function setTopics($topics)
+    {
+        $this->topics = $topics;
         return $this;
     }
 

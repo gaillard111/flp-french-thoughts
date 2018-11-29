@@ -62,6 +62,30 @@ class Chain
     protected $favorite = false;
 
     /**
+     * @ORM\ManyToOne(targetEntity="ThoughtBundle\Entity\Topic", inversedBy="chains")
+     * @ORM\JoinColumn(name="topic_id", referencedColumnName="id", onDelete="set null")
+     */
+    protected $topic;
+
+    /**
+     * @return mixed
+     */
+    public function getTopic()
+    {
+        return $this->topic;
+    }
+
+    /**
+     * @param mixed $topic
+     * @return Chain
+     */
+    public function setTopic($topic)
+    {
+        $this->topic = $topic;
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getisCollective()

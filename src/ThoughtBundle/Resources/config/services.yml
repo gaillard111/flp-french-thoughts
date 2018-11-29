@@ -1,4 +1,13 @@
 services:
+    thoudght.admin.topic:
+        class: ThoughtBundle\Admin\TopicAdmin
+        arguments:
+            - ~
+            - ThoughtBundle\Entity\Topic
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Thoughts, label: "Topics" }
+
     thoudght.admin.thought:
         class: ThoughtBundle\Admin\ThoughtAdmin
         tags:

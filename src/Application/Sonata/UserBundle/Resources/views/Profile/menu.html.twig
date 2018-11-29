@@ -1,28 +1,32 @@
-{#<div class="panel panel-info">#}
-    {#<div class="panel-heading">#}
-    {#<div class="panel-title">#}
-             {#<a href="#list-collapse1" data-toggle="collapse" aria-expanded="false">lst grp</a>#}
-        {#</div>#}
-    {#</div>#}
-    {#<div id="list-collapse1" class="panel-collapse collapse">#}
-        {#<ul class="list-group">#}
-            {#<li class="list-group-item">Home</li>#}
-            {#<li class="list-group-item">Home</li>#}
-            {#<li class="list-group-item">Home</li>#}
-        {#</ul>#}
-        {#</div>#}
-{#</div>#}
 <div class="list-group">
     {% for item in menu %}
         <a class="list-group-item
             {% if routeName == item.route  %}
                 {% if routeName != 'thought_profile' %}
-                    active
+                    {% if curTopicId is defined %}
+                        {% if curTopicId == item.parameters.topicId %}
+                            active
+                        {% endif %}
+                    {% else %}
+                        active
+                    {% endif %}
                 {% elseif userProfileId == app.user.id %}
                     active
                 {% endif %}
             {% else %}
                 {% if routeName == 'dialog' and item.route == 'dialog_list' %}
+                    active
+                {% endif %}
+                {% if routeName == 'sonata_user_chain_by_topic' and item.route == 'sonata_user_chains' %}
+                    active
+                {% endif %}
+                {% if routeName == 'sonata_user_favorite_chains' and item.route == 'sonata_user_chains' %}
+                    active
+                {% endif %}
+                {% if routeName == 'sonata_user_shared_chains' and item.route == 'sonata_user_chains' %}
+                    active
+                {% endif %}
+                {% if routeName == 'chain_collective' and item.route == 'sonata_user_chains' %}
                     active
                 {% endif %}
             {% endif %}
@@ -40,6 +44,9 @@
             {% endif %}
             {% if item.route == 'dialog_list' and newMessagesCount[1] != 0 %}
                 (+{{ newMessagesCount[1] }})
+            {% endif %}
+            {% if item.route == 'sonata_user_topics' %}
+                ({{ countTopics[1] }})
             {% endif %}
         </a>
     {% endfor %}

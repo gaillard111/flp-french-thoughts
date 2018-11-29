@@ -48,6 +48,12 @@
                 target-entity="Application\Sonata\UserBundle\Entity\Dialog"
         />
 
+        <one-to-many
+                field="topics"
+                target-entity="ThoughtBundle\Entity\Topic"
+                mapped-by="user"
+        />
+
         <field name="about" type="text" nullable="true"/>
         <field name="country" type="string" length="255" nullable="true"/>
         <field name="interests" type="text" nullable="true"/>

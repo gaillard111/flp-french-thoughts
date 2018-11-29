@@ -22,3 +22,27 @@
         </div>
     </div>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            var $private    = $('.private');
+            var $collective = $('.collective');
+
+            if ($private.is(":checked")) {
+                $collective.addClass('hidden');
+                $('input.collective').attr('disabled', 'disabled');
+            }
+
+            $private.on("change", function () {
+                if (!$private.is(":checked")) {
+                    $('input.collective').attr('disabled', false);
+                    $collective.removeClass('hidden');
+                } else {
+                    $collective.addClass('hidden');
+                    $('input.collective').attr('disabled', 'disabled');
+                }
+            });
+        });
+    </script>
+{% endblock %}

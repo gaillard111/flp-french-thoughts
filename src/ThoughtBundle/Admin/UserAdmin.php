@@ -32,6 +32,7 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
 
     /**
      * @param FormMapper $formMapper
+     * @throws \Exception
      */
     protected function configureFormFields(FormMapper $formMapper)
     {

@@ -112,6 +112,16 @@ user:
         page:
             title: Chaine
 
+    topic:
+        create_page:
+            title: Topic create
+        list_page:
+            title: Les sujets
+            table:
+                name: Name
+            create_button: Ajouter sujet
+
+
 thought:
     not_found: Quote not exist.
     property:
@@ -241,6 +251,10 @@ thought:
             property:
                 text:
                     label: Text comment
+    topic:
+        not_exist:              Topic not exitst
+        access_denied:          Access to this topic forbidden
+        successfully_removed:   Topic successfully removed
 
 navbar:
     brand:        Les fils de la pensée

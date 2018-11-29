@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ChainComment;
+use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\ThoughtChain;
 use ThoughtBundle\Form\ChainCommentType;
 use ThoughtBundle\Service\Mail;
@@ -30,10 +31,25 @@ class ChainController extends Controller
      */
     public function chainListAction(Request $request, $chainId)
     {
-
         $em = $this->getDoctrine()->getManager();
 
         $chain = $em->getRepository('ThoughtBundle:Chain')->find($chainId);
+        /** @var ThoughtChain[] $chainThoughts */
+        $chainThoughts = $chain->getChainThoughts();
+
+        $thoughts = [];
+
+        foreach ($chainThoughts as $chainThought) {
+            $thoughts[] = $chainThought->getThought();
+        }
+//        $thoughts = $chainThoughts->getThought();
+//        dump($thoughts); die;
+        $comments = [];
+        foreach ($thoughts as $thought) {
+            $comments[$thought->getId()][] = $em->getRepository(Comment::class)->getLastComments($thought);
+
+        }
+
 
         if (!$chain) {
             $this->get('translator')->trans('thought.chain.not_exist');
@@ -79,13 +95,14 @@ class ChainController extends Controller
         $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->findBy([
             'isCollective'  => true
         ]);
-        return $this->render('@Thought/chainPage.html.twig', array(
+        return $this->render('@Thought/chainPage.html.twig', [
             'chain'         => $chain,
+            'comments'      => $comments,
             'form'          => $form->createView(),
             'thoughtChains' => $thoughtChains,
             'colChains'     => $collectiveChains,
             'chainId'       => $chainId
-        ));
+        ]);
     }
 
     /**

@@ -33,17 +33,18 @@ class MailCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $mailId = $input->getArgument('mail');
-
+//        dump($mailId); die;
         $entityManager = $this->getContainer()->get('doctrine')->getEntityManager();
 
         $users = $entityManager->getRepository('ApplicationSonataUserBundle:User')->findAll();
         $mail  = $entityManager->getRepository('ThoughtBundle:GeneralMail')->find($mailId);
-
+        dump($mail);
         if ($mail) {
 
             /** @var Mail $serviceMail */
             $serviceMail = $this->getContainer()->get('thought.service.mail_service');
-            $serviceMail->generalMail($users, $mail->getSubject(), $mail->getBody());
+            dump($mail);
+            $serviceMail->generalMail($users, $mail->getSubject(), nl2br($mail->getBody()));
 
             $mail->setIsSended(true);
             $entityManager->persist($mail);

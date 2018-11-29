@@ -127,5 +127,31 @@
 
             {% endif %}
     </div>
+    <script>
+        $(document).ready(function() {
 
+            $('span.author a').mouseover(function(){
+                $(this).parents('div.quote').find('div.authors_info').fadeIn();
+            }).mouseout(function(){
+                $(this).parents('div.quote').find('div.authors_info').fadeOut();
+            });
+
+            $('.show-link').click(function () {
+                var $btn = $(this);
+                var thoughtId = $btn.data('id');
+                var $element = $('.comments[data-id=' + thoughtId + ']');
+
+                console.log($element);
+
+                if ($element.hasClass('hidden')) {
+
+                    $element.removeClass('hidden');
+                } else {
+                    $element.addClass('hidden');
+                }
+            });
+
+        });
+
+    </script>
 {% endblock %}

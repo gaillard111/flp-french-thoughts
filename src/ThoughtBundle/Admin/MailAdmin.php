@@ -42,7 +42,7 @@ class MailAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('mailTo')
+//            ->add('mailTo')
             ->add('subject')
             ->add('body')
             ->add('isSended');
@@ -64,7 +64,7 @@ class MailAdmin extends Admin
     public function getFilterFields()
     {
         return array(
-            'mailTo',
+//            'mailTo',
             'subject',
             'body',
             'isSended'
@@ -78,11 +78,20 @@ class MailAdmin extends Admin
 
     public function postPersist($object)
     {
+        $this->sendEmailForAllUsers($object);
+    }
+
+    public function postUpdate($object)
+    {
+        $this->sendEmailForAllUsers($object);
+    }
+
+    private function sendEmailForAllUsers($object)
+    {
         $root = $this->rootPath;
-
         /** @var GeneralMail $object */
-        $mailId = $object->getId();
-
-        exec('/usr/bin/php ' . $root . '/console throught:mail_command ' . $mailId . ' > /dev/null 2>&1 &');
+        $mailId  = $object->getId();
+        $command = '/usr/bin/php ' . $root . '/console throught:mail_command ' . $mailId . ' > /dev/null 2>&1 &';
+        exec($command);
     }
 }
