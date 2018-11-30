@@ -3,14 +3,13 @@
 namespace Application\Sonata\UserBundle\Form\Type;
 
 use function Sodium\add;
-use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class ChainType
@@ -25,7 +24,7 @@ class ChainType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'label_attr'    => [
                     'class'       => 'control-label col-sm-2'
                 ],
@@ -34,11 +33,6 @@ class ChainType extends AbstractType
                     'placeholder' => 'chain.property.name.placeholder',
                 ],
                 'label'         => 'chain.property.name.label',
-                'constraints'   => [
-                    new NotBlank([
-                        'message' => 'chain.property.name.not_blank',
-                    ]),
-                ]
             ])
             ->add('topic', EntityType::class, [
                 'class'         =>  'ThoughtBundle\Entity\Topic',
@@ -73,6 +67,12 @@ class ChainType extends AbstractType
                     'class'        =>  'collective',
                 ],
             ])
+            ->add('submit', SubmitType::class, [
+                'label' =>  'user.chain.edit_page.submit',
+                'attr'  =>  [
+                    'class' =>  'btn btn-success pull-right'
+                ]
+            ])
         ;
     }
 
@@ -83,6 +83,9 @@ class ChainType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'ThoughtBundle\Entity\Chain',
+            'attr'       => [
+                'class'     =>  'form-horizontal'
+            ]
         ));
     }
 

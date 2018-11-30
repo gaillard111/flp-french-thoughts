@@ -9,6 +9,7 @@
 namespace ThoughtBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Sonata\UserBundle\Repository\TopicRepository")
@@ -24,6 +25,7 @@ class Topic
     protected $id;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(name="name", type="string")
      */
     protected $name;

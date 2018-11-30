@@ -158,7 +158,9 @@ sonata:
 
 chain:
     property:
-        name: Name
+        name:
+            label: Name
+            not_blank: This value should be not blank
         created: Created
         private: Is private
         quantity_quotes: Quantity Quotes

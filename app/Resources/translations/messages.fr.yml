@@ -297,6 +297,7 @@ chain:
             label: Nom de la chaine
             title: Nom de la chaine
             placeholder: Enter chain name
+            not_blank: This value should be not blank
         created: Établi
         emailAuthor: Email auteur
         private: Quote Chain sharing

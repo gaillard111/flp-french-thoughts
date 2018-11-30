@@ -3,6 +3,7 @@
 namespace ThoughtBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Chain
@@ -21,6 +22,7 @@ class Chain
     protected $id;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(name="name", type="string")
      */
     protected $name;

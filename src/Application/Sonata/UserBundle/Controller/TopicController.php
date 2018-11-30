@@ -53,7 +53,7 @@ class TopicController extends Controller
         $form = $this->createForm(new TopicType(), $topic);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if (($form->isSubmitted()) && ($form->isValid())) {
             $topic = $form->getData();
             $em->persist($topic);
             $em->flush();
@@ -81,7 +81,7 @@ class TopicController extends Controller
         $form = $this->createForm(new TopicType(), $topic);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if (($form->isSubmitted()) && ($form->isValid())) {
             $topic = $form->getData();
             $em->persist($topic);
             $em->flush();
