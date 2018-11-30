@@ -3,6 +3,7 @@
 namespace ThoughtBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="ThoughtBundle\Repository\ThoughtRepository")
@@ -19,6 +20,7 @@ class Thought
     protected $id;
 
     /**
+     * @Assert\NotBlank
      * @ORM\Column(type="text")
      */
     protected $content;
@@ -29,7 +31,8 @@ class Thought
     protected $tags;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank
+     * @ORM\Column(type="text")
      */
     protected $category;
 
@@ -39,7 +42,8 @@ class Thought
     protected $thoughtInfo;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank
+     * @ORM\Column(type="text")
      */
     protected $author;
 
