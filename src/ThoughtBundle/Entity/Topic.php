@@ -26,6 +26,7 @@ class Topic
 
     /**
      * @Assert\NotBlank
+     * @Assert\Length(max=256)
      * @ORM\Column(name="name", type="string")
      */
     protected $name;
