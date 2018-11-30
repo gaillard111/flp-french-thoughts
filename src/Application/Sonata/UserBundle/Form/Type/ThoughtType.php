@@ -3,8 +3,11 @@
 namespace Application\Sonata\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use ThoughtBundle\Entity\Thought;
 
 /**
  * Class ThoughtType
@@ -19,33 +22,33 @@ class ThoughtType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('category', 'text', array(
-                'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr'       => array('class' => 'form-control'),
+            ->add('category', TextType::class, [
+                'label_attr' => [ 'class' => 'control-label col-sm-2' ],
+                'attr'       => [ 'class' => 'form-control' ],
                 'label'      => 'thought.filter.fields.category.label',
-            ))
-            ->add('content', 'textarea', array(
-                'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr'       => array('class' => 'form-control'),
+            ])
+            ->add('content', TextareaType::class, [
+                'label_attr' => [ 'class' => 'control-label col-sm-2' ],
+                'attr'       => [ 'class' => 'form-control' ],
                 'label'      => 'thought.filter.fields.content.label',
-            ))
-            ->add('thoughtInfo', 'text', array(
-                'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr'       => array('class' => 'form-control'),
+            ])
+            ->add('thoughtInfo', TextType::class, [
+                'label_attr' => [ 'class' => 'control-label col-sm-2' ],
+                'attr'       => [ 'class' => 'form-control' ],
                 'required'   => false,
                 'label'      => 'thought.filter.fields.thoughtInfo.label',
-            ))
-            ->add('tags', 'text', array(
-                'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr'       => array('class' => 'form-control', 'data-role' => 'tagsinput'),
+            ])
+            ->add('tags', TextType::class, [
+                'label_attr' => [ 'class' => 'control-label col-sm-2' ],
+                'attr'       => [ 'class' => 'form-control', 'data-role' => 'tagsinput' ],
                 'required'   => false,
                 'label'      => 'thought.filter.fields.tags.label',
-            ))
-            ->add('author', 'text', array(
-                'label_attr' => array('class' => 'control-label col-sm-2'),
-                'attr'       => array('class' => 'form-control'),
+            ])
+            ->add('author', TextType::class, [
+                'label_attr' => [ 'class' => 'control-label col-sm-2' ],
+                'attr'       => [ 'class' => 'form-control' ],
                 'label'      => 'thought.filter.fields.author.label',
-            ))
+            ])
         ;
     }
 
@@ -54,9 +57,9 @@ class ThoughtType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'ThoughtBundle\Entity\Thought',
-        ));
+        $resolver->setDefaults([
+            'data_class' => Thought::class,
+        ]);
     }
 
     /**
