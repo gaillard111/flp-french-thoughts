@@ -344,16 +344,19 @@ label.required:after{
     color: #28a4c9;
 }
 
-.chain-item {
-    margin-top: 30px !important;
-}
 
 .chain-list {
+    display:flex;
+    flex-direction: row;
     margin-top: 20px !important;
 }
 
-.chain-list .chain-remove {
-    margin-left: 20px;
+.chain-edit {
+    margin-left: 10px;
+}
+
+.plain {
+    text-decoration: none !important;
 }
 
 .error404 {
