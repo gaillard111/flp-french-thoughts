@@ -344,6 +344,9 @@ label.required:after{
     color: #28a4c9;
 }
 
+.my-tooltip {
+    text-align: left;
+}
 
 .chain-list {
     display:flex;

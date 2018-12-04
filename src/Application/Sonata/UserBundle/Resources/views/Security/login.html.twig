@@ -10,3 +10,7 @@ file that was distributed with this source code.
 #}
 
 {% extends "SonataUserBundle:Security:base_login.html.twig" %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src='https://www.google.com/recaptcha/api.js?render=6Lf0gnIUAAAAAIOcDJST9QKJdz7KhbvcacgvizF5'></script>
+{% endblock %}

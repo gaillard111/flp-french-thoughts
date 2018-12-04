@@ -10,32 +10,32 @@ use ThoughtBundle\Entity\Topic;
 
 class TopicController extends Controller
 {
-    /**
-     * @Route("/topic/{topicId}/remove", name="sonata_user_topic_remove", requirements={"topicId"="\d+"})
-     */
-    public function removeAction($topicId)
-    {
-        $em = $this->get('doctrine.orm.entity_manager');
-        /** @var Topic $topic */
-        $topic = $em->getRepository(Topic::class)->find($topicId);
-
-        if (!$topic) {
-            $this->addFlash('success', $this->get('translator')->trans('thought.topic.not_exist'));
-
-            return $this->redirect($this->generateUrl('sonata_user_topics'));
-        }
-
-        if ($topic->getUser() != $this->getUser()) {
-            $this->addFlash('success', $this->get('translator')->trans('thought.topic.access_denied'));
-            return $this->redirect($this->generateUrl('sonata_user_topics'));
-        }
-
-        $em->remove($topic);
-        $em->flush();
-
-        $this->addFlash('success', $this->get('translator')->trans('thought.topic.successfully_removed'));
-        return $this->redirect($this->generateUrl('sonata_user_topics'));
-    }
+//    /**
+//     * @Route("/topic/{topicId}/remove", name="sonata_user_topic_remove", requirements={"topicId"="\d+"})
+//     */
+//    public function removeAction($topicId)
+//    {
+//        $em = $this->get('doctrine.orm.entity_manager');
+//        /** @var Topic $topic */
+//        $topic = $em->getRepository(Topic::class)->find($topicId);
+//
+//        if (!$topic) {
+//            $this->addFlash('success', $this->get('translator')->trans('thought.topic.not_exist'));
+//
+//            return $this->redirect($this->generateUrl('sonata_user_topics'));
+//        }
+//
+//        if ($topic->getUser() != $this->getUser()) {
+//            $this->addFlash('success', $this->get('translator')->trans('thought.topic.access_denied'));
+//            return $this->redirect($this->generateUrl('sonata_user_topics'));
+//        }
+//
+//        $em->remove($topic);
+//        $em->flush();
+//
+//        $this->addFlash('success', $this->get('translator')->trans('thought.topic.successfully_removed'));
+//        return $this->redirect($this->generateUrl('sonata_user_topics'));
+//    }
 
 
     /**

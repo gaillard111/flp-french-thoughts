@@ -11,24 +11,26 @@
         {% for chain in chains %}
             <div class="col-sm-4 chain-list">
                 <a class="chain-item" data-html="true" data-toggle="tooltip" data-placement="bottom" title="
-                <div>
-                    Status:
-                    {% if chain.isPrivate %}
-                        Private
-                    {% else %}
-                        Public,
-                        {% if chain.isCollective %}
-                            collective
+                <div class=&quot;my-tooltip&quot;>
+                    <div>
+                        {{ 'chain.property.private'|trans }}:
+                        {% if chain.isPrivate %}
+                            Private
                         {% else %}
-                            personally
+                            Public,
+                            {% if chain.isCollective %}
+                                collective
+                            {% else %}
+                                personally
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
-                </div>
-                <div>
-                    Quotes: {{ chain.chainThoughts|length }}
-                </div>
-                <div>
-                    Created: {{ chain.createdAt|date('d.m.Y') }}
+                    </div>
+                    <div>
+                        {{ 'chain.property.quantity_quotes'|trans }}: {{ chain.chainThoughts|length }}
+                    </div>
+                    <div>
+                        {{ 'chain.property.created'|trans }}: {{ chain.createdAt|date('d.m.Y') }}
+                    </div>
                 </div>
                 " href="{{ path('chain_page', {'chainId': chain.id}) }}">{{ chain.name|slice(0, 20) }}</a>
                 <div class="chain-edit">

@@ -69,13 +69,13 @@ class ThoughtController extends Controller
         ];
 
         $menu[] = [
-            'label' => $this->get('translator')->trans('user.chain.list_page.title'),
-            'route' => 'sonata_user_chains',
+            'label' => $this->get('translator')->trans('user.topic.list_page.title'),
+            'route' => 'sonata_user_topics',
         ];
 
         $menu[] = [
-            'label' => $this->get('translator')->trans('user.topic.list_page.title'),
-            'route' => 'sonata_user_topics',
+            'label' => $this->get('translator')->trans('user.chain.list_page.title'),
+            'route' => 'sonata_user_chains',
         ];
 
         $thoughts = $this->container

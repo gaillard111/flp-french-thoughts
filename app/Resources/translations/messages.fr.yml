@@ -116,7 +116,7 @@ user:
         create_page:
             title: Topic create
         list_page:
-            title: Les sujets
+            title: Mes sujets
             table:
                 name: Name
             create_button: Ajouter sujet
