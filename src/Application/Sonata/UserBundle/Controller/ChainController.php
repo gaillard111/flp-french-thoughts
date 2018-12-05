@@ -52,9 +52,13 @@ class ChainController extends Controller
     public function rightSidebarAction(Request $request, $curTopicId)
     {
         /** @var User $user */
-        $user = $this->getUser();
-        $topics = $user->getTopics();
-        $sidebar    = [];
+        $user      = $this->getUser();
+        $topics    = $user->getTopics();
+        $sidebar   = [];
+        $sidebar[] = [
+            'label' =>  'All',
+            'route' =>  'sonata_user_chains'
+        ];
 
         foreach ($topics as $topic) {
             $sidebar[]  = [
@@ -65,6 +69,8 @@ class ChainController extends Controller
                 ]
             ];
         }
+
+//        dump($sidebar); die;
 
         return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
             'menu'             => $sidebar,

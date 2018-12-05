@@ -25,7 +25,7 @@ var modal_boot = {
                 .text('OK')
                 .appendTo(footer);
         }
-        $('<div/>').addClass('btn close').attr('href','#').attr('onclick','modal_boot.close_window("' + class_window + '")').text('Close').appendTo(footer);
+        $('<div/>').addClass('btn close close-button').attr('href','#').attr('onclick','modal_boot.close_window("' + class_window + '")').text('Close').appendTo(footer);
     },
     close_window : function (class_window) {
         var div = $('div.' + class_window);

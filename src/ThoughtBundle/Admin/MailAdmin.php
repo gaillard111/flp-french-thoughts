@@ -30,9 +30,12 @@ class MailAdmin extends Admin
     {
         $formMapper
             ->add('subject')
-            ->add('body', 'textarea', array(
-                'label' => 'Message'
-            ));
+            ->add('body', 'textarea', [
+                'label' => 'Message',
+                'attr'  => [
+                    'class' => 'js-ckeditor'
+                ],
+            ]);
     }
 
     /**

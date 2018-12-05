@@ -82,7 +82,11 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-12 ">
-                    <a class="show-link" data-id="{{ thought.id }}">{{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}</a>
+                    {% if thought.comments|length and app.request.get('_route') == 'thought_homepage_index' %}
+                        <a class="show-link" data-id="{{ thought.id }}">{{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}</a>
+                    {% else %}
+                        <p>{{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}</p>
+                    {% endif %}
                 </div>
             </div>
             <div class="row">

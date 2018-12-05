@@ -37,8 +37,8 @@
 }
 
 .comment-data {
-    font-size: small !important;
-    color: #9e9393;
+    font-size: 11px !important;
+    color: #a3a3a3;
 }
 
 .reply-button {
@@ -100,12 +100,22 @@
     background-color: transparent;
 }
 .modal{
+    border-radius: 3px;
     width: 30%;
     margin: 0 auto;
     background-color: #fff;
     top: 10%;
     bottom: initial;
 }
+
+.modal-header {
+    border: none;
+}
+
+.modal-footer {
+    border: none;
+}
+
 a.underline{
     text-decoration: underline;
 }
@@ -379,6 +389,12 @@ label.required:after{
 
 .error404 .href a{
     font-weight: bold;
+}
+
+.close-button {
+    font-weight: 400;
+    font-size: 18px;
+    padding: 10px;
 }
 
 div.alphas {

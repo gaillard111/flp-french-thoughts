@@ -4,21 +4,30 @@
             {% if routeName == item.route  %}
                 {% if routeName != 'thought_profile' %}
                     {% if curTopicId is defined %}
-                        {% if curTopicId == item.parameters.topicId %}
-                            active
+                        {% if item.parameters is defined %}
+                            {% if curTopicId == item.parameters.topicId %}
+                                active
+                            {% endif %}
                         {% endif %}
                     {% else %}
                         active
+                    {% endif %}
+                    {% if item.route == 'sonata_user_chains' %}
+                        {% if item.parameters is not defined %}
+                            active
+                        {% endif %}
                     {% endif %}
                 {% elseif userProfileId == app.user.id %}
                     active
                 {% endif %}
             {% else %}
                 {% if routeName == 'dialog' and item.route == 'dialog_list' %}
-                    active
+                    {#active#}
                 {% endif %}
                 {% if routeName == 'sonata_user_chain_by_topic' and item.route == 'sonata_user_chains' %}
-                    active
+                    {% if item.label != 'All' %}
+                        active
+                    {% endif %}
                 {% endif %}
                 {% if routeName == 'sonata_user_favorite_chains' and item.route == 'sonata_user_chains' %}
                     active
