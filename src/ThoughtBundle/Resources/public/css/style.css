@@ -397,6 +397,10 @@ label.required:after{
     padding: 10px;
 }
 
+.grecaptcha-badge {
+    display: none;
+}
+
 div.alphas {
     text-align: center;
     font-size: 19px;
