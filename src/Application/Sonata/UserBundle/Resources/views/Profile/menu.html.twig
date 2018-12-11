@@ -21,9 +21,9 @@
                     active
                 {% endif %}
             {% else %}
-                {% if routeName == 'dialog' and item.route == 'dialog_list' %}
+                {#{% if routeName == 'dialog' and item.route == 'dialog_list' %}#}
                     {#active#}
-                {% endif %}
+                {#{% endif %}#}
                 {% if routeName == 'sonata_user_chain_by_topic' and item.route == 'sonata_user_chains' %}
                     {% if item.label != 'All' %}
                         active
@@ -47,7 +47,11 @@
             {% else %}
             " href="{{ path(item.route) }}
             {% endif %}
-            ">{{ item.label|slice(0, 20) }}
+            "
+            {% if item.parameters['topicId'] is defined %}
+                 title="{{ item.label }}"
+            {% endif %}
+            >{{ item.label|striptags|truncate(18) }}
             {% if item.route == 'sonata_user_thoughts' %}
                 ({{ thoughts }})
             {% endif %}

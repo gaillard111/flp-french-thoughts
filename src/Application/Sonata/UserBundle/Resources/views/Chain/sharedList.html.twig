@@ -30,7 +30,7 @@
                         <div>
                             Created: {{ chain.createdAt|date('d.m.Y') }}
                         </div>
-                        " href="{{ path('chain_page', {'chainId': chain.id}) }}">{{ chain.name|slice(0, 20) }}</a>
+                        " href="{{ path('chain_page', {'chainId': chain.id}) }}">{{ chain.name }}</a>
                     {% if chain.isPrivate == false %}
                         {#( {{ url('chain_page', {'chainId': chain.id}) }} )#}
                         <div class="chain-edit">

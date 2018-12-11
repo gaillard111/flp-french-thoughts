@@ -13,7 +13,7 @@
             <div class="row">
                 {% for topic in topics %}
                     <div class="col-sm-4 chain-list">
-                        <a href="{{ path('topic_page', { 'topicId': topic.id }) }}">{{ topic.name|slice(0, 20) }}</a>
+                        <a href="{{ path('topic_page', { 'topicId': topic.id }) }}" title="{{ topic.name }}">{{ topic.name|striptags|truncate(25) }}</a>
                         {% if topic.user == app.user %}
                             <div class="chain-edit">
                                 <a class="text-primary plain" href="{{ path('sonata_user_topic_edit', { 'topicId': topic.id }) }}">
