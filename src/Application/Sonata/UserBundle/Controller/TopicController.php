@@ -10,33 +10,6 @@ use ThoughtBundle\Entity\Topic;
 
 class TopicController extends Controller
 {
-//    /**
-//     * @Route("/topic/{topicId}/remove", name="sonata_user_topic_remove", requirements={"topicId"="\d+"})
-//     */
-//    public function removeAction($topicId)
-//    {
-//        $em = $this->get('doctrine.orm.entity_manager');
-//        /** @var Topic $topic */
-//        $topic = $em->getRepository(Topic::class)->find($topicId);
-//
-//        if (!$topic) {
-//            $this->addFlash('success', $this->get('translator')->trans('thought.topic.not_exist'));
-//
-//            return $this->redirect($this->generateUrl('sonata_user_topics'));
-//        }
-//
-//        if ($topic->getUser() != $this->getUser()) {
-//            $this->addFlash('success', $this->get('translator')->trans('thought.topic.access_denied'));
-//            return $this->redirect($this->generateUrl('sonata_user_topics'));
-//        }
-//
-//        $em->remove($topic);
-//        $em->flush();
-//
-//        $this->addFlash('success', $this->get('translator')->trans('thought.topic.successfully_removed'));
-//        return $this->redirect($this->generateUrl('sonata_user_topics'));
-//    }
-
 
     /**
      * @Route("/topic/create", name="sonata_user_topic_create")
@@ -65,7 +38,6 @@ class TopicController extends Controller
         ]);
     }
 
-
     /**
      * @Route("/topic/{topicId}/edit", name="sonata_user_topic_edit", requirements={"topicId"="\d+"})
      * @param Request $request
@@ -76,21 +48,30 @@ class TopicController extends Controller
     public function editAction(Request $request, $topicId)
     {
         $em = $this->get('doctrine.orm.entity_manager');
+        /** @var Topic $topic */
         $topic = $em->getRepository(Topic::class)->find($topicId);
+        $user = $this->getUser();
 
-        $form = $this->createForm(new TopicType(), $topic);
-        $form->handleRequest($request);
+        if ($topic->getUser() == $user) {
+            $form = $this->createForm(new TopicType(), $topic);
+            $form->handleRequest($request);
 
-        if (($form->isSubmitted()) && ($form->isValid())) {
-            $topic = $form->getData();
-            $em->persist($topic);
-            $em->flush();
-            return $this->redirectToRoute('sonata_user_topics');
+            if (($form->isSubmitted()) && ($form->isValid())) {
+                $topic = $form->getData();
+                $em->persist($topic);
+                $em->flush();
+                return $this->redirectToRoute('sonata_user_topics');
+            }
+
+            return $this->render('ApplicationSonataUserBundle:Topic:create.html.twig', [
+                'form'  =>  $form->createView(),
+            ]);
         }
 
-        return $this->render('ApplicationSonataUserBundle:Topic:create.html.twig', [
-            'form'  =>  $form->createView(),
-        ]);
+        $this->addFlash('danger', $this->get('translator')->trans('thought.topic.access_denied'));
+
+        return $this->redirectToRoute('all_topics');
+
     }
 
     /**

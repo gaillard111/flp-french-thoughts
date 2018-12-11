@@ -41,6 +41,11 @@
                     </li>
                 {% else %}
                     <li>
+                        <a href="{{ path('all_topics') }}">
+                            {{ 'navbar.topics'|trans }}
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ path('sonata_user_profile_show') }}">
                             {{ 'navbar.profile'|trans }}
                         </a>
@@ -55,6 +60,7 @@
                             {{ 'navbar.users'|trans }}
                         </a>
                     </li>
+
                 {% endif %}
                 <li>
                     <a href="{{ path('fos_user_security_logout') }}">

@@ -7,8 +7,10 @@
                         {% if item.route == routeName %}
                             class="active"
                         {% endif %}
-                    ><a href="{{ path(item.route) }}">{{ item.label|trans }}</a></li>
+                    ><a href="{{ path(item.route) }}">{{ item.label|trans }}</a>
+                    </li>
                 {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock %}

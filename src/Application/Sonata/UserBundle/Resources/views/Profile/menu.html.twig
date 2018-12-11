@@ -38,6 +38,9 @@
                 {% if routeName == 'chain_collective' and item.route == 'sonata_user_chains' %}
                     active
                 {% endif %}
+                {#{% if routeName == 'all_topics' and item.route == 'sonata_user_topics' %}#}
+                    {#active#}
+                {#{% endif %}#}
             {% endif %}
             {% if item.parameters is defined %}
             " href="{{ path(item.route, item.parameters) }}
