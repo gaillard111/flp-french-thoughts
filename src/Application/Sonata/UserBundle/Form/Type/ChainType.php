@@ -2,7 +2,6 @@
 
 namespace Application\Sonata\UserBundle\Form\Type;
 
-use function Sodium\add;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -38,10 +37,10 @@ class ChainType extends AbstractType
                 'class'         =>  'ThoughtBundle\Entity\Topic',
                 'choice_label'  =>  'name',
                 'label_attr'    =>  [
-                    'class'       =>  'control-label col-sm-2'
+                    'class'       =>  'control-label col-sm-2 topic-select'
                 ],
                 'attr'          =>  [
-                    'class'       => 'form-control',
+                    'class'       => 'form-control topic-select',
                 ],
                 'required'      =>  false
             ])

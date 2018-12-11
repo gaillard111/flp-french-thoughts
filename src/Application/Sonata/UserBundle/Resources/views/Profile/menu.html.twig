@@ -21,9 +21,6 @@
                     active
                 {% endif %}
             {% else %}
-                {#{% if routeName == 'dialog' and item.route == 'dialog_list' %}#}
-                    {#active#}
-                {#{% endif %}#}
                 {% if routeName == 'sonata_user_chain_by_topic' and item.route == 'sonata_user_chains' %}
                     {% if item.label != 'All' %}
                         active
@@ -38,9 +35,6 @@
                 {% if routeName == 'chain_collective' and item.route == 'sonata_user_chains' %}
                     active
                 {% endif %}
-                {#{% if routeName == 'all_topics' and item.route == 'sonata_user_topics' %}#}
-                    {#active#}
-                {#{% endif %}#}
             {% endif %}
             {% if item.parameters is defined %}
             " href="{{ path(item.route, item.parameters) }}

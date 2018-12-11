@@ -24,9 +24,11 @@
         $(function () {
             var $private    = $('.private');
             var $collective = $('.collective');
+            var $select     = $('.topic-select');
 
             if ($private.is(":checked")) {
                 $collective.addClass('hidden');
+                $select.addClass('hidden');
                 $('input.collective').attr('disabled', 'disabled');
             }
 
@@ -34,8 +36,10 @@
                 if (!$private.is(":checked")) {
                     $('input.collective').attr('disabled', false);
                     $collective.removeClass('hidden');
+                    $select.removeClass('hidden');
                 } else {
                     $collective.addClass('hidden');
+                    $select.addClass('hidden');
                     $('input.collective').attr('disabled', 'disabled');
                 }
             });

@@ -16,6 +16,11 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+            <li >
+                <a class="topic-link" href="{{ path('all_topics') }}">
+                    {{ 'navbar.topics'|trans }}
+                </a>
+            </li>
             <li>
                 <a href="{{ path('thought_author_index') }}">
                     {{ 'navbar.authors'|trans }}
@@ -40,11 +45,7 @@
                         </a>
                     </li>
                 {% else %}
-                    <li>
-                        <a href="{{ path('all_topics') }}">
-                            {{ 'navbar.topics'|trans }}
-                        </a>
-                    </li>
+
                     <li>
                         <a href="{{ path('sonata_user_profile_show') }}">
                             {{ 'navbar.profile'|trans }}

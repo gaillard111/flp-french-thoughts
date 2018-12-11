@@ -269,7 +269,7 @@ navbar:
     super_admin:  Admin dashboard
     link_shared_chains: Ooh les beaux enfants !
     authors: Auteurs
-    topics: Problematic
+    topics: Actualités
 
 footer:
     link1: Besoin d'aide pour décider de la catégorie ou du tag ?

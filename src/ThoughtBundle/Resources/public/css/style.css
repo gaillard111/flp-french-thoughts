@@ -2,6 +2,11 @@
     padding-bottom: 30px;
 }
 
+.topic-link {
+    font-weight: bold;
+    color: #337ab7 !important;
+}
+
 .w100 {
     width: 100%;
 }

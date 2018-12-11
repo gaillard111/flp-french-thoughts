@@ -240,6 +240,9 @@ class ChainController extends Controller
         if ($request->getMethod() == 'POST') {
             if ($form->isValid()) {
                 $chain->setUser($this->getUser());
+                if ($chain->getIsPrivate()) {
+                    $chain->setTopic(null);
+                }
                 $em->persist($chain);
                 $em->flush();
 
