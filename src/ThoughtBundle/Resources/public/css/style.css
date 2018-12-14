@@ -68,12 +68,12 @@
     color: #337ab7;
 }
 
-.my-custom-menu {
-    padding: 8px 0;
+.table-responsive {
+    border: none;
 }
 
-.profile-user {
-    padding-top: 8px;
+.my-custom-menu {
+    padding-top: 0 !important;
 }
 
 .mainsearch {

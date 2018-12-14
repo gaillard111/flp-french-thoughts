@@ -153,7 +153,7 @@ thought:
                 label: Info
             advancedSearch:
                 label: Recherche  avancée
-            search: Search parameters
+            search: Paramètres de recherches
             1Search:
                 label: Filtres
             2Search:
@@ -260,7 +260,7 @@ thought:
 navbar:
     brand:        Les fils de la pensée
     profile:      Profil
-    users:        Users
+    users:        Utilisateurs
     chat:         Chat
     sign_out:     Déconnexion
     sign_in:      Login
@@ -309,7 +309,6 @@ chain:
         collective?: Make Collective
         personally?: Make Personally
 
-
 author:
     filter:
         fields:
@@ -327,3 +326,6 @@ author:
                 label: Nom Prénom
             instruction:
                 label: instruction
+
+topic:
+    title: Chaines de réflexions, collectives ou personnelles, présentées par sujets

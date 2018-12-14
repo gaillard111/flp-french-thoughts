@@ -33,11 +33,11 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="{{ path('sonata_user_chains') }}">
-                        {{ 'user.dashboard.menu.link_chains'|trans }}
-                    </a>
-                </li>
+                {#<li>#}
+                    {#<a href="{{ path('sonata_user_chains') }}">#}
+                        {#{{ 'user.dashboard.menu.link_chains'|trans }}#}
+                    {#</a>#}
+                {#</li>#}
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <li>
                         <a href="{{ path('sonata_admin_dashboard') }}">
@@ -46,9 +46,39 @@
                     </li>
                 {% else %}
 
-                    <li>
-                        <a href="{{ path('sonata_user_profile_show') }}">
+                    <li class="hidden-lg hidden-md hidden-sm">
+                        <a href="{{ path('fos_user_profile_edit') }}">
                             {{ 'navbar.profile'|trans }}
+                        </a>
+                    </li>
+                    <li class="hidden-lg hidden-md hidden-sm">
+                        <a href="{{ path('thought_profile', { 'userId': app.user.id } ) }}">
+                            {{ 'user.form.profile.profile_edit'|trans }}
+                        </a>
+                    </li>
+                    <li class="hidden-lg hidden-md hidden-sm">
+                        <a href="{{ path('friends') }}">
+                            {{ 'user.friendship.title'|trans }}
+                        </a>
+                    </li>
+                    <li class="hidden-lg hidden-md hidden-sm">
+                        <a href="{{ path('sonata_user_thoughts') }}">
+                            {{ 'user.thought.list_page.title'|trans }}
+                        </a>
+                    </li>
+                    <li class="hidden-lg hidden-md hidden-sm">
+                        <a href="{{ path('sonata_user_thought_create') }}">
+                            {{ 'user.thought.create_page.title'|trans }}
+                        </a>
+                    </li>
+                    <li class="hidden-lg hidden-md hidden-sm">
+                        <a href="{{ path('sonata_user_topics') }}">
+                            {{ 'user.topic.list_page.title'|trans }}
+                        </a>
+                    </li>
+                    <li class="hidden-lg hidden-md hidden-sm">
+                        <a href="{{ path('sonata_user_chains') }}">
+                            {{ 'user.chain.list_page.title'|trans }}
                         </a>
                     </li>
                     <li>
