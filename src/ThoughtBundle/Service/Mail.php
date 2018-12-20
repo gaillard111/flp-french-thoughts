@@ -181,6 +181,14 @@ class Mail
             $message->setCc($cc);
         }
 
-        $this->container->get('mailer')->send($message);
+        $mailer = $this->container->get('mailer');
+
+        try {
+            $mailer->send($message);
+        } catch (\Swift_TransportException $exception) {
+            $mailer->getTransport()->stop();
+            sleep(20);
+            $mailer->send($message);
+        }
     }
 }
