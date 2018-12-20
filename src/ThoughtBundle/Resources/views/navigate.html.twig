@@ -16,17 +16,18 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-            <li >
-                <a class="topic-link" href="{{ path('all_topics') }}">
-                    {{ 'navbar.topics'|trans }}
-                </a>
-            </li>
+
             <li>
                 <a href="{{ path('thought_author_index') }}">
                     {{ 'navbar.authors'|trans }}
                 </a>
             </li>
             {% if app.user %}
+                <li >
+                    <a class="topic-link" href="{{ path('all_topics') }}">
+                        {{ 'navbar.topics'|trans }}
+                    </a>
+                </li>
                 <li>
                     <a href="{{ path('content', {'code' : 'instruction'}) }}">
                         {{ 'navbar.instruction'|trans }}

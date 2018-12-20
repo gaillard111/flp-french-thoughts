@@ -118,11 +118,11 @@ class Mail
          */
         foreach ($users as $key => $user) {
             if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-                $userEmails[$key] = $user->getEmail();
+                $this->sendMail($subject, $user->getEmail(), $body);
             }
         }
 
-        $this->sendMail($subject, $userEmails, $body);
+
     }
 
     /**
@@ -168,12 +168,12 @@ class Mail
      * @param null $cc
      * @throws \Exception
      */
-    private function sendMail($subject, $emailUsers, $body, $cc = null)
+    private function sendMail($subject, $emailUser, $body, $cc = null)
     {
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setFrom($this->container->getParameter('mailer_user'))
-            ->setTo($emailUsers)
+            ->setTo($emailUser)
             ->setBody($body, 'text/html')
         ;
 
