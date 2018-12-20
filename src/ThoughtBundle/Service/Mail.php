@@ -117,7 +117,9 @@ class Mail
          * @var User $user
          */
         foreach ($users as $key => $user) {
-            $userEmails[$key] = $user->getEmail();
+            if (filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
+                $userEmails[$key] = $user->getEmail();
+            }
         }
 
         $this->sendMail($subject, $userEmails, $body);
