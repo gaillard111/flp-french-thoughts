@@ -33,7 +33,7 @@ class MailCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $mailId = $input->getArgument('mail');
-//        dump($mailId); die;
+        dump($mailId);
         $entityManager = $this->getContainer()->get('doctrine')->getEntityManager();
 
         $users = $entityManager->getRepository('ApplicationSonataUserBundle:User')->findAll();
