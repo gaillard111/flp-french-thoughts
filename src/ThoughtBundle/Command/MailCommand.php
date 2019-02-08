@@ -38,23 +38,17 @@ class MailCommand extends ContainerAwareCommand
 
         $users = $entityManager->getRepository('ApplicationSonataUserBundle:User')->findAll();
         $mail  = $entityManager->getRepository('ThoughtBundle:GeneralMail')->find($mailId);
-        dump($mail);
+//        dump($mail); die;
         if ($mail) {
 
             /** @var Mail $serviceMail */
             $serviceMail = $this->getContainer()->get('thought.service.mail_service');
-            dump($mail);
             $serviceMail->generalMail($users, $mail->getSubject(), nl2br($mail->getBody()));
 
             $mail->setIsSended(true);
             $entityManager->persist($mail);
             $entityManager->flush();
-
-            $output->writeln('Mail = ' . $mailId);
-            foreach ($users as $user)
-            {
-                $output->writeln('Sended message on ' . $user->getEmail());
-            }
+            
         } else {
             $output->writeln('Mail not found');
         }
