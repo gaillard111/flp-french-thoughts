@@ -94,7 +94,7 @@ class MailAdmin extends Admin
         $root = $this->rootPath;
         /** @var GeneralMail $object */
         $mailId  = $object->getId();
-        $command = 'nohup /usr/bin/php "' . $root . '/console" throught:mail_command ' . $mailId . ' >> ' . $root . '/logs/mail_command_out.log 2>&1 &';
+        $command = 'nohup /usr/bin/php7.0 "' . $root . '/console" throught:mail_command ' . $mailId . ' >> ' . $root . '/logs/mail_command_out.log 2>&1 &';
 
 //        dump($command); die;
 
