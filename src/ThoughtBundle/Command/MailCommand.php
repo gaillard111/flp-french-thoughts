@@ -48,7 +48,7 @@ class MailCommand extends ContainerAwareCommand
             $mail->setIsSended(true);
             $entityManager->persist($mail);
             $entityManager->flush();
-            
+
         } else {
             $output->writeln('Mail not found');
         }
