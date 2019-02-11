@@ -186,7 +186,7 @@ class Mail
 
         try {
             $mailer->send($message);
-            dump($emailUser);
+
         } catch (\Swift_TransportException $exception) {
             $mailer->getTransport()->stop();
             sleep(20);
