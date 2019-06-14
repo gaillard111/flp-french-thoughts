@@ -4,6 +4,8 @@ namespace Application\Sonata\UserBundle\Controller;
 
 use Application\Sonata\UserBundle\Entity\Message;
 use Application\Sonata\UserBundle\Entity\User;
+use Application\Sonata\UserBundle\Form\Object\SearchObject;
+use Application\Sonata\UserBundle\Form\Type\SortSearchForm;
 use Application\Sonata\UserBundle\Form\Type\ThoughtType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -117,17 +119,29 @@ class ThoughtController extends Controller
      */
     public function listAction(Request $request)
     {
+        $searchObject = new SearchObject();
+        $form = $this->createForm(new SortSearchForm(), $searchObject);
+        $form->handleRequest($request);
+
+
+        $search = '';
+        if ($searchObject->getSearchString()) {
+            $search = $searchObject->getSearchString();
+        }
+
         $thoughts = $this->container
             ->get('thought.model.thought_model')
-            ->getUserThoughts($this->getUser())
+            ->getUserThoughts($this->getUser(), $searchObject->getSort(), $search)
             ->getResult();
 //        $paginator  = $this->get('knp_paginator');
 //        $pagination = $paginator->paginate(
 //            $thoughts,
 //            $request->query->getInt('page', 1)
 //        );
+        dump($form->getData());
         return $this->render('ApplicationSonataUserBundle:Thought:list.html.twig', array(
             'thoughts' => $thoughts,
+            'form'     => $form->createView()
         ));
     }
 

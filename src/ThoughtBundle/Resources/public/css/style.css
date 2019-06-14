@@ -463,3 +463,19 @@ div.panel-heading {
     display: inline-block;
     padding: 20px 0;
 }
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
+}
+
+.sort {
+    cursor: pointer;
+}
+
+.custom-form-group {
+    display: flex;
+}
+
+.custom-form-group .btn {
+    margin-left: 10px;
+}

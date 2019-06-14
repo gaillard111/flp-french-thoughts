@@ -131,10 +131,12 @@ thought:
         author:      Auteur
         tags:        Corrélats
         thoughtInfo: Info
+        created_at:  Created At
         publish:     Publish
         like:        J'aime
         liked:       Aimé
         hoverable:   survolez pour voir plus d'infos
+    search: Recherche I'Auter
 
     filter:
         content:

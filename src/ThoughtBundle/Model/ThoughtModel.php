@@ -4,10 +4,14 @@ namespace ThoughtBundle\Model;
 
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\Query as DoctrineQuery;
+use Doctrine\ORM\EntityRepository;
 use Elastica\Query;
 use FOS\ElasticaBundle\Finder\FinderInterface;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
 use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
+use FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter;
 use Symfony\Component\DependencyInjection\Container;
 use ThoughtBundle\Entity\Thought;
 
@@ -32,7 +36,7 @@ class ThoughtModel
     protected $container;
 
     /**
-     * @var \Doctrine\ORM\EntityRepository
+     * @var EntityRepository
      */
     protected $repository;
 
@@ -49,7 +53,7 @@ class ThoughtModel
     }
 
     /**
-     * @return \Doctrine\ORM\Query
+     * @return DoctrineQuery
      */
     public function getThoughts()
     {
@@ -61,15 +65,30 @@ class ThoughtModel
 
     /**
      * @param User $user
-     * @return \Doctrine\ORM\Query
+     * @return DoctrineQuery
      */
-    public function getUserThoughts(User $user)
+    public function getUserThoughts(User $user, $order = 'DESC', $searchString = '')
     {
-        return $this->repository->createQueryBuilder('t')
-            ->where('t.owner = :user')
-            ->orderBy('t.createdAt', 'DESC')
-            ->setParameter('user', $user)
-            ->getQuery();
+        $qb = $this->repository->createQueryBuilder('t');
+
+        if ($searchString) {
+            $words = explode(' ', $searchString);
+
+            foreach ($words as $id => $word) {
+                $qb
+                    ->andWhere('t.content LIKE :word' . $id)
+                    ->setParameter('word' . $id, '%' . $word . '%');
+            }
+
+        }
+
+        $qb
+            ->andWhere('t.owner = :user')
+            ->orderBy('t.createdAt', $order)
+            ->setParameter('user', $user);
+//        dump($qb->getQuery()); die;
+        return
+            $qb->getQuery();
     }
 
     /**
@@ -90,10 +109,11 @@ class ThoughtModel
     /**
      * @param array             $request
      * @param TransformedFinder $finder
-     * @return \Doctrine\ORM\Query|\FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface|\FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter
+     * @return DoctrineQuery|PaginatorAdapterInterface|TransformedPaginatorAdapter
      */
     public function getThoughtsFromElastic($request, TransformedFinder $finder, TransformedFinder $authorsFinder)
     {
+//        dump($request); die;
         $fields = array(
             'tags',
             'author',
@@ -280,6 +300,7 @@ class ThoughtModel
     /**
      * @param array $data
      * @return int
+     * @throws OptimisticLockException
      */
     public function saveThoughts(array $data)
     {
@@ -311,7 +332,7 @@ class ThoughtModel
     /**
      * @param Thought $thought
      * @return Thought
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
      */
     public function addLike(Thought  $thought)
     {
@@ -326,7 +347,7 @@ class ThoughtModel
     /**
      * @param Thought $thought
      * @return Thought
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
      */
     public function removeLike(Thought  $thought)
     {

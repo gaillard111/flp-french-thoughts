@@ -1,11 +1,26 @@
 {% extends 'ApplicationSonataUserBundle:Profile:action.html.twig' %}
 
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
 {% block sonata_profile_title %}{{ 'user.thought.list_page.title'|trans }}{% endblock %}
 
 {% block sonata_profile_content %}
     <div class="row">
         <div class="col-sm-12">
             {#<p><a href="{{ path('sonata_user_thought_create') }}" class="btn btn-info">{{ 'user.thought.list_page.add_button'|trans }}</a></p>#}
+            {{ form_start(form) }}
+            <div class="row margin-bottom-20">
+                <div class="col-sm-12">
+                    {{ form_label(form.searchString) }}
+                    <div class="custom-form-group">
+                        {{ form_widget(form.searchString) }}
+                        {{ form_widget(form.submit) }}
+                        <a href="{{ path('sonata_user_thoughts') }}" class="btn btn-warning">Reset</a>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+            {% set sorting = form.sort.vars['value'] %}
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -14,28 +29,23 @@
                         <th>{{ 'thought.property.content'|trans }}</th>
                         <th>{{ 'thought.property.author'|trans }}</th>
                         <th>{{ 'thought.property.category'|trans }}</th>
+                        <th><a class="sort">{{ 'thought.property.created_at'|trans }} <i class="glyphicon glyphicon-triangle-{% if sorting == 'ASC' %}bottom{% else %}top{% endif %}"></i></a></th>
                         <th>{{ 'thought.property.publish'|trans }}</th>
-                        {#<th>{{ 'user.thought.list_page.table.action'|trans }}</th>#}
                     </tr>
                     </thead>
                     <tbody>
                     {% for thought in thoughts %}
                         <tr>
                             <td>{{ loop.index }}</td>
-                            <td>{{ thought.content|slice(0, 50)}}</td>
+                            <td>{{ thought.content|slice(0, 50)}} (<a href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id }) }}">{{ thought.id }}</a>)</td>
                             <td>{{ thought.author }}</td>
                             <td>{{ thought.category }}</td>
+                            <td>{{ thought.createdAt|date('d.m.Y H:i') }}</td>
                             <td>
                         <span class="label label-{{ thought.published ? 'success' : 'danger' }}">
                             {{ thought.published ? 'Yes' : 'No' }}
                         </span>
                             </td>
-                            {#<td>
-                                <ul>
-                                    <li><a href="#">{{ 'user.thought.list_page.link.edit'|trans }}</a></li>
-                                    <li><a href="#">{{ 'user.thought.list_page.link.delete'|trans }}</a></li>
-                                </ul>
-                            </td>#}
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -44,7 +54,20 @@
 
         </div>
     </div>
+    <script>
+        $().ready(function () {
+            $('.sort').click(function () {
+                $value = $('.sort-hidden').val();
+                if ($value === 'ASC') {
+                    $('.sort-hidden').val('DESC');
+                } else {
+                    $('.sort-hidden').val('ASC');
+                }
+                $('.search-form').submit();
+            });
 
+        });
+    </script>
 {% endblock %}
 
 
