@@ -479,3 +479,36 @@ div.panel-heading {
 .custom-form-group .btn {
     margin-left: 10px;
 }
+
+.thought-popup {
+    padding-right: 0 !important;
+    background: none;
+}
+
+.modal-dialog {
+    margin: auto;
+    width: auto;
+}
+
+.modal-header {
+    padding: 25px 25px 0;
+}
+
+.modal-body {
+    padding: 15px 25px 0;
+}
+
+.modal-footer {
+    padding: 0 25px 25px;
+}
+
+.close {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+.not-found-text {
+    padding: 25px 0 25px;
+    font-size: 16px;
+}

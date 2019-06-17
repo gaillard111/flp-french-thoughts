@@ -103,7 +103,7 @@ class HomepageController extends Controller
             'isCollective'  => true
         ]);
 
-        return $this->render('ThoughtBundle::homepage.html.twig', [
+        $response =  $this->render('ThoughtBundle::homepage.html.twig', [
             'thoughts'    => $pagination,
             'comments'    => $comments,
             'timeExecute' => $timeExecute,
@@ -113,6 +113,12 @@ class HomepageController extends Controller
             'filtersOpen' => isset($search['filter_open']) ? $search['filter_open'] : false,
             'colChains'   => $collectiveChains
         ]);
+
+        if (!$request->cookies->get('modal')) {
+            $response->headers->setCookie(new Cookie('modal', true));
+        }
+
+        return $response;
     }
 
     /**
