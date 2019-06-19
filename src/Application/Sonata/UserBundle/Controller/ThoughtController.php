@@ -71,6 +71,11 @@ class ThoughtController extends Controller
         ];
 
         $menu[] = [
+            'label' => $this->get('translator')->trans('thought.menu.favorite_thoughts'),
+            'route' => 'favorite-quotes',
+        ];
+
+        $menu[] = [
             'label' => $this->get('translator')->trans('user.topic.list_page.title'),
             'route' => 'sonata_user_topics',
         ];
@@ -109,6 +114,19 @@ class ThoughtController extends Controller
         $messages = $this->getDoctrine()->getRepository(Message::class)->getCountNewMessages($this->getUser());
         return new JsonResponse([
             'count' =>  $messages
+        ]);
+    }
+
+    /**
+     * @Route("/favorite", name="favorite-quotes")
+     */
+    public function favoriteQuotesAction()
+    {
+        $user = $this->getUser();
+        $likedThoughts = $this->getDoctrine()->getRepository(Thought::class)->getLikedThoughts($this->getUser());
+
+        return $this->render('ApplicationSonataUserBundle:Thought:favorite_list.html.twig', [
+            'thoughts'  => $likedThoughts
         ]);
     }
 

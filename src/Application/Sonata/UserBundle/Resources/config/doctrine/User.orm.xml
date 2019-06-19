@@ -54,6 +54,12 @@
                 mapped-by="user"
         />
 
+        <one-to-many
+                field="likes"
+                target-entity="ThoughtBundle\Entity\Like"
+                mapped-by="user"
+        />
+
         <field name="about" type="text" nullable="true"/>
         <field name="country" type="string" length="255" nullable="true"/>
         <field name="interests" type="text" nullable="true"/>

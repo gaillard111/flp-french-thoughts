@@ -2,6 +2,7 @@
 
 namespace ThoughtBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -74,9 +75,11 @@ class Thought
     protected $owner;
 
     /**
-     * @ORM\Column(type="integer")
+     * @var Like[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Like", mappedBy="thought", cascade={"persist"})
      */
-    protected $liked = 0;
+    protected $likes;
 
     /**
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Comment", mappedBy="thought")
@@ -87,8 +90,6 @@ class Thought
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtChain", mappedBy="thought")
      */
     protected $chainThoughts;
-
-
 
     /**
      * Get id
@@ -376,33 +377,29 @@ class Thought
     }
 
     /**
-     * Set liked
-     *
-     * @param integer $liked
-     * @return Thought
+     * @return mixed
      */
-    public function setLiked($liked)
+    public function getLikes()
     {
-        $this->liked = $liked;
-
-        return $this;
+        return $this->likes;
     }
 
-    /**
-     * Get liked
-     *
-     * @return integer
-     */
-    public function getLiked()
+    public function addLike($like)
     {
-        return $this->liked;
+//        if (!$this->likes) {
+//            $this->likes = new ArrayCollection();
+//        }
+        $this->likes->add($like);
+
     }
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comments = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
 
     /**

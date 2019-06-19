@@ -85,6 +85,8 @@ user:
                 delete: Delete
             table:
                 action: Action
+        favorite_page:
+            title: Favorite Thoughts
     search:
         need_logged: <strong>Au-delà de %quantity_search% recherches vous devez vous inscrire pour poursuivre. C'est gratuit. Votre mail restera confidentiel et ne sera utilisé'qu'en cas de changement sur le site.</strong>
     comment:
@@ -124,6 +126,8 @@ user:
 
 
 thought:
+    menu:
+        favorite_thoughts: Favorite Thoughts
     not_found: Quote not exist.
     property:
         content:     Citation
@@ -131,7 +135,7 @@ thought:
         author:      Auteur
         tags:        Corrélats
         thoughtInfo: Info
-        created_at:  Created At
+        created_at:  Created
         publish:     Publish
         like:        J'aime
         liked:       Aimé

@@ -60,12 +60,17 @@
             </span>
     </p>
     <p>
-        {% set liked = (thought.id in app.request.cookies.get('quotes')|split(',')) ? true : false %}
-        <button class="btn btn-info btn-sm like-quote" data-quote="{{ thought.id }}" type="button">
-                <span class="badge-text">
-                    {{ liked ? 'thought.property.liked'|trans : 'thought.property.like'|trans }}
-                </span> <span class="badge" style="display: {{ (thought.liked > 0) ? 'inline-block' : 'none' }}">{{ thought.liked }}</span>
-        </button>
+        {% if app.user %}
+            {% set liked = thought.likes %}
+
+            <button class="btn btn-info btn-sm like-quote" data-quote="{{ thought.id }}" type="button">
+                    <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
+                        <span class="badge-text">
+                            {{ liked ? 'thought.property.liked'|trans : 'thought.property.like'|trans }}
+                        </span> <span class="badge" style="display: {{ (thought.likes.count > 0) ? 'inline-block' : 'none' }}">{{ thought.likes.count }}</span>
+                    </span>
+            </button>
+        {% endif %}
 
         {% if app.request.get('thoughtId') == null %}
             <a class="page_quote_button btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">

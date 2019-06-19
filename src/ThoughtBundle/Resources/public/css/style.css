@@ -1,3 +1,11 @@
+th {
+    border-bottom: 1px solid #ddd !important;
+}
+
+.tooltip div {
+    text-align: left !important;
+}
+
 .container {
     padding-bottom: 30px;
 }

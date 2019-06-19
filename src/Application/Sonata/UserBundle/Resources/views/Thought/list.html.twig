@@ -25,7 +25,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>#</th>
+{#                        <th>#</th>#}
                         <th>{{ 'thought.property.content'|trans }}</th>
                         <th>{{ 'thought.property.author'|trans }}</th>
                         <th>{{ 'thought.property.category'|trans }}</th>
@@ -36,7 +36,7 @@
                     <tbody>
                     {% for thought in thoughts %}
                         <tr>
-                            <td>{{ loop.index }}</td>
+{#                            <td>{{ loop.index }}</td>#}
                             <td>{{ thought.content|slice(0, 50)}} (<a href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id }) }}">{{ thought.id }}</a>)</td>
                             <td>{{ thought.author }}</td>
                             <td>{{ thought.category }}</td>

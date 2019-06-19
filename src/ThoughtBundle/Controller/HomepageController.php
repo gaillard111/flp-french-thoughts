@@ -2,8 +2,6 @@
 
 namespace ThoughtBundle\Controller;
 
-//use Elastica\Filter\Bool;
-//use Elastica\Filter\BoolFilter;
 use Elastica\Filter\Nested;
 use Elastica\Filter\Term;
 use Elastica\Query\Filtered;
@@ -20,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ThoughtBundle\Entity\Comment;
+use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Model\AuthorModel;
 use ThoughtBundle\Model\ThoughtModel;
@@ -115,7 +114,8 @@ class HomepageController extends Controller
         ]);
 
         if (!$request->cookies->get('modal')) {
-            $response->headers->setCookie(new Cookie('modal', true));
+            $time = time() + (3600 * 24 * 7);
+            $response->headers->setCookie(new Cookie('modal', true, $time));
         }
 
         return $response;
@@ -146,6 +146,7 @@ class HomepageController extends Controller
      * @param integer $thoughtId
      * @param Request $request
      * @return JsonResponse
+     * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route("/thought-likes/{thoughtId}", name="thought-like", requirements={"offerId" = "\d+"}, options={"expose"=true})
      */
@@ -165,24 +166,31 @@ class HomepageController extends Controller
                 'message' => 'Quote not found',
             ));
         }
+        /** @var Like[] $likes */
+        $likes = $thought->getLikes();
 
-        $cookieQuotes = explode(',', $request->cookies->get('quotes'));
+        if (isset($likes)) {
+            foreach ($likes as $like) {
+                if ($like->getUser() === $this->getUser()) {
+                    $ourLike = $like;
+                }
+            }
+        }
 
-        if ($keyQuote = array_search($thoughtId, $cookieQuotes)) {
-            $thought = $modelThought->removeLike($thought);
-            unset($cookieQuotes[$keyQuote]);
-            $result = 'remove';
+
+        if (isset($ourLike)) {
+            $thought = $modelThought->removeLike($thought, $this->getUser());
+            $result  = 'remove';
         } else {
-            $thought = $modelThought->addLike($thought);
-            array_push($cookieQuotes, $thoughtId);
+            $thought = $modelThought->addLike($thought, $this->getUser());
         }
 
         $response = new JsonResponse(array(
             'result' => $result,
-            'count'  => $thought->getLiked(),
+            'count'  => count($thought->getLikes()),
         ));
 
-        $response->headers->setCookie(new Cookie('quotes', implode(',', $cookieQuotes), time() + (3600 * 48)));
+//        $response->headers->setCookie(new Cookie('quotes', implode(',', $cookieQuotes), time() + (3600 * 48)));
 
         return $response;
     }

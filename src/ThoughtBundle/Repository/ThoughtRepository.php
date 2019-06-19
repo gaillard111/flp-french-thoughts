@@ -2,11 +2,23 @@
 
 namespace ThoughtBundle\Repository;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use ThoughtBundle\Entity\Thought;
 
 class ThoughtRepository extends EntityRepository
 {
+    public function getLikedThoughts(User $user)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb
+            ->join('t.likes', 'l')
+            ->where('l.user = :user')
+            ->setParameter('user', $user);
+
+        return $qb->getQuery()->getResult();
+    }
+
     /**
      * @param array $where
      * @param null $sortOrder

@@ -1,0 +1,36 @@
+{% extends 'ApplicationSonataUserBundle:Profile:action.html.twig' %}
+
+{% block sonata_profile_title %}{{ 'user.thought.favorite_page.title'|trans }}{% endblock %}
+
+{% block sonata_profile_content %}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{{ 'thought.property.content'|trans }}</th>
+                    <th>{{ 'thought.property.author'|trans }}</th>
+                    <th>{{ 'thought.property.category'|trans }}</th>
+                    <th>{{ 'thought.property.created_at'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for thought in thoughts %}
+                    <tr>
+                        <td>
+                            <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
+                                {{ thought.content|slice(0, 50)}} (<a href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id }) }}">{{ thought.id }}</a>)
+                            </span>
+                        </td>
+                        <td>{{ thought.author }}</td>
+                        <td>{{ thought.category }}</td>
+                        <td>{{ thought.createdAt|date('d.m.Y H:i') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

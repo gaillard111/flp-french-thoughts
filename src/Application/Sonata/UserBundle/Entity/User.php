@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Sonata\UserBundle\Entity\BaseUser as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
+use ThoughtBundle\Entity\Like;
 
 /**
  * @ORM\Entity
@@ -52,19 +53,10 @@ class User extends BaseUser
      */
     protected $topics;
 
-//    /**
-//     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.about.not_blank")
-//     */
     protected $about;
 
-//    /**
-//     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.country.not_blank")
-//     */
     protected $country;
 
-//    /**
-//     * @Assert\NotBlank(groups={"profileInfo"}, message = "user.interests.not_blank")
-//     */
     protected $interests;
 
     /**
@@ -77,9 +69,6 @@ class User extends BaseUser
      */
     protected $lastname;
 
-//    /**
-//     * @Assert\NotBlank(groups={"profileInfo"}, message="user.gender.not_blank")
-//     */
     protected $gender;
 
     /**
@@ -96,6 +85,13 @@ class User extends BaseUser
      * @ORM\ManyToMany(targetEntity="Application\Sonata\UserBundle\Entity\Dialog", mappedBy="users")
      */
     protected $dialogs;
+
+    /**
+     * @var Like[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Like", mappedBy="user")
+     */
+    protected $likes;
 
     /**
      * @return ArrayCollection

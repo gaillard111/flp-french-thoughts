@@ -13,6 +13,7 @@ use FOS\ElasticaBundle\Finder\TransformedFinder;
 use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
 use FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter;
 use Symfony\Component\DependencyInjection\Container;
+use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
 
 /**
@@ -334,13 +335,16 @@ class ThoughtModel
      * @return Thought
      * @throws OptimisticLockException
      */
-    public function addLike(Thought  $thought)
+    public function addLike(Thought  $thought, User $user)
     {
-        $thought->setLiked($thought->getLiked() + 1);
-
+        $like = new Like();
+        $like
+            ->setUser($user)
+            ->setThought($thought);
+        $thought->addLike($like);
+//        dump($thought);
         $this->em->persist($thought);
         $this->em->flush();
-
         return $thought;
     }
 
@@ -349,12 +353,18 @@ class ThoughtModel
      * @return Thought
      * @throws OptimisticLockException
      */
-    public function removeLike(Thought  $thought)
+    public function removeLike(Thought  $thought, User $user)
     {
-        $thought->setLiked($thought->getLiked() - 1);
+        /** @var Like[] $likes */
+        $likes = $thought->getLikes();
 
-        $this->em->persist($thought);
-        $this->em->flush();
+        foreach ($likes as $like) {
+            if ($like->getUser() === $user) {
+                $this->em->remove($like);
+                $this->em->flush();
+            }
+        }
+
 
         return $thought;
     }
