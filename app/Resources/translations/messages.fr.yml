@@ -65,6 +65,7 @@ user:
                 label:       Centres d'intérêts
             button:          Mettre à jour
             profile_edit:    Mes paramètres
+            favorite_thoughts: Citations préférées
 
     dashboard:
         menu:
@@ -135,6 +136,7 @@ thought:
         author:      Auteur
         tags:        Corrélats
         thoughtInfo: Info
+        top5:        Top-5
         created_at:  Created
         publish:     Publish
         like:        J'aime

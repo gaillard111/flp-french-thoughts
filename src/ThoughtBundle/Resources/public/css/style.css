@@ -15,6 +15,10 @@ th {
     color: #337ab7 !important;
 }
 
+.favorite-thougts-title {
+    display: block;
+}
+
 .w100 {
     width: 100%;
 }

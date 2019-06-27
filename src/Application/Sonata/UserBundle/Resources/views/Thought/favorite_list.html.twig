@@ -3,6 +3,7 @@
 {% block sonata_profile_title %}{{ 'user.thought.favorite_page.title'|trans }}{% endblock %}
 
 {% block sonata_profile_content %}
+<p><a href="{{ path('export-favorite-quotes') }}" class="btn btn-info pull-right margin-bottom-20">Export to CSV</a></p>
 <div class="row">
     <div class="col-sm-12">
         <div class="table-responsive">
@@ -13,6 +14,7 @@
                     <th>{{ 'thought.property.author'|trans }}</th>
                     <th>{{ 'thought.property.category'|trans }}</th>
                     <th>{{ 'thought.property.created_at'|trans }}</th>
+                    <th>{{ 'thought.property.top5'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,6 +28,7 @@
                         <td>{{ thought.author }}</td>
                         <td>{{ thought.category }}</td>
                         <td>{{ thought.createdAt|date('d.m.Y H:i') }}</td>
+                        <td><input data-add-url="{{ path('add_to_most_favorites', { 'thoughtId': thought.id }) }}" data-delete-url="{{ path('delete_from_most_favorites', { 'thoughtId': thought.id }) }}" class="top-5" type="checkbox" {% if thought in app.user.mostFavoriteThoughts %}checked="checked"{% endif %}></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -33,4 +36,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    $().ready(function () {
+       $(".top-5").change(function (data) {
+           // console.log(this.checked);
+           if (!this.checked) {
+               $.ajax({
+                   url: $(this).data("delete-url")
+               });
+           } else {
+               $.ajax({
+                   url: $(this).data("add-url")
+               });
+           }
+
+       });
+    });
+</script>
 {% endblock %}

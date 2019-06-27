@@ -9,10 +9,10 @@
 {% endblock %}
 
 {% block sonata_profile_content %}
-        <div class="row">
+        <div class="row margin-bottom-20">
             <div class="col-sm-7">
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <label class="control-label">
                             My interests
                         </label>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <label class="control-label">
                             {{ 'user.form.profile.country.label'|trans }}
                         </label>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <label class="control-label">
                             {{ 'user.form.profile.gender.label'|trans }}
                         </label>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <label class="control-label">
                             {{ 'user.form.profile.about.label'|trans }}
                         </label>
@@ -70,30 +70,40 @@
 
                 </div>
             </div>
-                <div class="col-sm-5 pull-right">
-                    {% if friendship %}
-                        {% if friendship.accepted == false %}
-                            {% if friendship.user != app.user %}
-                                <a href="{{ path('accept_friend_request', { 'requestId': friendship.id }) }}" class="btn btn-info">{{ 'user.friendship.accept'|trans }}</a>
-                            {% endif %}
-                        {% else %}
-
-                            <p class="friend">
-                                <span class="glyphicon glyphicon-ok"></span>Amis
-                            </p>
-                            {% if user != app.user %}
-                                <a href="{{ path('new_dialog', { 'userId': user.id }) }}" class="btn btn-info">{{ 'user.dialogs.send_message'|trans }}</a>
-                            {% endif %}
+            <div class="col-sm-5 pull-right">
+                {% if friendship %}
+                    {% if friendship.accepted == false %}
+                        {% if friendship.user != app.user %}
+                            <a href="{{ path('accept_friend_request', { 'requestId': friendship.id }) }}" class="btn btn-info">{{ 'user.friendship.accept'|trans }}</a>
                         {% endif %}
-                        <a href="{{ path('delete_friend', { 'userId': user.id }) }}" class="btn btn-warning">{{ 'user.friendship.remove'|trans }}</a>
                     {% else %}
-                        {% if user.id != app.user.id %}
-                            <a href="{{ path('friend_request', { 'userId': user.id }) }}" class="btn btn-info">{{ 'user.friendship.request'|trans }}</a>
+
+                        <p class="friend">
+                            <span class="glyphicon glyphicon-ok"></span>Amis
+                        </p>
+                        {% if user != app.user %}
+                            <a href="{{ path('new_dialog', { 'userId': user.id }) }}" class="btn btn-info">{{ 'user.dialogs.send_message'|trans }}</a>
                         {% endif %}
                     {% endif %}
-                </div>
+                    <a href="{{ path('delete_friend', { 'userId': user.id }) }}" class="btn btn-warning">{{ 'user.friendship.remove'|trans }}</a>
+                {% else %}
+                    {% if user.id != app.user.id %}
+                        <a href="{{ path('friend_request', { 'userId': user.id }) }}" class="btn btn-info">{{ 'user.friendship.request'|trans }}</a>
+                    {% endif %}
+                {% endif %}
+            </div>
 
         </div>
-
+        <div class="row">
+            <div class="col-sm-12">
+                <label class="control-label favorite-thougts-title">
+                    {{ 'user.form.profile.favorite_thoughts'|trans }}
+                </label>
+                {% for thought in user.mostFavoriteThoughts %}
+                    <strong><a href="{{ path('thought_thoughtpage_index', { 'thoughtId': thought.id }) }}" >{{ thought.category }}</a></strong>
+                    <p>{{ thought.content }}</p>
+                {% endfor %}
+            </div>
+        </div>
 
 {% endblock %}

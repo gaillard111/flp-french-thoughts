@@ -12,12 +12,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use ThoughtBundle\Entity\Author;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\Topic;
 use ThoughtBundle\Model\AuthorModel;
 use ThoughtBundle\Service\Mail;
+use Doctrine\ORM\OptimisticLockException;
 
 /**
  * Class ThoughtController
@@ -118,6 +120,57 @@ class ThoughtController extends Controller
     }
 
     /**
+     * @Route("/most-favorite/add/{thoughtId}", name="add_to_most_favorites")
+     * @param int $thoughtId
+     * @return JsonResponse
+     * @throws OptimisticLockException
+     */
+    public function ajaxAddToMostFavorites($thoughtId)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var Thought $thought */
+        $thought = $em->getRepository(Thought::class)->find($thoughtId);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $userThoughts = $user->getMostFavoriteThoughts();
+
+        if ($userThoughts->contains($thought)) {
+            return new JsonResponse(['result' => 'already exists'], 400);
+        }
+        $user->addThoughtToMostFavorite($thought);
+        $em->persist($user);
+        $em->flush();
+        return new JsonResponse(['result' => 'success'], 200);
+    }
+
+    /**
+     * @Route("/most-favorite/delete/{thoughtId}", name="delete_from_most_favorites")
+     * @param $thoughtId
+     * @return JsonResponse
+     * @throws OptimisticLockException
+     */
+    public function ajaxDeleteFromMostFavorites($thoughtId)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var Thought $thought */
+        $thought = $em->getRepository(Thought::class)->find($thoughtId);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $userThoughts = $user->getMostFavoriteThoughts();
+
+        if (!$userThoughts->contains($thought)) {
+            return new JsonResponse(['result' => 'Not found'], 404);
+        }
+//        dump($thought); die;
+        $user->deleteThoughtFromMostFavorites($thought);
+        $em->persist($user);
+        $em->flush();
+        return new JsonResponse(['result' => 'success'], 200);
+    }
+
+    /**
      * @Route("/favorite", name="favorite-quotes")
      */
     public function favoriteQuotesAction()
@@ -128,6 +181,34 @@ class ThoughtController extends Controller
         return $this->render('ApplicationSonataUserBundle:Thought:favorite_list.html.twig', [
             'thoughts'  => $likedThoughts
         ]);
+    }
+
+    /**
+     * @Route("favorite/export", name="export-favorite-quotes")
+     */
+    public function exportFavoriteToCsvAction()
+    {
+        $likedThoughts = $this->getDoctrine()->getRepository(Thought::class)->getLikedThoughts($this->getUser());
+        $response = new StreamedResponse();
+
+        $response->setCallback(function () use ($likedThoughts) {
+            $handle = fopen('php://output', 'w+');
+
+            fputcsv($handle, ['Citation', 'Auteur', 'Catégorie', 'Created'], ',');
+
+            /** @var Thought[] $likedThoughts */
+            foreach ($likedThoughts as $thought) {
+                fputcsv($handle, [$thought->getContent(), $thought->getAuthor(), $thought->getCategory(), $thought->getCreatedAt()->format('d.m.Y H:i')], ',');
+
+            }
+
+            fclose($handle);
+        });
+
+        $response->setStatusCode(200);
+        $response->headers->set('Content-Type', 'text/csv; charset=utf-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
+        return $response;
     }
 
     /**
@@ -156,7 +237,6 @@ class ThoughtController extends Controller
 //            $thoughts,
 //            $request->query->getInt('page', 1)
 //        );
-        dump($form->getData());
         return $this->render('ApplicationSonataUserBundle:Thought:list.html.twig', array(
             'thoughts' => $thoughts,
             'form'     => $form->createView()

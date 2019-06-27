@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Sonata\UserBundle\Entity\BaseUser as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use ThoughtBundle\Entity\Like;
+use ThoughtBundle\Entity\Thought;
 
 /**
  * @ORM\Entity
@@ -92,6 +93,17 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Like", mappedBy="user")
      */
     protected $likes;
+
+    /**
+     * @var Thought[]|ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="ThoughtBundle\Entity\Thought")
+     * @ORM\JoinTable(name="favorite_thoughts",
+     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="thought_id", referencedColumnName="id")}
+     *     )
+     */
+    protected $mostFavoriteThoughts;
 
     /**
      * @return ArrayCollection
@@ -418,5 +430,23 @@ class User extends BaseUser
     public function getFriends()
     {
         return $this->friends;
+    }
+
+    /**
+     * @return ArrayCollection|Thought[]
+     */
+    public function getMostFavoriteThoughts()
+    {
+        return $this->mostFavoriteThoughts;
+    }
+
+    public function addThoughtToMostFavorite(Thought $thought)
+    {
+        $this->mostFavoriteThoughts->add($thought);
+    }
+
+    public function deleteThoughtFromMostFavorites(Thought $thought)
+    {
+        $this->mostFavoriteThoughts->removeElement($thought);
     }
 }
