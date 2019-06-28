@@ -100,8 +100,10 @@
                     {{ 'user.form.profile.favorite_thoughts'|trans }}
                 </label>
                 {% for thought in user.mostFavoriteThoughts %}
-                    <strong><a href="{{ path('thought_thoughtpage_index', { 'thoughtId': thought.id }) }}" >{{ thought.category }}</a></strong>
-                    <p>{{ thought.content }}</p>
+                    {% if loop.length <= 5 %}
+                        <strong><a href="{{ path('thought_thoughtpage_index', { 'thoughtId': thought.id }) }}" >{{ thought.category }}</a></strong>
+                        <p>{{ thought.content }}</p>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

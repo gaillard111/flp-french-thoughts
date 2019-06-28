@@ -1,6 +1,7 @@
-<div class="list-group">
-    {% for item in menu %}
-        <a class="list-group-item
+<div class="{% if routeName == 'thought_homepage_index' %}fixed-menu{% endif %}">
+    <div class="list-group">
+        {% for item in menu %}
+            <a class="list-group-item
             {% if routeName == item.route  %}
                 {% if routeName != 'thought_profile' %}
                     {% if curTopicId is defined %}
@@ -42,25 +43,27 @@
             " href="{{ path(item.route) }}
             {% endif %}
             "
-            {% if item.parameters['topicId'] is defined %}
-                 title="{{ item.label }}"
-            {% endif %}
+                    {% if item.parameters['topicId'] is defined %}
+                        title="{{ item.label }}"
+                    {% endif %}
             >{{ item.label|striptags|truncate(20) }}
-            {% if item.route == 'sonata_user_thoughts' %}
-                ({{ thoughts }})
-            {% endif %}
-            {% if item.route == 'friend_requests' %}
-                ({{ requestsCount }})
-            {% endif %}
-            {% if item.route == 'dialog_list' and newMessagesCount[1] != 0 %}
+                {% if item.route == 'sonata_user_thoughts' %}
+                    ({{ thoughts }})
+                {% endif %}
+                {% if item.route == 'friend_requests' %}
+                    ({{ requestsCount }})
+                {% endif %}
+                {% if item.route == 'dialog_list' and newMessagesCount[1] != 0 %}
                     <span id="messages-counter">(+{{ newMessagesCount[1] }})</span>
-            {% endif %}
-            {% if item.route == 'sonata_user_topics' %}
-                ({{ countTopics[1] }})
-            {% endif %}
-        </a>
-    {% endfor %}
+                {% endif %}
+                {% if item.route == 'sonata_user_topics' %}
+                    ({{ countTopics[1] }})
+                {% endif %}
+            </a>
+        {% endfor %}
+    </div>
 </div>
+
 <script>
     $(document).ready(function () {
         // $(window).focus(function () {

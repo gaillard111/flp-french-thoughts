@@ -1,5 +1,16 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
 th {
     border-bottom: 1px solid #ddd !important;
+}
+
+.fixed-menu {
+    position: fixed;
+    min-height: 400px !important;
 }
 
 .tooltip div {
@@ -135,6 +146,10 @@ th {
 
 .modal-footer {
     border: none;
+}
+
+.footer {
+    margin-top: auto;
 }
 
 a.underline{

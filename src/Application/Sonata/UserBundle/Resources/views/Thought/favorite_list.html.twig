@@ -39,19 +39,62 @@
 
 <script>
     $().ready(function () {
-       $(".top-5").change(function (data) {
-           // console.log(this.checked);
-           if (!this.checked) {
-               $.ajax({
-                   url: $(this).data("delete-url")
-               });
-           } else {
-               $.ajax({
-                   url: $(this).data("add-url")
-               });
-           }
+        count = countCheckboxes();
+        $checkboxes = $(".top-5");
 
+        if (count >= 5) {
+            disableCheckboxes();
+        }
+
+        $checkboxes.change(function (data) {
+           count = countCheckboxes();
+
+           if (count <= 5) {
+               enableCheckboxes();
+               if (!this.checked) {
+                   $.ajax({
+                       url: $(this).data("delete-url"),
+                       success: enableCheckboxes()
+                   });
+               } else {
+                   $.ajax({
+                       url: $(this).data("add-url"),
+                       success: disableCheckboxes()
+                   });
+               }
+           } else {
+               disableCheckboxes();
+           }
        });
     });
+
+    function countCheckboxes() {
+        count = 0;
+        $checkboxes = $(".top-5");
+        $checkboxes.each(function (index, element) {
+            if (element.checked) {
+                count = count + 1;
+            }
+        });
+        return count;
+    }
+
+    function disableCheckboxes() {
+        $checkboxes = $(".top-5");
+        $checkboxes.each(function (index, element) {
+            if (!element.checked) {
+                $(element).attr('disabled', true);
+            }
+        });
+    }
+
+    function enableCheckboxes() {
+        $checkboxes = $(".top-5");
+        $checkboxes.each(function (index, element) {
+            if (!element.checked) {
+                $(element).attr('disabled', false);
+            }
+        });
+    }
 </script>
 {% endblock %}

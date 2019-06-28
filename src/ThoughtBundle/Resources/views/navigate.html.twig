@@ -23,7 +23,7 @@
                 </a>
             </li>
             {% if app.user %}
-                <li >
+                <li>
                     <a class="topic-link" href="{{ path('all_topics') }}">
                         {{ 'navbar.topics'|trans }}
                     </a>
@@ -102,8 +102,8 @@
             {% else %}
 
                 <li>
-                    <a href="{{ path('public_sonata_user_shared_chains') }}">
-                        {{ 'navbar.link_shared_chains'|trans }}
+                    <a class="topic-link" href="{{ path('all_topics') }}">
+                        {{ 'navbar.topics'|trans }}
                     </a>
                 </li>
 
