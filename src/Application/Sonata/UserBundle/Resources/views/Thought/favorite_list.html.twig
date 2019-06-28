@@ -42,9 +42,9 @@
         count = countCheckboxes();
         $checkboxes = $(".top-5");
 
-        if (count >= 5) {
-            disableCheckboxes();
-        }
+
+        disableCheckboxes();
+
 
         $checkboxes.change(function (data) {
            count = countCheckboxes();
@@ -81,20 +81,24 @@
 
     function disableCheckboxes() {
         $checkboxes = $(".top-5");
-        $checkboxes.each(function (index, element) {
-            if (!element.checked) {
-                $(element).attr('disabled', true);
-            }
-        });
+        if (count >= 5) {
+            $checkboxes.each(function (index, element) {
+                if (!element.checked) {
+                    $(element).attr('disabled', true);
+                }
+            });
+        }
     }
 
     function enableCheckboxes() {
         $checkboxes = $(".top-5");
-        $checkboxes.each(function (index, element) {
-            if (!element.checked) {
-                $(element).attr('disabled', false);
-            }
-        });
+        if (count <= 5) {
+            $checkboxes.each(function (index, element) {
+                if (!element.checked) {
+                    $(element).attr('disabled', false);
+                }
+            });
+        }
     }
 </script>
 {% endblock %}
