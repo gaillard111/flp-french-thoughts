@@ -9,15 +9,30 @@
         {
             var editor = $('.js-ckeditor');
             var editor_id = editor.attr('id');
+            var full_editor = $('.js-full-ckeditor');
+            var full_editor_id = full_editor.attr('id');
 
-            CKEDITOR.replace( editor_id, {
-                toolbar: [
-                    { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
-                    { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-                    '/',
-                    { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-                ]
-            });
+            if (editor_id) {
+                CKEDITOR.replace( editor_id, {
+                    toolbar: [
+                        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
+                        { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+                        '/',
+                        { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+                    ]
+                });
+            }
+
+            if (full_editor_id) {
+                CKEDITOR.replace( full_editor_id, {
+                    // toolbar: [
+                    //     { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
+                    //     { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+                    //     '/',
+                    //     { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+                    // ]
+                });
+            }
         });
 
     </script>

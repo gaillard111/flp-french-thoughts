@@ -39,7 +39,7 @@
     <!-- End Hotjar Tracking Code-->
 </head>
 <body>
-    {% include '@Thought/navigate.html.twig' %}
+    {{ render(controller('ApplicationSonataUserBundle:Thought:navbar')) }}
     <div class="container">
         {% if app.session.flashBag.has('success') %}
             <div class="alert alert-success">

@@ -120,22 +120,27 @@ sonata_admin:
             Emails:
                 label: Emails
                 items:
-                    - thoudght.admin.mail
+                    - thought.admin.mail
             Thoughts:
                 label: Thoughts
                 items:
-                    - thoudght.admin.thought
+                    - thought.admin.thought
             Topics:
                 label: Topics
                 items:
-                    - thoudght.admin.topic
+                    - thought.admin.topic
             Content:
                 label: Content
-                items: {Content: thoudght.admin.content}
+                items: {Content: thought.admin.content}
 
             Authors:
                 label: Authors
-                items: {Content: thoudght.admin.author}
+                items: {Content: thought.admin.author}
+
+            Pages:
+                label: Pages
+                items: {Content: thought.admin.dynamicpage}
+
 
 
 sonata_user:

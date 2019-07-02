@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use ThoughtBundle\Entity\Author;
+use ThoughtBundle\Entity\DynamicPage;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\Topic;
 use ThoughtBundle\Model\AuthorModel;
@@ -27,6 +28,16 @@ use Doctrine\ORM\OptimisticLockException;
  */
 class ThoughtController extends Controller
 {
+    public function navbarAction()
+    {
+        /** @var DynamicPage $pages */
+        $pages = $this->getDoctrine()->getRepository(DynamicPage::class)->findAll();
+
+        return $this->render('@Thought/navigate.html.twig', [
+            'pages' => $pages
+        ]);
+    }
+
     /**
      * @param $routeName
      * @return Response

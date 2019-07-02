@@ -1,5 +1,5 @@
 services:
-    thoudght.admin.topic:
+    thought.admin.topic:
         class: ThoughtBundle\Admin\TopicAdmin
         arguments:
             - ~
@@ -8,7 +8,7 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Thoughts, label: "Topics" }
 
-    thoudght.admin.thought:
+    thought.admin.thought:
         class: ThoughtBundle\Admin\ThoughtAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Thoughts, label: "Thoughts" }
@@ -16,7 +16,7 @@ services:
             - ~
             - ThoughtBundle\Entity\Thought
             - 'ThoughtBundle:ThoughtAdmin'
-    thoudght.admin.content:
+    thought.admin.content:
         class: ThoughtBundle\Admin\ContentAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Content, label: "Content" }
@@ -25,7 +25,7 @@ services:
             - ThoughtBundle\Entity\Content
             - 'ThoughtBundle:ContentAdmin'
 
-    thoudght.admin.mail:
+    thought.admin.mail:
         class: ThoughtBundle\Admin\MailAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Content, label: "Emails" }
@@ -38,7 +38,16 @@ services:
               arguments:
                   - '%kernel.root_dir%'
 
-    thoudght.admin.author:
+    thought.admin.dynamicpage:
+        class: ThoughtBundle\Admin\DynamicPageAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Pages, label: "Pages" }
+        arguments:
+            - ~
+            - ThoughtBundle\Entity\DynamicPage
+            - ~
+
+    thought.admin.author:
         class: ThoughtBundle\Admin\AuthorAdmin
         tags:
             - { name: sonata.admin, manager_type: orm, group: Authors, label: "Authors" }
