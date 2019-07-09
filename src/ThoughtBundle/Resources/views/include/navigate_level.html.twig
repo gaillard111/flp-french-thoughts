@@ -1,0 +1,16 @@
+{% for child in root.children %}
+    {% if is_granted(child.role)  %}
+        {% if child.children is not empty %}
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="{{ child.url }}">{{ child.text }}<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    {% include '@Thought/include/navigate_level.html.twig' with {root: child} %}
+                </ul>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ child.url }}">{{ child.text }}</a>
+            </li>
+        {% endif %}
+    {% endif %}
+{% endfor %}

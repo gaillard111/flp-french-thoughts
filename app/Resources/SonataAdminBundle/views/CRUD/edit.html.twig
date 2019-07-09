@@ -7,6 +7,8 @@
 
         $( document ).ready(function()
         {
+            CKEDITOR.plugins.addExternal('imageuploader', '/bundles/thought/js/imageuploader/');
+
             var editor = $('.js-ckeditor');
             var editor_id = editor.attr('id');
             var full_editor = $('.js-full-ckeditor');
@@ -31,7 +33,9 @@
                     //     '/',
                     //     { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
                     // ]
+                    extraPlugins: 'imageuploader',
                 });
+
             }
         });
 

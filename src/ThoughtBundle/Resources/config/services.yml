@@ -46,6 +46,15 @@ services:
             - ~
             - ThoughtBundle\Entity\DynamicPage
             - ~
+            -
+    thought.admin.menu:
+        class: ThoughtBundle\Admin\MenuAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Menu, label: "Menu" }
+        arguments:
+            - ~
+            - ThoughtBundle\Entity\MenuItem
+            - ~
 
     thought.admin.author:
         class: ThoughtBundle\Admin\AuthorAdmin

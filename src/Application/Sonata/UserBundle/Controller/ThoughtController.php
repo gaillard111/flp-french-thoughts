@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use ThoughtBundle\Entity\Author;
 use ThoughtBundle\Entity\DynamicPage;
+use ThoughtBundle\Entity\MenuItem;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\Topic;
 use ThoughtBundle\Model\AuthorModel;
@@ -30,11 +31,16 @@ class ThoughtController extends Controller
 {
     public function navbarAction()
     {
-        /** @var DynamicPage $pages */
-        $pages = $this->getDoctrine()->getRepository(DynamicPage::class)->findAll();
+        $menu = $this->getDoctrine()->getRepository(MenuItem::class)->getChildren();
+
+        $roots = $this->getDoctrine()->getRepository(MenuItem::class)->findBy(['level' => 0]);
+
+        $virtualRoot = new MenuItem();
+        $virtualRoot->setChildren($roots);
 
         return $this->render('@Thought/navigate.html.twig', [
-            'pages' => $pages
+            'menu'  => $menu,
+            'root' => $virtualRoot
         ]);
     }
 
