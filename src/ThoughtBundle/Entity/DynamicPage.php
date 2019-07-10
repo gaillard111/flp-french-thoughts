@@ -3,6 +3,7 @@
 
 namespace ThoughtBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -50,6 +51,13 @@ class DynamicPage
      * @ORM\Column(type="boolean")
      */
     private $showInMenu;
+
+    /**
+     * @var Banner[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Banner", mappedBy="pages")
+     */
+    private $banners;
 
     /**
      * @return int
@@ -128,6 +136,24 @@ class DynamicPage
     public function setShowInMenu($showInMenu)
     {
         $this->showInMenu = $showInMenu;
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection|Banner[]
+     */
+    public function getBanners()
+    {
+        return $this->banners;
+    }
+
+    /**
+     * @param ArrayCollection|Banner[] $banners
+     * @return DynamicPage
+     */
+    public function setBanners($banners)
+    {
+        $this->banners = $banners;
         return $this;
     }
 }

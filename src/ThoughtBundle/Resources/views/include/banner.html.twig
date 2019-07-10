@@ -1,0 +1,8 @@
+<div class="banner">
+    {% if banner.page %}<a href="{{ path('dynamic_page', { 'slug': banner.page.slug }) }}">{% endif %}
+        <div class="jumbotron quote">
+            <h4>{{ banner.title }}</h4>
+            {{ banner.content|raw }}
+        </div>
+    {% if banner.page %}</a>{% endif %}
+</div>

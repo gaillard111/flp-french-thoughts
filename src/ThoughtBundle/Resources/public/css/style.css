@@ -8,6 +8,15 @@ th {
     border-bottom: 1px solid #ddd !important;
 }
 
+.banner a {
+    color: black;
+    display: block;
+}
+
+.banner a:hover {
+    text-decoration: none;
+}
+
 .dropdown-submenu {
     position:relative;
 }

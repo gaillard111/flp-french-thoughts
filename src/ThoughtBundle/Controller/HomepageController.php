@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use ThoughtBundle\Entity\Banner;
 use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
@@ -102,6 +103,8 @@ class HomepageController extends Controller
             'isCollective'  => true
         ]);
 
+        $dynamicBanners = $em->getRepository(Banner::class)->findAll();
+
         $response =  $this->render('ThoughtBundle::homepage.html.twig', [
             'thoughts'    => $pagination,
             'comments'    => $comments,
@@ -110,7 +113,8 @@ class HomepageController extends Controller
             'cloud'       => $cloud['cloud'],
             'cloudStyle'  => $cloud['cloudStyle'],
             'filtersOpen' => isset($search['filter_open']) ? $search['filter_open'] : false,
-            'colChains'   => $collectiveChains
+            'colChains'   => $collectiveChains,
+            'banners'     => $dynamicBanners
         ]);
 
         if (!$request->cookies->get('modal')) {
@@ -119,6 +123,13 @@ class HomepageController extends Controller
         }
 
         return $response;
+    }
+
+    public function bannerAction(Banner $banner)
+    {
+        return $this->render('@Thought/include/banner.html.twig', [
+            'banner' => $banner
+        ]);
     }
 
     /**

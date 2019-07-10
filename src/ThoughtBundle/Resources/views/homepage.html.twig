@@ -7,41 +7,11 @@
     {% set is_fields = search.field is defined ? true : false %}
     {% if not app.request.cookies.get('modal') %}
         {% block popup %}
-            <div id="myModal" class="modal fade thought-popup" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h5 class="modal-title">What is your favorite quote? Check  whether or not it is in the database</h5>
-                        </div>
-
-                        <form method="get" xmlns="http://www.w3.org/1999/html">
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="form-group col-sm-12">
-                                        <label for="inputSearch">{{ 'thought.filter.content.label'|trans }}</label>
-                                        <input value="{{ search.words is defined ? search.words : '' }}" type="text" name="search[words]" class="form-control" id="inputSearch" placeholder="{{ 'thought.filter.content.placeholder'|trans }}">
-                                        <input type="hidden" name="search[field][content]" value="on">
-                                        <input type="hidden" name="search[field][category]" value="on">
-                                        <input type="hidden" name="search[field][tags]" value="on">
-                                        <input type="hidden" name="search[field][author]" value="on">
-                                        <input type="hidden" name="search[field][thoughtInfo]" value="on">
-                                        <input type="hidden" name="search[sorting]" value="liked">
-                                        <input type="hidden" name="search[sorting_desc]" value="true">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                                <input type="submit" class="btn btn-info" value="Search">
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
+            {{ include('@Thought/include/tutorialModal.html.twig') }}
         {% endblock %}
     {% endif %}
+
+
 
     {% if thoughts.paginationData.totalCount == 0 %}
         <div class="row not-found-text">
@@ -70,6 +40,9 @@
             {% include '@Thought/search_thought.html.twig' %}
         </div>
         <div class="col-md-8">
+            {% for banner in banners %}
+                {{ render(controller('ThoughtBundle:Homepage:banner', { 'banner': banner })) }}
+            {% endfor %}
             <div class="row">
                 <div class="col-sm-12 margin-bottom-17" style="clear: both;">{{ welcomeText ? welcomeText.content|shortText(350, path('content', {'code' : 'welcome'}))|raw : '' }}</div>
             </div>

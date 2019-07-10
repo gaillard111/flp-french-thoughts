@@ -46,7 +46,17 @@ services:
             - ~
             - ThoughtBundle\Entity\DynamicPage
             - ~
-            -
+
+    thought.admin.banner:
+        class: ThoughtBundle\Admin\BannerAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Banners, label: "Banners" }
+        arguments:
+            - ~
+            - ThoughtBundle\Entity\Banner
+            - ~
+
+
     thought.admin.menu:
         class: ThoughtBundle\Admin\MenuAdmin
         tags:

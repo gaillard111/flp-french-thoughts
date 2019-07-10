@@ -152,6 +152,10 @@ sonata_admin:
                 label: Menu
                 items: {Content: thought.admin.menu}
 
+            Banners:
+                label: Banners
+                items: {Content: thought.admin.banner}
+
 
 
 sonata_user:
