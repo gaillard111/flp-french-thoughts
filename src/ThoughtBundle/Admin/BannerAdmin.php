@@ -21,7 +21,9 @@ class BannerAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('title')
+            ->add('title', 'text', [
+                'required' => false
+            ])
             ->add('content', 'textarea', [
                 'attr' => [
                     'class' => 'js-full-ckeditor'

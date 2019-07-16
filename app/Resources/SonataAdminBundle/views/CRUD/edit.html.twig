@@ -4,7 +4,7 @@
     {{ parent() }}
     <script src="https://cdn.ckeditor.com/4.11.1/standard/ckeditor.js"></script>
     <script type="text/javascript">
-
+        window.ckeditorImgUploadPath = '{{ path('ckeditor_image_upload') }}';
         $( document ).ready(function()
         {
             CKEDITOR.plugins.addExternal('imageuploader', '/bundles/thought/js/imageuploader/');
@@ -32,8 +32,8 @@
                     //     { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
                     //     '/',
                     //     { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-                    // ]
-                    // extraPlugins: 'imageuploader',
+                    // ],
+                    extraPlugins: 'imageuploader',
                 });
 
             }

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <style>
+        .form-image {
+            display: none;
+        }
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    <div class="container">
+        <img class="image-uploader-img" src="{{ asset('logo.png') }}">
+    </div>
+
+    {% if form is defined %}
+        {{ form_start(form) }}
+        {{ form_end(form) }}
+    {% endif %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="{{ asset('bundles/thought/js/imageuploader/function.js') }}"></script>
+    <script>
+        $(function () {
+            window.resizeTo(300,300);
+            $('#form-image input').trigger('click');
+
+        });
+        $('#form-image').change(function () {
+            $(this).submit();
+        });
+        {% if image_url is defined %}
+            useImage('{{ image_url }}');
+        {% endif %}
+    </script>
+{% endblock %}
