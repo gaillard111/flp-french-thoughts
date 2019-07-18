@@ -92,6 +92,13 @@ class Thought
     protected $chainThoughts;
 
     /**
+     * @var WatchedThought[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\WatchedThought", mappedBy="thought")
+     */
+    protected $watchedThoughts;
+
+    /**
      * Get id
      *
      * @return integer

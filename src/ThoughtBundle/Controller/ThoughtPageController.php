@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\Thought;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use ThoughtBundle\Entity\WatchedThought;
 use ThoughtBundle\Form\CommentType;
 
 /**
@@ -35,6 +36,21 @@ class ThoughtPageController extends Controller
         $form = $this->createForm(new CommentType(), $comment);
 
         if ($this->getUser()) {
+
+            $watchedThought = $em->getRepository(WatchedThought::class)->findOneBy([
+                'thought' => $thought
+            ]);
+
+            if (!$watchedThought) {
+                $watchedThought = new WatchedThought();
+                $watchedThought
+                    ->setThought($thought)
+                    ->setUser($this->getUser());
+
+                $em->persist($watchedThought);
+                $em->flush();
+            }
+
             $comment->setName($this->getUser()->getFirstName());
             $comment->setEmail($this->getUser()->getEmail());
 

@@ -22,6 +22,9 @@ class MenuAdmin extends Admin
             ->add('roleString', 'text', [
                 'label' => 'Role'
             ])
+            ->add('sort', 'text', [
+                'label' => 'Priority'
+            ])
         ;
     }
 
@@ -36,13 +39,18 @@ class MenuAdmin extends Admin
                 'choice_label' => 'text',
                 'required' => false
             ])
-            ->add('url')
+            ->add('url', 'text', [
+                'required' => false
+            ])
             ->add('role', 'choice', [
                 'choices'  => [
                     'ROLE_ADMIN'                    => 'Admin',
                     'ROLE_USER'                     => 'User',
                     'IS_AUTHENTICATED_ANONYMOUSLY'  => 'Unregistered'
                 ]
+            ])
+            ->add('sort', 'integer', [
+                'required' => false
             ])
         ;
     }

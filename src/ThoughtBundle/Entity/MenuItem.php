@@ -29,7 +29,7 @@ class MenuItem
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     public $url;
 
@@ -84,6 +84,13 @@ class MenuItem
      * @ORM\OrderBy({"left" = "ASC"})
      */
     private $children;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="`sort`", type="integer")
+     */
+    private $sort;
 
     /**
      * @return int
@@ -249,5 +256,23 @@ class MenuItem
             default:
                 return 'Undefined';
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getSort()
+    {
+        return $this->sort;
+    }
+
+    /**
+     * @param int $sort
+     * @return MenuItem
+     */
+    public function setSort($sort)
+    {
+        $this->sort = $sort;
+        return $this;
     }
 }

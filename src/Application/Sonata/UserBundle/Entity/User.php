@@ -17,6 +17,7 @@ use Sonata\UserBundle\Entity\BaseUser as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
+use ThoughtBundle\Entity\WatchedThought;
 
 /**
  * @ORM\Entity
@@ -93,6 +94,13 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Like", mappedBy="user")
      */
     protected $likes;
+
+    /**
+     * @var WatchedThought[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\WatchedThought", mappedBy="user")
+     */
+    protected $watchedThoughts;
 
     /**
      * @var Thought[]|ArrayCollection

@@ -5,6 +5,7 @@ namespace ThoughtBundle\Repository;
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use ThoughtBundle\Entity\Thought;
+use ThoughtBundle\Entity\WatchedThought;
 
 class ThoughtRepository extends EntityRepository
 {
@@ -58,5 +59,21 @@ class ThoughtRepository extends EntityRepository
             ->orderBy('t.createdAt', 'DESC');
 
         return $qb->getQuery();
+    }
+
+    public function getUnseenUserThoughts($user)
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        $qb
+            ->select('COUNT(t)')
+            ->leftJoin('t.watchedThoughts', 'wt')
+            ->where('wt is null')
+            ->orWhere('wt.user != :user')
+            ->setParameters([
+                'user' => $user
+            ]);
+
+        return $qb->getQuery()->getResult();
     }
 }

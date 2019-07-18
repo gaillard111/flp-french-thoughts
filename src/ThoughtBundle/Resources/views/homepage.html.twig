@@ -21,77 +21,86 @@
             </div>
         </div>
     {% endif %}
-
-    <form method="get" xmlns="http://www.w3.org/1999/html">
-        <div class="row">
-            <div class="form-group mainsearch col-sm-12">
-                <label for="inputSearch">{{ 'thought.filter.content.label'|trans }}</label>
-                <input value="{{ search.words is defined ? search.words : '' }}" type="text" name="search[words]" class="form-control" id="inputSearch" placeholder="{{ 'thought.filter.content.placeholder'|trans }}">
-            </div>
-            <div class="form-group" style="padding: 0 15px 0;">
-                <button class="btn btn-info">{{ 'thought.filter.buttons.search'|trans }}</button>
-                <a href="/" class="btn btn-warning">{{ 'thought.filter.buttons.reset'|trans }}</a>
-                <a href="{{ path('thought_homepage_index', {'search[words]': '', 'search[field][content]': 'on', 'search[field][category]': 'on', 'search[field][tags]': 'on', 'search[field][author]': 'on', 'search[field][thoughtInfo]': 'on', 'search[sorting]': 'liked', 'search[sorting_desc]':'true'}) }}" class="btn btn-warning">{{ 'thought.filter.buttons.last_quotes'|trans }}</a>
-            </div>
-        </div>
-
-
-        <div class="col-md-2">
-            {% include '@Thought/search_thought.html.twig' %}
-        </div>
-        <div class="col-md-8">
+    <div class="row">
+        <div class="col-sm-offset-6 banner-container">
             {% for banner in banners %}
                 {{ render(controller('ThoughtBundle:Homepage:banner', { 'banner': banner })) }}
             {% endfor %}
-            <div class="row">
-                <div class="col-sm-12 margin-bottom-17" style="clear: both;">{{ welcomeText ? welcomeText.content|shortText(350, path('content', {'code' : 'welcome'}))|raw : '' }}</div>
-            </div>
-
-            {% if cloud|length > 0  %}
-                <div class="row">
-                    <div class="form-group col-sm-12">
-                        <a id="cloud_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.cloud_tags'|trans }} </a>
-                    </div>
+        </div>
+    </div>
+    <form method="get" xmlns="http://www.w3.org/1999/html">
+        <div class="row">
+            {#<div class="col-sm-12">#}
+                <div class="form-group mainsearch">
+                    <label for="inputSearch">{{ 'thought.filter.content.label'|trans }}</label>
+                    <input value="{{ search.words is defined ? search.words : '' }}" type="text" name="search[words]" class="form-control" id="inputSearch" placeholder="{{ 'thought.filter.content.placeholder'|trans }}">
                 </div>
-                <div id="cloud_block" class="col-sm-12 margin-bottom-17" style="display: none;">
-                {% for word, size in cloud %}
-                    <a href="{{ path('thought_homepage_index', {'search[words]': word, 'search[field][content]': 'on', 'search[field][category]': 'on', 'search[field][tags]': 'on', 'search[field][author]': 'on', 'search[field][thoughtInfo]': 'on'}) }}" style='color: #000; display: inline-block; margin-right: 10px; font-size: {{ cloudStyle[word]['font-size'] }}px ; font-weight: {{ cloudStyle[word]['font-weight'] }} ;'>
-                        {{ word }}
-                    </a>
+                <div class="form-group">
+                    <button class="btn btn-info">{{ 'thought.filter.buttons.search'|trans }}</button>
+                    <a href="/" class="btn btn-warning">{{ 'thought.filter.buttons.reset'|trans }}</a>
+                    <a href="{{ path('thought_homepage_index', {'search[words]': '', 'search[field][content]': 'on', 'search[field][category]': 'on', 'search[field][tags]': 'on', 'search[field][author]': 'on', 'search[field][thoughtInfo]': 'on', 'search[sorting]': 'liked', 'search[sorting_desc]':'true'}) }}" class="btn btn-warning">{{ 'thought.filter.buttons.last_quotes'|trans }}</a>
+                </div>
+            {#</div>#}
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-2">
+                {% include '@Thought/search_thought.html.twig' %}
+            </div>
+            <div class="col-md-8">
+
+                <div class="row">
+                    <div class="col-sm-12 margin-bottom-17" style="clear: both;">{{ welcomeText ? welcomeText.content|shortText(350, path('content', {'code' : 'welcome'}))|raw : '' }}</div>
+                </div>
+
+                {% if cloud|length > 0  %}
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <a id="cloud_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">{{ 'thought.filter.cloud_tags'|trans }} </a>
+                        </div>
+                    </div>
+                    <div id="cloud_block" class="col-sm-12 margin-bottom-17" style="display: none;">
+                        {% for word, size in cloud %}
+                            <a href="{{ path('thought_homepage_index', {'search[words]': word, 'search[field][content]': 'on', 'search[field][category]': 'on', 'search[field][tags]': 'on', 'search[field][author]': 'on', 'search[field][thoughtInfo]': 'on'}) }}" style='color: #000; display: inline-block; margin-right: 10px; font-size: {{ cloudStyle[word]['font-size'] }}px ; font-weight: {{ cloudStyle[word]['font-weight'] }} ;'>
+                                {{ word }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <span style="border-bottom: 1px dashed #000;">{{ 'thought.filter.cloud_tags'|trans }}</span> : {{ 'thought.filter.activate_cloud'|trans }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="row">
+                    <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ thoughts.getTotalItemCount() }}</div>
+                    <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
+                </div>
+
+                <div class="navigation text-center hidden-xs">
+                    {{ knp_pagination_render(thoughts) }}
+                </div>
+
+
+                {% for thought in thoughts %}
+                    {{ include('@Thought/quoteLayout.html.twig', {'thought': thought, 'colChains': colChains }) }}
                 {% endfor %}
+
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(thoughts) }}
                 </div>
-            {% else %}
-                <div class="row">
-                    <div class="form-group col-sm-12">
-                       <span style="border-bottom: 1px dashed #000;">{{ 'thought.filter.cloud_tags'|trans }}</span> : {{ 'thought.filter.activate_cloud'|trans }}
-                    </div>
-                </div>
-            {% endif %}
 
-            <div class="row">
-                <div class="col-sm-6">{{ 'thought.filter.result_counter'|trans }}: {{ thoughts.getTotalItemCount() }}</div>
-                <div class="col-sm-6 text-right">{{ 'thought.filter.time_counter'|trans }}: {{ timeExecute|round(4) }}s</div>
             </div>
-
-            <div class="navigation text-center hidden-xs">
-                {{ knp_pagination_render(thoughts) }}
+            <div class="col-md-2 hidden-xs hidden-sm">
+                {% if is_granted('ROLE_USER') %}
+                    {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
+                {% endif %}
             </div>
-
-
-            {% for thought in thoughts %}
-                {{ include('@Thought/quoteLayout.html.twig', {'thought': thought, 'colChains': colChains }) }}
-            {% endfor %}
-
-            <div class="navigation text-center">
-                {{ knp_pagination_render(thoughts) }}
-            </div>
-
         </div>
-        <div class="col-md-2 hidden-xs hidden-sm">
-            {% if is_granted('ROLE_USER') %}
-                {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
-            {% endif %}
-        </div>
+
     </form>
 
 {% endblock %}
