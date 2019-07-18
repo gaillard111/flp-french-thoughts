@@ -61,19 +61,56 @@ class ThoughtRepository extends EntityRepository
         return $qb->getQuery();
     }
 
-    public function getUnseenUserThoughts($user)
+    public function getUnseenUserThoughts($user, $tags)
     {
         $qb = $this->createQueryBuilder('t');
 
         $qb
-            ->select('COUNT(t)')
+            ->select('t, COUNT(l) as likesCount')
             ->leftJoin('t.watchedThoughts', 'wt')
-            ->where('wt is null')
-            ->orWhere('wt.user != :user')
-            ->setParameters([
-                'user' => $user
-            ]);
+            ->leftJoin('t.likes', 'l')
+            ->andWhere($qb->expr()->orX('wt is null', 'wt.user != :user'))
+            ->groupBy('t.id')
+            ->orderBy('likesCount', 'DESC')
+            ->setMaxResults(1)
+        ;
+
+        $tagNumber = 0;
+        $parameters = [];
+        $tagsOrXStatement = $qb->expr()->orX();
+        foreach ($tags as $tag => $count) {
+            if ($tagNumber >= 5) {
+                break;
+            }
+            $tagNumber++;
+            $tagsOrXStatement->add('t.tags LIKE :tag' . $tagNumber);
+            $parameters['tag' . $tagNumber] = '%' . $tag . '%';
+        }
+
+        $qb->andWhere($tagsOrXStatement);
+
+        $qb->setParameters(array_merge($parameters, ['user' => $user]));
+
+//        $qb->orderBy('l');
+
+
+        dump($qb->getQuery()->getResult()); die;
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function getWatchedStatistics(User $user)
+    {
+        $qb = $this->createQueryBuilder('t');
+
+        $qb
+            ->select('t.tags')
+            ->innerJoin('t.watchedThoughts', 'wt', 'WITH', 'wt.user = :user')
+            ->setParameter('user', $user)
+        ;
+
+        return $qb->getQuery()->getResult();
+
+//        dump($qb->getQuery()->getResult());die;
     }
 }

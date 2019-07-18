@@ -88,7 +88,7 @@ class MenuItem
     /**
      * @var int
      *
-     * @ORM\Column(name="`sort`", type="integer")
+     * @ORM\Column(name="`sort`", type="integer", nullable=true)
      */
     private $sort;
 
