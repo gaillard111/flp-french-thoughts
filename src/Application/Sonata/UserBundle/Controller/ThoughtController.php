@@ -31,15 +31,12 @@ class ThoughtController extends Controller
 {
     public function navbarAction()
     {
-        $menu = $this->getDoctrine()->getRepository(MenuItem::class)->getChildren();
-
         $roots = $this->getDoctrine()->getRepository(MenuItem::class)->findBy(['level' => 0]);
 
         $virtualRoot = new MenuItem();
         $virtualRoot->setChildren($roots);
 
         return $this->render('@Thought/navigate.html.twig', [
-            'menu'  => $menu,
             'root' => $virtualRoot
         ]);
     }

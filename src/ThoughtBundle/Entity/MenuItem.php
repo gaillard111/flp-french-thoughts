@@ -81,7 +81,7 @@ class MenuItem
 
     /**
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\MenuItem", mappedBy="parent")
-     * @ORM\OrderBy({"left" = "ASC"})
+     * @ORM\OrderBy({"sort" = "ASC", "left" = "ASC"})
      */
     private $children;
 
