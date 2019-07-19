@@ -50,6 +50,7 @@ class MenuAdmin extends Admin
                 ]
             ])
             ->add('sort', 'integer', [
+                'label' => 'Priority',
                 'required' => false
             ])
         ;
