@@ -75,6 +75,19 @@ class ThoughtRepository extends EntityRepository
             ->setMaxResults(1)
         ;
 
+
+//        $thoughts = $qb
+//            ->select('t, COUNT(l) as likesCount')
+//            ->leftJoin('t.watchedThoughts', 'wt')
+//            ->leftJoin('t.likes', 'l')
+//            ->getQuery()
+//            ->getResult();
+//
+//        $qb
+//            ->select('t')
+//            ->where($qb->expr()->notIn('t.watchedThoughts', $thoughts));
+
+
         $tagNumber = 0;
         $parameters = [];
         $tagsOrXStatement = $qb->expr()->orX();
