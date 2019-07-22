@@ -43,13 +43,17 @@ class RecommendThoughtCommand extends ContainerAwareCommand
             $recommendedThought = null;
             while ($recommendedThought == null) {
                 $recommendedThought = $recommendedThoughtService->getThought($user);
+                try {
+                    $thA = array_shift($recommendedThought);
+                    $recommendedThought = array_shift($thA);
+                    $recommendedThoughtService->addWatchedThought($user, $recommendedThought);
+                } catch (\Exception $e) {
+                    continue;
+                }
 
-                $thA = array_shift($recommendedThought);
-                $recommendedThought = array_shift($thA);
-                $recommendedThoughtService->addWatchedThought($user, $recommendedThought);
             }
 
-//            dump($recommendedThought->getContent()); die;
+            dump($recommendedThought->getContent()); die;
 
             $mailService->sendMail('L\'extrait du jour', $user->getEmail(), '<img src="http://demo-frenchthoughts.zimalab.com/logo.png"><br>#' . $recommendedThought->getId() . ' ' . $recommendedThought->getContent());
 
