@@ -63,6 +63,7 @@ class ThoughtRepository extends EntityRepository
 
     public function getUnseenUserThoughts($user, $tags)
     {
+        dump($user, $tags); die;
         $qb = $this->createQueryBuilder('t');
 
         $qb
