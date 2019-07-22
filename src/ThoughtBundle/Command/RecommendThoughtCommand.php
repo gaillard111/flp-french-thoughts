@@ -40,8 +40,8 @@ class RecommendThoughtCommand extends ContainerAwareCommand
 
 
         foreach ($users as $user) {
-            $recommendedThought = null;
-            while ($recommendedThought == null) {
+//            $recommendedThought = null;
+//            while ($recommendedThought == null) {
                 try {
                     $recommendedThought = $recommendedThoughtService->getThought($user);
                     $thA = array_shift($recommendedThought);
@@ -52,7 +52,7 @@ class RecommendThoughtCommand extends ContainerAwareCommand
                     continue;
                 }
 
-            }
+//            }
 
 //            dump($recommendedThought->getContent()); die;
             echo $recommendedThought->getContent();

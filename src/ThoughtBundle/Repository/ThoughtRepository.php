@@ -78,14 +78,14 @@ class ThoughtRepository extends EntityRepository
 
 
 //        $thoughts = $qb
-//            ->select('t, COUNT(l) as likesCount')
+//            ->select('t.id')
 //            ->leftJoin('t.watchedThoughts', 'wt')
 //            ->leftJoin('t.likes', 'l')
 //            ->getQuery()
 //            ->getResult();
 //
 //        $qb
-//            ->select('t')
+//            ->select('t, COUNT(l) as likesCount')
 //            ->where($qb->expr()->notIn('t.watchedThoughts', $thoughts));
 
 
