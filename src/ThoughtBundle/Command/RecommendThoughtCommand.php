@@ -44,12 +44,11 @@ class RecommendThoughtCommand extends ContainerAwareCommand
             while ($recommendedThought == null) {
                 try {
                     $recommendedThought = $recommendedThoughtService->getThought($user);
-//                    dump($recommendedThought, 1);
                     $thA = array_shift($recommendedThought);
                     $recommendedThought = array_shift($thA);
                     $recommendedThoughtService->addWatchedThought($user, $recommendedThought);
                 } catch (\Exception $e) {
-//                    dump($recommendedThought, 2);
+
                     continue;
                 }
 

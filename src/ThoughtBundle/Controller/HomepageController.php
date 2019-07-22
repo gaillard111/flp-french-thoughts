@@ -166,6 +166,7 @@ class HomepageController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $modelThought = $this->container->get('thought.model.thought_model');
+        $recommendedThoughtService = $this->container->get('thought.recommended_thought');
 
         $thought = $em->getRepository('ThoughtBundle:Thought')->find($thoughtId);
 
@@ -194,6 +195,7 @@ class HomepageController extends Controller
             $result  = 'remove';
         } else {
             $thought = $modelThought->addLike($thought, $this->getUser());
+            $recommendedThoughtService->addWatchedThought($this->getUser(), $thought);
         }
 
         $response = new JsonResponse(array(
