@@ -75,6 +75,10 @@ services:
             - ThoughtBundle\Entity\Author
             - 'ThoughtBundle:AuthorAdmin'
 
+    thought.recommended_thought:
+            class: ThoughtBundle\Service\RecommendedThoughtService
+            arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+
     thought.parser.service:
         class: ThoughtBundle\Parser\Service
         arguments: ["@service_container"]

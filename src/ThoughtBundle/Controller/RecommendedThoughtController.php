@@ -14,40 +14,10 @@ class RecommendedThoughtController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $recommendedThoughtService = $this->get('thought.recommended_thought');
 
+        $recommendedThought = $recommendedThoughtService->getThought($this->getUser());
 
-        $userWatchedThoughtsData = $em->getRepository(Thought::class)->getWatchedStatistics($this->getUser());
-
-        $tags = [];
-        /** @var WatchedThought $thoughtData */
-        foreach ($userWatchedThoughtsData as $thoughtData) {
-            $thoughtTags = explode(',', $thoughtData['tags']);
-            foreach ($thoughtTags as $tag) {
-                $tag = trim($tag);
-                if ($tag) {
-                    $tags[] = $tag;
-                }
-            }
-
-        }
-
-
-
-
-
-        $tagsCount = array_count_values($tags);
-
-//        dump($tagsCount);
-        arsort($tagsCount);
-
-//        dump($tagsCount);die;
-        $userUnseenThoughts = $em->getRepository(Thought::class)->getUnseenUserThoughts($this->getUser(), $tagsCount);
-//        foreach ($tagsCount as $tag => $count) {
-//
-//        }
-
-
-        dump($this->getUser()->getId(), $userUnseenThoughts, $tags); die;
+        dump($this->getUser()->getId(), $recommendedThought); die;
     }
 }

@@ -94,7 +94,7 @@ class ThoughtRepository extends EntityRepository
 //        $qb->orderBy('l');
 
 
-        dump($qb->getQuery()->getResult()); die;
+//        dump($qb->getQuery()->getResult()); die;
 
         return $qb->getQuery()->getResult();
     }

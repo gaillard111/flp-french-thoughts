@@ -169,7 +169,7 @@ class Mail
      * @param null $cc
      * @throws \Exception
      */
-    private function sendMail($subject, $emailUser, $body, $cc = null)
+    public function sendMail($subject, $emailUser, $body, $cc = null)
     {
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
@@ -186,6 +186,7 @@ class Mail
 
         try {
             $mailer->send($message);
+            sleep(10);
 
         } catch (\Swift_TransportException $exception) {
             $mailer->getTransport()->stop();
