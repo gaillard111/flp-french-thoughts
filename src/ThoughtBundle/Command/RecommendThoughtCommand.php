@@ -42,8 +42,8 @@ class RecommendThoughtCommand extends ContainerAwareCommand
         foreach ($users as $user) {
             $recommendedThought = null;
             while ($recommendedThought == null) {
-                $recommendedThought = $recommendedThoughtService->getThought($user);
                 try {
+                    $recommendedThought = $recommendedThoughtService->getThought($user);
                     $thA = array_shift($recommendedThought);
                     $recommendedThought = array_shift($thA);
                     $recommendedThoughtService->addWatchedThought($user, $recommendedThought);
