@@ -53,7 +53,8 @@ class RecommendThoughtCommand extends ContainerAwareCommand
 
             }
 
-            dump($recommendedThought->getContent()); die;
+//            dump($recommendedThought->getContent()); die;
+            echo $recommendedThought->getContent();
 
             $mailService->sendMail('L\'extrait du jour', $user->getEmail(), '<img src="http://demo-frenchthoughts.zimalab.com/logo.png"><br>#' . $recommendedThought->getId() . ' ' . $recommendedThought->getContent());
 
