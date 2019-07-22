@@ -42,12 +42,15 @@ class RecommendThoughtCommand extends ContainerAwareCommand
         foreach ($users as $user) {
             $recommendedThought = $recommendedThoughtService->getThought($user);
 
-            $recommendedThoughtService->addWatchedThought($user, $recommendedThought[0][0]);
+            $thA = array_shift($recommendedThought);
+            $recommendedThought = array_shift($thA);
 
-            $mailService->sendMail('L\'extrait du jour', $user->getEmail(), '<img src="http://demo-frenchthoughts.zimalab.com/logo.png"><br>#' . $recommendedThought[0][0]->getId() . ' ' . $recommendedThought[0][0]->getContent());
+            $recommendedThoughtService->addWatchedThought($user, $recommendedThought);
+
+            $mailService->sendMail('L\'extrait du jour', $user->getEmail(), '<img src="http://demo-frenchthoughts.zimalab.com/logo.png"><br>#' . $recommendedThought->getId() . ' ' . $recommendedThought->getContent());
 
             if ($input->getOption('test')) {
-                $mailService->sendMail('L\'extrait du jour', 'gaillard111@bluewin.ch', $recommendedThought[0][0]->getContent());
+                $mailService->sendMail('L\'extrait du jour', 'gaillard111@bluewin.ch', $recommendedThought->getContent());
                 echo 'gaillard111@bluewin.ch';
             }
 
