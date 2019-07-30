@@ -45,12 +45,6 @@ class DynamicPage
      */
     private $slug;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $showInMenu;
 
     /**
      * @var Banner[]|ArrayCollection
@@ -118,24 +112,6 @@ class DynamicPage
     public function setSlug($slug)
     {
         $this->slug = $slug;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isShowInMenu()
-    {
-        return $this->showInMenu;
-    }
-
-    /**
-     * @param bool $showInMenu
-     * @return DynamicPage
-     */
-    public function setShowInMenu($showInMenu)
-    {
-        $this->showInMenu = $showInMenu;
         return $this;
     }
 

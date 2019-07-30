@@ -18,7 +18,6 @@ class DynamicPageAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->add('title')
-            ->add('showInMenu')
         ;
     }
 
@@ -26,13 +25,16 @@ class DynamicPageAdmin extends Admin
     {
         $formMapper
             ->add('title')
+            ->add('slug', 'text', [
+                'required' => false
+            ])
             ->add('text', 'textarea', [
                 'label' => 'Text',
                 'attr'  => [
                     'class' => 'js-full-ckeditor'
                 ],
             ])
-            ->add('showInMenu')
+
         ;
     }
 }
