@@ -31,7 +31,7 @@ class RecommendThoughtCommand extends ContainerAwareCommand
 
         if ($input->getOption('test')) {
             $users = [
-                $em->getRepository(User::class)->findOneBy(['email' => 'arseny.k@zimalab.com'])
+                $em->getRepository(User::class)->findOneBy(['email' => 'ekaterina.n@zimalab.com'])
             ];
         } else {
             /** @var User $user */
@@ -59,10 +59,10 @@ class RecommendThoughtCommand extends ContainerAwareCommand
 
             $mailService->sendMail('L\'extrait du jour', $user->getEmail(), '<img src="http://demo-frenchthoughts.zimalab.com/logo.png"><br>#' . $recommendedThought->getId() . ' ' . $recommendedThought->getContent());
 
-            if ($input->getOption('test')) {
-                $mailService->sendMail('L\'extrait du jour', 'gaillard111@bluewin.ch', $recommendedThought->getContent());
-                echo 'gaillard111@bluewin.ch';
-            }
+//            if ($input->getOption('test')) {
+//                $mailService->sendMail('L\'extrait du jour', 'gaillard111@bluewin.ch', $recommendedThought->getContent());
+//                echo 'gaillard111@bluewin.ch';
+//            }
 
             echo $user->getEmail();
         }
