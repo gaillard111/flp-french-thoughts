@@ -7,6 +7,7 @@ namespace ThoughtBundle\Admin;
 use Sonata\AdminBundle\Admin\Admin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\CallbackTransformer;
 
 class DynamicPageAdmin extends Admin
 {
@@ -34,7 +35,18 @@ class DynamicPageAdmin extends Admin
                     'class' => 'js-full-ckeditor'
                 ],
             ])
-
         ;
+
+        $formMapper->getFormBuilder()->get('slug')->addViewTransformer(new CallbackTransformer(
+            function ($slug) {
+                return 'page/' . $slug;
+            },
+            function ($slug) {
+                $url_parts = explode('/', $slug);
+                if (end($url_parts) != '') {
+                    return end($url_parts);
+                }
+                return null;
+            }));
     }
 }
