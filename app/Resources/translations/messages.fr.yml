@@ -226,10 +226,10 @@ thought:
         add_to_chain: Ajouter
         add_to_collective_chain: Ajouter
 #        already_added: Déjà intégré
-        already_added: Is added to chains
+        already_added: Mis dans la chaine
         added_by: Ajouté à la Chaine par
         added_to_site: Ajouté à la BD par
-        added_to_chain: The quote is already added to
+        added_to_chain: Extrait déjà ajouté à
         add_quote: Mettre dans ma chaine
         add_quote_collective: Mettre dans la chaine partagées
         not_exist: Chain not found.
@@ -264,6 +264,9 @@ thought:
         not_exist:              Topic not exitst
         access_denied:          Access to this topic forbidden
         successfully_removed:   Topic successfully removed
+        search_form:
+          labels:
+            name: Recherches dans les titres de chaines seulemen.
 
 navbar:
     brand:        Les fils de la pensée

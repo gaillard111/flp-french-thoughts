@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ThoughtBundle\Entity\Topic;
+use ThoughtBundle\Form\TopicSearchForm;
 
 class TopicController extends Controller
 {
@@ -34,16 +35,24 @@ class TopicController extends Controller
 
         $topics = $em->getRepository(Topic::class)->findAll();
 
-//        dump($topics); die;
+        $topic = new Topic();
+        $form = $this->createForm(TopicSearchForm::class, $topic);
+        $form->handleRequest($request);
 
-//        $paginator  = $this->get('knp_paginator');
-//        $pagination = $paginator->paginate(
-//            $topics,
-//            $request->query->getInt('page', 1),
-//            100
-//        );
+        if ($form->isSubmitted()) {
+            $topic = $form->getData();
+            $topics = $em->getRepository(Topic::class)->searchTopics($topic);
+
+            return $this->render('ThoughtBundle:Topic:list.html.twig', [
+                'topics' => $topics,
+                'form'   => $form->createView()
+            ]);
+
+        }
+
         return $this->render('ThoughtBundle:Topic:list.html.twig', [
             'topics' => $topics,
+            'form'   => $form->createView()
         ]);
     }
 }

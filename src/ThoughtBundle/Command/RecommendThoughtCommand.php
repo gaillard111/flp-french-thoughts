@@ -17,6 +17,7 @@ class RecommendThoughtCommand extends ContainerAwareCommand
         $this
             ->setName('thought:recommend')
             ->addOption('test')
+            ->addOption('demo')
         ;
     }
 
@@ -28,16 +29,22 @@ class RecommendThoughtCommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $recommendedThoughtService = $this->getContainer()->get('thought.recommended_thought');
         $mailService = $this->getContainer()->get('thought.service.mail_service');
+        $twig = $this->getContainer()->get('templating');
 
         if ($input->getOption('test')) {
             $users = [
-                $em->getRepository(User::class)->findOneBy(['email' => 'ekaterina.n@zimalab.com'])
+                $em->getRepository(User::class)->findOneBy(['email' => 'arseny.k@zimalab.com'])
             ];
         } else {
             /** @var User $user */
             $users = $em->getRepository(User::class)->findAll();
         }
 
+        $domain = 'http://réfléchir.net';
+
+        if ($input->getOption('demo')) {
+            $domain = 'http://demo-frenchthoughts.zimalab.com';
+        }
 
         foreach ($users as $user) {
 //            $recommendedThought = null;
@@ -57,7 +64,15 @@ class RecommendThoughtCommand extends ContainerAwareCommand
 //            dump($recommendedThought->getContent()); die;
             echo $recommendedThought->getContent();
 
-            $mailService->sendMail('L\'extrait du jour', $user->getEmail(), '<img src="http://demo-frenchthoughts.zimalab.com/logo.png"><br>#' . $recommendedThought->getId() . ' ' . $recommendedThought->getContent());
+
+            $body = $twig->render('@Thought/mailQuoteLayout.html.twig', [
+                'thought' => $recommendedThought,
+                'domain'  => $domain
+            ]);
+
+
+
+            $mailService->sendMail('L\'extrait du jour', $user->getEmail(), $body);
 
 //            if ($input->getOption('test')) {
 //                $mailService->sendMail('L\'extrait du jour', 'gaillard111@bluewin.ch', $recommendedThought->getContent());

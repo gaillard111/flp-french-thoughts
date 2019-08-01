@@ -7,6 +7,11 @@ body {
 th {
     border-bottom: 1px solid #ddd !important;
 }
+
+.margin-top-25 {
+    margin-top: 25px;
+}
+
 .banner .jumbotron {
     margin-bottom: 15px;
     border: none;

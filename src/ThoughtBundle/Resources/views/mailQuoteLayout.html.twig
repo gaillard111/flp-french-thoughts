@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="jumbotron">
+    {#<p>#}
+        {#<span>#}
+            <a href="{{ domain }}{{ path('thought_thoughtpage_index', { 'thoughtId': thought.id }) }}">
+                {{ thought.category }}
+            </a>
+
+            {#<a href="yandex.ru">Yandex</a>#}
+        {#</span>#}
+
+    {#</p>#}
+    <p class="quote_content">
+        <span>{{ thought.content|customTag|raw|nl2br }}</span>
+    </p>
+    <p>
+        <strong>{{ 'thought.property.author'|trans|capitalize }}:</strong>
+        <span class="author">
+            <a href="{{ domain }}{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">
+                {{ thought.author }}
+            </a>
+        </span>
+
+
+    </p>
+    {% set author = thought.author|authorsInfo %}
+    {% if author %}
+        <div class="authors_info">
+
+            <p><strong>{{ 'author.filter.fields.birthDate.label'|trans }}:</strong> <span>{{ author.birthDate }}</span></p>
+            <p><strong>{{ 'author.filter.fields.country.label'|trans }}:</strong> <span>{{ author.country }}</span></p>
+            <p><strong>{{ 'author.filter.fields.sex.label'|trans }}:</strong> <span>{{ author.sex }}</span></p>
+            <p><strong>{{ 'author.filter.fields.job.label'|trans }}:</strong> <span>{{ author.job }}</span></p>
+            <p><strong>{{ 'author.filter.fields.continent.label'|trans }}:</strong> <span>{{ author.continent }}</span></p>
+        </div>
+    {% endif %}
+
+
+    <p>
+        <strong>{{ 'thought.property.thoughtInfo'|trans|capitalize }}:</strong>
+        <span>{{ thought.thoughtInfo }}</span>
+    </p>
+    <p class="quote_tags">
+            <span>
+                {% for tag in thought.tags|split(' , ') %}
+                    {% if tag|trim|length > 0 %}
+                        [<a href="{{ domain }}{{ path('thought_homepage_index', {'search[words]': tag, 'search[field][tags]': 'on'}) }}">
+                        <span>{{ tag }}</span>
+                    </a>]
+                    {% endif %}
+                {% endfor %}
+            </span>
+    </p>
+
+</div>
+{% endblock %}

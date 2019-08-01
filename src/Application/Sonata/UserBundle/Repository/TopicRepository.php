@@ -10,6 +10,7 @@ namespace Application\Sonata\UserBundle\Repository;
 
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use ThoughtBundle\Entity\Topic;
 
 class TopicRepository extends EntityRepository
 {
@@ -21,5 +22,19 @@ class TopicRepository extends EntityRepository
             ->where('t.user = :user')
             ->setParameter('user', $user);
         return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function searchTopics(Topic $topic)
+    {
+        $qb = $this->createQueryBuilder('t');
+        $qb
+            ->select('t')
+            ->leftJoin('t.chains', 'c')
+            ->where('t.name LIKE :topicName')
+            ->orWhere('c.name LIKE :topicName')
+            ->setParameters([
+               'topicName' => '%' . $topic->getName() . '%'
+            ]);
+        return $qb->getQuery()->getResult();
     }
 }
