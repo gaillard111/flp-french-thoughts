@@ -31,7 +31,7 @@ class ThoughtController extends Controller
 {
     public function navbarAction()
     {
-        $roots = $this->getDoctrine()->getRepository(MenuItem::class)->findBy(['level' => 0]);
+        $roots = $this->getDoctrine()->getRepository(MenuItem::class)->findBy(['level' => 0], ['sort' => 'ASC']);
 
         $virtualRoot = new MenuItem();
         $virtualRoot->setChildren($roots);
