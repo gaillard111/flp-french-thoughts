@@ -10,6 +10,7 @@ namespace ThoughtBundle\EventListener;
 
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Service\Mail;
 
@@ -20,9 +21,15 @@ class LikeNotifier
      */
     private $mailService;
 
-    public function __construct(Mail $mailService)
+    /**
+     * @var Router
+     */
+    private $router;
+
+    public function __construct(Mail $mailService, Router $router)
     {
         $this->mailService = $mailService;
+        $this->router = $router;
     }
 
     public function postPersist(LifecycleEventArgs $args)
@@ -32,7 +39,8 @@ class LikeNotifier
         if ($like instanceof Like) {
             $owner = $like->getThought()->getOwner();
             if (($owner != null) && ($owner != $like->getUser())) {
-                $this->mailService->sendMail('Les fils de la pensée Notification', $owner->getEmail(), 'User ' . $like->getUser()->getFirstname() . ' liked thought ' . $like->getThought()->getCategory());
+                $this->mailService->sendMail('Les fils de la pensée Notification', $owner->getEmail(), 'User <a href="'. $this->router->generate('thought_profile', ['userId' => $like->getUser()->getId()]) .'">' . $like->getUser()->getFirstname() . '</a> liked thought <a href="'. $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $like->getThought()->getId()]) .'">' . $like->getThought()->getCategory() . '</a>');
+
             }
         }
 

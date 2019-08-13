@@ -129,12 +129,12 @@ services:
 
     thought.comment_notifier:
         class: ThoughtBundle\EventListener\CommentNotifier
-        arguments: ["@thought.service.mail_service", "@debug.stopwatch"]
+        arguments: ["@thought.service.mail_service", "@debug.stopwatch", "@router", "@service_container"]
         tags:
             - { name: doctrine.event_listener, event: postPersist }
 
     thought.like_notifier:
         class: ThoughtBundle\EventListener\LikeNotifier
-        arguments: ["@thought.service.mail_service", "@debug.stopwatch"]
+        arguments: ["@thought.service.mail_service", "@router"]
         tags:
             - { name: doctrine.event_listener, event: postPersist }

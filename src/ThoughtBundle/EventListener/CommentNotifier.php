@@ -9,7 +9,9 @@
 namespace ThoughtBundle\EventListener;
 
 
+use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Stopwatch\Stopwatch;
 use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\Like;
@@ -27,17 +29,30 @@ class CommentNotifier
      */
     private $stopwatch;
 
-    public function __construct(Mail $mailService, Stopwatch $stopwatch)
+    /**
+     * @var Router
+     */
+    private $router;
+
+
+    public function __construct(Mail $mailService, Stopwatch $stopwatch, Router $router)
     {
         $this->mailService = $mailService;
         $this->stopwatch = $stopwatch;
+        $this->router = $router;
     }
 
     public function postPersist(LifecycleEventArgs $args)
     {
         /** @var Comment|mixed $comment */
+
         $comment = $args->getObject();
         if ($comment instanceof Comment) {
+            $em = $args->getObjectManager();
+            /** @var User|mixed $commentUser */
+            $commentUser = $em->getRepository(User::class)->findOneBy([
+                'email' => $comment->getEmail()
+            ]);
             $thought = $comment->getThought();
             $thoughtOwner = $thought->getOwner();
             /** @var Like[]|mixed $likes */
@@ -55,7 +70,7 @@ class CommentNotifier
             foreach ($emails as $email) {
 //            dump(1, $email, $comment->getEmail());
                 if ($email != $comment->getEmail()) {
-                    $this->mailService->sendMail('Les fils de la pensée Notification', $email, 'User ' . $comment->getFullName() . ' also commented this thought');
+                    $this->mailService->sendMail('Les fils de la pensée Notification', $email, 'User <a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()]) . '">' . $comment->getFullName() . '</a> also commented this <a href="' . $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $comment->getThought()->getId()]) . '">thought</a> ');
                 }
 
             }
@@ -65,7 +80,7 @@ class CommentNotifier
 //                dump($comment); die;
 //            dump(2, $like->getUser()->getEmail(), $comment->getEmail());
                 if ($like->getUser()->getEmail() != $comment->getEmail()) {
-                    $this->mailService->sendMail('Les fils de la pensée Notification', $like->getUser()->getEmail(), 'The thought you like also liked ' . $comment->getFullName());
+                    $this->mailService->sendMail('Les fils de la pensée Notification', $like->getUser()->getEmail(), 'The <a href="' . $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $like->getThought()->getId()]) . '">thought</a> you like also liked <a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()]) . '">' . $comment->getFullName() . '</a>');
                 }
 
 
@@ -74,7 +89,7 @@ class CommentNotifier
 //        dump(3, $thoughtOwner->getEmail(), $comment->getEmail());
 
             if ($thoughtOwner->getEmail() != $comment->getEmail()) {
-                $this->mailService->sendMail('Les fils de la pensée Notification', $thoughtOwner->getEmail(), $comment->getFullName() . ' commented your thought');
+                $this->mailService->sendMail('Les fils de la pensée Notification', $thoughtOwner->getEmail(), '<a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()]) . '">' . $comment->getFullName() . '</a> commented your <a href="' . $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $comment->getThought()->getId()]) . '">thought</a>');
             }
         }
     }
