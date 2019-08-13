@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use ThoughtBundle\Entity\Author;
-use ThoughtBundle\Entity\DynamicPage;
 use ThoughtBundle\Entity\MenuItem;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\Topic;
@@ -189,7 +188,6 @@ class ThoughtController extends Controller
      */
     public function favoriteQuotesAction()
     {
-        $user = $this->getUser();
         $likedThoughts = $this->getDoctrine()->getRepository(Thought::class)->getLikedThoughts($this->getUser());
 
         return $this->render('ApplicationSonataUserBundle:Thought:favorite_list.html.twig', [

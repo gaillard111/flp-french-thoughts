@@ -126,3 +126,9 @@ services:
         arguments: ["@service_container"]
         tags:
             - { name: twig.extension }
+
+    thought.comment_notifier:
+        class: ThoughtBundle\EventListener\CommentNotifier
+        arguments: ["@thought.service.mail_service", "@debug.stopwatch"]
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }

@@ -186,11 +186,11 @@ class Mail
 
         try {
             $mailer->send($message);
-            sleep(10);
+//            sleep(10);
 
         } catch (\Swift_TransportException $exception) {
             $mailer->getTransport()->stop();
-            sleep(20);
+//            sleep(20);
             $mailer->send($message);
         }
     }
