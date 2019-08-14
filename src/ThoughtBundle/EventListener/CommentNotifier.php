@@ -70,7 +70,7 @@ class CommentNotifier
             foreach ($emails as $email) {
 //            dump(1, $email, $comment->getEmail());
                 if ($email != $comment->getEmail()) {
-                    $this->mailService->sendMail('Les fils de la pensée Notification', $email, 'User <a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()], [], Router::ABSOLUTE_URL) . '">' . $comment->getFullName() . '</a> also commented this <a href="' .  $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $comment->getThought()->getId()], [], Router::ABSOLUTE_URL) . '">thought</a> ');
+                    $this->mailService->sendMail('Les fils de la pensée Notification', $email, 'User <a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()], Router::ABSOLUTE_URL) . '">' . $comment->getFullName() . '</a> also commented this <a href="' .  $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $comment->getThought()->getId()], Router::ABSOLUTE_URL) . '">thought</a> ');
                 }
 
             }
@@ -80,7 +80,7 @@ class CommentNotifier
 //                dump($comment); die;
 //            dump(2, $like->getUser()->getEmail(), $comment->getEmail());
                 if ($like->getUser()->getEmail() != $comment->getEmail()) {
-                    $this->mailService->sendMail('Les fils de la pensée Notification', $like->getUser()->getEmail(), 'The <a href="' . $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $like->getThought()->getId()], [], Router::ABSOLUTE_URL) . '">thought</a> you like also liked <a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()], [], Router::ABSOLUTE_URL) . '">' . $comment->getFullName() . '</a>');
+                    $this->mailService->sendMail('Les fils de la pensée Notification', $like->getUser()->getEmail(), 'The <a href="' . $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $like->getThought()->getId()], Router::ABSOLUTE_URL) . '">thought</a> you like also liked <a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()], Router::ABSOLUTE_URL) . '">' . $comment->getFullName() . '</a>');
                 }
 
 
@@ -89,7 +89,7 @@ class CommentNotifier
 //        dump(3, $thoughtOwner->getEmail(), $comment->getEmail());
 
             if ($thoughtOwner->getEmail() != $comment->getEmail()) {
-                $this->mailService->sendMail('Les fils de la pensée Notification', $thoughtOwner->getEmail(), '<a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()], [], Router::ABSOLUTE_URL) . '">' . $comment->getFullName() . '</a> commented your <a href="' . $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $comment->getThought()->getId()], [], Router::ABSOLUTE_URL) . '">thought</a>');
+                $this->mailService->sendMail('Les fils de la pensée Notification', $thoughtOwner->getEmail(), '<a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()],  Router::ABSOLUTE_URL) . '">' . $comment->getFullName() . '</a> commented your <a href="' . $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $comment->getThought()->getId()], Router::ABSOLUTE_URL) . '">thought</a>');
             }
         }
     }
