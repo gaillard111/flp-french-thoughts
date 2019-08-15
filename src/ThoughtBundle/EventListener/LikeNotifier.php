@@ -11,8 +11,6 @@ namespace ThoughtBundle\EventListener;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\RouterInterface;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Service\Mail;
 
@@ -41,7 +39,7 @@ class LikeNotifier
         if ($like instanceof Like) {
             $owner = $like->getThought()->getOwner();
             if (($owner != null) && ($owner != $like->getUser())) {
-                $this->mailService->sendMail('Les fils de la pensée Notification', $owner->getEmail(), 'User <a href="'. $this->router->generate('thought_profile', ['userId' => $like->getUser()->getId()], Router::ABSOLUTE_URL) .'">' . $like->getUser()->getFirstname() . '</a> liked thought <a href="'. $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $like->getThought()->getId()], Router::ABSOLUTE_URL) .'">' . $like->getThought()->getCategory() . '</a>');
+                $this->mailService->sendMail('Les fils de la pensée Notification', $owner->getEmail(), 'User <a href="'. $this->router->generate('thought_profile', ['userId' => $like->getUser()->getId()], Router::ABSOLUTE_URL) .'">' . $like->getUser()->getFirstname() . '</a> likes the <a href="'. $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $like->getThought()->getId()], Router::ABSOLUTE_URL) .'">' . $like->getThought()->getCategory() . '</a> quote added by you.');
 
             }
         }

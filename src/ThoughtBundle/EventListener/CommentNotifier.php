@@ -12,10 +12,13 @@ namespace ThoughtBundle\EventListener;
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Service\Mail;
+use Twig_Environment;
 
 class CommentNotifier
 {
@@ -34,12 +37,22 @@ class CommentNotifier
      */
     private $router;
 
+    /**
+     * @var Twig_Environment
+     */
+    private $twig;
+    /**
+     * @var Container
+     */
+    private $serviceContainer;
 
-    public function __construct(Mail $mailService, Stopwatch $stopwatch, Router $router)
+
+    public function __construct(Mail $mailService, Stopwatch $stopwatch, Router $router, Container $serviceContainer)
     {
         $this->mailService = $mailService;
         $this->stopwatch = $stopwatch;
         $this->router = $router;
+        $this->serviceContainer = $serviceContainer;
     }
 
     public function postPersist(LifecycleEventArgs $args)
@@ -70,7 +83,12 @@ class CommentNotifier
             foreach ($emails as $email) {
 //            dump(1, $email, $comment->getEmail());
                 if ($email != $comment->getEmail()) {
-                    $this->mailService->sendMail('Les fils de la pensée Notification', $email, 'User <a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()], Router::ABSOLUTE_URL) . '">' . $comment->getFullName() . '</a> also commented this <a href="' .  $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $comment->getThought()->getId()], Router::ABSOLUTE_URL) . '">thought</a> ');
+                    $body = $this->getTwig()->render('@Thought/Notifications/alsoCommentedMail.html.twig', [
+                        'user'      => $commentUser,
+                        'thought'   => $comment->getThought()
+                    ]);
+
+                    $this->mailService->sendMail('Les fils de la pensée Notification', $email, $body);
                 }
 
             }
@@ -80,17 +98,39 @@ class CommentNotifier
 //                dump($comment); die;
 //            dump(2, $like->getUser()->getEmail(), $comment->getEmail());
                 if ($like->getUser()->getEmail() != $comment->getEmail()) {
-                    $this->mailService->sendMail('Les fils de la pensée Notification', $like->getUser()->getEmail(), 'The <a href="' . $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $like->getThought()->getId()], Router::ABSOLUTE_URL) . '">thought</a> you like also liked <a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()], Router::ABSOLUTE_URL) . '">' . $comment->getFullName() . '</a>');
+
+                    $body = $this->getTwig()->render('@Thought/Notifications/commentedThoughtYouLikeMail.html.twig', [
+                        'user'      => $like->getUser(),
+                        'thought'   => $like->getThought()
+                    ]);
+
+                    $this->mailService->sendMail('Les fils de la pensée Notification', $like->getUser()->getEmail(), $body);
                 }
 
 
             }
 
 //        dump(3, $thoughtOwner->getEmail(), $comment->getEmail());
+            if ($thoughtOwner && ($thoughtOwner->getEmail() != $comment->getEmail())) {
 
-            if ($thoughtOwner->getEmail() != $comment->getEmail()) {
-                $this->mailService->sendMail('Les fils de la pensée Notification', $thoughtOwner->getEmail(), '<a href="' . $this->router->generate('thought_profile', ['userId' => $commentUser->getId()],  Router::ABSOLUTE_URL) . '">' . $comment->getFullName() . '</a> commented your <a href="' . $this->router->generate('thought_thoughtpage_index', ['thoughtId' => $comment->getThought()->getId()], Router::ABSOLUTE_URL) . '">thought</a>');
+                $body = $this->getTwig()->render('@Thought/Notifications/commentedYourThoughtMail.html.twig', [
+                    'user'      => $commentUser,
+                    'thought'   => $comment->getThought()
+                ]);
+
+                $this->mailService->sendMail('Les fils de la pensée Notification', $thoughtOwner->getEmail(), $body);
             }
         }
+    }
+
+    /**
+     * @return Twig_Environment
+     */
+    private function getTwig()
+    {
+        if (!$this->twig) {
+            $this->twig = $this->serviceContainer->get('twig');
+        }
+        return $this->twig;
     }
 }
