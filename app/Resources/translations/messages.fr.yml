@@ -10,6 +10,7 @@ user:
         message_text:   Un message
         message_submit: Envoyer un message
         send_message:   Send message
+        reply:          Répondre
 
     list:
         title:          Users list
@@ -62,7 +63,7 @@ user:
                 genderm:     Homme
                 genderf:     Femme
             interests:
-                label:       Centres d'intérêts
+                label:       Mes intérêts
             button:          Mettre à jour
             profile_edit:    Mes paramètres
             favorite_thoughts: Citations préférées
@@ -138,7 +139,7 @@ thought:
         thoughtInfo: Info
         top5:        Top-5
         created_at:  Created
-        publish:     Publish
+        publish:     Publié
         like:        J'aime
         liked:       Aimé
         hoverable:   survolez pour voir plus d'infos
@@ -188,11 +189,11 @@ thought:
             label: inverser
         buttons:
             search: Go!
-            reset:  Reset
+            reset:  Réinitialiser
             last_quotes: Préférées
             most_popular: Citations populaires
-        time_counter : Search time counter
-        result_counter : Search results
+        time_counter: Temps de recherche
+        result_counter:  Résultat(s)
         cloud_tags: Nuage de corrélats
         activate_cloud: pour l'activer, cochez seulement catégorie et tag dans la recherche avancée à gauche.
         search_min_chars:
@@ -217,7 +218,7 @@ thought:
                 placeholder: Entrez votre email
         not_found: Comment not found
         deleted: Comment successfully deleted
-        added:   Comment successfully added
+        added:   Commentaire ajouté avec succès
     chain:
         favorite_chains: Chaines préférées
         menu_favorite_chains: Mes chaines préférées
@@ -274,7 +275,7 @@ navbar:
     users:        Utilisateurs
     chat:         Chat
     sign_out:     Déconnexion
-    sign_in:      Login
+    sign_in:      Connexion
     registration: S'inscrire
     instruction:  Mode d'emploi
     super_admin:  Admin dashboard

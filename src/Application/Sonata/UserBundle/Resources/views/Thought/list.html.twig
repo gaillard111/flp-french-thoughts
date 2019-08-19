@@ -15,7 +15,7 @@
                     <div class="custom-form-group">
                         {{ form_widget(form.searchString) }}
                         {{ form_widget(form.submit) }}
-                        <a href="{{ path('sonata_user_thoughts') }}" class="btn btn-warning">Reset</a>
+                        <a href="{{ path('sonata_user_thoughts') }}" class="btn btn-warning">{{ 'thought.filter.buttons.reset'|trans }}</a>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                             <td>{{ thought.createdAt|date('d.m.Y H:i') }}</td>
                             <td>
                         <span class="label label-{{ thought.published ? 'success' : 'danger' }}">
-                            {{ thought.published ? 'Yes' : 'No' }}
+                            {{ thought.published ? 'Oui' : 'Non' }}
                         </span>
                             </td>
                         </tr>

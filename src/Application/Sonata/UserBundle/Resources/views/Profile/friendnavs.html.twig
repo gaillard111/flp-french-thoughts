@@ -1,5 +1,5 @@
 <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#home">My friends {{ countFriends }}</a></li>
+    <li class="active"><a data-toggle="tab" href="#home">{{ 'user.friendship.title'|trans }} {{ countFriends }}</a></li>
     <li>
         <a data-toggle="tab" href="#menu1">Friend Requests
             {% if countReq != 0 %}

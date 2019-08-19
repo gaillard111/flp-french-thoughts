@@ -66,8 +66,9 @@ th {
 }
 
 .fixed-menu {
-    position: fixed;
+    /*position: fixed;*/
     min-height: 400px !important;
+    width: 160px;
 }
 
 .tooltip div {

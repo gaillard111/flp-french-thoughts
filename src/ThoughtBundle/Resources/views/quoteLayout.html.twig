@@ -80,7 +80,7 @@
     </p>
     {% set already_chains = [] %}
     {% for arr_chain in thought.chainThoughts %}
-        {% set already_chains = already_chains|merge([arr_chain.chain.name]) %}
+        {% set already_chains = already_chains|merge([{name: arr_chain.chain.name, id: arr_chain.chain.id}]) %}
     {% endfor %}
     <div class="row">
         {#{% if thought.comments.count > 0 %}#}
@@ -142,7 +142,8 @@
         </div>
         <div class="col-sm-6">
             {% if already_chains|length %}
-                <span class="is-added pull-right" data-toggle="tooltip" data-placement="bottom" title="{{ 'thought.chain.added_to_chain'|trans }} {{ already_chains|join(', ') }}">
+                {% set template = '@Thought/include/chainsTooltip.html.twig'  %}
+                <span class="is-added pull-right hastooltip" data-toggle="tooltip" data-placement="bottom" data-html="true" title="{{ 'thought.chain.added_to_chain'|trans }} {{ include(template)|escape }}">
                     {{ 'thought.chain.already_added'|trans }}
                 </span>
             {% endif %}
