@@ -122,8 +122,7 @@ class HomepageController extends Controller
             $response->headers->setCookie(new Cookie('modal', true, $time));
         }
 
-//        dump($pagination->getTotalItemCount() > 0);
-        if ($pagination->getTotalItemCount() > 0) {
+        if (($pagination->getTotalItemCount() > 0) && $search) {
             if ((!$request->cookies->get('comment_modal')) && ($request->cookies->get('modal'))) {
                 $time = time() + (3600 * 24 * 7);
                 $response->headers->setCookie(new Cookie('comment_modal', true, $time));
