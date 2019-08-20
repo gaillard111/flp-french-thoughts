@@ -344,7 +344,7 @@ topic:
 
 modal:
     tutorial:
-        header: Votre dicton/citation/extrait favori est-il sur FLP ? Vérifiez ici.
+        header: Votre dicton/citation/extrait favori est-il sur FLP? Vérifiez ici.<br> 2 ou 3 mots/auteur suffisent souvent
     comment:
         header: Vous pouvez vous inscrire pour l'y mettre.
     add_thought:
