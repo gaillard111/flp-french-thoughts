@@ -349,3 +349,5 @@ modal:
         header: Vous pouvez vous inscrire pour l'y mettre.
     add_thought:
         header: Êtes-vous d'accord avec son étiquetage
+    buttons:
+        close: Fermer
