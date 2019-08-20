@@ -16,7 +16,7 @@
                         </div>
                         <div class="col-sm-2 margin-top-25">
                             {{ form_widget(form.submit) }}
-                            <a href="{{ path('all_topics') }}" class="btn btn-warning">Reset</a>
+                            <a href="{{ path('all_topics') }}" class="btn btn-warning">{{ 'thought.filter.buttons.reset'|trans }}</a>
                         </div>
                     </div>
                 {{ form_end(form) }}
