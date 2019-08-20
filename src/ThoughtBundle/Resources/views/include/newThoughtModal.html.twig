@@ -1,0 +1,16 @@
+{% extends '@Thought/include/tutorialModal.html.twig' %}
+{% block modal_id %}newThoughtModal{% endblock %}
+{% block modal_header %}
+    <div class="modal-header">
+        <p>{{ 'modal.add_thought.header'|trans }}</p>
+    </div>
+{% endblock %}
+{% block modal_body %}
+    <div class="modal-body">
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+        <a href="{{ path('fos_user_registration_register') }}" class="btn btn-info">Register</a>
+    </div>
+{% endblock %}

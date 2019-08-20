@@ -122,6 +122,20 @@ class HomepageController extends Controller
             $response->headers->setCookie(new Cookie('modal', true, $time));
         }
 
+        if ($pagination->getTotalItemCount() > 0) {
+            if ((!$request->cookies->get('comment_modal')) && ($request->cookies->get('modal'))) {
+                $time = time() + (3600 * 24 * 7);
+                $response->headers->setCookie(new Cookie('comment_modal', true, $time));
+            }
+        }
+        if ($pagination->getTotalItemCount() == 0) {
+            if ((!$request->cookies->get('add_thought_modal')) && ($request->cookies->get('modal'))) {
+                $time = time() + (3600 * 24 * 7);
+                $response->headers->setCookie(new Cookie('add_thought_modal', true, $time));
+            }
+        }
+
+
         return $response;
     }
 

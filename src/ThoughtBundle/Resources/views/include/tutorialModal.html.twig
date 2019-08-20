@@ -1,33 +1,36 @@
-<div id="myModal" class="modal fade thought-popup" tabindex="-1" role="dialog">
+<div id="{% block modal_id %}myModal{% endblock %}" class="modal fade thought-popup" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h5 class="modal-title">What is your favorite quote? Check  whether or not it is in the database</h5>
-            </div>
-
-            <form method="get" xmlns="http://www.w3.org/1999/html">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="form-group col-sm-12">
-                            <label for="inputSearch">{{ 'thought.filter.content.label'|trans }}</label>
-                            <input value="{{ search.words is defined ? search.words : '' }}" type="text" name="search[words]" class="form-control" id="inputSearch" placeholder="{{ 'thought.filter.content.placeholder'|trans }}">
-                            <input type="hidden" name="search[field][content]" value="on">
-                            <input type="hidden" name="search[field][category]" value="on">
-                            <input type="hidden" name="search[field][tags]" value="on">
-                            <input type="hidden" name="search[field][author]" value="on">
-                            <input type="hidden" name="search[field][thoughtInfo]" value="on">
-                            <input type="hidden" name="search[sorting]" value="liked">
-                            <input type="hidden" name="search[sorting_desc]" value="true">
+            {% block modal_header %}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h5 class="modal-title">{{ 'modal.tutorial.header'|trans }}</h5>
+                </div>
+            {% endblock %}
+            {% block modal_body %}
+                <form method="get" xmlns="http://www.w3.org/1999/html">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group col-sm-12">
+                                <label for="inputSearch">{{ 'thought.filter.content.label'|trans }}</label>
+                                <input value="{{ search.words is defined ? search.words : '' }}" type="text" name="search[words]" class="form-control" id="inputSearch" placeholder="{{ 'thought.filter.content.placeholder'|trans }}">
+                                <input type="hidden" name="search[field][content]" value="on">
+                                <input type="hidden" name="search[field][category]" value="on">
+                                <input type="hidden" name="search[field][tags]" value="on">
+                                <input type="hidden" name="search[field][author]" value="on">
+                                <input type="hidden" name="search[field][thoughtInfo]" value="on">
+                                <input type="hidden" name="search[sorting]" value="liked">
+                                <input type="hidden" name="search[sorting_desc]" value="true">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-info" value="Search">
-                </div>
-            </form>
 
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-info" value="Search">
+                    </div>
+                </form>
+            {% endblock %}
         </div>
     </div>
 </div>

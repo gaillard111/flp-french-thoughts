@@ -341,3 +341,11 @@ author:
 
 topic:
     title: Chaines de réflexions, collectives ou personnelles, présentées par sujets
+
+modal:
+    tutorial:
+        header: Votre dicton/citation/extrait favori est-il sur FLP ? Vérifiez ici.
+    comment:
+        header: Vous pouvez vous inscrire pour l'y mettre.
+    add_thought:
+        header: Êtes-vous d'accord avec son étiquetage

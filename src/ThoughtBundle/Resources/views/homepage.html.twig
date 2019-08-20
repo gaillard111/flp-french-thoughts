@@ -5,12 +5,13 @@
 {% block content %}
     {% set search = app.request.get('search') %}
     {% set is_fields = search.field is defined ? true : false %}
-    {% if not app.request.cookies.get('modal') %}
-        {% block popup %}
-            {{ include('@Thought/include/tutorialModal.html.twig') }}
-        {% endblock %}
+    {% if not app.user %}
+        {% if not app.request.cookies.get('modal') %}
+            {% block popup %}
+                {{ include('@Thought/include/tutorialModal.html.twig') }}
+            {% endblock %}
+        {% endif %}
     {% endif %}
-
 
 
     {% if thoughts.paginationData.totalCount == 0 %}
@@ -83,8 +84,18 @@
                 <div class="navigation text-center hidden-xs">
                     {{ knp_pagination_render(thoughts) }}
                 </div>
-
-
+                {% if search['words'] is defined %}
+                    {% if search['words'] and thoughts.count > 0 %}
+                        {% if not app.request.cookies.get('comment_modal') %}
+                            {{ include('@Thought/include/commentModal.html.twig') }}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                {% if thoughts.count == 0 %}
+                    {% if not app.request.cookies.get('add_thought_modal') %}
+                        {{ include('@Thought/include/newThoughtModal.html.twig') }}
+                    {% endif %}
+                {% endif %}
                 {% for thought in thoughts %}
                     {{ include('@Thought/quoteLayout.html.twig', {'thought': thought, 'colChains': colChains }) }}
                 {% endfor %}
@@ -211,6 +222,8 @@
             });
 
             $('#myModal').modal('show');
+            $('#commentModal').modal('show');
+            $('#newThoughtModal').modal('show');
 
             $('span.author a').mouseover(function(){
                 $(this).parents('div.quote').find('div.authors_info').fadeIn();
