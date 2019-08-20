@@ -267,7 +267,7 @@ thought:
         successfully_removed:   Topic successfully removed
         search_form:
           labels:
-            name: Recherches dans les titres de chaines seulemen.
+            name: Recherches dans les titres de chaines seulement.
 
 navbar:
     brand:        Les fils de la pensée
