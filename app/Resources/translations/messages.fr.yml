@@ -346,8 +346,8 @@ modal:
     tutorial:
         header: Votre dicton/citation/extrait favori est-il sur FLP? Vérifiez ici.<br> 2 ou 3 mots/auteur suffisent souvent
     comment:
-        header: Êtes-vous d'accord avec son étiquetage
+        header: Etes-vous d'accord avec l' étiquetage?
     add_thought:
-        header: Vous pouvez vous inscrire pour l'y mettre.
+        header: Pas trouvé? Vous pouvez vous inscrire pour l'y mettre.
     buttons:
         close: Fermer
