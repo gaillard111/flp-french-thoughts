@@ -221,7 +221,9 @@
                 }
             });
 
-            $('#myModal').modal('show');
+            if (!$("#inputSearch").val()) {
+                $('#myModal').modal('show');
+            }
             $('#commentModal').modal('show');
             $('#newThoughtModal').modal('show');
 

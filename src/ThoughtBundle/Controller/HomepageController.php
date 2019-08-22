@@ -117,7 +117,7 @@ class HomepageController extends Controller
             'banners'     => $dynamicBanners
         ]);
 
-        if (!$request->cookies->get('modal')) {
+        if ((!$request->cookies->get('modal')) && !$search) {
             $time = time() + (3600 * 24 * 7);
             $response->headers->setCookie(new Cookie('modal', true, $time));
         }
