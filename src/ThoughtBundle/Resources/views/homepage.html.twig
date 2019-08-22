@@ -14,14 +14,14 @@
     {% endif %}
 
 
-    {% if thoughts.paginationData.totalCount == 0 %}
-        <div class="row not-found-text">
-            <div class="col-sm-12">
-                There were no thoughts found by your request.
-                Please <a href="{{ path('sonata_user_thought_create') }}">suggest</a> your own quote.
-            </div>
-        </div>
-    {% endif %}
+    {#{% if thoughts.paginationData.totalCount == 0 %}#}
+        {#<div class="row not-found-text">#}
+            {#<div class="col-sm-12">#}
+                {#There were no thoughts found by your request.#}
+                {#Please <a href="{{ path('sonata_user_thought_create') }}">suggest</a> your own quote.#}
+            {#</div>#}
+        {#</div>#}
+    {#{% endif %}#}
     <div class="row">
         <div class="col-sm-offset-6 banner-container">
             {% for banner in banners %}
