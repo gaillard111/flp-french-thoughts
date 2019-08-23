@@ -391,6 +391,12 @@ class Thought
         return $this->likes;
     }
 
+
+    public function getLiked()
+    {
+        return $this->likes;
+    }
+
     public function addLike($like)
     {
 //        if (!$this->likes) {

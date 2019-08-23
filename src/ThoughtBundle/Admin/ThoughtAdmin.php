@@ -40,7 +40,8 @@ class ThoughtAdmin extends Admin
             ))
             ->add('published', null, array(
                 'required' => false,
-            ));
+            ))
+        ;
     }
 
     /**
