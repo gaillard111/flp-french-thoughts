@@ -46,6 +46,9 @@
                     {% if item.parameters['topicId'] is defined %}
                         title="{{ item.label }}"
                     {% endif %}
+                    {% if item.route == 'favorite-quotes' %}
+                        title="{{ item.label }}"
+                    {% endif %}
             >{{ item.label|striptags|truncate(20) }}
                 {% if item.route == 'sonata_user_thoughts' %}
                     ({{ thoughts }})

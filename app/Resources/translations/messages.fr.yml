@@ -88,7 +88,7 @@ user:
             table:
                 action: Action
         favorite_page:
-            title: Favorite Thoughts
+            title: Mes citations favorites
     search:
         need_logged: <strong>Au-delà de %quantity_search% recherches vous devez vous inscrire pour poursuivre. C'est gratuit. Votre mail restera confidentiel et ne sera utilisé'qu'en cas de changement sur le site.</strong>
     comment:
@@ -129,7 +129,7 @@ user:
 
 thought:
     menu:
-        favorite_thoughts: Favorite Thoughts
+        favorite_thoughts: Mes citations favorites
     not_found: Quote not exist.
     property:
         content:     Citation
@@ -143,7 +143,7 @@ thought:
         like:        J'aime
         liked:       Aimé
         hoverable:   survolez pour voir plus d'infos
-    search: Recherche I'Auter
+    search: Recherche seulement sur mes citations
 
     filter:
         content:
@@ -267,7 +267,7 @@ thought:
         successfully_removed:   Topic successfully removed
         search_form:
           labels:
-            name: Recherches dans les titres de chaines seulement.
+            name: Recherches dans les titres de chaines seulement. "Cliquer sur le sujet afin de voir ses chaines détaillées."
 
 navbar:
     brand:        Les fils de la pensée
@@ -351,3 +351,4 @@ modal:
         header: Pas trouvé? Vous pouvez vous inscrire pour l'y mettre.
     buttons:
         close: Fermer
+        search: Chercher
