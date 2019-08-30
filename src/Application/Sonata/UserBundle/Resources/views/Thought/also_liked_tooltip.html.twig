@@ -2,8 +2,10 @@
     <div>
         <strong>Like</strong><br>
         {% for user in thought.likes %}
-            {% if user.user.id != app.user.id %}
-                {{ user.user.firstname }} {{ user.user.lastname }}<br>
+            {% if user.user %}
+                {% if user.user.id != app.user.id %}
+                    {{ user.user.firstname }} {{ user.user.lastname }}<br>
+                {% endif %}
             {% endif %}
         {% endfor %}
     </div>
