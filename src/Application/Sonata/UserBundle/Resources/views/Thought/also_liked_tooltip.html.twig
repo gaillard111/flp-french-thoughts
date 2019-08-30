@@ -6,6 +6,8 @@
                 {% if user.user.id != app.user.id %}
                     {{ user.user.firstname }} {{ user.user.lastname }}<br>
                 {% endif %}
+            {% else %}
+                Unknown user<br>
             {% endif %}
         {% endfor %}
     </div>

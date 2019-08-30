@@ -197,7 +197,7 @@ th {
 }
 .modal{
     border-radius: 3px;
-    width: 30%;
+    width: 90%;
     margin: 0 auto;
     background-color: #fff;
     top: 10%;
@@ -250,6 +250,18 @@ a.underline:hover{
     padding-left: 25px !important;
 }
 
+@media (min-width: 768px) {
+    .modal {
+        width: 90%;
+    }
+}
+
+@media (min-width: 970px) {
+    .modal {
+        width: 60%;
+    }
+}
+
 @media (min-width: 1200px) {
     .with_sort_label{
         width: 13%;
@@ -263,6 +275,9 @@ a.underline:hover{
     .filter_block .checkbox{
         padding-right: 0;
         text-align: right;
+    }
+    .modal {
+        width: 30%;
     }
 }
 .form-error{
