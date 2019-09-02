@@ -26,7 +26,7 @@ class Like
      * @var Thought
      *
      * @ORM\ManyToOne(targetEntity="ThoughtBundle\Entity\Thought", inversedBy="likes")
-     * @ORM\JoinColumn(name="thought_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="thought_id", referencedColumnName="id", onDelete="cascade")
      */
     private $thought;
 
