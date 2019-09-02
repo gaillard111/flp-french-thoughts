@@ -33,6 +33,7 @@ class WatchedThought
      * @var Thought
      *
      * @ORM\ManyToOne(targetEntity="ThoughtBundle\Entity\Thought", inversedBy="watchedThoughts")
+     * @ORM\JoinColumn(name="thought_id", referencedColumnName="id", onDelete="cascade")
      */
     private $thought;
 
