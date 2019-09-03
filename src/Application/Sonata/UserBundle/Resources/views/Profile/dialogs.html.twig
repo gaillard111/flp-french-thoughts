@@ -36,7 +36,7 @@
                                             </p>
                                         </div>
                                         <div class="col-sm-2">
-                                            <a href="{{ path('dialog', { 'dialogId': dialog.id }) }}" class="btn btn-info pull-right reply-button">
+                                            <a href="{{ path('dialog', { 'dialogId': dialog.id }) }}" data-url="{{ url('dialog', { 'dialogId': dialog.id }) }}" class="btn btn-info pull-right reply-button">
                                                 {{ 'user.dialogs.reply'|trans }}
                                             </a>
                                         </div>
@@ -53,8 +53,11 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $(".reply-button").click(function () {
+        $(".reply-button").click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
             $(this).closest(".new-message").removeClass("new-message");
+            window.location.href = $(this).data('url');
         });
     </script>
 {% endblock %}
