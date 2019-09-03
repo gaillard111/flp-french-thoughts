@@ -11,7 +11,7 @@
                 {% for dialog in dialogs %}
                     <div class="row">
                         <div class="col-sm-8">
-                            <div class="message_preview {% if dialog.messages.last.sender != app.user %}{% if not dialog.messages.last.isViewed %}new-message{% endif %}{% endif %}">
+                            <div class="message_preview" data-check="{% if dialog.messages.last.sender != app.user %}{% if not dialog.messages.last.isViewed %}new{% endif %}{% endif %}">
                                 <div class="media-body">
                                     <div class="row">
                                         <div class="col-sm-10">
@@ -53,6 +53,12 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+        $().ready(function () {
+            let $message = $(".message_preview");
+            if ($message.data('check') === 'new') {
+                $message.addClass('new-message');
+            }
+        });
         $(".reply-button").click(function (e) {
             e.preventDefault();
             e.stopPropagation();
