@@ -83,6 +83,10 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
             /** @var Dialog $dialog */
             $lastMessages[$key] = $this->getDoctrine()->getRepository(Message::class)->getLastMessageFromDialog($dialog->getId());
         }
+
+        if (!isset($lastMessages)) {
+            $lastMessages = [];
+        }
         return $this->render('@ApplicationSonataUser/Profile/dialogs.html.twig', [
             'dialogs'      => $dialogs,
             'lastMessages' => $lastMessages
