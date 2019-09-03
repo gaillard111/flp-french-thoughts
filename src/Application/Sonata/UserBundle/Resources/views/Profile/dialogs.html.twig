@@ -9,9 +9,10 @@
         <div class="col-sm-12">
             <div class="media">
                 {% for dialog in dialogs %}
+
                     <div class="row">
                         <div class="col-sm-8">
-                            <div class="message_preview">
+                            <div class="message_preview {% if not dialog.messages.last.isViewed %}new-message{% endif %}">
                                 <div class="media-body">
                                     <div class="row">
                                         <div class="col-sm-10">
