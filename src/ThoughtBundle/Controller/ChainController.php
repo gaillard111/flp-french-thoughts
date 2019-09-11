@@ -34,6 +34,12 @@ class ChainController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $chain = $em->getRepository('ThoughtBundle:Chain')->find($chainId);
+
+        if (!$chain) {
+            $this->get('translator')->trans('thought.chain.not_exist');
+            return $this->redirect($this->generateUrl('thought_homepage_index'));
+        }
+
         /** @var ThoughtChain[] $chainThoughts */
         $chainThoughts = $chain->getChainThoughts();
 
@@ -51,10 +57,6 @@ class ChainController extends Controller
         }
 
 
-        if (!$chain) {
-            $this->get('translator')->trans('thought.chain.not_exist');
-            return $this->redirect($this->generateUrl('thought_homepage_index'));
-        }
 
         if ($this->getUser()) {
             if ($chain->getIsPrivate() && $this->getUser()->getId() != $chain->getUser()->getId()) {

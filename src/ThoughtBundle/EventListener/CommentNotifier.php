@@ -57,10 +57,12 @@ class CommentNotifier
 
     public function postPersist(LifecycleEventArgs $args)
     {
-        /** @var Comment|mixed $comment */
+        /** @var Comment $comment */
 
         $comment = $args->getObject();
+
         if ($comment instanceof Comment) {
+
             $em = $args->getObjectManager();
             /** @var User|mixed $commentUser */
             $commentUser = $em->getRepository(User::class)->findOneBy([
@@ -79,7 +81,7 @@ class CommentNotifier
                 $comments[$key] = $comment->getEmail();
             }
             $emails = array_unique($comments->toArray());
-
+//            dump($emails, $comment); die;
             foreach ($emails as $email) {
 //            dump(1, $email, $comment->getEmail());
                 if ($email != $comment->getEmail()) {
@@ -97,17 +99,17 @@ class CommentNotifier
             foreach ($likes as $like) {
 //                dump($comment); die;
 //            dump(2, $like->getUser()->getEmail(), $comment->getEmail());
-                if ($like->getUser()->getEmail() != $comment->getEmail()) {
+                if (($like->getUser() != null) && ($comment != null)) {
+                    if ($like->getUser()->getEmail() != $comment->getEmail()) {
 
-                    $body = $this->getTwig()->render('@Thought/Notifications/commentedThoughtYouLikeMail.html.twig', [
-                        'user'      => $like->getUser(),
-                        'thought'   => $like->getThought()
-                    ]);
+                        $body = $this->getTwig()->render('@Thought/Notifications/commentedThoughtYouLikeMail.html.twig', [
+                            'user'      => $like->getUser(),
+                            'thought'   => $like->getThought()
+                        ]);
 
-                    $this->mailService->sendMail('Les fils de la pensée Notification', $like->getUser()->getEmail(), $body);
+                        $this->mailService->sendMail('Les fils de la pensée Notification', $like->getUser()->getEmail(), $body);
+                    }
                 }
-
-
             }
 
 //        dump(3, $thoughtOwner->getEmail(), $comment->getEmail());
