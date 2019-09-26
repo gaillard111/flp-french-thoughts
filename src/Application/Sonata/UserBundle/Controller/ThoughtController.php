@@ -46,59 +46,13 @@ class ThoughtController extends Controller
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\Query\QueryException
      */
-    public function menuAction($routeName)
+    public function menuAction($routeName, $mobile = false)
     {
-        $menu = [];
-
-        $menu[] = [
-            'label' => $this->get('translator')->trans('navbar.profile'),
-            'route' => 'fos_user_profile_edit',
-        ];
-
-        $menu[] = [
-            'label' => $this->get('translator')->trans('user.form.profile.profile_edit'),
-            'route' => 'thought_profile',
-            'parameters' => [
-                'userId' => $this->getUser()->getId(),
-            ]
-        ];
-        $menu[] = [
-            'label' => $this->get('translator')->trans('user.friendship.title'),
-            'route' => 'friends',
-        ];
+        $menuService = $this->get('thought.menu');
+        $menu = $menuService->makeMenu($this->getUser());
 
         /** @var User $user */
         $user = $this->getUser();
-
-        $menu[] = [
-            'label' => $this->get('translator')->trans('user.dialogs.title'),
-            'route' => 'dialog_list',
-        ];
-
-        $menu[] = [
-            'label' => $this->get('translator')->trans('user.thought.create_page.title'),
-            'route' => 'sonata_user_thought_create',
-        ];
-
-        $menu[] = [
-            'label' => $this->get('translator')->trans('user.thought.list_page.title'),
-            'route' => 'sonata_user_thoughts',
-        ];
-
-        $menu[] = [
-            'label' => $this->get('translator')->trans('thought.menu.favorite_thoughts'),
-            'route' => 'favorite-quotes',
-        ];
-
-        $menu[] = [
-            'label' => $this->get('translator')->trans('user.topic.list_page.title'),
-            'route' => 'sonata_user_topics',
-        ];
-
-        $menu[] = [
-            'label' => $this->get('translator')->trans('user.chain.list_page.title'),
-            'route' => 'sonata_user_chains',
-        ];
 
         $thoughts = $this->container
             ->get('thought.model.thought_model')->getCountUserThoughts($this->getUser());
@@ -108,15 +62,26 @@ class ThoughtController extends Controller
 
         $count          = $this->getDoctrine()->getRepository(Message::class)->getCountNewMessages($user);
         $countTopics    = $this->getDoctrine()->getRepository(Topic::class)->getCountUserTopics($user);
+        if (!$mobile) {
+            return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
+                'menu'             => $menu,
+                'routeName'        => $routeName,
+                'thoughts'         => $thoughts,
+                'newMessagesCount' => $count,
+                'countTopics'      => $countTopics,
+                'userProfileId'    => $requestStack->getMasterRequest()->get('userId')
+            ]);
+        } else {
+            return $this->render('@ApplicationSonataUser/Profile/mobile_menu.html.twig', [
+                'menu'             => $menu,
+                'routeName'        => $routeName,
+                'thoughts'         => $thoughts,
+                'newMessagesCount' => $count,
+                'countTopics'      => $countTopics,
+                'userProfileId'    => $requestStack->getMasterRequest()->get('userId')
+            ]);
+        }
 
-        return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
-            'menu'             => $menu,
-            'routeName'        => $routeName,
-            'thoughts'         => $thoughts,
-            'newMessagesCount' => $count,
-            'countTopics'      => $countTopics,
-            'userProfileId'    => $requestStack->getMasterRequest()->get('userId')
-        ]);
     }
 
     /**

@@ -1,0 +1,48 @@
+<li>
+    {% for item in menu %}
+        <a
+        {% if item.parameters is defined %}
+         href="{{ path(item.route, item.parameters) }}
+        {% else %}
+         href="{{ path(item.route) }}
+        {% endif %}
+        "
+                {% if item.parameters['topicId'] is defined %}
+                    title="{{ item.label }}"
+                {% endif %}
+                {% if item.route == 'favorite-quotes' %}
+                    title="{{ item.label }}"
+                {% endif %}
+        >{{ item.label|striptags|truncate(20) }}
+            {% if item.route == 'sonata_user_thoughts' %}
+                ({{ thoughts }})
+            {% endif %}
+            {% if item.route == 'friend_requests' %}
+                ({{ requestsCount }})
+            {% endif %}
+            {% if item.route == 'dialog_list' and newMessagesCount[1] != 0 %}
+                <span id="messages-counter">(+{{ newMessagesCount[1] }})</span>
+            {% endif %}
+            {% if item.route == 'sonata_user_topics' %}
+                ({{ countTopics[1] }})
+            {% endif %}
+        </a>
+    {% endfor %}
+</li>
+
+<script>
+    $(document).ready(function () {
+        // $(window).focus(function () {
+        setInterval(function () {
+            $.ajax({
+                url:        "{{ path('ajax_counter') }}",
+                method:     "POST",
+                success:    function (data) {
+                    console.log(data);
+                    $("#messages-counter").html('(+' + data['count'][1] + ')');
+                }
+            });
+        }, 30000);
+        // });
+    });
+</script>
