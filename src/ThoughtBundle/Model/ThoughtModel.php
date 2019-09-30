@@ -706,8 +706,9 @@ class ThoughtModel
             $cloudContent = [];
 
             if ($thoughts->getTotalHits() > 0) {
+
                 /** @var Thought $thought */
-                foreach ($thoughts->getResults(0, $thoughts->getTotalHits())->toArray() as $thought) {
+                foreach ($thoughts->getResults(0, $thoughts->getTotalHits()) as $thought) {
 
                     $tags = explode(',', $thought->getTags());
                     $words = explode(' ', $thought->getContent());
