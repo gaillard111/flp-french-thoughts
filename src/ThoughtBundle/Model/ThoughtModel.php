@@ -706,13 +706,15 @@ class ThoughtModel
             $cloudContent = [];
 
             if ($thoughts->getTotalHits() > 0) {
-
                 /** @var Thought $thought */
-                foreach ($thoughts->getResults(0, $thoughts->getTotalHits()) as $thought) {
-
+                if ($thoughts->getTotalHits() > 5000) {
+                    $offset = 5000;
+                } else {
+                    $offset = $thoughts->getTotalHits();
+                }
+                foreach ($thoughts->getResults(0, $offset)->toArray() as $thought) {
                     $tags = explode(',', $thought->getTags());
                     $words = explode(' ', $thought->getContent());
-
                     if (count($words) <= 80) {
                         foreach ($words as $word) {
 
