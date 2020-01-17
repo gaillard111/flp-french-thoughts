@@ -114,62 +114,25 @@ class ThoughtModel
      */
     public function getThoughtsFromElastic($request, TransformedFinder $finder, TransformedFinder $authorsFinder)
     {
-//        dump($request); die;
-        $fields = array(
+        $fields = [
             'tags',
             'author',
             'content',
             'category',
             'thoughtInfo',
-        );
+        ];
 
-        if (isset($request['field']) and  count($request['field']) > 0) {
+        if (isset($request['field']) && count($request['field']) > 0) {
             $fields = array_keys($request['field']);
         }
 
         $isAuthor = false;
-        $terms = array();
+        $terms = [];
 
         if (isset($request['author']) and count($request['author']) > 0) {
-            foreach ($request['author'] as $key => $val) {
-                if ($val) {
-
-                    $isAuthor = true;
-
-                    $val = trim($val);
-
-                    $countQuote = explode('"', $val);
-
-                    if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
-                        $val = $countQuote[1];
-
-                        $terms[] = array(
-                            'query' => array(
-                                'term' => array(
-                                    $key . '_exact' => $val,
-                                )
-                            )
-                        );
-
-                    } else {
-                        $terms[] = array(
-                            'query' => array(
-                                'multi_match' => array(
-                                    'query'                => $val,
-                                    'fields'               => array(
-                                        $key
-                                    ),
-                                    'minimum_should_match' => '100%',
-                                    'type'                 => 'cross_fields',
-                                    'operator'             => 'and',
-                                    'tie_breaker'          => '1.0',
-                                    'analyzer'             => 'standard',
-                                ),
-                            )
-                        );
-                    }
-                }
-            }
+            $authorsData = $this->getAuthors($request['author'], $isAuthor);
+            $terms = array_merge($terms, $authorsData['terms']);
+            $isAuthor = $authorsData['isAuthor'];
         }
 
         $names = [];
@@ -185,53 +148,26 @@ class ThoughtModel
 
 
 
-        if (isset($request['term']) and count($request['term']) > 0) {
-
-            $terms = array();
-
-            foreach ($request['term'] as $key => $val) {
-                if ($val) {
-                    $val = trim($val);
-
-                    $countQuote = explode('"', $val);
-
-                    if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
-                        $terms[] = array(
-                            'query' => array(
-                                'match_phrase' => array(
-                                    $key . '_phrase' => $val,
-                                )
-                            )
-                        );
-                    } else {
-                        $terms[] = array(
-                            'query' => array(
-                                'match' => array(
-                                    $key . '_phrase' => $val,
-                                )
-                            )
-                        );
-                    }
-                }
-            }
+        if (isset($request['term']) && count($request['term']) > 0) {
+            $terms = array_merge($terms, $this->getTerms($request['term']));
         }
 
         if ($isAuthor) {
-            $terms[] = array(
-                'terms' => array(
+            $terms[] = [
+                'terms' => [
                     'author_exact' => $names,
-                )
-            );
+                ]
+            ];
         }
 
-        $sort = array(
+        $sort = [
             'amount' => 'asc'
-        );
+        ];
 
         if (isset($request['sorting']) && $request['sorting']) {
-            $sort = array(
+            $sort = [
                 $request['sorting'] => (isset($request['sorting_desc']) ? 'desc' : 'asc'),
-            );
+            ];
         }
 
         $strict = (isset($request['strict']) && $request['strict']) ? true : false;
@@ -255,14 +191,12 @@ class ThoughtModel
         if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
             $query = $this->searchQuoteString($countQuote[1], $fields, $minWords, $maxWords, $sort, $terms);
 
-            $thoughts = $finder->createPaginatorAdapter($query);
-
-            return $thoughts;
+            return $finder->createPaginatorAdapter($query);
         }
 
         $arrWords = explode(' ', $words);
 
-        $wordExceptions = array();
+        $wordExceptions = [];
 
         foreach ($arrWords as $keyArrWords => $valueArrWords) {
             if (!empty($valueArrWords)) {
@@ -277,7 +211,10 @@ class ThoughtModel
 
         $filterException = $this->compileExceptions($fields, $wordExceptions);
 
-        if ($words) {
+        if (!$words) {
+            $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms);
+        } else {
+
             if ($strict) {
                 $query = $this->searchExactly($words, $fields, $minWords, $maxWords, $sort);
             } else {
@@ -289,13 +226,11 @@ class ThoughtModel
                     $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
                 }
             }
-        } else {
-            $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms);
+
+
         }
 
-        $thoughts = $finder->createPaginatorAdapter($query);
-
-        return $thoughts;
+        return $finder->createPaginatorAdapter($query);
     }
 
     /**
@@ -420,69 +355,70 @@ class ThoughtModel
 
         foreach ($fields as $field) {
 
-            $arrFields[] = array(
-                'bool' => array(
-                    'must' => array(
-                        'term' => array(
+            $arrFields[] = [
+                'bool' => [
+                    'must' => [
+                        'term' => [
                             ($field . '_exact') => $words,
-                        ),
-                    ),
-                ),
-            );
+                        ],
+                    ],
+                ],
+            ];
         }
 
-        $arr = array(
-            'filter' => array(
-                'bool' => array(
+        $arr = [
+            'filter' => [
+                'bool' => [
                     'should' => $arrFields,
-                    'must' => array(
-                        'range' => array(
-                            'amount' => array(
+                    'must' => [
+                        'range' => [
+                            'amount' => [
                                 'gte' => $minWords,
                                 'lte' => $maxWords,
-                            ),
-                        ),
-                    ),
-                ),
-            ),
+                            ],
+                        ],
+                    ],
+                ],
+            ],
             'sort' => $sort,
-        );
+        ];
 
         return $query->setParams($arr);
     }
 
     /**
-     * @param string $words
-     * @param array  $fields
-     * @param int    $minWords
-     * @param int    $maxWords
-     * @param array  $sort
-     * @param array  $filterException
-     * @return $this
+     * @param $words
+     * @param $fields
+     * @param $minWords
+     * @param $maxWords
+     * @param $sort
+     * @param $filterException
+     * @param $terms
+     * @return Query
      */
     public function searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms)
     {
         $query = new \Elastica\Query();
 
-        $must = array(
-            array(
-                'range' => array(
-                    'amount' => array(
+        $must = [
+            [
+                'range' => [
+                    'amount' => [
                         'gte' => $minWords,
                         'lte' => $maxWords,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         if (!empty($terms)) {
             $must[] = $terms;
         }
 
-        $query->setParams(
-            array(
-                'query' => array(
-                    'multi_match' => array(
+        return $query->setParams(
+            [
+                'query' => [
+                    'multi_match' => [
                         'query'                => $words,
                         'fields'               => $fields,
                         'minimum_should_match' => '100%',
@@ -490,19 +426,17 @@ class ThoughtModel
                         'operator'             => 'and',
                         'tie_breaker'          => '1.0',
                         'analyzer'             => 'standard',
-                    ),
-                ),
-                'filter' => array(
-                    'bool' => array(
+                    ],
+                ],
+                'filter' => [
+                    'bool' => [
                         'must_not' => $filterException,
                         'must' => $must
-                    ),
-                ),
+                    ],
+                ],
                 'sort' => $sort,
-            )
+            ]
         );
-
-        return $query;
     }
 
     /**
@@ -516,16 +450,16 @@ class ThoughtModel
      */
     public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms)
     {
-        $must = array(
-            array(
-                'range' => array(
-                    'amount' => array(
+        $must = [
+            [
+                'range' => [
+                    'amount' => [
                         'gte' => $minWords,
                         'lte' => $maxWords,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         if (!empty($terms)) {
             $must[] = $terms;
@@ -533,23 +467,23 @@ class ThoughtModel
 
         $query = new \Elastica\Query();
         $query->setParams(
-            array(
-                'query' => array(
-                    'multi_match' => array(
+            [
+                'query' => [
+                    'multi_match' => [
                         'query'                => $words,
                         'fields'               => $fields,
                         'operator'             => 'and',
                         'minimum_should_match' => '100%',
-                    ),
-                ),
-                'filter' => array(
-                    'bool' => array(
+                    ],
+                ],
+                'filter' => [
+                    'bool' => [
                         'must_not' => $filterException,
                         'must' => $must,
-                    ),
-                ),
+                    ],
+                ],
                 "sort" => $sort
-            )
+            ]
         );
 
         return $query;
@@ -564,16 +498,16 @@ class ThoughtModel
      */
     public function searchDefault($minWords, $maxWords, $sort, $filterException, $terms)
     {
-        $must = array(
-            array(
-                'range' => array(
-                    'amount' => array(
+        $must = [
+            [
+                'range' => [
+                    'amount' => [
                         'gte' => $minWords,
                         'lte' => $maxWords,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         if (!empty($terms)) {
             $must[] = $terms;
@@ -582,15 +516,15 @@ class ThoughtModel
         $query = new \Elastica\Query();
 
         $query->setRawQuery(
-            array(
-                'filter' => array(
-                    'bool' => array(
+            [
+                'filter' => [
+                    'bool' => [
                         'must_not' => $filterException,
                         'must' => $must
-                    ),
-                ),
+                    ],
+                ],
                 'sort' => $sort,
-            )
+            ]
         );
 
         return $query;
@@ -608,16 +542,16 @@ class ThoughtModel
     {
         $query = new \Elastica\Query();
 
-        $must = array(
-            array(
-                'range' => array(
-                    'amount' => array(
+        $must = [
+            [
+                'range' => [
+                    'amount' => [
                         'gte' => $minWords,
                         'lte' => $maxWords,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         if (!empty($terms)) {
             $must[] = $terms;
@@ -631,51 +565,55 @@ class ThoughtModel
             }
 
             $query->setParams(
-                array(
-                    'query' => array(
-                        'multi_match' => array(
+                [
+                    'query' => [
+                        'multi_match' => [
                             'query'                => $string,
                             'fields'               => $phraseFields,
                             'operator'             => 'and',
                             'minimum_should_match' => '100%',
                             'type'                 => 'phrase',
-                        ),
-                    ),
-                    'filter' => array(
-                        'bool' => array(
+                        ],
+                    ],
+                    'filter' => [
+                        'bool' => [
                             'must' => $must
-                        ),
-                    ),
+                        ],
+                    ],
                     'sort' => $sort,
-                )
+                ]
             );
 
             return $query;
         }
 
-        $arrFields = array();
+        $arrFields = [];
 
         foreach ($fields as $field) {
-            $arrFields[] = array(
-                'prefix' => array(
+            $arrFields[] = [
+                'prefix' => [
                     ($field . '_phrase') => $string,
-                ),
-            );
+                ],
+            ];
         }
 
-        $arr = array(
-            'filter' => array(
-                'bool' => array(
+        $arr = [
+            'filter' => [
+                'bool' => [
                     'should' => $arrFields,
                     'must' => $must
-                ),
-            ),
+                ],
+            ],
             'sort' => $sort,
-        );
+        ];
 
         return $query->setParams($arr);
     }
 
+    /**
+     * @param $limit
+     * @return mixed
+     */
     public function getLastThoughts($limit) {
         return $this->repository->getLastThoughts($limit);
     }
@@ -688,8 +626,6 @@ class ThoughtModel
      */
     public function getCloud($fields, $thoughts, $words) {
         $cloud = $cloudStyle = [];
-
-
 
         $avoidWords = [
             'alors', 'aussi', 'celui', 'celle', 'cette',
@@ -787,6 +723,97 @@ class ThoughtModel
     }
 
     /**
+     * @param $requestAuthor array
+     * @return array
+     */
+    private function getAuthors($requestAuthor, $isAuthor)
+    {
+        $terms = [];
+
+        foreach ($requestAuthor as $key => $val) {
+            if ($val) {
+
+                $isAuthor = true;
+
+                $val = trim($val);
+
+                $countQuote = explode('"', $val);
+
+                if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
+                    $val = $countQuote[1];
+
+                    $terms[] = [
+                        'query' => [
+                            'term' => [
+                                $key . '_exact' => $val,
+                            ]
+                        ]
+                    ];
+
+                } else {
+                    $terms[] = [
+                        'query' => [
+                            'multi_match' => [
+                                'query'                => $val,
+                                'fields'               => [
+                                    $key
+                                ],
+                                'minimum_should_match' => '100%',
+                                'type'                 => 'cross_fields',
+                                'operator'             => 'and',
+                                'tie_breaker'          => '1.0',
+                                'analyzer'             => 'standard',
+                            ],
+                        ]
+                    ];
+                }
+            }
+        }
+
+        return [
+            'terms' => $terms,
+            'isAuthor' => $isAuthor
+        ];
+    }
+
+    /**
+     * @param $requestTerms array
+     * @return array
+     */
+    private function getTerms($requestTerms)
+    {
+        $terms = [];
+
+        foreach ($requestTerms as $key => $val) {
+            if ($val) {
+                $val = trim($val);
+
+                $countQuote = explode('"', $val);
+
+                if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
+                    $terms[] = [
+                        'query' => [
+                            'match_phrase' => [
+                                $key . '_phrase' => $val,
+                            ]
+                        ]
+                    ];
+                } else {
+                    $terms[] = [
+                        'query' => [
+                            'match' => [
+                                $key . '_phrase' => $val,
+                            ]
+                        ]
+                    ];
+                }
+            }
+        }
+
+        return $terms;
+    }
+
+    /**
      * return value of font-size depends on popularity
      *
      * @param $val
@@ -828,18 +855,18 @@ class ThoughtModel
      */
     private function compileExceptions($fields, $words)
     {
-        $result = array();
+        $result = [];
 
         if (count($words)) {
             foreach ($fields as $field) {
-                $arrWords = array();
+                $arrWords = [];
 
                 foreach ($words as $word) {
-                    $arrWords[] = array(
-                        'term' => array(
+                    $arrWords[] = [
+                        'term' => [
                             $field => $word,
-                        ),
-                    );
+                        ],
+                    ];
                 }
 
                 $result[] = $arrWords;
@@ -912,20 +939,30 @@ class ThoughtModel
 
         $must = array();
 
+//        dump($terms);die;
+
         if (!empty($terms)) {
             $must[] = $terms;
         }
 
         $query->setRawQuery(
-            array(
-                'filter' => array(
-                    'bool' => array(
-                        'must' => $must
-                    ),
-                ),
-            )
+            [
+                'filter' => [
+                    'bool' => [
+                        'must' => array_merge($must, [
+                            [
+                                'regexp' => [
+                                    'birthDate' => [
+                                        'value' => '6.*5'
+                                    ]
+                                ]
+                            ]
+                        ]),
+                    ],
+                ],
+            ]
         );
-
+//        dump($query);die;
         $authors = $finder->find($query, 100000);
 
         $names = [];

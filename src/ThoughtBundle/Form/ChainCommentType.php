@@ -19,18 +19,18 @@ class ChainCommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('text', 'textarea', array(
-                'attr' => array(
+            ->add('text', 'textarea', [
+                'attr' => [
                     'class' => 'form-control',
                     'row'   => '3',
-                ),
+                ],
                 'label' => 'thought.chain.comment.property.text.label',
-                'constraints' => array(
-                    new NotBlank(array(
+                'constraints' => [
+                    new NotBlank([
                         'message' => 'thought.chain.comment.property.text.not_blank',
-                    )),
-                ),
-            ))
+                    ]),
+                ],
+            ])
         ;
     }
 
@@ -39,9 +39,9 @@ class ChainCommentType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'ThoughtBundle\Entity\ChainComment',
-        ));
+        ]);
     }
 
     /**

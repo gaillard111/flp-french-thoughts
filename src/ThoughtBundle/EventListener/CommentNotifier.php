@@ -11,6 +11,7 @@ namespace ThoughtBundle\EventListener;
 
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -74,16 +75,12 @@ class CommentNotifier
             $likes = $thought->getLikes();
             $comments = $thought->getComments();
 
-//        $this->stopwatch->start('mailing');
-
             foreach ($comments as $key => $comment) {
 
                 $comments[$key] = $comment->getEmail();
             }
             $emails = array_unique($comments->toArray());
-//            dump($emails, $comment); die;
             foreach ($emails as $email) {
-//            dump(1, $email, $comment->getEmail());
                 if ($email != $comment->getEmail()) {
                     $body = $this->getTwig()->render('@Thought/Notifications/alsoCommentedMail.html.twig', [
                         'user'      => $commentUser,
@@ -97,8 +94,6 @@ class CommentNotifier
 
 
             foreach ($likes as $like) {
-//                dump($comment); die;
-//            dump(2, $like->getUser()->getEmail(), $comment->getEmail());
                 if (($like->getUser() != null) && ($comment != null)) {
                     if ($like->getUser()->getEmail() != $comment->getEmail()) {
 
@@ -112,7 +107,6 @@ class CommentNotifier
                 }
             }
 
-//        dump(3, $thoughtOwner->getEmail(), $comment->getEmail());
             if ($thoughtOwner && ($thoughtOwner->getEmail() != $comment->getEmail())) {
 
                 $body = $this->getTwig()->render('@Thought/Notifications/commentedYourThoughtMail.html.twig', [
@@ -127,6 +121,7 @@ class CommentNotifier
 
     /**
      * @return Twig_Environment
+     * @throws Exception
      */
     private function getTwig()
     {

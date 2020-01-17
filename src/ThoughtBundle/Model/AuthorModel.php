@@ -3,8 +3,11 @@
 namespace ThoughtBundle\Model;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Elastica\Query;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
+use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
+use FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
@@ -24,7 +27,7 @@ class AuthorModel
     protected $container;
 
     /**
-     * @var \Doctrine\ORM\EntityRepository
+     * @var EntityRepository
      */
     protected $repository;
 
@@ -55,14 +58,13 @@ class AuthorModel
     }
 
     /**
-     * @param string            $nameStartsWith
+     * @param string $nameStartsWith
      * @param TransformedFinder $finder
+     * @return PaginatorAdapterInterface|TransformedPaginatorAdapter
      */
     public function getAuthorsByStringStartElastic($nameStartsWith, TransformedFinder $finder)
     {
-        $result = $finder->createPaginatorAdapter($this->searchDefault($nameStartsWith));
-
-        return $result;
+        return $finder->createPaginatorAdapter($this->searchDefault($nameStartsWith));
     }
 
     /**
@@ -81,34 +83,34 @@ class AuthorModel
      */
     public function searchDefault($nameStartsWith)
     {
-        $query = new \Elastica\Query();
+        $query = new Query();
 
-        $terms[] = array(
-            'query' => array(
-                'match_phrase_prefix' => array(
-                    'name_prefix' => array(
+        $terms[] = [
+            'query' => [
+                'match_phrase_prefix' => [
+                    'name_prefix' => [
                         'query' => $nameStartsWith,
                         "max_expansions" => 10000
-                    )
-                ),
-            )
-        );
+                    ]
+                ],
+            ]
+        ];
 
         $must[] = $terms;
 
-        $query = new \Elastica\Query();
+        $query = new Query();
 
         $query->setRawQuery(
-            array(
-                'filter' => array(
-                    'bool' => array(
+            [
+                'filter' => [
+                    'bool' => [
                         'must' => $must
-                    ),
-                ),
-                'sort' => array(
+                    ],
+                ],
+                'sort' => [
                     'name_prefix' => 'asc'
-                ),
-            )
+                ],
+            ]
         );
 
         return $query;

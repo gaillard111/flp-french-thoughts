@@ -65,7 +65,7 @@ class HomepageController extends Controller
         $default = $request->query->get('default');
 
         $paginator  = $this->get('knp_paginator');
-
+//        dump($search);die;
         if ($search || $default) {
             /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $modelThought->getThoughtsFromElastic($search, $finder, $authorsFinder);

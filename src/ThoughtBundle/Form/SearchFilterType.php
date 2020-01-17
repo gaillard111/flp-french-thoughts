@@ -11,21 +11,21 @@ class SearchFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('words', 'text', array(
+            ->add('words', 'text', [
                 'mapped' => false,
-            ))
-            ->add('fields', 'choice', array(
+            ])
+            ->add('fields', 'choice', [
                 'mapped' => false,
                 'expanded' => true,
                 'multiple' => true,
-                'choices' => array(
+                'choices' => [
                     'content'     => 'content',
                     'category'    => 'category',
                     'tags'        => 'tags',
                     'author'      => 'author',
                     'thoughtInfo' => 'thoughtInfo',
-                ),
-            ))
+                ],
+            ])
         ;
     }
 

@@ -2,7 +2,10 @@
 
 namespace ThoughtBundle\Parser;
 
+use Exception;
+use PHPExcel_Exception;
 use PHPExcel_IOFactory;
+use PHPExcel_Reader_Exception;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use ThoughtBundle\Entity\Author;
@@ -30,12 +33,13 @@ class Service
     /**
      * @param UploadedFile $file
      * @return int
+     * @throws Exception
      */
     public function parseFile(UploadedFile $file)
     {
         $filePath = $file->getPathname();
 
-        $data = array();
+        $data = [];
 
         $content = file_get_contents($filePath);
 
@@ -48,11 +52,7 @@ class Service
         $quotes = explode(html_entity_decode('&laquo;'), htmlspecialchars($content));
 
         foreach ($quotes as $key => $quote) {
-            $quoteCategory = '';
-            $quoteAuthor = '';
-            $quoteInfo = '';
-            $quoteTags = '';
-            $parseString = '';
+            $quoteCategory = $quoteAuthor = $quoteInfo = $quoteTags = $parseString = '';
 
             $quoteParts = explode(html_entity_decode('&raquo;'), $quote);
 
@@ -109,7 +109,7 @@ class Service
                 }
             }
 
-            $data[] = array(
+            $data[] = [
                 'id'        => $id,
                 'content'   => $quoteContent,
                 'author'    => $quoteAuthor,
@@ -118,7 +118,7 @@ class Service
                 'tags'      => $quoteTags,
                 'string'    => $parseString,
                 'published' => true,
-            );
+            ];
         }
 
         return $this->container->get('thought.model.thought_model')->saveThoughts($data);
@@ -126,7 +126,9 @@ class Service
 
     /**
      * @param UploadedFile $file
-     * @return int
+     * @return void
+     * @throws PHPExcel_Exception
+     * @throws PHPExcel_Reader_Exception
      */
     public function parseAuthorsFile(UploadedFile $file)
     {
