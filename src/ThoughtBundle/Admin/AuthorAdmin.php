@@ -3,14 +3,14 @@
 namespace ThoughtBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
  * Class ThoughtAdmin
+ *
  * @package ThoughtBundle\Admin
  */
 class AuthorAdmin extends Admin
@@ -26,11 +26,11 @@ class AuthorAdmin extends Admin
             ->add('sex')
             ->add('country', 'text', [
                 'label'    => 'Religion-époque',
-                'required' => false
+                'required' => false,
             ])
             ->add('continent', 'text', [
                 'label'    => 'Continent pays',
-                'required' => false
+                'required' => false,
             ])
             ->add('job');
     }
@@ -108,7 +108,7 @@ class AuthorAdmin extends Admin
             'sex',
             'country',
             'continent',
-            'job'
+            'job',
         ];
     }
 }

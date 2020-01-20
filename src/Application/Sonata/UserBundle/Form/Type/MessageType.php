@@ -15,24 +15,24 @@ class MessageType extends AbstractType
     {
         $builder
             ->add('messageText', TextareaType::class, [
-                'attr'      =>  [
-                        'class' =>  'form-control'
+                'attr' => [
+                    'class' => 'form-control',
                 ],
-                'label'     =>  'user.dialogs.message_text',
-                'required'  => false,
+                'label'    => 'user.dialogs.message_text',
+                'required' => false,
             ])
             ->add('submit', SubmitType::class, [
-                'attr'      =>  [
-                        'class' =>  'btn btn-info pull-right'
+                'attr' => [
+                    'class' => 'btn btn-info pull-right',
                 ],
-                'label'     =>  'user.dialogs.message_submit',
+                'label' => 'user.dialogs.message_submit',
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'    => Message::class,
+            'data_class' => Message::class,
         ]);
     }
 

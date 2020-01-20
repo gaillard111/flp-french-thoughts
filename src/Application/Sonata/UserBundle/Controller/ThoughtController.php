@@ -7,6 +7,7 @@ use Application\Sonata\UserBundle\Entity\User;
 use Application\Sonata\UserBundle\Form\Object\SearchObject;
 use Application\Sonata\UserBundle\Form\Type\SortSearchForm;
 use Application\Sonata\UserBundle\Form\Type\ThoughtType;
+use Doctrine\ORM\OptimisticLockException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,10 +21,10 @@ use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\Topic;
 use ThoughtBundle\Model\AuthorModel;
 use ThoughtBundle\Service\Mail;
-use Doctrine\ORM\OptimisticLockException;
 
 /**
  * Class ThoughtController
+ *
  * @package Application\Sonata\UserBundle\Controller
  */
 class ThoughtController extends Controller
@@ -36,20 +37,22 @@ class ThoughtController extends Controller
         $virtualRoot->setChildren($roots);
 
         return $this->render('@Thought/navigate.html.twig', [
-            'root' => $virtualRoot
+            'root' => $virtualRoot,
         ]);
     }
 
     /**
      * @param $routeName
+     *
      * @return Response
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\Query\QueryException
      */
     public function menuAction($routeName, $mobile = false)
     {
         $menuService = $this->get('thought.menu');
-        $menu = $menuService->makeMenu($this->getUser());
+        $menu        = $menuService->makeMenu($this->getUser());
 
         /** @var User $user */
         $user = $this->getUser();
@@ -60,8 +63,8 @@ class ThoughtController extends Controller
         /** @var RequestStack $requestStack */
         $requestStack = $this->get('request_stack');
 
-        $count          = $this->getDoctrine()->getRepository(Message::class)->getCountNewMessages($user);
-        $countTopics    = $this->getDoctrine()->getRepository(Topic::class)->getCountUserTopics($user);
+        $count       = $this->getDoctrine()->getRepository(Message::class)->getCountNewMessages($user);
+        $countTopics = $this->getDoctrine()->getRepository(Topic::class)->getCountUserTopics($user);
         if (!$mobile) {
             return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
                 'menu'             => $menu,
@@ -69,7 +72,7 @@ class ThoughtController extends Controller
                 'thoughts'         => $thoughts,
                 'newMessagesCount' => $count,
                 'countTopics'      => $countTopics,
-                'userProfileId'    => $requestStack->getMasterRequest()->get('userId')
+                'userProfileId'    => $requestStack->getMasterRequest()->get('userId'),
             ]);
         } else {
             return $this->render('@ApplicationSonataUser/Profile/mobile_menu.html.twig', [
@@ -78,29 +81,33 @@ class ThoughtController extends Controller
                 'thoughts'         => $thoughts,
                 'newMessagesCount' => $count,
                 'countTopics'      => $countTopics,
-                'userProfileId'    => $requestStack->getMasterRequest()->get('userId')
+                'userProfileId'    => $requestStack->getMasterRequest()->get('userId'),
             ]);
         }
-
     }
 
     /**
      * @Route("/ajax-counter", name="ajax_counter")
+     *
      * @return JsonResponse
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function ajaxCounter()
     {
         $messages = $this->getDoctrine()->getRepository(Message::class)->getCountNewMessages($this->getUser());
         return new JsonResponse([
-            'count' =>  $messages
+            'count' => $messages,
         ]);
     }
 
     /**
      * @Route("/most-favorite/add/{thoughtId}", name="add_to_most_favorites")
+     *
      * @param int $thoughtId
+     *
      * @return JsonResponse
+     *
      * @throws OptimisticLockException
      */
     public function ajaxAddToMostFavorites($thoughtId)
@@ -124,8 +131,11 @@ class ThoughtController extends Controller
 
     /**
      * @Route("/most-favorite/delete/{thoughtId}", name="delete_from_most_favorites")
+     *
      * @param $thoughtId
+     *
      * @return JsonResponse
+     *
      * @throws OptimisticLockException
      */
     public function ajaxDeleteFromMostFavorites($thoughtId)
@@ -156,7 +166,7 @@ class ThoughtController extends Controller
         $likedThoughts = $this->getDoctrine()->getRepository(Thought::class)->getLikedThoughts($this->getUser());
 
         return $this->render('ApplicationSonataUserBundle:Thought:favorite_list.html.twig', [
-            'thoughts'  => $likedThoughts
+            'thoughts' => $likedThoughts,
         ]);
     }
 
@@ -166,7 +176,7 @@ class ThoughtController extends Controller
     public function exportFavoriteToCsvAction()
     {
         $likedThoughts = $this->getDoctrine()->getRepository(Thought::class)->getLikedThoughts($this->getUser());
-        $response = new StreamedResponse();
+        $response      = new StreamedResponse();
 
         $response->setCallback(function () use ($likedThoughts) {
             $handle = fopen('php://output', 'w+');
@@ -176,7 +186,6 @@ class ThoughtController extends Controller
             /** @var Thought[] $likedThoughts */
             foreach ($likedThoughts as $thought) {
                 fputcsv($handle, [$thought->getContent(), $thought->getAuthor(), $thought->getCategory(), $thought->getCreatedAt()->format('d.m.Y H:i')], ',');
-
             }
 
             fclose($handle);
@@ -190,15 +199,16 @@ class ThoughtController extends Controller
 
     /**
      * @Route("/thoughts", name="sonata_user_thoughts")
+     *
      * @param Request $request
+     *
      * @return Response
      */
     public function listAction(Request $request)
     {
         $searchObject = new SearchObject();
-        $form = $this->createForm(new SortSearchForm(), $searchObject);
+        $form         = $this->createForm(new SortSearchForm(), $searchObject);
         $form->handleRequest($request);
-
 
         $search = '';
         if ($searchObject->getSearchString()) {
@@ -214,27 +224,29 @@ class ThoughtController extends Controller
 //            $thoughts,
 //            $request->query->getInt('page', 1)
 //        );
-        return $this->render('ApplicationSonataUserBundle:Thought:list.html.twig', array(
+        return $this->render('ApplicationSonataUserBundle:Thought:list.html.twig', [
             'thoughts' => $thoughts,
-            'form'     => $form->createView()
-        ));
+            'form'     => $form->createView(),
+        ]);
     }
 
     /**
      * @Route("/thought/create", name="sonata_user_thought_create")
+     *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     *
+     * @return Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     *
      * @throws \Exception
      */
     public function createAction(Request $request)
     {
         $thought = new Thought();
-        $em = $this->getDoctrine()->getManager();
+        $em      = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(new ThoughtType(), $thought);
         $form->handleRequest($request);
         if ($request->getMethod() == 'POST') {
-
             if ($form->isValid()) {
                 /** @var AuthorModel $authorModel */
                 $authorModel = $this->container->get('thought.model.author_model');
@@ -242,7 +254,6 @@ class ThoughtController extends Controller
                 $authorName = $thought->getAuthor();
 
                 if (!$authorModel->findAuthorByName($authorName)) {
-
                     $authorData = $request->get('sonata_user_author_create');
 
                     $author = new Author();
@@ -268,19 +279,20 @@ class ThoughtController extends Controller
                 return $this->redirect($this->generateUrl('sonata_user_thoughts'));
             }
         }
-        return $this->render('ApplicationSonataUserBundle:Thought:create.html.twig', array(
+        return $this->render('ApplicationSonataUserBundle:Thought:create.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Route("/thought/autocomplete/author", name="sonata_user_thought_autocomplete_author")
      *
      * @param Request $request
+     *
      * @return Response
      */
-    public function autocompleteThoughtAuthorAction(Request $request) {
-
+    public function autocompleteThoughtAuthorAction(Request $request)
+    {
         $nameStartsWith = $request->get('nameStartsWith');
 
         /** @var AuthorModel $authorModel */
@@ -288,17 +300,17 @@ class ThoughtController extends Controller
 
         $authors = $authorModel->getAuthorsByStringStart($nameStartsWith);
 
-        $data = array();
+        $data = [];
         /** @var Author $author */
-        foreach($authors as $author){
-            $authorData = array();
+        foreach ($authors as $author) {
+            $authorData = [];
 
-            $authorData["name"]      = $author->getName();
-            $authorData["birthDate"] = $author->getBirthDate();
-            $authorData["sex"]       = $author->getSex();
-            $authorData["country"]   = $author->getCountry();
-            $authorData["continent"] = $author->getContinent();
-            $authorData["job"]       = $author->getJob();
+            $authorData['name']      = $author->getName();
+            $authorData['birthDate'] = $author->getBirthDate();
+            $authorData['sex']       = $author->getSex();
+            $authorData['country']   = $author->getCountry();
+            $authorData['continent'] = $author->getContinent();
+            $authorData['job']       = $author->getJob();
 
             $data[] = $authorData;
         }

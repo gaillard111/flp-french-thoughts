@@ -53,7 +53,7 @@ class ChainComment
     /**
      * Get id
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -64,6 +64,7 @@ class ChainComment
      * Set text
      *
      * @param string $text
+     *
      * @return ChainComment
      */
     public function setText($text)
@@ -76,7 +77,7 @@ class ChainComment
     /**
      * Get text
      *
-     * @return string 
+     * @return string
      */
     public function getText()
     {
@@ -87,6 +88,7 @@ class ChainComment
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return ChainComment
      */
     public function setCreatedAt($createdAt)
@@ -99,7 +101,7 @@ class ChainComment
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -110,6 +112,7 @@ class ChainComment
      * Set chain
      *
      * @param \ThoughtBundle\Entity\Chain $chain
+     *
      * @return ChainComment
      */
     public function setChain(\ThoughtBundle\Entity\Chain $chain = null)
@@ -122,7 +125,7 @@ class ChainComment
     /**
      * Get chain
      *
-     * @return \ThoughtBundle\Entity\Chain 
+     * @return \ThoughtBundle\Entity\Chain
      */
     public function getChain()
     {
@@ -133,6 +136,7 @@ class ChainComment
      * Set user
      *
      * @param \Application\Sonata\UserBundle\Entity\User $user
+     *
      * @return ChainComment
      */
     public function setUser(\Application\Sonata\UserBundle\Entity\User $user = null)
@@ -145,7 +149,7 @@ class ChainComment
     /**
      * Get user
      *
-     * @return \Application\Sonata\UserBundle\Entity\User 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getUser()
     {

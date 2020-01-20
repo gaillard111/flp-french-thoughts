@@ -80,6 +80,7 @@ class Chain
 
     /**
      * @param mixed $topic
+     *
      * @return Chain
      */
     public function setTopic($topic)
@@ -127,19 +128,20 @@ class Chain
     {
         $this->createdAt = new \DateTime();
     }
+
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comments      = new \Doctrine\Common\Collections\ArrayCollection();
         $this->chainThoughts = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -150,6 +152,7 @@ class Chain
      * Set name
      *
      * @param string $name
+     *
      * @return Chain
      */
     public function setName($name)
@@ -162,7 +165,7 @@ class Chain
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -172,7 +175,8 @@ class Chain
     /**
      * Set isPrivate
      *
-     * @param boolean $isPrivate
+     * @param bool $isPrivate
+     *
      * @return Chain
      */
     public function setIsPrivate($isPrivate)
@@ -185,7 +189,7 @@ class Chain
     /**
      * Get isPrivate
      *
-     * @return boolean 
+     * @return bool
      */
     public function getIsPrivate()
     {
@@ -196,6 +200,7 @@ class Chain
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return Chain
      */
     public function setCreatedAt($createdAt)
@@ -208,7 +213,7 @@ class Chain
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -219,6 +224,7 @@ class Chain
      * Set user
      *
      * @param \Application\Sonata\UserBundle\Entity\User $user
+     *
      * @return Chain
      */
     public function setUser(\Application\Sonata\UserBundle\Entity\User $user = null)
@@ -231,7 +237,7 @@ class Chain
     /**
      * Get user
      *
-     * @return \Application\Sonata\UserBundle\Entity\User 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getUser()
     {
@@ -242,6 +248,7 @@ class Chain
      * Add comments
      *
      * @param \ThoughtBundle\Entity\ChainComment $comments
+     *
      * @return Chain
      */
     public function addComment(\ThoughtBundle\Entity\ChainComment $comments)
@@ -264,7 +271,7 @@ class Chain
     /**
      * Get comments
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getComments()
     {
@@ -275,6 +282,7 @@ class Chain
      * Add chainThoughts
      *
      * @param \ThoughtBundle\Entity\ThoughtChain $chainThoughts
+     *
      * @return Chain
      */
     public function addChainThought(\ThoughtBundle\Entity\ThoughtChain $chainThoughts)
@@ -297,7 +305,7 @@ class Chain
     /**
      * Get chainThoughts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getChainThoughts()
     {

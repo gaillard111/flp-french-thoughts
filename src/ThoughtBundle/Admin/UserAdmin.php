@@ -2,13 +2,13 @@
 
 namespace ThoughtBundle\Admin;
 
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 
 /**
  * Class UserAdmin
+ *
  * @package ThoughtBundle\Admin
  */
 class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
@@ -20,7 +20,7 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
     {
         $this->formOptions['data_class'] = $this->getClass();
 
-        $options = $this->formOptions;
+        $options                      = $this->formOptions;
         $options['validation_groups'] = (!$this->getSubject() || is_null($this->getSubject()->getId())) ? 'CustomRegistration' : 'CustomProfile';
 
         $formBuilder = $this->getFormContractor()->getFormBuilder($this->getUniqid(), $options);
@@ -32,6 +32,7 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
 
     /**
      * @param FormMapper $formMapper
+     *
      * @throws \Exception
      */
     protected function configureFormFields(FormMapper $formMapper)
@@ -59,19 +60,17 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
             ->add('lastname', null, ['required' => false])
             ->add('roles', 'choice', [
                 'choices' => [
-                    'ROLE_ADMIN' => 'Admin',
+                    'ROLE_ADMIN'     => 'Admin',
                     'ROLE_MODERATOR' => 'Moderator',
-                    'ROLE_USER' => 'User'
+                    'ROLE_USER'      => 'User',
                 ],
                 'expanded' => false,
                 'multiple' => true,
-                'required' => false
+                'required' => false,
             ])
             ->end()
             ->end()
         ;
-
-
     }
 
     /**

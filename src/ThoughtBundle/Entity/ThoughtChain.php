@@ -43,7 +43,6 @@ class ThoughtChain
      */
     protected $sortIndex = 0;
 
-
     /**
      * @return mixed
      */
@@ -54,6 +53,7 @@ class ThoughtChain
 
     /**
      * @param mixed $user
+     *
      * @return ThoughtChain
      */
     public function setUser($user)
@@ -65,7 +65,7 @@ class ThoughtChain
     /**
      * Get id
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -75,7 +75,8 @@ class ThoughtChain
     /**
      * Set sortIndex
      *
-     * @param integer $sortIndex
+     * @param int $sortIndex
+     *
      * @return ThoughtChain
      */
     public function setSortIndex($sortIndex)
@@ -88,7 +89,7 @@ class ThoughtChain
     /**
      * Get sortIndex
      *
-     * @return integer 
+     * @return int
      */
     public function getSortIndex()
     {
@@ -99,6 +100,7 @@ class ThoughtChain
      * Set chain
      *
      * @param \ThoughtBundle\Entity\Chain $chain
+     *
      * @return ThoughtChain
      */
     public function setChain(\ThoughtBundle\Entity\Chain $chain = null)
@@ -111,7 +113,7 @@ class ThoughtChain
     /**
      * Get chain
      *
-     * @return \ThoughtBundle\Entity\Chain 
+     * @return \ThoughtBundle\Entity\Chain
      */
     public function getChain()
     {
@@ -122,6 +124,7 @@ class ThoughtChain
      * Set thought
      *
      * @param \ThoughtBundle\Entity\Thought $thought
+     *
      * @return ThoughtChain
      */
     public function setThought(\ThoughtBundle\Entity\Thought $thought = null)
@@ -134,7 +137,7 @@ class ThoughtChain
     /**
      * Get thought
      *
-     * @return \ThoughtBundle\Entity\Thought 
+     * @return \ThoughtBundle\Entity\Thought
      */
     public function getThought()
     {

@@ -5,7 +5,6 @@ namespace Application\Sonata\UserBundle\Form\Type;
 use Application\Sonata\UserBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,19 +16,19 @@ class ProfileInfoType extends AbstractType
     {
         $builder
             ->add('about', TextareaType::class, [
-                'label'    => 'user.form.profile.about.label',
+                'label'      => 'user.form.profile.about.label',
                 'label_attr' => [
                     'class' => 'control-label col-sm-2',
                 ],
-                'attr' => array(
+                'attr' => [
                     'class' => 'form-control',
                     'rows'  => '7',
-                ),
+                ],
                 'required' => false,
             ])
             ->add('country', TextType::class, [
-                'label'    => 'user.form.profile.country.label',
-                'label_attr' =>[
+                'label'      => 'user.form.profile.country.label',
+                'label_attr' => [
                     'class' => 'control-label col-sm-2',
                 ],
                 'attr' => [
@@ -38,7 +37,7 @@ class ProfileInfoType extends AbstractType
                 'required' => false,
             ])
             ->add('interests', TextType::class, [
-                'label'    => 'user.form.profile.interests.label',
+                'label'      => 'user.form.profile.interests.label',
                 'label_attr' => [
                     'class' => 'control-label col-sm-2',
                 ],
@@ -48,11 +47,11 @@ class ProfileInfoType extends AbstractType
                 'required' => false,
             ])
             ->add('gender', ChoiceType::class, [
-                'choices'   =>  [
-                    User::GENDER_MALE  =>  'user.form.profile.gender.genderm',
-                    User::GENDER_FEMALE =>  'user.form.profile.gender.genderf',
+                'choices' => [
+                    User::GENDER_MALE   => 'user.form.profile.gender.genderm',
+                    User::GENDER_FEMALE => 'user.form.profile.gender.genderf',
                 ],
-                'label'    => 'user.form.profile.gender.label',
+                'label'      => 'user.form.profile.gender.label',
                 'label_attr' => [
                     'class' => 'control-label col-sm-2',
                 ],
@@ -66,8 +65,8 @@ class ProfileInfoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'          =>  User::class,
-            'validation_groups'   =>  'profileInfo',
+            'data_class'        => User::class,
+            'validation_groups' => 'profileInfo',
         ]);
     }
 

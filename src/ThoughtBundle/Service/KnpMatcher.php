@@ -18,6 +18,7 @@ class KnpMatcher implements VoterInterface
 
     /**
      * KnpMatcher constructor.
+     *
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
@@ -32,7 +33,8 @@ class KnpMatcher implements VoterInterface
      * it should return null to let other voters do the job.
      *
      * @param ItemInterface $item
-     * @return boolean|null
+     *
+     * @return bool|null
      */
     public function matchItem(ItemInterface $item)
     {

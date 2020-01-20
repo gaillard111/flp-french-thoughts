@@ -8,20 +8,15 @@
 
 namespace ThoughtBundle\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
+use Sonata\AdminBundle\Form\FormMapper;
 use ThoughtBundle\Entity\GeneralMail;
 
 class MailAdmin extends Admin
 {
     private $rootPath;
-
-
 
     /**
      * @param FormMapper $formMapper
@@ -33,7 +28,7 @@ class MailAdmin extends Admin
             ->add('body', 'textarea', [
                 'label' => 'Message',
                 'attr'  => [
-                    'class' => 'js-ckeditor'
+                    'class' => 'js-ckeditor',
                 ],
             ]);
     }
@@ -66,12 +61,12 @@ class MailAdmin extends Admin
      */
     public function getFilterFields()
     {
-        return array(
-//            'mailTo',
+        return [
+            //            'mailTo',
             'subject',
             'body',
-            'isSended'
-        );
+            'isSended',
+        ];
     }
 
     public function setMyRootPath($rootPath)

@@ -8,7 +8,6 @@
 
 namespace ThoughtBundle\Service;
 
-
 use Doctrine\ORM\EntityManagerInterface;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\WatchedThought;
@@ -28,8 +27,8 @@ class RecommendedThoughtService
     public function getThought($user)
     {
         $userWatchedThoughtsData = $this->entityManager->getRepository(Thought::class)->getWatchedStatistics($user);
-        $tags = $this->getTags($userWatchedThoughtsData);
-        $tagsCount = array_count_values($tags);
+        $tags                    = $this->getTags($userWatchedThoughtsData);
+        $tagsCount               = array_count_values($tags);
         arsort($tagsCount);
 
         return $this->entityManager->getRepository(Thought::class)->getUnseenUserThoughts($user, $tagsCount);

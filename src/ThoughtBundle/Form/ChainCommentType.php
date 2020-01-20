@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * Class ChainCommentType
+ *
  * @package ThoughtBundle\Form
  */
 class ChainCommentType extends AbstractType
@@ -24,7 +25,7 @@ class ChainCommentType extends AbstractType
                     'class' => 'form-control',
                     'row'   => '3',
                 ],
-                'label' => 'thought.chain.comment.property.text.label',
+                'label'       => 'thought.chain.comment.property.text.label',
                 'constraints' => [
                     new NotBlank([
                         'message' => 'thought.chain.comment.property.text.not_blank',

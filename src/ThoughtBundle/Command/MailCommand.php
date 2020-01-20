@@ -10,7 +10,6 @@ use ThoughtBundle\Service\Mail;
 
 class MailCommand extends ContainerAwareCommand
 {
-
     public function __construct($name = null)
     {
         parent::__construct($name);
@@ -48,7 +47,6 @@ class MailCommand extends ContainerAwareCommand
             $mail->setIsSended(true);
             $entityManager->persist($mail);
             $entityManager->flush();
-
         } else {
             $output->writeln('Mail not found');
         }

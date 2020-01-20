@@ -15,7 +15,6 @@ class RegistrationFOSUser1Controller extends \Sonata\UserBundle\Controller\Regis
         $user = $this->getUser();
 
         if ($user instanceof UserInterface) {
-
             $this->get('session')->getFlashBag()->set('sonata_user_error', 'sonata_user_already_authenticated');
 
             return $this->redirectToRoute('sonata_user_profile_show');
@@ -25,25 +24,21 @@ class RegistrationFOSUser1Controller extends \Sonata\UserBundle\Controller\Regis
 
         $formHandler = $this->get('sonata.user.registration.form.handler');
 
-
-
         $confirmationEnabled = $this->container->getParameter('fos_user.registration.confirmation.enabled');
 
         $process = $formHandler->process($confirmationEnabled);
 
         if ($process) {
-
-            $user = $form->getData();
+            $user          = $form->getData();
             $reCapthaToken = $form->get('reCaptcha')->getData();
-            $authUser = false;
+            $authUser      = false;
             if ($reCapthaToken) {
-
                 if ($confirmationEnabled) {
                     $this->get('session')->set('fos_user_send_confirmation_email/email', $user->getEmail());
                     $url = $this->generateUrl('fos_user_registration_check_email');
                 } else {
                     $authUser = true;
-                    $route = $this->get('session')->get('sonata_basket_delivery_redirect');
+                    $route    = $this->get('session')->get('sonata_basket_delivery_redirect');
 
                     if (null !== $route) {
                         $this->get('session')->remove('sonata_basket_delivery_redirect');
@@ -69,12 +64,10 @@ class RegistrationFOSUser1Controller extends \Sonata\UserBundle\Controller\Regis
             }
 
             $this->get('session')->set('sonata_user_redirect_url', $this->get('request')->headers->get('referer'));
-            }
+        }
 
-
-
-        return $this->render('FOSUserBundle:Registration:register.html.' . $this->getEngine(), array(
+        return $this->render('FOSUserBundle:Registration:register.html.' . $this->getEngine(), [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 }

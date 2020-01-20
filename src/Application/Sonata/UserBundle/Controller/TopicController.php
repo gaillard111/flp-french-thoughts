@@ -10,16 +10,18 @@ use ThoughtBundle\Entity\Topic;
 
 class TopicController extends Controller
 {
-
     /**
      * @Route("/topic/create", name="sonata_user_topic_create")
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function createAction(Request $request)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
+        $em    = $this->get('doctrine.orm.entity_manager');
         $topic = new Topic();
         $topic->setUser($this->getUser());
 
@@ -34,15 +36,18 @@ class TopicController extends Controller
         }
 
         return $this->render('ApplicationSonataUserBundle:Topic:create.html.twig', [
-            'form'  =>  $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * @Route("/topic/{topicId}/edit", name="sonata_user_topic_edit", requirements={"topicId"="\d+"})
+     *
      * @param Request $request
      * @param $topicId
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function editAction(Request $request, $topicId)
@@ -50,7 +55,7 @@ class TopicController extends Controller
         $em = $this->get('doctrine.orm.entity_manager');
         /** @var Topic $topic */
         $topic = $em->getRepository(Topic::class)->find($topicId);
-        $user = $this->getUser();
+        $user  = $this->getUser();
 
         if ($topic->getUser() == $user) {
             $form = $this->createForm(new TopicType(), $topic);
@@ -64,19 +69,20 @@ class TopicController extends Controller
             }
 
             return $this->render('ApplicationSonataUserBundle:Topic:create.html.twig', [
-                'form'  =>  $form->createView(),
+                'form' => $form->createView(),
             ]);
         }
 
         $this->addFlash('danger', $this->get('translator')->trans('thought.topic.access_denied'));
 
         return $this->redirectToRoute('all_topics');
-
     }
 
     /**
      * @Route("/topics", name="sonata_user_topics")
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction(Request $request)

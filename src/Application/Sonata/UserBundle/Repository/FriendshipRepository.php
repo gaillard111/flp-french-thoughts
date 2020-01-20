@@ -2,8 +2,8 @@
 
 namespace Application\Sonata\UserBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Application\Sonata\UserBundle\Entity\User;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\QueryBuilder;
 
@@ -17,6 +17,7 @@ class FriendshipRepository extends EntityRepository
 {
     /**
      * @param User $user
+     *
      * @return User[]
      */
     public function getMyFriends(User $user)
@@ -34,6 +35,7 @@ class FriendshipRepository extends EntityRepository
 
     /**
      * @param User $user
+     *
      * @return User[]
      */
     public function getFriends(User $user)
@@ -52,7 +54,9 @@ class FriendshipRepository extends EntityRepository
     /**
      * @param User $user
      * @param User $friend
+     *
      * @return mixed
+     *
      * @throws NonUniqueResultException
      */
     public function isFriend(User $user, User $friend)
@@ -65,6 +69,7 @@ class FriendshipRepository extends EntityRepository
     /**
      * @param User $user
      * @param User $friend
+     *
      * @return QueryBuilder
      */
     private function isFriendQuery(User $user, User $friend)
@@ -79,6 +84,7 @@ class FriendshipRepository extends EntityRepository
 
     /**
      * @param User $user
+     *
      * @return array
      */
     public function getFriendRequests(User $user)
@@ -94,7 +100,9 @@ class FriendshipRepository extends EntityRepository
 
     /**
      * @param User $user
+     *
      * @return mixed
+     *
      * @throws \Doctrine\ORM\Query\QueryException
      */
     public function getCountFriends(User $user)
@@ -110,7 +118,9 @@ class FriendshipRepository extends EntityRepository
 
     /**
      * @param User $user
+     *
      * @return mixed
+     *
      * @throws \Doctrine\ORM\Query\QueryException
      */
     public function getCountFriendRequests(User $user)

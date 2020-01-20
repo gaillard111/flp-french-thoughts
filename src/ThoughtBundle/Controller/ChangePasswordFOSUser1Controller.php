@@ -3,20 +3,21 @@
 namespace ThoughtBundle\Controller;
 
 use FOS\UserBundle\Model\UserInterface;
+use Sonata\UserBundle\Controller\ChangePasswordFOSUser1Controller as BaseController;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Sonata\UserBundle\Controller\ChangePasswordFOSUser1Controller as BaseController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ChangePasswordFOSUser1Controller
+ *
  * @package ThoughtBundle\Controller
  */
 class ChangePasswordFOSUser1Controller extends BaseController
 {
     /**
-     * @return Response|RedirectResponse
+     * @return RedirectResponse|Response
      *
      * @throws AccessDeniedException
      *
@@ -30,7 +31,7 @@ class ChangePasswordFOSUser1Controller extends BaseController
             $this->createAccessDeniedException('This user does not have access to this section.');
         }
 
-        $form = $this->get('fos_user.change_password.form');
+        $form        = $this->get('fos_user.change_password.form');
         $formHandler = $this->get('fos_user.change_password.form.handler');
 
         $process = $formHandler->process($user);
@@ -42,7 +43,6 @@ class ChangePasswordFOSUser1Controller extends BaseController
         }
 
         if (isset($_POST[$form->getName()]) and !$form->isValid()) {
-
             $errors = $this->getErrorMessages($form);
 
             $messages = $this->errorMessages($errors);
@@ -53,18 +53,19 @@ class ChangePasswordFOSUser1Controller extends BaseController
         }
 
         return $this->render(
-            'SonataUserBundle:ChangePassword:changePassword.html.'.$this->container->getParameter('fos_user.template.engine'),
-            array('form' => $form->createView())
+            'SonataUserBundle:ChangePassword:changePassword.html.' . $this->container->getParameter('fos_user.template.engine'),
+            ['form' => $form->createView()]
         );
     }
 
     /**
      * @param \Symfony\Component\Form\Form $form
+     *
      * @return string
      */
     private function getErrorMessages(\Symfony\Component\Form\Form $form)
     {
-        $errors = array();
+        $errors = [];
 
         foreach ($form->getErrors() as $key => $error) {
             if ($form->isRoot()) {
@@ -85,6 +86,7 @@ class ChangePasswordFOSUser1Controller extends BaseController
 
     /**
      * @param $errors
+     *
      * @return string
      */
     private function errorMessages($errors)

@@ -12,10 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class GeneralMail
+ *
  * @ORM\Entity
  * @ORM\Table(name="general_mail")
  */
-
 class GeneralMail
 {
     /**
@@ -48,7 +48,6 @@ class GeneralMail
         return $this->id;
     }
 
-
     /**
      * @return mixed
      */
@@ -59,6 +58,7 @@ class GeneralMail
 
     /**
      * @param mixed $subject
+     *
      * @return GeneralMail
      */
     public function setSubject($subject)
@@ -77,6 +77,7 @@ class GeneralMail
 
     /**
      * @param mixed $body
+     *
      * @return GeneralMail
      */
     public function setBody($body)
@@ -95,6 +96,7 @@ class GeneralMail
 
     /**
      * @param mixed $isSended
+     *
      * @return GeneralMail
      */
     public function setIsSended($isSended)
@@ -102,6 +104,4 @@ class GeneralMail
         $this->isSended = $isSended;
         return $this;
     }
-
-
 }

@@ -12,6 +12,7 @@ use ThoughtBundle\Entity\Author;
 
 /**
  * Class Service
+ *
  * @package ParseBundle\Parser
  */
 class Service
@@ -23,6 +24,7 @@ class Service
 
     /**
      * Service constructor.
+     *
      * @param Container $container
      */
     public function __construct(Container $container)
@@ -32,7 +34,9 @@ class Service
 
     /**
      * @param UploadedFile $file
+     *
      * @return int
+     *
      * @throws Exception
      */
     public function parseFile(UploadedFile $file)
@@ -86,7 +90,6 @@ class Service
 
                         $quoteTags = implode(',', $parseStringParts);
                     }
-
                 } else {
                     $quoteAuthor = trim($parseStringParts[0]);
 
@@ -126,7 +129,9 @@ class Service
 
     /**
      * @param UploadedFile $file
+     *
      * @return void
+     *
      * @throws PHPExcel_Exception
      * @throws PHPExcel_Reader_Exception
      */
@@ -140,13 +145,15 @@ class Service
 
         $sheet = $file->getActiveSheet();
 
-        $range = 'A1:F';
-        $highestRow = $sheet->getHighestRow();
+        $range         = 'A1:F';
+        $highestRow    = $sheet->getHighestRow();
         $highestColumn = $sheet->getHighestColumn();
 
         $sheetData = $sheet->rangeToArray(
             $range . $highestRow,
-            NULL,TRUE,FALSE
+            null,
+            true,
+            false
         );
 
         $headings = array_shift($sheetData);
@@ -159,12 +166,11 @@ class Service
         );
 
         $batchSize = 20;
-        $i = 0;
+        $i         = 0;
 
         $em = $this->container->get('doctrine.orm.entity_manager');
 
-        foreach ($sheetData as $auth)
-        {
+        foreach ($sheetData as $auth) {
             if (!$auth['nom prénom']) {
                 continue;
             }
@@ -184,10 +190,8 @@ class Service
                 $em->flush();
                 $em->clear();
             }
-
         }
 
         $em->flush();
-
     }
 }

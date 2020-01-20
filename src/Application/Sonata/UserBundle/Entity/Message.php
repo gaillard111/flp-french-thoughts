@@ -62,6 +62,7 @@ class Message
 
     /**
      * @param mixed $isViewed
+     *
      * @return Message
      */
     public function setIsViewed($isViewed)
@@ -106,6 +107,7 @@ class Message
      * Set messageText
      *
      * @param string $messageText
+     *
      * @return Message
      */
     public function setMessageText($messageText)
@@ -118,7 +120,7 @@ class Message
     /**
      * Get messageText
      *
-     * @return string 
+     * @return string
      */
     public function getMessageText()
     {
@@ -128,7 +130,7 @@ class Message
     /**
      * Get id
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -139,6 +141,7 @@ class Message
      * Set dialog
      *
      * @param \Application\Sonata\UserBundle\Entity\Dialog $dialog
+     *
      * @return Message
      */
     public function setDialog(\Application\Sonata\UserBundle\Entity\Dialog $dialog = null)
@@ -151,7 +154,7 @@ class Message
     /**
      * Get dialog
      *
-     * @return \Application\Sonata\UserBundle\Entity\Dialog 
+     * @return \Application\Sonata\UserBundle\Entity\Dialog
      */
     public function getDialog()
     {

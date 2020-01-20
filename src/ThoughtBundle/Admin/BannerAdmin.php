@@ -1,4 +1,5 @@
 <?php
+
 //        dump($thought);
 /**
  * Created by PhpStorm.
@@ -23,22 +24,22 @@ class BannerAdmin extends Admin
     {
         $formMapper
             ->add('title', 'text', [
-                'required' => false
+                'required' => false,
             ])
             ->add('content', 'textarea', [
                 'attr' => [
-                    'class' => 'js-full-ckeditor'
+                    'class' => 'js-full-ckeditor',
                 ],
-                'label' => 'Banner text'
+                'label' => 'Banner text',
             ])
             ->add('page', 'entity', [
-                'class' => DynamicPage::class,
+                'class'        => DynamicPage::class,
                 'choice_label' => 'title',
-                'required' => false,
-                'label' => 'Link to the page'
+                'required'     => false,
+                'label'        => 'Link to the page',
             ])
             ->add('isActive', 'checkbox', [
-                'required' => false
+                'required' => false,
             ])
         ;
     }
@@ -54,5 +55,4 @@ class BannerAdmin extends Admin
             ->add('isActive')
         ;
     }
-
 }

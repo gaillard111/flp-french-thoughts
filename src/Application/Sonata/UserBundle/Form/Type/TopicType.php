@@ -16,16 +16,16 @@ class TopicType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('submit', SubmitType::class, [
-                'attr'  =>  [
-                    'class' =>  'btn btn-info'
-                ]
+                'attr' => [
+                    'class' => 'btn btn-info',
+                ],
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'    =>  Topic::class
+            'data_class' => Topic::class,
         ]);
     }
 

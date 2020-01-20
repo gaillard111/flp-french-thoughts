@@ -2,20 +2,22 @@
 
 namespace ThoughtBundle\Provider;
 
-use FOS\ElasticaBundle\Provider\ProviderInterface;
-use Elastica\Type;
 use Elastica\Document;
+use Elastica\Type;
+use FOS\ElasticaBundle\Provider\ProviderInterface;
 
 /**
  * Class ThoughtProvider
+ *
  * @package ThoughtBundle\Provider
  */
-class ThoughtProvider// implements ProviderInterface
+class ThoughtProvider // implements ProviderInterface
 {
     //protected $thoughtType;
 
     /**
      * ThoughtProvider constructor.
+     *
      * @param Type $thoughtType
      */
     /*public function __construct(Type $thoughtType)

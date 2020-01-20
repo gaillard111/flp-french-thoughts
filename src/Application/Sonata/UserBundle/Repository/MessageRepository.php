@@ -15,6 +15,7 @@ class MessageRepository extends EntityRepository
 {
     /**
      * @param $dialogId
+     *
      * @return \Doctrine\ORM\Query
      */
     public function getMessagesFromDialog($dialogId)
@@ -24,7 +25,7 @@ class MessageRepository extends EntityRepository
             ->select('m')
             ->where('m.dialog = :dialog')
             ->setParameter('dialog', $dialogId)
-            ->addOrderBy('m.id','DESC')
+            ->addOrderBy('m.id', 'DESC')
         ;
 
         return $qb->getQuery();
@@ -39,17 +40,19 @@ class MessageRepository extends EntityRepository
             ->andWhere('m.isViewed = :isViewed')
             ->andWhere('m.sender != :user')
             ->setParameters([
-                'dialog'    =>  $dialogId,
-                'isViewed'  =>  false,
-//                'null'      =>  null,
-                'user'      =>  $senderId,
+                'dialog'   => $dialogId,
+                'isViewed' => false,
+                //                'null'      =>  null,
+                'user' => $senderId,
             ]);
         return $qb->getQuery()->getResult();
     }
 
     /**
      * @param User $user
+     *
      * @return mixed
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getCountNewMessages($user)
@@ -65,15 +68,17 @@ class MessageRepository extends EntityRepository
             ->andWhere('m.isViewed = :isViewed')
             ->andWhere('m.sender != :user')
             ->setParameters([
-                'isViewed'  =>  false,
-                'user'      =>  $user,
+                'isViewed' => false,
+                'user'     => $user,
             ]);
-        return $qb->getQuery()->getOneOrNullResult();//->getResult();
+        return $qb->getQuery()->getOneOrNullResult(); //->getResult();
     }
 
     /**
      * @param $dialogId
+     *
      * @return mixed
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getLastMessageFromDialog($dialogId)
@@ -83,7 +88,7 @@ class MessageRepository extends EntityRepository
             ->select('m')
             ->where('m.dialog = :dialog')
             ->setParameter('dialog', $dialogId)
-            ->addOrderBy('m.id','DESC')
+            ->addOrderBy('m.id', 'DESC')
             ->setMaxResults(1)
         ;
 

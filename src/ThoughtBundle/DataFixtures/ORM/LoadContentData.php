@@ -8,6 +8,7 @@ use ThoughtBundle\Entity\Content;
 
 /**
  * Class LoadContentData
+ *
  * @package ThoughtBundle\DataFixtures\ORM
  */
 class LoadContentData implements FixtureInterface

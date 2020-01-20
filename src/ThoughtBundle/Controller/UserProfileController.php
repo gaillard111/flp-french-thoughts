@@ -2,32 +2,28 @@
 
 namespace ThoughtBundle\Controller;
 
-
 use Application\Sonata\UserBundle\Entity\Dialog;
 use Application\Sonata\UserBundle\Entity\Friendship;
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Twig_Error;
 
 class UserProfileController extends Controller
 {
-
     /**
      * @Route("/userslist", name="user_list")
      */
     public function userListAction(Request $request)
     {
         /** @var EntityManager $entityManager */
-        $entityManager = $this->container->get('doctrine.orm.entity_manager');
+        $entityManager   = $this->container->get('doctrine.orm.entity_manager');
         $usersRepository = $entityManager->getRepository(User::class);
-        $usersQuery = $usersRepository->createQueryBuilder('u')->select('u')->getQuery();
+        $usersQuery      = $usersRepository->createQueryBuilder('u')->select('u')->getQuery();
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -36,30 +32,30 @@ class UserProfileController extends Controller
             30
         );
 
-
         return $this->render('@Thought/usersList.html.twig', [
-            'users' =>  $pagination,
+            'users' => $pagination,
         ]);
     }
 
     /**
      * @Route("/userprofile/{userId}", name="thought_profile")
-     * @param Int $userId
+     *
+     * @param int $userId
+     *
      * @return RedirectResponse|Response
      */
     public function showAction($userId)
     {
-        $entityManager = $this->container->get('doctrine.orm.entity_manager');
-        $user = $this->getUser();
+        $entityManager  = $this->container->get('doctrine.orm.entity_manager');
+        $user           = $this->getUser();
         $possibleFriend = $entityManager->getRepository(User::class)->find($userId);
 
         if ($user) {
             if ($possibleFriend) {
-
                 $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
                 return $this->render('@ApplicationSonataUser/Thought/userProfile.html.twig', [
-                    'user'         =>  $possibleFriend,
-                    'friendship'   =>  $friendship
+                    'user'       => $possibleFriend,
+                    'friendship' => $friendship,
                 ]);
             }
         }
@@ -68,20 +64,21 @@ class UserProfileController extends Controller
 
     /**
      * @Route("/friendrequest/{userId}", name="friend_request")
-     * @param Int $userId
+     *
+     * @param int $userId
+     *
      * @return RedirectResponse
      */
     public function friendRequestAction($userId)
     {
         $entityManager = $this->container->get('doctrine.orm.entity_manager');
-        $user = $this->getUser();
-        $friend = $entityManager->getRepository(User::class)->find($userId);
+        $user          = $this->getUser();
+        $friend        = $entityManager->getRepository(User::class)->find($userId);
 
         if ($user && $friend) {
-
             $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $friend);
 
-            if (!$friendship)   {
+            if (!$friendship) {
                 $friendship = new Friendship();
                 $friendship->setUser($user);
                 $friendship->setFriend($friend);
@@ -99,8 +96,11 @@ class UserProfileController extends Controller
 
     /**
      * @Route("/friendrequest/accept/{requestId}", name="accept_friend_request")
-     * @param Int $requestId
+     *
+     * @param int $requestId
+     *
      * @return RedirectResponse
+     *
      * @throws OptimisticLockException
      */
     public function acceptRequestAction($requestId)
@@ -110,9 +110,7 @@ class UserProfileController extends Controller
         $friendship = $entityManager->getRepository(Friendship::class)->find($requestId);
 
         if ($this->getUser() != $friendship->getUser()) {
-
             if ($friendship) {
-
                 $friendship->setAccepted(true);
 
                 $entityManager->persist($friendship);
@@ -130,22 +128,20 @@ class UserProfileController extends Controller
     {
         $entityManager = $this->container->get('doctrine.orm.entity_manager');
         /** @var User $user */
-        $user = $entityManager->getRepository(User::class)->findOneBy([ 'id' => $userId]);
+        $user = $entityManager->getRepository(User::class)->findOneBy(['id' => $userId]);
         /** @var User $curUser */
         $curUser = $this->getUser();
 
         $friends = $entityManager->getRepository(Friendship::class)->isFriend($user, $curUser);
 
         if ($friends) {
-
             if ($user === $curUser) {
                 return $this->redirectToRoute('profile');
             }
 
-            $users = [];
+            $users   = [];
             $users[] = $user->getId();
             $users[] = $curUser->getId();
-
 
             $dialog = $entityManager->getRepository(Dialog::class)->findUsersDialog($users);
 
@@ -170,12 +166,10 @@ class UserProfileController extends Controller
                 $entityManager->flush();
             }
 
-
             $dialogId = $dialog->getId();
 
-
             return $this->redirectToRoute('dialog', [
-                'dialogId'  => $dialogId
+                'dialogId' => $dialogId,
             ]);
         }
 

@@ -23,8 +23,8 @@ class CKEditorImageForm extends AbstractType
             ->setDefaults([
                 'attr' => [
                     'id'    => 'form-image',
-                    'class' => 'form-image'
-                ]
+                    'class' => 'form-image',
+                ],
             ]);
     }
 

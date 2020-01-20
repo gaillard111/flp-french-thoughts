@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Application\Sonata\UserBundle\Form\Object;
-
 
 class SearchObject
 {
@@ -20,6 +18,7 @@ class SearchObject
 
     /**
      * @param mixed $searchString
+     *
      * @return SearchObject
      */
     public function setSearchString($searchString)
@@ -38,6 +37,7 @@ class SearchObject
 
     /**
      * @param string $sort
+     *
      * @return SearchObject
      */
     public function setSort($sort)
@@ -45,6 +45,4 @@ class SearchObject
         $this->sort = $sort;
         return $this;
     }
-
-
 }

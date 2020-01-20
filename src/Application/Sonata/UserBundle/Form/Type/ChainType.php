@@ -12,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class ChainType
+ *
  * @package Application\Sonata\UserBundle\Form\Type
  */
 class ChainType extends AbstractType
@@ -24,53 +25,53 @@ class ChainType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label_attr'    => [
-                    'class'       => 'control-label col-sm-2'
+                'label_attr' => [
+                    'class' => 'control-label col-sm-2',
                 ],
-                'attr'          => [
+                'attr' => [
                     'class'       => 'form-control',
                     'placeholder' => 'chain.property.name.placeholder',
                 ],
-                'label'         => 'chain.property.name.label',
+                'label' => 'chain.property.name.label',
             ])
             ->add('topic', EntityType::class, [
-                'class'         =>  'ThoughtBundle\Entity\Topic',
-                'choice_label'  =>  'name',
-                'label_attr'    =>  [
-                    'class'       =>  'control-label col-sm-2 topic-select'
+                'class'        => 'ThoughtBundle\Entity\Topic',
+                'choice_label' => 'name',
+                'label_attr'   => [
+                    'class' => 'control-label col-sm-2 topic-select',
                 ],
-                'attr'          =>  [
-                    'class'       => 'form-control topic-select',
+                'attr' => [
+                    'class' => 'form-control topic-select',
                 ],
-                'required'      =>  false
+                'required' => false,
             ])
             ->add('isPrivate', CheckboxType::class, [
-                'label'         =>  'Private',
-                'label_attr'    =>  [
-                    'class'       =>  'control-label col-sm-2',
+                'label'      => 'Private',
+                'label_attr' => [
+                    'class' => 'control-label col-sm-2',
 
                 ],
-                'required'      =>  false,
-                'attr'          =>  [
-                    'class'        =>  'private',
+                'required' => false,
+                'attr'     => [
+                    'class' => 'private',
                 ],
             ])
             ->add('isCollective', CheckboxType::class, [
-                'label'         =>  'Collective',
-                'label_attr'    =>  [
-                    'class'       =>  'control-label col-sm-2 collective',
+                'label'      => 'Collective',
+                'label_attr' => [
+                    'class' => 'control-label col-sm-2 collective',
 
                 ],
-                'required'      =>  false,
-                'attr'          =>  [
-                    'class'        =>  'collective',
+                'required' => false,
+                'attr'     => [
+                    'class' => 'collective',
                 ],
             ])
             ->add('submit', SubmitType::class, [
-                'label' =>  'user.chain.edit_page.submit',
-                'attr'  =>  [
-                    'class' =>  'btn btn-success pull-right'
-                ]
+                'label' => 'user.chain.edit_page.submit',
+                'attr'  => [
+                    'class' => 'btn btn-success pull-right',
+                ],
             ])
         ;
     }
@@ -80,12 +81,12 @@ class ChainType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'ThoughtBundle\Entity\Chain',
             'attr'       => [
-                'class'     =>  'form-horizontal'
-            ]
-        ));
+                'class' => 'form-horizontal',
+            ],
+        ]);
     }
 
     /**

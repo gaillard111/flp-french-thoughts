@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class ThoughtAdminController
+ *
  * @package ThoughtBundle\Controller
  */
 class ThoughtAdminController extends Controller
@@ -37,6 +38,7 @@ class ThoughtAdminController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function exportAction(Request $request)
@@ -52,19 +54,12 @@ class ThoughtAdminController extends Controller
         $allowedExportFormats = (array) $this->admin->getExportFormats();
 
         if (!in_array($format, $allowedExportFormats)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
-                    $format,
-                    $this->admin->getClass(),
-                    implode(', ', $allowedExportFormats)
-                )
-            );
+            throw new \RuntimeException(sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
         }
 
         $filters = $request->get('filter');
 
-        $modelThought = $this->container->get('thought.model.thought_model');
+        $modelThought  = $this->container->get('thought.model.thought_model');
         $serviceExport = $this->container->get('thought.service.export');
 
         $thoughts = $modelThought->getFilteredThoughts($filters, $this->admin->getFilterFields());

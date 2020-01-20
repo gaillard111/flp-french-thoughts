@@ -21,7 +21,6 @@ class Friendship
      */
     private $id;
 
-
     /**
      * @var int
      * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User", inversedBy="friendship")
@@ -37,7 +36,7 @@ class Friendship
     private $friend;
 
     /**
-     * @var boolean
+     * @var bool
      * @ORM\Column(name="accepted", type="boolean)
      */
     private $accepted = false;
@@ -74,7 +73,6 @@ class Friendship
         $this->friend = $friend;
     }
 
-
     /**
      * @return int
      */
@@ -94,7 +92,7 @@ class Friendship
     /**
      * Get id
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -104,7 +102,7 @@ class Friendship
     /**
      * Get accepted
      *
-     * @return boolean 
+     * @return bool
      */
     public function getAccepted()
     {

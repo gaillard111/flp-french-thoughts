@@ -2,7 +2,6 @@
 
 namespace ThoughtBundle\Entity;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="ThoughtBundle\Repository\CommentRepository")
  * @ORM\Table(name="comment")
  * @ORM\HasLifecycleCallbacks()
- *
  */
 class Comment
 {
@@ -72,7 +70,7 @@ class Comment
     /**
      * Get id
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -83,6 +81,7 @@ class Comment
      * Set name
      *
      * @param string $name
+     *
      * @return Comment
      */
     public function setName($name)
@@ -95,7 +94,7 @@ class Comment
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -106,6 +105,7 @@ class Comment
      * Set email
      *
      * @param string $email
+     *
      * @return Comment
      */
     public function setEmail($email)
@@ -118,7 +118,7 @@ class Comment
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -129,6 +129,7 @@ class Comment
      * Set text
      *
      * @param string $text
+     *
      * @return Comment
      */
     public function setText($text)
@@ -141,7 +142,7 @@ class Comment
     /**
      * Get text
      *
-     * @return string 
+     * @return string
      */
     public function getText()
     {
@@ -152,6 +153,7 @@ class Comment
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return Comment
      */
     public function setCreatedAt($createdAt)
@@ -164,7 +166,7 @@ class Comment
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -175,6 +177,7 @@ class Comment
      * Set thought
      *
      * @param \ThoughtBundle\Entity\Thought $thought
+     *
      * @return Comment
      */
     public function setThought(\ThoughtBundle\Entity\Thought $thought = null)
@@ -187,7 +190,7 @@ class Comment
     /**
      * Get thought
      *
-     * @return \ThoughtBundle\Entity\Thought 
+     * @return \ThoughtBundle\Entity\Thought
      */
     public function getThought()
     {

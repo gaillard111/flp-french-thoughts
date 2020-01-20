@@ -1,8 +1,6 @@
 <?php
 
-
 namespace ThoughtBundle\Service;
-
 
 use Application\Sonata\UserBundle\Entity\User;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -32,11 +30,11 @@ class MenuService
         ];
 
         $menu[] = [
-            'label' => $this->translator->trans('user.form.profile.profile_edit'),
-            'route' => 'thought_profile',
+            'label'      => $this->translator->trans('user.form.profile.profile_edit'),
+            'route'      => 'thought_profile',
             'parameters' => [
                 'userId' => $user->getId(),
-            ]
+            ],
         ];
         $menu[] = [
             'label' => $this->translator->trans('user.friendship.title'),

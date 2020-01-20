@@ -2,17 +2,14 @@
 
 namespace ThoughtBundle\Model;
 
-use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
-use Elastica\Query;
-use FOS\ElasticaBundle\Finder\TransformedFinder;
 use Symfony\Component\DependencyInjection\Container;
 use ThoughtBundle\Entity\Chain;
-use ThoughtBundle\Entity\Thought;
 
 /**
  * Class ThoughtChainModel
+ *
  * @package ThoughtBundle\Model
  */
 class ThoughtChainModel
@@ -34,8 +31,10 @@ class ThoughtChainModel
 
     /**
      * ThoughtModel constructor.
+     *
      * @param EntityManager $em
-     * @param Container $container
+     * @param Container     $container
+     *
      * @throws \Exception
      */
     public function __construct(EntityManager $em, Container $container)
@@ -49,6 +48,7 @@ class ThoughtChainModel
      * Sorting ThoughtCains
      *
      * @param Chain $chain
+     *
      * @throws OptimisticLockException
      */
     public function thoughtChainSort(Chain $chain)

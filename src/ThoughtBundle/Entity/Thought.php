@@ -75,7 +75,7 @@ class Thought
     protected $owner;
 
     /**
-     * @var Like[]|ArrayCollection
+     * @var ArrayCollection|Like[]
      *
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Like", mappedBy="thought", cascade={"persist"})
      */
@@ -92,7 +92,7 @@ class Thought
     protected $chainThoughts;
 
     /**
-     * @var WatchedThought[]|ArrayCollection
+     * @var ArrayCollection|WatchedThought[]
      *
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\WatchedThought", mappedBy="thought")
      */
@@ -101,7 +101,7 @@ class Thought
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -112,6 +112,7 @@ class Thought
      * Set content
      *
      * @param string $content
+     *
      * @return Thought
      */
     public function setContent($content)
@@ -135,11 +136,12 @@ class Thought
      * Set tags
      *
      * @param string $tags
+     *
      * @return Thought
      */
     public function setTags($tags)
     {
-        $tags = preg_replace('/\,/', ' , ', $tags);
+        $tags       = preg_replace('/\,/', ' , ', $tags);
         $this->tags = $tags;
 
         return $this;
@@ -159,6 +161,7 @@ class Thought
      * Set category
      *
      * @param string $category
+     *
      * @return Thought
      */
     public function setCategory($category)
@@ -182,6 +185,7 @@ class Thought
      * Set thoughtInfo
      *
      * @param string $thoughtInfo
+     *
      * @return Thought
      */
     public function setThoughtInfo($thoughtInfo)
@@ -205,6 +209,7 @@ class Thought
      * Set author
      *
      * @param string $author
+     *
      * @return Thought
      */
     public function setAuthor($author)
@@ -228,6 +233,7 @@ class Thought
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return Thought
      */
     public function setCreatedAt($createdAt)
@@ -251,6 +257,7 @@ class Thought
      * Set updateAt
      *
      * @param \DateTime $updateAt
+     *
      * @return Thought
      */
     public function setUpdateAt($updateAt)
@@ -309,7 +316,8 @@ class Thought
     /**
      * Set published
      *
-     * @param boolean $published
+     * @param bool $published
+     *
      * @return Thought
      */
     public function setPublished($published)
@@ -322,7 +330,7 @@ class Thought
     /**
      * Get published
      *
-     * @return boolean
+     * @return bool
      */
     public function getPublished()
     {
@@ -340,7 +348,8 @@ class Thought
     /**
      * Set amount
      *
-     * @param integer $amount
+     * @param int $amount
+     *
      * @return Thought
      */
     public function setAmount($amount)
@@ -353,7 +362,7 @@ class Thought
     /**
      * Get amount
      *
-     * @return integer 
+     * @return int
      */
     public function getAmount()
     {
@@ -364,6 +373,7 @@ class Thought
      * Set owner
      *
      * @param \Application\Sonata\UserBundle\Entity\User $owner
+     *
      * @return Thought
      */
     public function setOwner(\Application\Sonata\UserBundle\Entity\User $owner = null)
@@ -376,7 +386,7 @@ class Thought
     /**
      * Get owner
      *
-     * @return \Application\Sonata\UserBundle\Entity\User 
+     * @return \Application\Sonata\UserBundle\Entity\User
      */
     public function getOwner()
     {
@@ -391,7 +401,6 @@ class Thought
         return $this->likes;
     }
 
-
     public function getLiked()
     {
         return $this->likes;
@@ -403,7 +412,6 @@ class Thought
 //            $this->likes = new ArrayCollection();
 //        }
         $this->likes->add($like);
-
     }
 
     /**
@@ -412,13 +420,14 @@ class Thought
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->likes = new ArrayCollection();
+        $this->likes    = new ArrayCollection();
     }
 
     /**
      * Add comments
      *
      * @param \ThoughtBundle\Entity\Comment $comments
+     *
      * @return Thought
      */
     public function addComment(\ThoughtBundle\Entity\Comment $comments)
@@ -441,7 +450,7 @@ class Thought
     /**
      * Get comments
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getComments()
     {
@@ -452,6 +461,7 @@ class Thought
      * Add chainThoughts
      *
      * @param \ThoughtBundle\Entity\ThoughtChain $chainThoughts
+     *
      * @return Thought
      */
     public function addChainThought(\ThoughtBundle\Entity\ThoughtChain $chainThoughts)
@@ -474,7 +484,7 @@ class Thought
     /**
      * Get chainThoughts
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getChainThoughts()
     {

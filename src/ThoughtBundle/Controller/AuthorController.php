@@ -2,18 +2,16 @@
 
 namespace ThoughtBundle\Controller;
 
-use FOS\ElasticaBundle\Elastica\Index;
-use FOS\ElasticaBundle\Finder\FinderInterface;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
-use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ThoughtBundle\Model\AuthorModel;
 
 /**
  * Class AuthorController
+ *
  * @package ThoughtBundle\Controller
  */
 class AuthorController extends Controller
@@ -24,6 +22,7 @@ class AuthorController extends Controller
      * @Route("/authors-list", methods={"GET"}, options={"sitemap" = true})
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -39,8 +38,7 @@ class AuthorController extends Controller
         /** @var TransformedFinder $authorsFinder */
         $authorsFinder = $this->container->get('fos_elastica.finder.app.author');
 
-        $paginator  = $this->get('knp_paginator');
-
+        $paginator = $this->get('knp_paginator');
 
         if (!$alpha) {
             $alpha = self::AUTHOR_FIRST_LETTER;
@@ -59,9 +57,9 @@ class AuthorController extends Controller
 
         $timeExecute = microtime(true) - $start;
 
-        return $this->render('ThoughtBundle::author.html.twig', array(
+        return $this->render('ThoughtBundle::author.html.twig', [
             'authors'     => $pagination,
             'timeExecute' => $timeExecute,
-        ));
+        ]);
     }
 }

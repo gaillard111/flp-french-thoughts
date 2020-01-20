@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class ContentController
+ *
  * @package ThoughtBundle\Controller
  */
 class ContentController extends Controller
@@ -17,15 +18,16 @@ class ContentController extends Controller
      *
      * @param Request $request
      * @param string  $code
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request, $code)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $content = $em->getRepository('ThoughtBundle:Content')->findOneBy(array(
+        $content = $em->getRepository('ThoughtBundle:Content')->findOneBy([
             'contentType' => $code,
-        ));
+        ]);
 
         if (!$content) {
             $this->addFlash('errors', $this->get('translator')->trans('content.page_not_found'));
@@ -33,8 +35,8 @@ class ContentController extends Controller
             return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
 
-        return $this->render('@Thought/content.html.twig', array(
+        return $this->render('@Thought/content.html.twig', [
             'content' => $content,
-        ));
+        ]);
     }
 }

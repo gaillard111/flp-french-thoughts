@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Class RegisterType
+ *
  * @package Application\Sonata\UserBundle\Form\Type
  */
 class RegisterType extends RegistrationFormType
@@ -24,7 +25,7 @@ class RegisterType extends RegistrationFormType
                 'label'    => 'user.form.registration.username.label',
             ))*/
             ->add('email', 'email', [
-                'label'    => 'user.form.registration.email.label',
+                'label' => 'user.form.registration.email.label',
             ])
             ->add('firstname', null, [
                 'label'    => 'user.form.registration.firstname.label',
@@ -41,10 +42,10 @@ class RegisterType extends RegistrationFormType
                 'invalid_message' => 'user.form.registration.password.mismatch',
             ])
             ->add('reCaptcha', 'hidden', [
-                'mapped'    =>  false,
-                'attr'      =>  [
-                    'class'     =>  'g-recaptcha'
-                ]
+                'mapped' => false,
+                'attr'   => [
+                    'class' => 'g-recaptcha',
+                ],
             ])
         ;
     }
@@ -54,10 +55,10 @@ class RegisterType extends RegistrationFormType
      */
     public function setDefaultOption(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'validation_groups' => array('CustomRegistration'),
-            'data_class'        => User::class
-        ));
+        $resolver->setDefaults([
+            'validation_groups' => ['CustomRegistration'],
+            'data_class'        => User::class,
+        ]);
     }
 
     /**

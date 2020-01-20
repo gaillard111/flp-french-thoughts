@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ThoughtBundle\Entity;
 
 use Application\Sonata\UserBundle\Entity\User;
@@ -8,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Like
+ *
  * @package ThoughtBundle\Entity
  *
  * @ORM\Entity()
@@ -48,6 +48,7 @@ class Like
 
     /**
      * @param Thought $thought
+     *
      * @return Like
      */
     public function setThought($thought)
@@ -66,6 +67,7 @@ class Like
 
     /**
      * @param User $user
+     *
      * @return Like
      */
     public function setUser($user)

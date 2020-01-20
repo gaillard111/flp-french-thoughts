@@ -11,6 +11,7 @@ class DynamicPagesController extends Controller
 {
     /**
      * @Route("/page/{slug}", name="dynamic_page")
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction($slug)
@@ -19,12 +20,12 @@ class DynamicPagesController extends Controller
         $page = $this->getDoctrine()->getRepository(DynamicPage::class)->findOneBy(['slug' => $slug]);
 
         if (!$page) {
-            throw new NotFoundHttpException("Page not found");
+            throw new NotFoundHttpException('Page not found');
         }
 
         return $this->render('@Thought/dynamicPage.html.twig', [
             'title' => $page->getTitle(),
-            'text'  => $page->getText()
+            'text'  => $page->getText(),
         ]);
     }
 }

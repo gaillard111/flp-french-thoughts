@@ -7,13 +7,16 @@ use ThoughtBundle\Entity\Chain;
 
 /**
  * Class ThoughtChainRepository
+ *
  * @package ThoughtBundle\Repository
  */
 class ThoughtChainRepository extends EntityRepository
 {
     /**
      * @param Chain $chain
+     *
      * @return mixed
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getLastLinkChain(Chain $chain)
@@ -30,6 +33,7 @@ class ThoughtChainRepository extends EntityRepository
      * Get sorted ThoughtChain
      *
      * @param Chain $chain
+     *
      * @return array
      */
     public function getSortingThoughtChain(Chain $chain)

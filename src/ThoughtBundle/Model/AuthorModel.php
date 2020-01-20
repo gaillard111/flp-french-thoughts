@@ -12,6 +12,7 @@ use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Class AuthorModel
+ *
  * @package ThoughtBundle\Model
  */
 class AuthorModel
@@ -33,6 +34,7 @@ class AuthorModel
 
     /**
      * AuthorModel constructor.
+     *
      * @param EntityManager $em
      * @param Container     $container
      */
@@ -45,6 +47,7 @@ class AuthorModel
 
     /**
      * @param $nameStartsWith
+     *
      * @return array
      */
     public function getAuthorsByStringStart($nameStartsWith)
@@ -58,8 +61,9 @@ class AuthorModel
     }
 
     /**
-     * @param string $nameStartsWith
+     * @param string            $nameStartsWith
      * @param TransformedFinder $finder
+     *
      * @return PaginatorAdapterInterface|TransformedPaginatorAdapter
      */
     public function getAuthorsByStringStartElastic($nameStartsWith, TransformedFinder $finder)
@@ -69,16 +73,19 @@ class AuthorModel
 
     /**
      * @param $name
-     * @return null|object
+     *
+     * @return object|null
      */
-    public function findAuthorByName($name) {
+    public function findAuthorByName($name)
+    {
         return $this->repository->findOneBy([
-            'name' => $name
+            'name' => $name,
         ]);
     }
 
     /**
      * @param string $nameStartsWith
+     *
      * @return Query
      */
     public function searchDefault($nameStartsWith)
@@ -89,11 +96,11 @@ class AuthorModel
             'query' => [
                 'match_phrase_prefix' => [
                     'name_prefix' => [
-                        'query' => $nameStartsWith,
-                        "max_expansions" => 10000
-                    ]
+                        'query'          => $nameStartsWith,
+                        'max_expansions' => 10000,
+                    ],
                 ],
-            ]
+            ],
         ];
 
         $must[] = $terms;
@@ -104,17 +111,15 @@ class AuthorModel
             [
                 'filter' => [
                     'bool' => [
-                        'must' => $must
+                        'must' => $must,
                     ],
                 ],
                 'sort' => [
-                    'name_prefix' => 'asc'
+                    'name_prefix' => 'asc',
                 ],
             ]
         );
 
         return $query;
     }
-
-
 }

@@ -2,16 +2,16 @@
 
 namespace ThoughtBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use ThoughtBundle\Entity\Comment;
-use ThoughtBundle\Entity\Thought;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use ThoughtBundle\Entity\WatchedThought;
 use ThoughtBundle\Form\CommentType;
 
 /**
  * Class ThoughtPageController
+ *
  * @package ThoughtBundle\Controller
  */
 class ThoughtPageController extends Controller
@@ -20,8 +20,10 @@ class ThoughtPageController extends Controller
      * @Route("/quote/{thoughtId}", requirements={"thoughtId"="\d+"})
      *
      * @param Request $request
-     * @param int $thoughtId
+     * @param int     $thoughtId
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Exception
      */
     public function indexAction(Request $request, $thoughtId)
@@ -36,9 +38,8 @@ class ThoughtPageController extends Controller
         $form = $this->createForm(new CommentType(), $comment);
 
         if ($this->getUser()) {
-
             $watchedThought = $em->getRepository(WatchedThought::class)->findOneBy([
-                'thought' => $thought
+                'thought' => $thought,
             ]);
 
             if (!$watchedThought) {
@@ -69,8 +70,7 @@ class ThoughtPageController extends Controller
 
                     $this->addFlash('success', $this->get('translator')->trans('thought.comment.added'));
 
-                    return $this->redirect($this->generateUrl('thought_thoughtpage_index', array('thoughtId' => $thoughtId)));
-
+                    return $this->redirect($this->generateUrl('thought_thoughtpage_index', ['thoughtId' => $thoughtId]));
                 } else {
                     $this->addFlash('success', $this->get('translator')->trans('thought.comment.not_add'));
                 }
@@ -85,17 +85,16 @@ class ThoughtPageController extends Controller
 
         $comments[$thought->getId()][] = $em->getRepository(Comment::class)->getLastComments($thought);
 
-
         $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->findBy([
-            'isCollective'  => true
+            'isCollective' => true,
         ]);
 
-        return $this->render('@Thought/thoughtPage.html.twig', array(
-            'thought'       => $thought,
-            'comments'      => $comments,
-            'form'          => $form->createView(),
-            'colChains'     => $collectiveChains,
-        ));
+        return $this->render('@Thought/thoughtPage.html.twig', [
+            'thought'   => $thought,
+            'comments'  => $comments,
+            'form'      => $form->createView(),
+            'colChains' => $collectiveChains,
+        ]);
     }
 
     /**
@@ -103,6 +102,7 @@ class ThoughtPageController extends Controller
      *
      * @param Request $request
      * @param int     $commentId
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteCommentAction(Request $request, $commentId)
@@ -126,6 +126,6 @@ class ThoughtPageController extends Controller
             $this->addFlash('success', $e->getMessage());
         }
 
-        return $this->redirect($this->generateUrl('thought_thoughtpage_index', array('thoughtId' => $comment->getThought()->getId())));
+        return $this->redirect($this->generateUrl('thought_thoughtpage_index', ['thoughtId' => $comment->getThought()->getId()]));
     }
 }

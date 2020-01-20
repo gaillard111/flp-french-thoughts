@@ -17,22 +17,20 @@ class UtilController extends Controller
      */
     public function indexAction(Request $request)
     {
-
         $form = $this->createForm(CKEditorImageForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $form->get('image')->getData();
-            $dir = $this->getParameter('kernel.root_dir') . '/../web/images/ckeditor/';
-            $name = uniqid('ckeditor');
+            $dir          = $this->getParameter('kernel.root_dir') . '/../web/images/ckeditor/';
+            $name         = uniqid('ckeditor');
             $uploadedFile->move($dir, $name);
 
             return $this->render('@Thought/Util/img_upload.html.twig', [
-                'image_url' => '/images/ckeditor/' . $name
+                'image_url' => '/images/ckeditor/' . $name,
             ]);
         }
-
 
         return $this->render('@Thought/Util/img_upload.html.twig', [
             'form' => $form->createView(),

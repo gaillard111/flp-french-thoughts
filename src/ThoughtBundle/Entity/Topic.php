@@ -52,6 +52,7 @@ class Topic
 
     /**
      * @param mixed $user
+     *
      * @return Topic
      */
     public function setUser($user)
@@ -68,7 +69,6 @@ class Topic
         return $this->id;
     }
 
-
     /**
      * @return mixed
      */
@@ -79,6 +79,7 @@ class Topic
 
     /**
      * @param mixed $name
+     *
      * @return Topic
      */
     public function setName($name)
@@ -97,6 +98,7 @@ class Topic
 
     /**
      * @param mixed $chains
+     *
      * @return Topic
      */
     public function setChains($chains)

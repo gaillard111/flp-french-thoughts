@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Content
+ *
  * @ORM\Entity
  * @ORM\Table(name="content")
  * @ORM\HasLifecycleCallbacks()
@@ -52,7 +53,7 @@ class Content
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -63,6 +64,7 @@ class Content
      * Set title
      *
      * @param string $title
+     *
      * @return Content
      */
     public function setTitle($title)
@@ -86,6 +88,7 @@ class Content
      * Set content
      *
      * @param string $content
+     *
      * @return Content
      */
     public function setContent($content)
@@ -109,6 +112,7 @@ class Content
      * Set createAt
      *
      * @param \DateTime $createAt
+     *
      * @return Content
      */
     public function setCreateAt($createAt)
@@ -132,6 +136,7 @@ class Content
      * Set updateAt
      *
      * @param \DateTime $updateAt
+     *
      * @return Content
      */
     public function setUpdateAt($updateAt)
@@ -189,6 +194,7 @@ class Content
      * Set contentType
      *
      * @param string $contentType
+     *
      * @return Content
      */
     public function setContentType($contentType)
@@ -201,7 +207,7 @@ class Content
     /**
      * Get contentType
      *
-     * @return string 
+     * @return string
      */
     public function getContentType()
     {

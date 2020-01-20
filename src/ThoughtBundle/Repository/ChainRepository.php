@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * Class ChainRepository
+ *
  * @package ThoughtBundle\Repository
  */
 class ChainRepository extends EntityRepository
@@ -36,6 +37,7 @@ class ChainRepository extends EntityRepository
 
     /**
      * @param $user
+     *
      * @return \Doctrine\ORM\Query
      */
     public function getAllFavoriteChains($user)

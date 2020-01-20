@@ -12,10 +12,9 @@ use ThoughtBundle\Entity\Chain;
 
 class ChainController extends Controller
 {
-
     public function navigationAction(Request $request)
     {
-        $navigation     = [];
+        $navigation   = [];
         $navigation[] = [
             'label' => $this->get('translator')->trans('user.chain.list_page.menu_title'),
             'route' => 'sonata_user_chains',
@@ -35,16 +34,17 @@ class ChainController extends Controller
         ];
 
         if ($request->get('routeName') == 'chain_page') {
-
             return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
-                'menu'             => $navigation,
-                'routeName'        => $request->get('routeName'),
+                'menu'      => $navigation,
+                'routeName' => $request->get('routeName'),
             ]);
         }
 
-        return $this->render('@ApplicationSonataUser/Chain/chainNavigation.html.twig', [
-            'menu'      => $navigation,
-            'routeName' => $request->get('routeName')
+        return $this->render(
+            '@ApplicationSonataUser/Chain/chainNavigation.html.twig',
+            [
+                'menu'      => $navigation,
+                'routeName' => $request->get('routeName'),
             ]
         );
     }
@@ -56,53 +56,56 @@ class ChainController extends Controller
         $topics    = $user->getTopics();
         $sidebar   = [];
         $sidebar[] = [
-            'label' =>  'All',
-            'route' =>  'sonata_user_chains'
+            'label' => 'All',
+            'route' => 'sonata_user_chains',
         ];
 
         foreach ($topics as $topic) {
-            $sidebar[]  = [
-                'label'     =>  $topic->getName(),
-                'route'     =>  'sonata_user_chain_by_topic',
+            $sidebar[] = [
+                'label'      => $topic->getName(),
+                'route'      => 'sonata_user_chain_by_topic',
                 'parameters' => [
                     'topicId' => $topic->getId(),
-                ]
+                ],
             ];
         }
 
 //        dump($sidebar); die;
 
         return $this->render('@ApplicationSonataUser/Profile/menu.html.twig', [
-            'menu'             => $sidebar,
-            'routeName'        => $request->get('routeName'),
-            'curTopicId'       => $curTopicId
+            'menu'       => $sidebar,
+            'routeName'  => $request->get('routeName'),
+            'curTopicId' => $curTopicId,
         ]);
-
     }
 
     /**
      * @Route("/chains/favorite", name="sonata_user_favorite_chains")
+     *
      * @param Request $request
+     *
      * @return Response
      */
     public function favoriteAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $chains = $em->getRepository('ThoughtBundle:Chain')->getAllFavoriteChains($this->getUser());
+        $em         = $this->getDoctrine()->getManager();
+        $chains     = $em->getRepository('ThoughtBundle:Chain')->getAllFavoriteChains($this->getUser());
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $chains,
             $request->query->getInt('page', 1),
             100
         );
-        return $this->render('ApplicationSonataUserBundle:Chain:list.html.twig', array(
+        return $this->render('ApplicationSonataUserBundle:Chain:list.html.twig', [
             'chains' => $pagination,
-        ));
+        ]);
     }
 
     /**
      * @Route("/chains/changefavorite", name="sonata_user_change_favorite")
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function changeFavoriteAction(Request $request)
@@ -129,19 +132,20 @@ class ChainController extends Controller
         return $this->redirect($this->generateUrl('sonata_user_favorite_chains'));
     }
 
-
     /**
      * @Route("/chains", name="sonata_user_chains")
+     *
      * @param Request $request
+     *
      * @return Response
      */
     public function listAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $chains = $em->getRepository('ThoughtBundle:Chain')->findBy(array(
+        $chains = $em->getRepository('ThoughtBundle:Chain')->findBy([
             'user' => $this->getUser(),
-        ));
+        ]);
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -156,13 +160,15 @@ class ChainController extends Controller
 
     /**
      * @Route("/chains/{topicId}", name="sonata_user_chain_by_topic", requirements={"chainId"="\d+"})
+     *
      * @param int $topicId
+     *
      * @return Response
      */
     public function listByTopicAction($topicId, Request $request)
     {
         $chains = $this->getDoctrine()->getRepository(Chain::class)->findBy([
-            'topic' =>  $topicId
+            'topic' => $topicId,
         ]);
 
         $paginator  = $this->get('knp_paginator');
@@ -176,7 +182,7 @@ class ChainController extends Controller
 
         return $this->render('ApplicationSonataUserBundle:Chain:list.html.twig', [
             'chains'    => $pagination,
-            'routeName' => $routeName
+            'routeName' => $routeName,
         ]);
     }
 
@@ -184,12 +190,13 @@ class ChainController extends Controller
      * @Route("/chain/create", name="sonata_user_chain_create")
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function createAction(Request $request)
     {
         $chain = new Chain();
-        $em = $this->getDoctrine()->getManager();
+        $em    = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(new ChainType(), $chain);
         $form->handleRequest($request);
@@ -204,9 +211,9 @@ class ChainController extends Controller
             }
         }
 
-        return $this->render('ApplicationSonataUserBundle:Chain:create.html.twig', array(
+        return $this->render('ApplicationSonataUserBundle:Chain:create.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -214,7 +221,8 @@ class ChainController extends Controller
      *
      * @param Request $request
      * @param int     $chainId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     *
+     * @return Response|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction(Request $request, $chainId)
     {
@@ -250,15 +258,16 @@ class ChainController extends Controller
             }
         }
 
-        return $this->render('ApplicationSonataUserBundle:Chain:edit.html.twig', array(
+        return $this->render('ApplicationSonataUserBundle:Chain:edit.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
      * @Route("/chain/{chainId}/remove", name="sonata_user_chain_remove", requirements={"chainId"="\d+"})
      *
      * @param int $chainId
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAction($chainId)
@@ -291,6 +300,7 @@ class ChainController extends Controller
      * @Route("/chain/{chainId}/share", name="sonata_user_chain_share", requirements={"chainId"="\d+"})
      *
      * @param int $chainId
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function shareAction($chainId)
@@ -300,13 +310,11 @@ class ChainController extends Controller
         $chain = $em->getRepository('ThoughtBundle:Chain')->find($chainId);
 
         if (!$chain) {
-
             $this->addFlash('success', $this->get('translator')->trans('thought.chain.not_exist'));
             return $this->redirect($this->generateUrl('sonata_user_chains'));
         }
 
         if (!$this->checkOwner($chain)) {
-
             $this->addFlash('success', $this->get('translator')->trans('thought.chain.access_denied'));
             return $this->redirect($this->generateUrl('sonata_user_chains'));
         }
@@ -314,10 +322,8 @@ class ChainController extends Controller
         $private = $chain->getIsPrivate();
 
         if ($private == true) {
-
             $chain->setIsPrivate(false);
         } else {
-
             $chain->setIsPrivate(true);
             $chain->setIsCollective(false);
         }
@@ -334,23 +340,23 @@ class ChainController extends Controller
 
     /**
      * @Route("/chain/{chainId}/collective", name="sonata_user_chain_collective", requirements={"chainId"="\d+"})
+     *
      * @param int $chainId
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function collectiveAction($chainId)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em    = $this->getDoctrine()->getManager();
         $chain = $em->getRepository('ThoughtBundle:Chain')->find($chainId);
         if ($chain->getIsPrivate() == false) {
-
             if (!$this->checkOwner($chain)) {
-
                 $this->addFlash('danger', $this->get('translator')->trans('thought.chain.access_denied'));
                 return $this->redirect($this->generateUrl('sonata_user_chains'));
             }
 
-            $collective = $chain->getisCollective();
-            $collective = $collective ? false: true;
+            $collective        = $chain->getisCollective();
+            $collective        = $collective ? false : true;
             $collectiveMessage = $collective ? 'successfully-collectiveded' : 'successfully-personalised';
 
             $chain->setIsCollective($collective);
@@ -367,11 +373,9 @@ class ChainController extends Controller
      */
     public function listCollectiveAction(Request $request)
     {
-
         $em = $this->getDoctrine()->getManager();
 
         $chains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains();
-
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -380,16 +384,17 @@ class ChainController extends Controller
             10
         );
 
-        return $this->render('ApplicationSonataUserBundle:Chain:collectiveList.html.twig', array(
+        return $this->render('ApplicationSonataUserBundle:Chain:collectiveList.html.twig', [
             'chains' => $pagination,
 
-        ));
+        ]);
     }
 
     /**
      * @Route("/shared-chains", name="sonata_user_shared_chains")
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function listSharedAction(Request $request)
@@ -405,14 +410,15 @@ class ChainController extends Controller
             10
         );
 
-        return $this->render('ApplicationSonataUserBundle:Chain:sharedList.html.twig', array(
+        return $this->render('ApplicationSonataUserBundle:Chain:sharedList.html.twig', [
             'chains' => $pagination,
 
-        ));
+        ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function publicListSharedAction(Request $request)
@@ -428,15 +434,16 @@ class ChainController extends Controller
             10
         );
 
-        return $this->render('ApplicationSonataUserBundle:Chain:publicSharedList.html.twig', array(
+        return $this->render('ApplicationSonataUserBundle:Chain:publicSharedList.html.twig', [
             'chains' => $pagination,
-        ));
+        ]);
     }
 
     /**
      * Check owner chain
      *
      * @param Chain $chain
+     *
      * @return bool
      */
     private function checkOwner(Chain $chain)

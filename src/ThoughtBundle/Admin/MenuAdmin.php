@@ -1,14 +1,11 @@
 <?php
 
-
 namespace ThoughtBundle\Admin;
 
-
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use ThoughtBundle\Entity\MenuItem;
-
 
 class MenuAdmin extends Admin
 {
@@ -20,10 +17,10 @@ class MenuAdmin extends Admin
             ->add('url')
             ->add('level')
             ->add('roleString', 'text', [
-                'label' => 'Role'
+                'label' => 'Role',
             ])
             ->add('sort', 'text', [
-                'label' => 'Priority'
+                'label' => 'Priority',
             ])
         ;
     }
@@ -32,26 +29,26 @@ class MenuAdmin extends Admin
     {
         $formMapper
             ->add('text', 'text', [
-                'label' => 'Title'
+                'label' => 'Title',
             ])
             ->add('parent', 'entity', [
-                'class' => MenuItem::class,
+                'class'        => MenuItem::class,
                 'choice_label' => 'text',
-                'required' => false
+                'required'     => false,
             ])
             ->add('url', 'text', [
-                'required' => false
+                'required' => false,
             ])
             ->add('role', 'choice', [
-                'choices'  => [
-                    'ROLE_ADMIN'                    => 'Admin',
-                    'ROLE_USER'                     => 'User',
-                    'IS_AUTHENTICATED_ANONYMOUSLY'  => 'Unregistered'
-                ]
+                'choices' => [
+                    'ROLE_ADMIN'                   => 'Admin',
+                    'ROLE_USER'                    => 'User',
+                    'IS_AUTHENTICATED_ANONYMOUSLY' => 'Unregistered',
+                ],
             ])
             ->add('sort', 'integer', [
-                'label' => 'Priority',
-                'required' => false
+                'label'    => 'Priority',
+                'required' => false,
             ])
         ;
     }

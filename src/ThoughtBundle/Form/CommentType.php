@@ -16,50 +16,50 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', array(
-                'required' => false,
-                'label'    => 'thought.comment.property.name.label',
-                'label_attr' => array(
+            ->add('name', 'text', [
+                'required'   => false,
+                'label'      => 'thought.comment.property.name.label',
+                'label_attr' => [
                     'class' => 'col-sm-3 control-label',
-                ),
-                'attr'     => array(
+                ],
+                'attr' => [
                     'class'       => 'form-control',
                     'placeholder' => 'thought.comment.property.name.placeholder',
-                ),
-            ))
-            ->add('email', 'text', array(
-                'label'    => 'thought.comment.property.email.label',
-                'constraints' => array(
-                    new Email(array(
+                ],
+            ])
+            ->add('email', 'text', [
+                'label'       => 'thought.comment.property.email.label',
+                'constraints' => [
+                    new Email([
                         'message' => 'thought.comment.property.email.email',
-                    )),
-                    new NotBlank(array(
+                    ]),
+                    new NotBlank([
                         'message' => 'thought.comment.property.email.not_blank',
-                    )),
-                ),
-                'label_attr' => array(
+                    ]),
+                ],
+                'label_attr' => [
                     'class' => 'col-sm-3 control-label',
-                ),
-                'attr' => array(
+                ],
+                'attr' => [
                     'class'       => 'form-control',
                     'placeholder' => 'thought.comment.property.email.placeholder',
-                ),
-            ))
-            ->add('text', 'textarea', array(
-                'attr' => array(
+                ],
+            ])
+            ->add('text', 'textarea', [
+                'attr' => [
                     'class' => 'form-control',
                     'row'   => '3',
-                ),
-                'label_attr' => array(
+                ],
+                'label_attr' => [
                     'class' => 'col-sm-3 control-label',
-                ),
-                'label' => 'thought.comment.property.text.label',
-                'constraints' => array(
-                    new NotBlank(array(
+                ],
+                'label'       => 'thought.comment.property.text.label',
+                'constraints' => [
+                    new NotBlank([
                         'message' => 'thought.comment.property.text.not_blank',
-                    )),
-                ),
-            ))
+                    ]),
+                ],
+            ])
         ;
     }
 
@@ -68,9 +68,9 @@ class CommentType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'ThoughtBundle\Entity\Comment',
-        ));
+        ]);
     }
 
     /**

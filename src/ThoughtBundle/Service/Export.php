@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class Export
+ *
  * @package ThoughtBundle\Service
  */
 class Export
@@ -13,6 +14,7 @@ class Export
     /**
      * @param array  $thoughts
      * @param string $filename
+     *
      * @return Response
      */
     public function exportThoughts($thoughts)
@@ -40,10 +42,10 @@ class Export
 
         $filename = 'export_thought_' . date('Y_m_d_H_i_s', strtotime('now')) . '.txt';
 
-        $response = new Response($string, 200, array(
+        $response = new Response($string, 200, [
             'Content-Type'        => 'plain/text; charset=ASCII',
             'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-        ));
+        ]);
 
         return $response;
     }

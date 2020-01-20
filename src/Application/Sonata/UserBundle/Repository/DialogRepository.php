@@ -15,8 +15,11 @@ class DialogRepository extends EntityRepository
 {
     /**
      * Finds a dialog between two given users
+     *
      * @param $users
+     *
      * @return mixed
+     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function findUsersDialog($users)

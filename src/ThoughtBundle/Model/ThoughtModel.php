@@ -118,6 +118,7 @@ class ThoughtModel
      * @param $search
      * @param $default
      * @param int $page
+     *
      * @return PaginatorAdapterInterface|Thought[]
      */
     public function getThoughts($search, $default, $page = 1)
@@ -130,6 +131,7 @@ class ThoughtModel
         }
         return $thoughts;
     }
+
     /**
      * @param array $request
      *

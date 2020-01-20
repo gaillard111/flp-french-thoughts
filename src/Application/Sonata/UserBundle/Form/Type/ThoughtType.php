@@ -11,6 +11,7 @@ use ThoughtBundle\Entity\Thought;
 
 /**
  * Class ThoughtType
+ *
  * @package Application\Sonata\UserBundle\Form\Type
  */
 class ThoughtType extends AbstractType
@@ -23,30 +24,30 @@ class ThoughtType extends AbstractType
     {
         $builder
             ->add('category', TextType::class, [
-                'label_attr' => [ 'class' => 'control-label col-sm-2' ],
-                'attr'       => [ 'class' => 'form-control' ],
+                'label_attr' => ['class' => 'control-label col-sm-2'],
+                'attr'       => ['class' => 'form-control'],
                 'label'      => 'thought.filter.fields.category.label',
             ])
             ->add('content', TextareaType::class, [
-                'label_attr' => [ 'class' => 'control-label col-sm-2' ],
-                'attr'       => [ 'class' => 'form-control' ],
+                'label_attr' => ['class' => 'control-label col-sm-2'],
+                'attr'       => ['class' => 'form-control'],
                 'label'      => 'thought.filter.fields.content.label',
             ])
             ->add('thoughtInfo', TextType::class, [
-                'label_attr' => [ 'class' => 'control-label col-sm-2' ],
-                'attr'       => [ 'class' => 'form-control' ],
+                'label_attr' => ['class' => 'control-label col-sm-2'],
+                'attr'       => ['class' => 'form-control'],
                 'required'   => false,
                 'label'      => 'thought.filter.fields.thoughtInfo.label',
             ])
             ->add('tags', TextType::class, [
-                'label_attr' => [ 'class' => 'control-label col-sm-2' ],
-                'attr'       => [ 'class' => 'form-control', 'data-role' => 'tagsinput' ],
+                'label_attr' => ['class' => 'control-label col-sm-2'],
+                'attr'       => ['class' => 'form-control', 'data-role' => 'tagsinput'],
                 'required'   => false,
                 'label'      => 'thought.filter.fields.tags.label',
             ])
             ->add('author', TextType::class, [
-                'label_attr' => [ 'class' => 'control-label col-sm-2' ],
-                'attr'       => [ 'class' => 'form-control' ],
+                'label_attr' => ['class' => 'control-label col-sm-2'],
+                'attr'       => ['class' => 'form-control'],
                 'label'      => 'thought.filter.fields.author.label',
             ])
         ;

@@ -15,10 +15,10 @@ class SearchFilterType extends AbstractType
                 'mapped' => false,
             ])
             ->add('fields', 'choice', [
-                'mapped' => false,
+                'mapped'   => false,
                 'expanded' => true,
                 'multiple' => true,
-                'choices' => [
+                'choices'  => [
                     'content'     => 'content',
                     'category'    => 'category',
                     'tags'        => 'tags',
@@ -31,7 +31,6 @@ class SearchFilterType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-
     }
 
     public function getName()

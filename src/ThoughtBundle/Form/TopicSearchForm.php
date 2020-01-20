@@ -15,16 +15,16 @@ class TopicSearchForm extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'required' => false,
-                'label'    => 'thought.topic.search_form.labels.name',
-                'translation_domain' => 'messages'
+                'required'           => false,
+                'label'              => 'thought.topic.search_form.labels.name',
+                'translation_domain' => 'messages',
 
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Go!',
                 'attr'  => [
-                    'class' => 'btn btn-info'
-                ]
+                    'class' => 'btn btn-info',
+                ],
             ])
         ;
     }
@@ -33,7 +33,7 @@ class TopicSearchForm extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'data_class' => Topic::class
+                'data_class' => Topic::class,
             ]);
     }
 

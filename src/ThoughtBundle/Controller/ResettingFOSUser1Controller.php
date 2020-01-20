@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Class ResettingFOSUser1Controller.
  *
- *
  * @author Hugo Briand <briand@ekino.com>
  */
 class ResettingFOSUser1Controller extends BaseController
@@ -29,11 +28,11 @@ class ResettingFOSUser1Controller extends BaseController
         $user = $this->container->get('fos_user.user_manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
-            return $this->container->get('templating')->renderResponse('FOSUserBundle:Resetting:request.html.'.$this->getEngine(), array('invalid_username' => $username));
+            return $this->container->get('templating')->renderResponse('FOSUserBundle:Resetting:request.html.' . $this->getEngine(), ['invalid_username' => $username]);
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('fos_user.resetting.token_ttl'))) {
-            return $this->container->get('templating')->renderResponse('FOSUserBundle:Resetting:passwordAlreadyRequested.html.'.$this->getEngine());
+            return $this->container->get('templating')->renderResponse('FOSUserBundle:Resetting:passwordAlreadyRequested.html.' . $this->getEngine());
         }
 
         if (null === $user->getConfirmationToken()) {

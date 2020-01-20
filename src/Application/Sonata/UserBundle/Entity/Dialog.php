@@ -43,7 +43,7 @@ class Dialog
     public function __construct()
     {
         $this->messages = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        $this->users    = new ArrayCollection();
     }
 
     public function addMessage(Message $message)
@@ -69,11 +69,10 @@ class Dialog
     /**
      * Get id
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-
 }

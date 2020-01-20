@@ -1,6 +1,7 @@
 <?php
 
 namespace ThoughtBundle\Twig;
+
 use FOS\ElasticaBundle\Finder\FinderInterface;
 use Symfony\Component\DependencyInjection\Container;
 use ThoughtBundle\Entity\Author;
@@ -8,6 +9,7 @@ use ThoughtBundle\Model\AuthorModel;
 
 /**
  * Class AppExtension
+ *
  * @package ThoughtBundle\Twig
  */
 class AppExtension extends \Twig_Extension
@@ -19,6 +21,7 @@ class AppExtension extends \Twig_Extension
 
     /**
      * AppExtension constructor.
+     *
      * @param Container $container
      */
     public function __construct(Container $container)
@@ -31,19 +34,20 @@ class AppExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('customTag', array($this, 'customTagFilter')),
-            new \Twig_SimpleFilter('shortText', array($this, 'customShortText')),
-            new \Twig_SimpleFilter('alphabetAuthersLinks', array($this, 'alphabetAuthersLinks'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFilter('authorsInfo', array($this, 'authorsInfo')),
+        return [
+            new \Twig_SimpleFilter('customTag', [$this, 'customTagFilter']),
+            new \Twig_SimpleFilter('shortText', [$this, 'customShortText']),
+            new \Twig_SimpleFilter('alphabetAuthersLinks', [$this, 'alphabetAuthersLinks'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFilter('authorsInfo', [$this, 'authorsInfo']),
 
-        );
+        ];
     }
 
     /**
      * @param string $string
      * @param int    $length
      * @param string $link
+     *
      * @return string
      */
     public function customShortText($string, $length = 1, $link = null)
@@ -89,6 +93,7 @@ class AppExtension extends \Twig_Extension
 
     /**
      * @param string $string
+     *
      * @return mixed
      */
     public function customTagFilter($string)
@@ -105,7 +110,7 @@ class AppExtension extends \Twig_Extension
                     $subString = explode(']', $item);
 
                     if (count($subString) == 2) {
-                        $string = str_replace('[a ' . $item . '[/a]', '<a href="' . $subString[0] .'">' . $subString[1] . '</a>', $string);
+                        $string = str_replace('[a ' . $item . '[/a]', '<a href="' . $subString[0] . '">' . $subString[1] . '</a>', $string);
                     }
                 }
             }
@@ -119,10 +124,9 @@ class AppExtension extends \Twig_Extension
         $result = '';
 
         foreach ($alphas as $alpha) {
-
-            $link = $this->container->get('router')->generate('thought_author_index', array(
+            $link = $this->container->get('router')->generate('thought_author_index', [
                 'alpha' => $alpha,
-            ));
+            ]);
 
             $result .= "<a href='$link'>$alpha</a>";
         }

@@ -101,6 +101,7 @@ class MenuItem
 
     /**
      * @param string $role
+     *
      * @return MenuItem
      */
     public function setRole($role)

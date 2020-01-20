@@ -33,7 +33,7 @@ class TopicRepository extends EntityRepository
             ->where('t.name LIKE :topicName')
             ->orWhere('c.name LIKE :topicName')
             ->setParameters([
-               'topicName' => '%' . $topic->getName() . '%'
+                'topicName' => '%' . $topic->getName() . '%',
             ]);
         return $qb->getQuery()->getResult();
     }
