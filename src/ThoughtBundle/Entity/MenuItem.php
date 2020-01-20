@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ThoughtBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -8,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Class MenuItem
+ *
  * @package ThoughtBundle\Entity
  *
  * @ORM\Entity(repositoryClass="Gedmo\Tree\Entity\Repository\NestedTreeRepository")
@@ -16,7 +16,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class MenuItem
 {
-
     /**
      * @var int
      *
@@ -24,28 +23,28 @@ class MenuItem
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    public $url;
+    private $url;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string")
      */
-    public $text;
+    private $text;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string")
      */
-    public $role = 'IS_AUTHENTICATED_ANONYMOUSLY';
+    private $role = 'IS_AUTHENTICATED_ANONYMOUSLY';
 
     /**
      * @Gedmo\TreeLeft
@@ -93,6 +92,24 @@ class MenuItem
     private $sort;
 
     /**
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param string $role
+     * @return MenuItem
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function getId()
@@ -110,6 +127,7 @@ class MenuItem
 
     /**
      * @param string $url
+     *
      * @return MenuItem
      */
     public function setUrl($url)
@@ -128,6 +146,7 @@ class MenuItem
 
     /**
      * @param string $text
+     *
      * @return MenuItem
      */
     public function setText($text)
@@ -146,6 +165,7 @@ class MenuItem
 
     /**
      * @param mixed $left
+     *
      * @return MenuItem
      */
     public function setLeft($left)
@@ -164,6 +184,7 @@ class MenuItem
 
     /**
      * @param mixed $level
+     *
      * @return MenuItem
      */
     public function setLevel($level)
@@ -182,6 +203,7 @@ class MenuItem
 
     /**
      * @param mixed $right
+     *
      * @return MenuItem
      */
     public function setRight($right)
@@ -200,6 +222,7 @@ class MenuItem
 
     /**
      * @param mixed $root
+     *
      * @return MenuItem
      */
     public function setRoot($root)
@@ -218,6 +241,7 @@ class MenuItem
 
     /**
      * @param mixed $parent
+     *
      * @return MenuItem
      */
     public function setParent($parent)
@@ -236,6 +260,7 @@ class MenuItem
 
     /**
      * @param mixed $children
+     *
      * @return MenuItem
      */
     public function setChildren($children)
@@ -268,6 +293,7 @@ class MenuItem
 
     /**
      * @param int $sort
+     *
      * @return MenuItem
      */
     public function setSort($sort)

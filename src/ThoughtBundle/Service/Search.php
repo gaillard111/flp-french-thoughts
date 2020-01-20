@@ -2,6 +2,7 @@
 
 namespace ThoughtBundle\Service;
 
+use Exception;
 use FOS\UserBundle\Model\User;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -9,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class Search
+ *
  * @package ThoughtBundle\Service
  */
 class Search
@@ -20,6 +22,7 @@ class Search
 
     /**
      * Search constructor.
+     *
      * @param Container $container
      */
     public function __construct(Container $container)
@@ -29,8 +32,10 @@ class Search
 
     /**
      * @param array|null $searchParams
+     *
      * @return mixed
-     * @throws \Exception
+     *
+     * @throws Exception
      */
     public function preSearch($searchParams)
     {
@@ -40,7 +45,7 @@ class Search
 
                 $countSearch = $request->cookies->get('countSearch', 0) + 1;
 
-                $cookie = new Cookie('countSearch', $countSearch);
+                $cookie   = new Cookie('countSearch', $countSearch);
                 $response = new Response();
                 $response->headers->setCookie($cookie);
                 $response->sendHeaders();

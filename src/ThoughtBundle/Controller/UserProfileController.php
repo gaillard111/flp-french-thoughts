@@ -6,18 +6,26 @@ namespace ThoughtBundle\Controller;
 use Application\Sonata\UserBundle\Entity\Dialog;
 use Application\Sonata\UserBundle\Entity\Friendship;
 use Application\Sonata\UserBundle\Entity\User;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig_Error;
 
 class UserProfileController extends Controller
 {
+
     /**
      * @Route("/userslist", name="user_list")
      */
     public function userListAction(Request $request)
     {
-        $entityManager = $this->getDoctrine()->getEntityManager();
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->container->get('doctrine.orm.entity_manager');
         $usersRepository = $entityManager->getRepository(User::class);
         $usersQuery = $usersRepository->createQueryBuilder('u')->select('u')->getQuery();
 
@@ -37,7 +45,7 @@ class UserProfileController extends Controller
     /**
      * @Route("/userprofile/{userId}", name="thought_profile")
      * @param Int $userId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function showAction($userId)
     {
@@ -50,7 +58,7 @@ class UserProfileController extends Controller
 
                 $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
                 return $this->render('@ApplicationSonataUser/Thought/userProfile.html.twig', [
-                    'user'          =>  $possibleFriend,
+                    'user'         =>  $possibleFriend,
                     'friendship'   =>  $friendship
                 ]);
             }
@@ -61,9 +69,7 @@ class UserProfileController extends Controller
     /**
      * @Route("/friendrequest/{userId}", name="friend_request")
      * @param Int $userId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Twig_Error
+     * @return RedirectResponse
      */
     public function friendRequestAction($userId)
     {
@@ -94,8 +100,8 @@ class UserProfileController extends Controller
     /**
      * @Route("/friendrequest/accept/{requestId}", name="accept_friend_request")
      * @param Int $requestId
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return RedirectResponse
+     * @throws OptimisticLockException
      */
     public function acceptRequestAction($requestId)
     {
@@ -122,7 +128,7 @@ class UserProfileController extends Controller
      */
     public function newDialogAction($userId)
     {
-        $entityManager = $this->getDoctrine()->getEntityManager();
+        $entityManager = $this->container->get('doctrine.orm.entity_manager');
         /** @var User $user */
         $user = $entityManager->getRepository(User::class)->findOneBy([ 'id' => $userId]);
         /** @var User $curUser */
@@ -130,46 +136,47 @@ class UserProfileController extends Controller
 
         $friends = $entityManager->getRepository(Friendship::class)->isFriend($user, $curUser);
 
-//        dump($friends); die;
         if ($friends) {
 
-            if ($user != $curUser) {
-
-                $users = [];
-                $users[] = $user->getId();
-                $users[] = $curUser->getId();
-
-
-                $dialog = $entityManager->getRepository(Dialog::class)->findUsersDialog($users);
-
-                if ($user) {
-
-                    if (!$dialog) {
-
-                        /** @var Dialog $dialog */
-                        $dialog = new Dialog();
-
-                        $dialog->addUser($curUser);
-                        $dialog->addUser($user);
-
-                        $curUser->getDialogs()->add($dialog);
-                        $user->getDialogs()->add($dialog);
-
-                        $entityManager->persist($dialog);
-                        $entityManager->persist($curUser);
-                        $entityManager->persist($user);
-                        $entityManager->flush();
-                    }
-
-
-                    $dialogId = $dialog->getId();
-
-
-                    return $this->redirectToRoute('dialog', [
-                        'dialogId'  => $dialogId
-                    ]);
-                }
+            if ($user === $curUser) {
+                return $this->redirectToRoute('profile');
             }
+
+            $users = [];
+            $users[] = $user->getId();
+            $users[] = $curUser->getId();
+
+
+            $dialog = $entityManager->getRepository(Dialog::class)->findUsersDialog($users);
+
+            if (!$user) {
+                return $this->redirectToRoute('profile');
+            }
+
+            if (!$dialog) {
+
+                /** @var Dialog $dialog */
+                $dialog = new Dialog();
+
+                $dialog->addUser($curUser);
+                $dialog->addUser($user);
+
+                $curUser->getDialogs()->add($dialog);
+                $user->getDialogs()->add($dialog);
+
+                $entityManager->persist($dialog);
+                $entityManager->persist($curUser);
+                $entityManager->persist($user);
+                $entityManager->flush();
+            }
+
+
+            $dialogId = $dialog->getId();
+
+
+            return $this->redirectToRoute('dialog', [
+                'dialogId'  => $dialogId
+            ]);
         }
 
         return $this->redirectToRoute('dialog_list');

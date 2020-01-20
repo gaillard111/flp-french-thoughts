@@ -33,14 +33,14 @@ class ThoughtAdmin extends Admin
             ->add('content')
             ->add('thoughtInfo')
             ->add('author', 'text')
-            ->add('tags', 'text', array(
-                'attr' => array(
+            ->add('tags', 'text', [
+                'attr' => [
                     'data-role' => 'tagsinput',
-                ),
-            ))
-            ->add('published', null, array(
+                ],
+            ])
+            ->add('published', null, [
                 'required' => false,
-            ))
+            ])
         ;
     }
 
@@ -54,14 +54,14 @@ class ThoughtAdmin extends Admin
             ->add('content')
             ->add('category')
             ->add('author')
-            ->add('_action', 'action', array(
-                'actions' => array(
-                    'publish' => array(
+            ->add('_action', 'action', [
+                'actions' => [
+                    'publish' => [
                         'template' => 'ThoughtBundle:CRUD:list__publish_publish.html.twig',
-                    ),
-                ),
+                    ],
+                ],
                 'label'    => 'Published',
-            ))
+            ])
         ;
     }
 
@@ -102,10 +102,10 @@ class ThoughtAdmin extends Admin
      */
     public function getExportFormats()
     {
-        return array(
+        return [
             'txt',
             //'csv',
-        );
+        ];
     }
 
     /**

@@ -1,0 +1,295 @@
+fos_elastica:
+  clients:
+    default:
+      host: "%elastica_host%"
+      port: "%elastica_port%"
+  indexes:
+    app:
+      types:
+        author:
+          mappings:
+            name:
+              type: "multi_field"
+              fields:
+                name:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_analyzer
+                name_exact:
+                  type:     "string"
+                  index:    "not_analyzed"
+                  analyzer: standard
+                name_sort:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_sort_analizer
+                name_phrase:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_phrase_analyzer
+                name_prefix:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_prefix_analizer
+            country:
+              type: "multi_field"
+              fields:
+                country:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_analyzer
+                country_exact:
+                  type:     "string"
+                  index:    "not_analyzed"
+                  analyzer: standard
+                country_sort:
+                  type:     "string"
+                  analyzer: app_sort_analizer
+                country_phrase:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_phrase_analyzer
+            sex:
+              type: "string"
+              fields:
+                sex:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_analyzer
+                sex_exact:
+                  type:     "string"
+                  index:    "not_analyzed"
+                  analyzer: standard
+                sex_sort:
+                  type:     "string"
+                  analyzer: app_sort_analizer
+                sex_phrase:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_phrase_analyzer
+            birthDate:
+              type: "multi_field"
+              fields:
+                birthDate:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_analyzer
+                birthDate_exact:
+                  type:     "string"
+                  index:    "not_analyzed"
+                  analyzer: standard
+                birthDate_sort:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_sort_analizer
+                birthDate_phrase:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_phrase_analyzer
+            continent:
+              type: "multi_field"
+              fields:
+                continent:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_analyzer
+                continent_exact:
+                  type:     "string"
+                  index:    "not_analyzed"
+                  analyzer: standard
+                continent_sort:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_sort_analizer
+                continent_phrase:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_phrase_analyzer
+            job:
+              type: "multi_field"
+              fields:
+                job:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_analyzer
+                job_exact:
+                  type:     "string"
+                  index:    "not_analyzed"
+                  analyzer: standard
+                job_sort:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_sort_analizer
+                job_phrase:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_phrase_analyzer
+          persistence:
+            # the driver can be orm, mongodb, phpcr or propel
+            # listener and finder are not supported by
+            # propel and should be removed
+            driver: orm
+            model: ThoughtBundle\Entity\Author
+            listener:
+              insert: true
+              update: true
+              delete: true
+            provider: ~
+            finder: ~
+            elastica_to_model_transformer:
+              ignore_missing: true
+        thought:
+          mappings:
+            content:
+              type: "multi_field"
+              fields:
+                content:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_analyzer
+                content_exact:
+                  type:     "string"
+                  index:    "not_analyzed"
+                  ignore_above: 10000
+                  analyzer: standard
+                content_sort:
+                  type:     "string"
+                  index:    "analyzed"
+                  ignore_above: 10000
+                  analyzer: app_sort_analizer
+                content_phrase:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_phrase_analyzer
+            author:
+              type: "multi_field"
+              fields:
+                author:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_analyzer
+                author_exact:
+                  type:     "string"
+                  index:    "not_analyzed"
+                  analyzer: standard
+                author_sort:
+                  type:     "string"
+                  analyzer: app_sort_analizer
+                author_phrase:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_phrase_analyzer
+
+            tags:
+              type: "multi_field"
+              fields:
+                tags:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_analyzer
+                tags_exact:
+                  type:     "string"
+                  index:    "not_analyzed"
+                  analyzer: standard
+                tags_sort:
+                  type:     "string"
+                  analyzer: app_sort_analizer
+                tags_phrase:
+                  type:     "string"
+                  index:    "analyzed"
+                  analyzer: app_phrase_analyzer
+
+            thoughtInfo:
+              type: "multi_field"
+              fields:
+                thoughtInfo:
+                  analyzer: app_analyzer
+                  type:  "string"
+                  index: "analyzed"
+                thoughtInfo_exact:
+                  type:  "string"
+                  index: "not_analyzed"
+                thoughtInfo_sort:
+                  type:  "string"
+                  analyzer: app_sort_analizer
+                thoughtInfo_phrase:
+                  type:  "string"
+                  analyzer: app_phrase_analyzer
+            category:
+              type: "multi_field"
+              fields:
+                category:
+                  type:  "string"
+                  index: "analyzed"
+                  analyzer: app_analyzer
+                category_exact:
+                  type:     "string"
+                  index:    "not_analyzed"
+                  analyzer: standard
+                category_sort:
+                  type:     "string"
+                  analyzer: app_sort_analizer
+                category_phrase:
+                  type:     "string"
+                  index: "analyzed"
+                  analyzer: app_phrase_analyzer
+            amount:
+              type: "integer"
+          #                        liked:
+          #                            type: "integer"
+          persistence:
+            # the driver can be orm, mongodb, phpcr or propel
+            # listener and finder are not supported by
+            # propel and should be removed
+            driver: orm
+            model: ThoughtBundle\Entity\Thought
+            provider: ~
+            listener:
+              is_indexable_callback: "thought.isPublish()"
+              #immediate: ~
+            finder: ~
+            elastica_to_model_transformer:
+              ignore_missing: true
+      settings:
+        index:
+          analysis:
+            analyzer:
+              app_analyzer:
+                type: custom
+                tokenizer: whitespace
+                filter   : [app_ngram, my_asciifolding, lowercase, my_word_delimiter]
+              app_sort_analizer:
+                type: custom
+                tokenizer: keyword
+                filter   : [lowercase, french]
+              app_prefix_analizer:
+                type: custom
+                tokenizer: keyword
+                filter   : [lowercase, my_asciifolding]
+              app_phrase_analyzer:
+                type: custom
+                tokenizer: whitespace
+                filter   : [my_asciifolding, lowercase, my_word_delimiter]
+            tokenizer:
+            #nGram:
+            #    type:     "nGram"
+            #    min_gram: 4
+            #    max_gram: 20
+            filter:
+              app_ngram:
+                type: "nGram"
+                min_gram: 1
+                max_gram: 20
+              stopwords:
+                type:      stop
+                stopwords: [_french_]
+                ignore_case : true
+              my_word_delimiter:
+                catenate_words: true
+                type: word_delimiter
+              my_asciifolding:
+                type: asciifolding
+                preserve_original: true
+              french:
+                type:     "icu_collation"
+                language: "fr"

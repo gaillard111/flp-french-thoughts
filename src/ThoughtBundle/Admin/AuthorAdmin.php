@@ -66,14 +66,14 @@ class AuthorAdmin extends Admin
      */
     public function getFilterFields()
     {
-        return array(
+        return [
             'name',
             'birthDate',
             'sex',
             'country',
             'continent',
             'job',
-        );
+        ];
     }
 
     /**
@@ -91,9 +91,9 @@ class AuthorAdmin extends Admin
      */
     public function getExportFormats()
     {
-        return array(
+        return [
             'csv',
-        );
+        ];
     }
 
     /**
@@ -101,7 +101,7 @@ class AuthorAdmin extends Admin
      */
     public function getExportFields()
     {
-        return array(
+        return [
             'id',
             'name',
             'birthDate',
@@ -109,6 +109,6 @@ class AuthorAdmin extends Admin
             'country',
             'continent',
             'job'
-        );
+        ];
     }
 }

@@ -4,11 +4,11 @@ namespace ThoughtBundle\Model;
 
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\Query as DoctrineQuery;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\QueryException;
 use Elastica\Query;
-use FOS\ElasticaBundle\Finder\FinderInterface;
 use FOS\ElasticaBundle\Finder\TransformedFinder;
 use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
 use FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter;
@@ -18,12 +18,15 @@ use ThoughtBundle\Entity\Thought;
 
 /**
  * Class ThoughtModel
+ *
  * @package ThoughtBundle\Model
  */
 class ThoughtModel
 {
-    const CLOUD_MIN_FONT_SIZE   = 15;
+    const CLOUD_MIN_FONT_SIZE = 15;
+
     const CLOUD_MIN_FONT_WEIGHT = 200;
+
     const CLOUD_NUMBER_OF_WORDS = 30;
 
     /**
@@ -42,30 +45,34 @@ class ThoughtModel
     protected $repository;
 
     /**
+     * @var TransformedFinder
+     */
+    private $finder;
+
+    /**
+     * @var TransformedFinder
+     */
+    private $authorsFinder;
+
+    /**
      * ThoughtModel constructor.
+     *
      * @param EntityManager $em
      * @param Container     $container
      */
-    public function __construct(EntityManager $em, Container $container)
+    public function __construct(EntityManager $em, Container $container, TransformedFinder $finder, TransformedFinder $authorsFinder)
     {
         $this->em         = $em;
         $this->container  = $container;
         $this->repository = $em->getRepository('ThoughtBundle:Thought');
-    }
 
-    /**
-     * @return DoctrineQuery
-     */
-    public function getThoughts()
-    {
-        return $this->repository->createQueryBuilder('t')
-            ->where('t.published = 1')
-            ->orderBy('t.createdAt', 'DESC')
-            ->getQuery();
+        $this->finder        = $finder;
+        $this->authorsFinder = $authorsFinder;
     }
 
     /**
      * @param User $user
+     *
      * @return DoctrineQuery
      */
     public function getUserThoughts(User $user, $order = 'DESC', $searchString = '')
@@ -80,22 +87,22 @@ class ThoughtModel
                     ->andWhere('t.content LIKE :word' . $id)
                     ->setParameter('word' . $id, '%' . $word . '%');
             }
-
         }
 
         $qb
             ->andWhere('t.owner = :user')
             ->orderBy('t.createdAt', $order)
             ->setParameter('user', $user);
-//        dump($qb->getQuery()); die;
-        return
-            $qb->getQuery();
+
+        return $qb->getQuery();
     }
 
     /**
      * @param User $user
+     *
      * @return mixed
-     * @throws \Doctrine\ORM\Query\QueryException
+     *
+     * @throws QueryException
      */
     public function getCountUserThoughts(User $user)
     {
@@ -108,11 +115,11 @@ class ThoughtModel
     }
 
     /**
-     * @param array             $request
-     * @param TransformedFinder $finder
+     * @param array $request
+     *
      * @return DoctrineQuery|PaginatorAdapterInterface|TransformedPaginatorAdapter
      */
-    public function getThoughtsFromElastic($request, TransformedFinder $finder, TransformedFinder $authorsFinder)
+    public function getThoughtsFromElastic($request)
     {
         $fields = [
             'tags',
@@ -127,42 +134,34 @@ class ThoughtModel
         }
 
         $isAuthor = false;
+
         $terms = [];
 
-        if (isset($request['author']) and count($request['author']) > 0) {
+        if (isset($request['author']) && count($request['author']) > 0) {
             $authorsData = $this->getAuthors($request['author'], $isAuthor);
+
             $terms = array_merge($terms, $authorsData['terms']);
+
             $isAuthor = $authorsData['isAuthor'];
         }
 
         $names = [];
 
-        $time_start = microtime(true);
-
         if ($isAuthor) {
-            $names = $this->getNames($terms, $authorsFinder);
+            $names = $this->getNames($terms);
+
+            $terms[] = [
+                'terms' => [
+                    'author_exact' => $names,
+                ],
+            ];
         }
-
-        $time_end = microtime(true);
-        $time = $time_end - $time_start;
-
-
 
         if (isset($request['term']) && count($request['term']) > 0) {
             $terms = array_merge($terms, $this->getTerms($request['term']));
         }
 
-        if ($isAuthor) {
-            $terms[] = [
-                'terms' => [
-                    'author_exact' => $names,
-                ]
-            ];
-        }
-
-        $sort = [
-            'amount' => 'asc'
-        ];
+        $sort = ['amount' => 'asc'];
 
         if (isset($request['sorting']) && $request['sorting']) {
             $sort = [
@@ -170,17 +169,15 @@ class ThoughtModel
             ];
         }
 
-        $strict = (isset($request['strict']) && $request['strict']) ? true : false;
+        $strict = isset($request['strict']) && $request['strict'];
 
         $maxWords = (isset($request['max_words']) && $request['max_words'] > 0) ? intval($request['max_words']) : 99999999;
 
         $minWords = isset($request['min_words']) ? intval($request['min_words']) : 0;
 
-        $minChars = isset($request['min_chars']) ? intval($request['min_chars']) : 0;
-
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
-        $lastChar = $words[mb_strlen($words) - 1];
+        $lastChar  = $words[mb_strlen($words) - 1];
         $firstChar = $words[0];
 
         $words = ($lastChar == ',' || $lastChar == '.' || $lastChar == '!') ? mb_substr($words, 0, -1) : $words;
@@ -191,7 +188,7 @@ class ThoughtModel
         if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
             $query = $this->searchQuoteString($countQuote[1], $fields, $minWords, $maxWords, $sort, $terms);
 
-            return $finder->createPaginatorAdapter($query);
+            return $this->finder->createPaginatorAdapter($query);
         }
 
         $arrWords = explode(' ', $words);
@@ -199,11 +196,12 @@ class ThoughtModel
         $wordExceptions = [];
 
         foreach ($arrWords as $keyArrWords => $valueArrWords) {
-            if (!empty($valueArrWords)) {
-                if ($valueArrWords[0] == '-') {
-                    $wordExceptions[] = $this->filterWord($valueArrWords);
-                    unset($arrWords[$keyArrWords]);
-                }
+            if (empty($valueArrWords)) {
+                continue;
+            }
+            if ($valueArrWords[0] == '-') {
+                $wordExceptions[] = $this->filterWord($valueArrWords);
+                unset($arrWords[$keyArrWords]);
             }
         }
 
@@ -214,7 +212,6 @@ class ThoughtModel
         if (!$words) {
             $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms);
         } else {
-
             if ($strict) {
                 $query = $this->searchExactly($words, $fields, $minWords, $maxWords, $sort);
             } else {
@@ -226,16 +223,16 @@ class ThoughtModel
                     $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
                 }
             }
-
-
         }
 
-        return $finder->createPaginatorAdapter($query);
+        return $this->finder->createPaginatorAdapter($query);
     }
 
     /**
      * @param array $data
+     *
      * @return int
+     *
      * @throws OptimisticLockException
      */
     public function saveThoughts(array $data)
@@ -267,17 +264,18 @@ class ThoughtModel
 
     /**
      * @param Thought $thought
+     *
      * @return Thought
+     *
      * @throws OptimisticLockException
      */
-    public function addLike(Thought  $thought, User $user)
+    public function addLike(Thought $thought, User $user)
     {
         $like = new Like();
         $like
             ->setUser($user)
             ->setThought($thought);
         $thought->addLike($like);
-//        dump($thought);
         $this->em->persist($thought);
         $this->em->flush();
         return $thought;
@@ -285,10 +283,12 @@ class ThoughtModel
 
     /**
      * @param Thought $thought
+     *
      * @return Thought
+     *
      * @throws OptimisticLockException
      */
-    public function removeLike(Thought  $thought, User $user)
+    public function removeLike(Thought $thought, User $user)
     {
         /** @var Like[] $likes */
         $likes = $thought->getLikes();
@@ -300,23 +300,23 @@ class ThoughtModel
             }
         }
 
-
         return $thought;
     }
 
     /**
      * @param array $filters
      * @param array $filterFields
+     *
      * @return array
      */
     public function getFilteredThoughts(array $filters, array $filterFields)
     {
-        $where     = array();
+        $where     = [];
         $sortBy    = null;
         $sortOrder = null;
 
         if (count($filters)) {
-            $sortBy = isset($filters['_sort_by']) ? $filters['_sort_by'] : null;
+            $sortBy    = isset($filters['_sort_by']) ? $filters['_sort_by'] : null;
             $sortOrder = isset($filters['_sort_order']) ? $filters['_sort_order'] : null;
 
             foreach ($filters as $filterName => $filterParams) {
@@ -345,16 +345,16 @@ class ThoughtModel
      * @param int    $minWords
      * @param int    $maxWords
      * @param array  $sort
-     * @return $this
+     *
+     * @return Query
      */
     public function searchExactly($words, $fields, $minWords, $maxWords, $sort)
     {
-        $query = new \Elastica\Query();
+        $query = new Query();
 
-        $arrFields = array();
+        $arrFields = [];
 
         foreach ($fields as $field) {
-
             $arrFields[] = [
                 'bool' => [
                     'must' => [
@@ -370,7 +370,7 @@ class ThoughtModel
             'filter' => [
                 'bool' => [
                     'should' => $arrFields,
-                    'must' => [
+                    'must'   => [
                         'range' => [
                             'amount' => [
                                 'gte' => $minWords,
@@ -394,11 +394,12 @@ class ThoughtModel
      * @param $sort
      * @param $filterException
      * @param $terms
+     *
      * @return Query
      */
     public function searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms)
     {
-        $query = new \Elastica\Query();
+        $query = new Query();
 
         $must = [
             [
@@ -431,7 +432,7 @@ class ThoughtModel
                 'filter' => [
                     'bool' => [
                         'must_not' => $filterException,
-                        'must' => $must
+                        'must'     => $must,
                     ],
                 ],
                 'sort' => $sort,
@@ -446,6 +447,7 @@ class ThoughtModel
      * @param int    $maxWords
      * @param array  $sort
      * @param array  $filterException
+     *
      * @return Query
      */
     public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms)
@@ -465,7 +467,7 @@ class ThoughtModel
             $must[] = $terms;
         }
 
-        $query = new \Elastica\Query();
+        $query = new Query();
         $query->setParams(
             [
                 'query' => [
@@ -479,10 +481,10 @@ class ThoughtModel
                 'filter' => [
                     'bool' => [
                         'must_not' => $filterException,
-                        'must' => $must,
+                        'must'     => $must,
                     ],
                 ],
-                "sort" => $sort
+                'sort' => $sort,
             ]
         );
 
@@ -494,6 +496,7 @@ class ThoughtModel
      * @param int   $maxWords
      * @param array $sort
      * @param array $filterException
+     *
      * @return Query
      */
     public function searchDefault($minWords, $maxWords, $sort, $filterException, $terms)
@@ -513,14 +516,14 @@ class ThoughtModel
             $must[] = $terms;
         }
 
-        $query = new \Elastica\Query();
+        $query = new Query();
 
         $query->setRawQuery(
             [
                 'filter' => [
                     'bool' => [
                         'must_not' => $filterException,
-                        'must' => $must
+                        'must'     => $must,
                     ],
                 ],
                 'sort' => $sort,
@@ -536,11 +539,12 @@ class ThoughtModel
      * @param int    $minWords
      * @param int    $maxWords
      * @param array  $sort
+     *
      * @return $this|Query
      */
     public function searchQuoteString($string, $fields, $minWords, $maxWords, $sort, $terms)
     {
-        $query = new \Elastica\Query();
+        $query = new Query();
 
         $must = [
             [
@@ -558,31 +562,29 @@ class ThoughtModel
         }
 
         if (count(explode(' ', $string)) > 1) {
-            $phraseFields = array();
+            $phraseFields = [];
 
             foreach ($fields as $field) {
                 $phraseFields[] = $field . '_phrase';
             }
 
-            $query->setParams(
-                [
-                    'query' => [
-                        'multi_match' => [
-                            'query'                => $string,
-                            'fields'               => $phraseFields,
-                            'operator'             => 'and',
-                            'minimum_should_match' => '100%',
-                            'type'                 => 'phrase',
-                        ],
+            $query->setParams([
+                'query' => [
+                    'multi_match' => [
+                        'query'                => $string,
+                        'fields'               => $phraseFields,
+                        'operator'             => 'and',
+                        'minimum_should_match' => '100%',
+                        'type'                 => 'phrase',
                     ],
-                    'filter' => [
-                        'bool' => [
-                            'must' => $must
-                        ],
+                ],
+                'filter' => [
+                    'bool' => [
+                        'must' => $must,
                     ],
-                    'sort' => $sort,
-                ]
-            );
+                ],
+                'sort' => $sort,
+            ]);
 
             return $query;
         }
@@ -601,7 +603,7 @@ class ThoughtModel
             'filter' => [
                 'bool' => [
                     'should' => $arrFields,
-                    'must' => $must
+                    'must'   => $must,
                 ],
             ],
             'sort' => $sort,
@@ -612,19 +614,22 @@ class ThoughtModel
 
     /**
      * @param $limit
+     *
      * @return mixed
      */
-    public function getLastThoughts($limit) {
+    public function getLastThoughts($limit)
+    {
         return $this->repository->getLastThoughts($limit);
     }
 
     /**
-     * @param array $fields
+     * @param array                     $fields
      * @param PaginatorAdapterInterface $thoughts
      *
      * @return array
      */
-    public function getCloud($fields, $thoughts, $words) {
+    public function getCloud($fields, $thoughts, $words)
+    {
         $cloud = $cloudStyle = [];
 
         $avoidWords = [
@@ -637,8 +642,7 @@ class ThoughtModel
         ];
 
         if (!is_array($thoughts) && $words) {
-
-            $cloud = [];
+            $cloud        = [];
             $cloudContent = [];
 
             if ($thoughts->getTotalHits() > 0) {
@@ -649,11 +653,10 @@ class ThoughtModel
                     $offset = $thoughts->getTotalHits();
                 }
                 foreach ($thoughts->getResults(0, $offset)->toArray() as $thought) {
-                    $tags = explode(',', $thought->getTags());
+                    $tags  = explode(',', $thought->getTags());
                     $words = explode(' ', $thought->getContent());
                     if (count($words) <= 80) {
                         foreach ($words as $word) {
-
                             if (in_array($this->formatCloudWord($word), $avoidWords)) {
                                 continue;
                             }
@@ -667,7 +670,6 @@ class ThoughtModel
                             }
                         }
                     }
-
 
                     foreach ($tags as $tag) {
                         if (!$tag || mb_strlen($this->formatCloudWord($tag), 'UTF-8') < 5 || in_array($this->formatCloudWord($tag), $avoidWords)) {
@@ -684,21 +686,14 @@ class ThoughtModel
                     if (!$thought->getCategory()) {
                         continue;
                     }
-
-                    if (!isset($cloud[$this->formatCloudWord($thought->getCategory())])) {
-                        //$cloud[trim(strtolower($thought->getCategory()))] = 0;
-                    }
-
-                    //$cloud[trim(strtolower($thought->getCategory()))]++;
                 }
             }
 
             array_multisort($cloud, SORT_DESC);
             array_multisort($cloudContent, SORT_DESC);
 
-
-            $cloud        = array_slice($cloud, 0, self::CLOUD_NUMBER_OF_WORDS/2);
-            $cloudContent = array_slice($cloudContent, 0, self::CLOUD_NUMBER_OF_WORDS/2);
+            $cloud        = array_slice($cloud, 0, self::CLOUD_NUMBER_OF_WORDS / 2);
+            $cloudContent = array_slice($cloudContent, 0, self::CLOUD_NUMBER_OF_WORDS / 2);
 
             $cloud = array_merge($cloud, $cloudContent);
 
@@ -718,12 +713,13 @@ class ThoughtModel
 
         return [
             'cloud'      => $cloud,
-            'cloudStyle' => $cloudStyle
+            'cloudStyle' => $cloudStyle,
         ];
     }
 
     /**
      * @param $requestAuthor array
+     *
      * @return array
      */
     private function getAuthors($requestAuthor, $isAuthor)
@@ -732,7 +728,6 @@ class ThoughtModel
 
         foreach ($requestAuthor as $key => $val) {
             if ($val) {
-
                 $isAuthor = true;
 
                 $val = trim($val);
@@ -746,17 +741,16 @@ class ThoughtModel
                         'query' => [
                             'term' => [
                                 $key . '_exact' => $val,
-                            ]
-                        ]
+                            ],
+                        ],
                     ];
-
                 } else {
                     $terms[] = [
                         'query' => [
                             'multi_match' => [
-                                'query'                => $val,
-                                'fields'               => [
-                                    $key
+                                'query'  => $val,
+                                'fields' => [
+                                    $key,
                                 ],
                                 'minimum_should_match' => '100%',
                                 'type'                 => 'cross_fields',
@@ -764,20 +758,21 @@ class ThoughtModel
                                 'tie_breaker'          => '1.0',
                                 'analyzer'             => 'standard',
                             ],
-                        ]
+                        ],
                     ];
                 }
             }
         }
 
         return [
-            'terms' => $terms,
-            'isAuthor' => $isAuthor
+            'terms'    => $terms,
+            'isAuthor' => $isAuthor,
         ];
     }
 
     /**
      * @param $requestTerms array
+     *
      * @return array
      */
     private function getTerms($requestTerms)
@@ -795,16 +790,16 @@ class ThoughtModel
                         'query' => [
                             'match_phrase' => [
                                 $key . '_phrase' => $val,
-                            ]
-                        ]
+                            ],
+                        ],
                     ];
                 } else {
                     $terms[] = [
                         'query' => [
                             'match' => [
                                 $key . '_phrase' => $val,
-                            ]
-                        ]
+                            ],
+                        ],
                     ];
                 }
             }
@@ -817,9 +812,11 @@ class ThoughtModel
      * return value of font-size depends on popularity
      *
      * @param $val
+     *
      * @return int
      */
-    private function cloudFontSize($val) {
+    private function cloudFontSize($val)
+    {
         return self::CLOUD_MIN_FONT_SIZE + sqrt($val);
     }
 
@@ -827,17 +824,19 @@ class ThoughtModel
      * return value of font-weight depends on popularity
      *
      * @param $val
+     *
      * @return int
      */
-    private function cloudFontWeight($val) {
-
-        $weight = ceil((self::CLOUD_MIN_FONT_WEIGHT * sqrt($val)/100))*100;
+    private function cloudFontWeight($val)
+    {
+        $weight = ceil((self::CLOUD_MIN_FONT_WEIGHT * sqrt($val) / 100)) * 100;
 
         return $weight > 900 ? 900 : $weight;
     }
 
     /**
      * @param string $word
+     *
      * @return string
      */
     private function filterWord($word)
@@ -851,6 +850,7 @@ class ThoughtModel
     /**
      * @param array $fields
      * @param array $words
+     *
      * @return array
      */
     private function compileExceptions($fields, $words)
@@ -878,18 +878,19 @@ class ThoughtModel
 
     /**
      * @param array $data
+     *
      * @return bool|int
      */
     private function createTransaction(array $data)
     {
         $thought = null;
 
-        $id = (isset($data['id'])) ? $data['id'] : null;
-        $tags = (isset($data['tags'])) ? $data['tags'] : null;
-        $author = (isset($data['author'])) ? $data['author'] : null;
-        $content = (isset($data['content'])) ? $data['content'] : null;
-        $category = (isset($data['category'])) ? $data['category'] : null;
-        $published = (isset($data['published'])) ? $data['published'] : null;
+        $id          = (isset($data['id'])) ? $data['id'] : null;
+        $tags        = (isset($data['tags'])) ? $data['tags'] : null;
+        $author      = (isset($data['author'])) ? $data['author'] : null;
+        $content     = (isset($data['content'])) ? $data['content'] : null;
+        $category    = (isset($data['category'])) ? $data['category'] : null;
+        $published   = (isset($data['published'])) ? $data['published'] : null;
         $thoughtInfo = (isset($data['info'])) ? $data['info'] : null;
 
         if (!empty($content) && !empty($author) && !empty($category)) {
@@ -930,40 +931,36 @@ class ThoughtModel
     }
 
     /**
-     * @param array $terms
-     * @param FinderInterface $finder
-     * @return mixed
+     * @param $terms
+     *
+     * @return array
      */
-    private function getNames($terms, $finder) {
-        $query = new \Elastica\Query();
+    private function getNames($terms)
+    {
+        $query = new Query();
 
-        $must = array();
-
-//        dump($terms);die;
+        $must = [];
 
         if (!empty($terms)) {
             $must[] = $terms;
         }
 
-        $query->setRawQuery(
-            [
-                'filter' => [
-                    'bool' => [
-                        'must' => array_merge($must, [
-                            [
-                                'regexp' => [
-                                    'birthDate' => [
-                                        'value' => '6.*5'
-                                    ]
-                                ]
-                            ]
-                        ]),
-                    ],
+        $query->setRawQuery([
+            'filter' => [
+                'bool' => [
+                    'must' => array_merge($must, [
+                        [
+                            'regexp' => [
+                                'birthDate' => [
+                                    'value' => '6.*5',
+                                ],
+                            ],
+                        ],
+                    ]),
                 ],
-            ]
-        );
-//        dump($query);die;
-        $authors = $finder->find($query, 100000);
+            ],
+        ]);
+        $authors = $this->authorsFinder->find($query, 100000);
 
         $names = [];
 

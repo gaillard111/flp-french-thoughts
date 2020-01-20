@@ -83,16 +83,10 @@ services:
         class: ThoughtBundle\Parser\Service
         arguments: ["@service_container"]
 
-#    thought.search_provider.thought:
-#        class: ThoughtBundle\Provider\ThoughtProvider
-#        arguments:
-#            - fos_elastica.index.app.thought
-#        tags:
-#            - { name: fos_elastica.provider, index: app, type: thought }
 
     thought.model.thought_model:
         class: ThoughtBundle\Model\ThoughtModel
-        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+        arguments: ["@doctrine.orm.entity_manager", "@service_container", "@fos_elastica.finder.app.thought", "@fos_elastica.finder.app.author"]
 
     thought.model.author_model:
         class: ThoughtBundle\Model\AuthorModel

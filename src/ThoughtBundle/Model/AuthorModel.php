@@ -72,9 +72,9 @@ class AuthorModel
      * @return null|object
      */
     public function findAuthorByName($name) {
-        return $this->repository->findOneBy(array(
+        return $this->repository->findOneBy([
             'name' => $name
-        ));
+        ]);
     }
 
     /**

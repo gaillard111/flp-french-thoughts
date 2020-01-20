@@ -3,14 +3,13 @@
 namespace ThoughtBundle\Admin;
 
 use Sonata\AdminBundle\Admin\Admin;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 /**
  * Class ThoughtAdmin
+ *
  * @package ThoughtBundle\Admin
  */
 class ContentAdmin extends Admin
@@ -22,21 +21,21 @@ class ContentAdmin extends Admin
     {
         $formMapper
             ->add('title', 'text')
-            ->add('content', 'sonata_formatter_type', array(
-                'event_dispatcher' => $formMapper->getFormBuilder()->getEventDispatcher(),
-                'format_field'     => 'formatType',
-                'source_field'     => 'content',
-                'source_field_options'      => array(
-                    'attr' => array('class' => 'span10', 'rows' => 20),
-                ),
-                'format_field_options' => array(
-                    'choices' => array(
+            ->add('content', 'sonata_formatter_type', [
+                'event_dispatcher'     => $formMapper->getFormBuilder()->getEventDispatcher(),
+                'format_field'         => 'formatType',
+                'source_field'         => 'content',
+                'source_field_options' => [
+                    'attr' => ['class' => 'span10', 'rows' => 20],
+                ],
+                'format_field_options' => [
+                    'choices' => [
                         'richhtml' => 'richhtml',
-                    ),
-                ),
-                'listener'       => true,
-                'target_field'   => 'content',
-            ));
+                    ],
+                ],
+                'listener'     => true,
+                'target_field' => 'content',
+            ]);
     }
 
     /**
@@ -54,6 +53,6 @@ class ContentAdmin extends Admin
     protected function configureRoutes(RouteCollection $collection)
     {
         // All routes are removed
-        $collection->clearExcept(array('edit', 'list'));
+        $collection->clearExcept(['edit', 'list']);
     }
 }

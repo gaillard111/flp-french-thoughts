@@ -39,8 +39,8 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
         // define group zoning
         $formMapper
             ->tab('User')
-            ->with('Profile', array('class' => 'col-md-6'))->end()
-            ->with('General', array('class' => 'col-md-6'))->end()
+            ->with('Profile', ['class' => 'col-md-6'])->end()
+            ->with('General', ['class' => 'col-md-6'])->end()
             ->end()
         ;
 
@@ -50,23 +50,23 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
             ->tab('User')
             ->with('General')
             ->add('email')
-            ->add('plainPassword', 'text', array(
+            ->add('plainPassword', 'text', [
                 'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
-            ))
+            ])
             ->end()
             ->with('Profile')
-            ->add('firstname', null, array('required' => false))
-            ->add('lastname', null, array('required' => false))
-            ->add('roles', 'choice', array(
-                'choices' => array(
+            ->add('firstname', null, ['required' => false])
+            ->add('lastname', null, ['required' => false])
+            ->add('roles', 'choice', [
+                'choices' => [
                     'ROLE_ADMIN' => 'Admin',
                     'ROLE_MODERATOR' => 'Moderator',
                     'ROLE_USER' => 'User'
-                ),
+                ],
                 'expanded' => false,
                 'multiple' => true,
                 'required' => false
-            ))
+            ])
             ->end()
             ->end()
         ;
@@ -81,8 +81,8 @@ class UserAdmin extends \Sonata\UserBundle\Admin\Entity\UserAdmin
     {
         $listMapper
             ->addIdentifier('email')
-            ->add('enabled', null, array('editable' => true))
-            ->add('locked', null, array('editable' => true))
+            ->add('enabled', null, ['editable' => true])
+            ->add('locked', null, ['editable' => true])
             ->add('createdAt')
         ;
     }

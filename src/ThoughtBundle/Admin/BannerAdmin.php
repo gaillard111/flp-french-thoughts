@@ -1,4 +1,5 @@
 <?php
+//        dump($thought);
 /**
  * Created by PhpStorm.
  * User: ars

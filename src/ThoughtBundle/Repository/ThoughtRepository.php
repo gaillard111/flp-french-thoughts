@@ -4,11 +4,15 @@ namespace ThoughtBundle\Repository;
 
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
-use ThoughtBundle\Entity\Thought;
-use ThoughtBundle\Entity\WatchedThought;
+use Doctrine\ORM\Query;
 
 class ThoughtRepository extends EntityRepository
 {
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
     public function getLikedThoughts(User $user)
     {
         $qb = $this->createQueryBuilder('t');
@@ -22,11 +26,12 @@ class ThoughtRepository extends EntityRepository
 
     /**
      * @param array $where
-     * @param null $sortOrder
-     * @param null $sortBy
+     * @param null  $sortOrder
+     * @param null  $sortBy
+     *
      * @return array
      */
-    public function getFilterThoughts(array $where = array(), $sortOrder = null, $sortBy = null)
+    public function getFilterThoughts(array $where = [], $sortOrder = null, $sortBy = null)
     {
         $query = $this->createQueryBuilder('t')
             ->where('t.id > 0');
@@ -46,7 +51,8 @@ class ThoughtRepository extends EntityRepository
 
     /**
      * @param $limit
-     * @return \Doctrine\ORM\Query
+     *
+     * @return Query
      */
     public function getLastThoughts($limit)
     {
@@ -61,9 +67,14 @@ class ThoughtRepository extends EntityRepository
         return $qb->getQuery();
     }
 
-    public function getUnseenUserThoughts($user, $tags)
+    /**
+     * @param User  $user
+     * @param array $tags
+     *
+     * @return array
+     */
+    public function getUnseenUserThoughts(User $user, array $tags)
     {
-//        dump($user, $tags); die;
         $qb = $this->createQueryBuilder('t');
 
         $qb
@@ -76,21 +87,8 @@ class ThoughtRepository extends EntityRepository
             ->setMaxResults(1)
         ;
 
-
-//        $thoughts = $qb
-//            ->select('t.id')
-//            ->leftJoin('t.watchedThoughts', 'wt')
-//            ->leftJoin('t.likes', 'l')
-//            ->getQuery()
-//            ->getResult();
-//
-//        $qb
-//            ->select('t, COUNT(l) as likesCount')
-//            ->where($qb->expr()->notIn('t.watchedThoughts', $thoughts));
-
-
-        $tagNumber = 0;
-        $parameters = [];
+        $tagNumber        = 0;
+        $parameters       = [];
         $tagsOrXStatement = $qb->expr()->orX();
         foreach ($tags as $tag => $count) {
             if ($tagNumber >= 5) {
@@ -105,14 +103,14 @@ class ThoughtRepository extends EntityRepository
 
         $qb->setParameters(array_merge($parameters, ['user' => $user]));
 
-//        $qb->orderBy('l');
-
-
-//        dump($qb->getQuery()->getResult()); die;
-
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
     public function getWatchedStatistics(User $user)
     {
         $qb = $this->createQueryBuilder('t');
@@ -124,7 +122,5 @@ class ThoughtRepository extends EntityRepository
         ;
 
         return $qb->getQuery()->getResult();
-
-//        dump($qb->getQuery()->getResult());die;
     }
 }

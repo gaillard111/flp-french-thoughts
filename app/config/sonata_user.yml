@@ -1,0 +1,34 @@
+sonata_user:
+  #security_acl: true # Uncomment for ACL support
+  manager_type: orm # can be orm or mongodb
+  class:
+    user: Application\Sonata\UserBundle\Entity\User
+  profile:
+    dashboard:
+      blocks:
+        - { position: left, type: sonata.block.service.text, settings: { content: "<h2>Ami(e) du français bonjour!</h2> Merci d'avoir franchi cette première étape. Merci de donner le plus de détails possibles si vous proposez une citation. Pour indiquer catégories et tags, vous pouvez consulter <a href='/?search[words]=étiquetage  Paz&search[field][content]=on&search[field][category]=on&search[field][tags]=on&search[field][author]=on&search[field][thoughtInfo]=on&search[max_words]=0&search[min_words]=0&search[sorting]=amount'>ceci</a>"} }
+    menu:
+      - { route: 'sonata_user_profile_show', label: 'user.dashboard.menu.link_dashboard', domain: 'messages'}
+      - { route: 'sonata_user_profile_edit', label: 'user.dashboard.menu.link_profile', domain: 'messages'}
+      - { route: 'sonata_user_thought_create', label: 'user.thought.create_page.title', domain: 'messages'}
+      - { route: 'sonata_user_thoughts', label: 'user.thought.list_page.title', domain: 'messages'}
+      - { route: 'sonata_user_chains', label: 'user.dashboard.menu.link_chains', domain: 'messages'}
+      - { route: 'sonata_user_shared_chains', label: 'user.dashboard.menu.link_shared_chains', domain: 'messages'}
+
+    form:
+      type:               application_sonata_user_profile
+      handler:            sonata.user.profile.form.handler.default
+      name:               application_sonata_user_profile
+      validation_groups:
+        - CustomProfile
+
+    register:
+      form:
+        type:           front_user_registration
+        handler:        sonata.user.registration.form.handler.default
+        name:           front_user_registration_form
+        validation_groups:
+          - CustomRegistration
+  admin:
+    user:
+      class:      ThoughtBundle\Admin\UserAdmin
