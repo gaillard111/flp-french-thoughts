@@ -89,21 +89,21 @@ class User extends BaseUser
     protected $dialogs;
 
     /**
-     * @var Like[]|ArrayCollection
+     * @var ArrayCollection|Like[]
      *
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Like", mappedBy="user")
      */
     protected $likes;
 
     /**
-     * @var WatchedThought[]|ArrayCollection
+     * @var ArrayCollection|WatchedThought[]
      *
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\WatchedThought", mappedBy="user")
      */
     protected $watchedThoughts;
 
     /**
-     * @var Thought[]|ArrayCollection
+     * @var ArrayCollection|Thought[]
      *
      * @ORM\ManyToMany(targetEntity="ThoughtBundle\Entity\Thought")
      * @ORM\JoinTable(name="favorite_thoughts",
@@ -131,6 +131,7 @@ class User extends BaseUser
 
     /**
      * @param Dialog $dialog
+     *
      * @return User
      */
     public function addDialog($dialog)
@@ -147,7 +148,6 @@ class User extends BaseUser
         parent::__construct();
     }
 
-
     /**
      * Get id
      *
@@ -162,6 +162,7 @@ class User extends BaseUser
      * Add thoughts
      *
      * @param \ThoughtBundle\Entity\Thought $thoughts
+     *
      * @return User
      */
     public function addThought(\ThoughtBundle\Entity\Thought $thoughts)
@@ -213,6 +214,7 @@ class User extends BaseUser
      * Add chains
      *
      * @param \ThoughtBundle\Entity\Chain $chains
+     *
      * @return User
      */
     public function addChain(\ThoughtBundle\Entity\Chain $chains)
@@ -235,7 +237,7 @@ class User extends BaseUser
     /**
      * Get chains
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getChains()
     {
@@ -246,6 +248,7 @@ class User extends BaseUser
      * Add chainComments
      *
      * @param \ThoughtBundle\Entity\ChainComment $chainComments
+     *
      * @return User
      */
     public function addChainComment(\ThoughtBundle\Entity\ChainComment $chainComments)
@@ -265,6 +268,7 @@ class User extends BaseUser
 
     /**
      * @param mixed $topics
+     *
      * @return User
      */
     public function setTopics($topics)
@@ -286,7 +290,7 @@ class User extends BaseUser
     /**
      * Get chainComments
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getChainComments()
     {
@@ -309,6 +313,7 @@ class User extends BaseUser
      * Set about
      *
      * @param string $about
+     *
      * @return User
      */
     public function setAbout($about)
@@ -321,7 +326,7 @@ class User extends BaseUser
     /**
      * Get about
      *
-     * @return string 
+     * @return string
      */
     public function getAbout()
     {
@@ -332,6 +337,7 @@ class User extends BaseUser
      * Set country
      *
      * @param string $country
+     *
      * @return User
      */
     public function setCountry($country)
@@ -344,7 +350,7 @@ class User extends BaseUser
     /**
      * Get country
      *
-     * @return string 
+     * @return string
      */
     public function getCountry()
     {
@@ -355,6 +361,7 @@ class User extends BaseUser
      * Set interests
      *
      * @param string $interests
+     *
      * @return User
      */
     public function setInterests($interests)
@@ -367,7 +374,7 @@ class User extends BaseUser
     /**
      * Get interests
      *
-     * @return string 
+     * @return string
      */
     public function getInterests()
     {
@@ -378,6 +385,7 @@ class User extends BaseUser
      * Add friendship
      *
      * @param \Application\Sonata\UserBundle\Entity\Friendship $friendship
+     *
      * @return User
      */
     public function addFriendship(\Application\Sonata\UserBundle\Entity\Friendship $friendship)
@@ -400,7 +408,7 @@ class User extends BaseUser
     /**
      * Get friendship
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getFriendship()
     {
@@ -411,6 +419,7 @@ class User extends BaseUser
      * Add friends
      *
      * @param \Application\Sonata\UserBundle\Entity\Friendship $friends
+     *
      * @return User
      */
     public function addFriend(\Application\Sonata\UserBundle\Entity\Friendship $friends)
@@ -433,7 +442,7 @@ class User extends BaseUser
     /**
      * Get friends
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getFriends()
     {

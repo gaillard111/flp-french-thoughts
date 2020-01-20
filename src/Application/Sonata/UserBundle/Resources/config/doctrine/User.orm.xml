@@ -60,6 +60,12 @@
                 mapped-by="user"
         />
 
+        <one-to-many
+                field="watchedThoughts"
+                target-entity="ThoughtBundle\Entity\WatchedThought"
+                mapped-by="user"
+        />
+
         <many-to-many field="mostFavoriteThoughts" target-entity="ThoughtBundle\Entity\Thought">
             <join-table name="favorite_thoughts">
                 <join-columns>

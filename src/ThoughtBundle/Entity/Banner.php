@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Banner
+ *
  * @package ThoughtBundle\Entity
  *
  * @ORM\Table(name="banners")
@@ -46,10 +47,10 @@ class Banner
      * @ORM\ManyToOne(targetEntity="ThoughtBundle\Entity\DynamicPage", inversedBy="banners")
      * @ORM\JoinColumn(name="page_id", referencedColumnName="id")
      */
-    protected $page;
+    private $page;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(type="boolean")
      */
@@ -73,6 +74,7 @@ class Banner
 
     /**
      * @param string $title
+     *
      * @return Banner
      */
     public function setTitle($title)
@@ -91,6 +93,7 @@ class Banner
 
     /**
      * @param string $content
+     *
      * @return Banner
      */
     public function setContent($content)
@@ -109,6 +112,7 @@ class Banner
 
     /**
      * @param DynamicPage $page
+     *
      * @return Banner
      */
     public function setPage($page)
@@ -127,6 +131,7 @@ class Banner
 
     /**
      * @param bool $isActive
+     *
      * @return Banner
      */
     public function setIsActive($isActive)

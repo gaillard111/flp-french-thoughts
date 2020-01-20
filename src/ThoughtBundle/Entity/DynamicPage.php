@@ -1,11 +1,10 @@
 <?php
 
-
 namespace ThoughtBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Table(name="dynamic_pages")
@@ -45,11 +44,10 @@ class DynamicPage
      */
     private $slug;
 
-
     /**
-     * @var Banner[]|ArrayCollection
+     * @var ArrayCollection|Banner[]
      *
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Banner", mappedBy="pages")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Banner", mappedBy="page")
      */
     private $banners;
 
@@ -71,6 +69,7 @@ class DynamicPage
 
     /**
      * @param string $title
+     *
      * @return DynamicPage
      */
     public function setTitle($title)
@@ -89,6 +88,7 @@ class DynamicPage
 
     /**
      * @param string $text
+     *
      * @return DynamicPage
      */
     public function setText($text)
@@ -107,6 +107,7 @@ class DynamicPage
 
     /**
      * @param string $slug
+     *
      * @return DynamicPage
      */
     public function setSlug($slug)
@@ -125,6 +126,7 @@ class DynamicPage
 
     /**
      * @param ArrayCollection|Banner[] $banners
+     *
      * @return DynamicPage
      */
     public function setBanners($banners)

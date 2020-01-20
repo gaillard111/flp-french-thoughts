@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class WatchedThought
+ *
  * @package ThoughtBundle\Entity
  *
  * @ORM\Entity()
@@ -52,7 +53,6 @@ class WatchedThought
         return $this->id;
     }
 
-
     /**
      * @return Thought
      */
@@ -63,6 +63,7 @@ class WatchedThought
 
     /**
      * @param Thought $thought
+     *
      * @return WatchedThought
      */
     public function setThought($thought)
@@ -81,6 +82,7 @@ class WatchedThought
 
     /**
      * @param User $user
+     *
      * @return WatchedThought
      */
     public function setUser($user)
@@ -88,6 +90,4 @@ class WatchedThought
         $this->user = $user;
         return $this;
     }
-
-
 }
