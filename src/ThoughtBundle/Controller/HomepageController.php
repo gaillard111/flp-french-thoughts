@@ -2,9 +2,9 @@
 
 namespace ThoughtBundle\Controller;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
 use Exception;
-use FOS\ElasticaBundle\Finder\FinderInterface;
-use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,30 +41,25 @@ class HomepageController extends Controller
         $modelThought = $this->container->get('thought.model.thought_model');
         /** @var Search $serviceSearch */
         $serviceSearch = $this->container->get('thought.service.search_service');
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        /** @var PaginationInterface $paginator */
+        $paginator = $this->get('knp_paginator');
 
         $start = microtime(true);
 
-        $em = $this->getDoctrine()->getManager();
+        $page = $request->query->getInt('page', 1);
 
-        $page      = $request->query->getInt('page', 1);
+        if (!$page) {
+            $page = 1;
+        }
         $countItem = 10;
 
         $search = $serviceSearch->preSearch($request->get('search'));
 
         $default = $request->query->get('default');
 
-        $paginator = $this->get('knp_paginator');
-
-        if ($search || $default) {
-            /** @var PaginatorAdapterInterface $thoughts */
-            $thoughts = $modelThought->getThoughtsFromElastic($search);
-        } else {
-            if (!$page) {
-                $page = 1;
-            }
-
-            $thoughts = $modelThought->getLastThoughts(50 * $page);
-        }
+        $thoughts = $modelThought->getThoughts($search, $default, $page);
 
         $cloud = $modelThought->getCloud($search['field'], $thoughts, $search['words']);
 
@@ -133,33 +128,12 @@ class HomepageController extends Controller
     }
 
     /**
-     * @Route("/parse")
-     *
-     * @return Response
-     */
-    public function parseAction()
-    {
-        $parseService = $this->container->get('thought.parser.service')->testParse();
-
-        return new Response('');
-    }
-
-    /**
-     * @Route("/instruction", name="instruction")
-     *
-     * @return Response
-     */
-    public function instructionAction()
-    {
-        return $this->render('@Thought/instruction.html.twig');
-    }
-
-    /**
      * @param int     $thoughtId
      * @param Request $request
      *
      * @return JsonResponse
      *
+     * @throws OptimisticLockException
      * @Route("/thought-likes/{thoughtId}", name="thought-like", requirements={"offerId" = "\d+"}, options={"expose"=true})
      */
     public function likeAction($thoughtId, Request $request)

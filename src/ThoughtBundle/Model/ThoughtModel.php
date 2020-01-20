@@ -115,6 +115,22 @@ class ThoughtModel
     }
 
     /**
+     * @param $search
+     * @param $default
+     * @param int $page
+     * @return PaginatorAdapterInterface|Thought[]
+     */
+    public function getThoughts($search, $default, $page = 1)
+    {
+        if ($search || $default) {
+            /** @var PaginatorAdapterInterface $thoughts */
+            $thoughts = $this->getThoughtsFromElastic($search);
+        } else {
+            $thoughts = $this->getLastThoughts(50 * $page);
+        }
+        return $thoughts;
+    }
+    /**
      * @param array $request
      *
      * @return DoctrineQuery|PaginatorAdapterInterface|TransformedPaginatorAdapter
