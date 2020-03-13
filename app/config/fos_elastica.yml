@@ -179,7 +179,6 @@ fos_elastica:
                   type:     "string"
                   index:    "analyzed"
                   analyzer: app_phrase_analyzer
-
             tags:
               type: "multi_field"
               fields:
@@ -198,7 +197,6 @@ fos_elastica:
                   type:     "string"
                   index:    "analyzed"
                   analyzer: app_phrase_analyzer
-
             thoughtInfo:
               type: "multi_field"
               fields:
@@ -235,18 +233,14 @@ fos_elastica:
                   analyzer: app_phrase_analyzer
             amount:
               type: "integer"
-          #                        liked:
-          #                            type: "integer"
+            likesCount:
+                type: "integer"
           persistence:
-            # the driver can be orm, mongodb, phpcr or propel
-            # listener and finder are not supported by
-            # propel and should be removed
             driver: orm
             model: ThoughtBundle\Entity\Thought
             provider: ~
             listener:
               is_indexable_callback: "thought.isPublish()"
-              #immediate: ~
             finder: ~
             elastica_to_model_transformer:
               ignore_missing: true
@@ -271,10 +265,6 @@ fos_elastica:
                 tokenizer: whitespace
                 filter   : [my_asciifolding, lowercase, my_word_delimiter]
             tokenizer:
-            #nGram:
-            #    type:     "nGram"
-            #    min_gram: 4
-            #    max_gram: 20
             filter:
               app_ngram:
                 type: "nGram"

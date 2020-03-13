@@ -98,6 +98,11 @@ class Thought
      */
     protected $watchedThoughts;
 
+    public function likesCount()
+    {
+        return $this->likes->count();
+    }
+
     /**
      * Get id
      *

@@ -2,29 +2,32 @@
 
 namespace ThoughtBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\User;
+use FOS\UserBundle\Util\TokenGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sonata\UserBundle\Controller\ResettingFOSUser1Controller as BaseController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Twig_Error;
 
 /**
  * Class ResettingFOSUser1Controller.
- *
- * @author Hugo Briand <briand@ekino.com>
  */
 class ResettingFOSUser1Controller extends BaseController
 {
     /**
      * Request reset user password: submit form and send email
      *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      *
+     * @throws Twig_Error
      * @Route("/resetting/send-email", name="user_resetting_send_email")
      */
     public function sendEmailAction()
     {
         $username = $this->container->get('request')->request->get('username');
 
-        /** @var $user UserInterface */
+        /** @var $user User */
         $user = $this->container->get('fos_user.user_manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
@@ -36,7 +39,7 @@ class ResettingFOSUser1Controller extends BaseController
         }
 
         if (null === $user->getConfirmationToken()) {
-            /** @var $tokenGenerator \FOS\UserBundle\Util\TokenGeneratorInterface */
+            /** @var $tokenGenerator TokenGeneratorInterface */
             $tokenGenerator = $this->container->get('fos_user.util.token_generator');
             $user->setConfirmationToken($tokenGenerator->generateToken());
         }

@@ -129,6 +129,7 @@ class ThoughtModel
         } else {
             $thoughts = $this->getLastThoughts(50 * $page);
         }
+
         return $thoughts;
     }
 
@@ -179,7 +180,7 @@ class ThoughtModel
             $terms = array_merge($terms, $this->getTerms($request['term']));
         }
 
-        $sort = ['amount' => 'asc'];
+        $sort = ['likesCount' => 'desc'];
 
         if (isset($request['sorting']) && $request['sorting']) {
             $sort = [
