@@ -12,16 +12,6 @@
             {% endblock %}
         {% endif %}
     {% endif %}
-
-
-    {#{% if thoughts.paginationData.totalCount == 0 %}#}
-        {#<div class="row not-found-text">#}
-            {#<div class="col-sm-12">#}
-                {#There were no thoughts found by your request.#}
-                {#Please <a href="{{ path('sonata_user_thought_create') }}">suggest</a> your own quote.#}
-            {#</div>#}
-        {#</div>#}
-    {#{% endif %}#}
     <div class="row">
         <div class="col-sm-offset-6 banner-container">
             {% for banner in banners %}
@@ -31,7 +21,6 @@
     </div>
     <form method="get" xmlns="http://www.w3.org/1999/html">
         <div class="row">
-            {#<div class="col-sm-12">#}
                 <div class="form-group mainsearch">
                     <label for="inputSearch">{{ 'thought.filter.content.label'|trans }}</label>
                     <input value="{{ search.words is defined ? search.words : '' }}" type="text" name="search[words]" class="form-control" id="inputSearch" placeholder="{{ 'thought.filter.content.placeholder'|trans }}">
@@ -39,20 +28,21 @@
                 <div class="form-group">
                     <button class="btn btn-info">{{ 'thought.filter.buttons.search'|trans }}</button>
                     <a href="/" class="btn btn-warning">{{ 'thought.filter.buttons.reset'|trans }}</a>
-                    <a href="{{ path('thought_homepage_index', {
-                            'search[words]': '',
-                            'search[field][content]': 'on',
-                            'search[field][category]': 'on',
-                            'search[field][tags]': 'on',
-                            'search[field][author]': 'on',
-                            'search[field][thoughtInfo]': 'on',
-                            'search[sorting]': 'likesCount',
-                            'search[sorting_desc]':'true'
-                        }) }}" class="btn btn-warning">
-                        {{ 'thought.filter.buttons.last_quotes'|trans }}
-                    </a>
+                    {% if app.user %}
+                        <a href="{{ path('thought_homepage_index', {
+                                'search[words]': '',
+                                'search[field][content]': 'on',
+                                'search[field][category]': 'on',
+                                'search[field][tags]': 'on',
+                                'search[field][author]': 'on',
+                                'search[field][thoughtInfo]': 'on',
+                                'search[sorting]': 'likesCount',
+                                'search[sorting_desc]':'true'
+                            }) }}" class="btn btn-warning">
+                            {{ 'thought.filter.buttons.last_quotes'|trans }}
+                        </a>
+                    {% endif %}
                 </div>
-            {#</div>#}
 
         </div>
 
