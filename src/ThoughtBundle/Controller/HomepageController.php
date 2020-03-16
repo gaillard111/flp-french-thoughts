@@ -63,7 +63,7 @@ class HomepageController extends Controller
 
         /** @var PaginationInterface|Thought[] $pagination */
         if ($search['sorting']) {
-            $thoughtsResult = $thoughts->getResults(0, 20)->toArray();
+            $thoughtsResult = $thoughts->getResults(0, 200)->toArray();
 
             $pagination = $paginator->paginate(
                 $thoughtsResult,
