@@ -183,9 +183,18 @@ class ThoughtModel
         $sort = ['likesCount' => 'desc'];
 
         if (isset($request['sorting']) && $request['sorting']) {
-            $sort = [
-                $request['sorting'] => (isset($request['sorting_desc']) ? 'desc' : 'asc'),
-            ];
+
+            if (isset($request['sorting_desc'])) {
+                if ($request['sorting_desc'] == 'true') {
+                    $sortingDirection = 'desc';
+                } else {
+                    $sortingDirection = 'asc';
+                }
+
+                $sort = [
+                    $request['sorting'] => $sortingDirection
+                ];
+            }
         }
 
         $strict = isset($request['strict']) && $request['strict'];
