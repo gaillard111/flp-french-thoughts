@@ -62,7 +62,7 @@ class ThoughtRepository extends EntityRepository
             ->where('t.published = :published')
             ->setParameter('published', true)
             ->setMaxResults($limit)
-            ->orderBy('t.amount', 'DESC');
+            ->orderBy('t.amount', 'ASC');
 
         return $qb->getQuery();
     }

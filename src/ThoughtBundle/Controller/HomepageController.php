@@ -62,21 +62,13 @@ class HomepageController extends Controller
         $thoughts = $modelThought->getThoughts($search, $default, $page);
 
         /** @var PaginationInterface|Thought[] $pagination */
-        if ($search['sorting']) {
-            $thoughtsResult = $thoughts->getResults(0, 200)->toArray();
 
-            $pagination = $paginator->paginate(
-                $thoughtsResult,
-                $page,
-                $countItem
-            );
-        } else {
-            $pagination = $paginator->paginate(
-                $thoughts,
-                $page,
-                $countItem
-            );
-        }
+        $pagination = $paginator->paginate(
+            $thoughts,
+            $page,
+            $countItem
+        );
+
         $cloud = $modelThought->getCloud($search['field'], $thoughts, $search['words']);
 
         $comments = [];

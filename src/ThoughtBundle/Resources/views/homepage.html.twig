@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-group">
                     <button class="btn btn-info">{{ 'thought.filter.buttons.search'|trans }}</button>
-                    <a href="/" class="btn btn-warning">{{ 'thought.filter.buttons.reset'|trans }}</a>
+                    <a href="{{ path('thought_homepage_index') }}" class="btn btn-warning">{{ 'thought.filter.buttons.reset'|trans }}</a>
                     {% if app.user %}
                         <a href="{{ path('thought_homepage_index', {
                                 'search[words]': '',
