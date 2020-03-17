@@ -56,13 +56,29 @@ class ThoughtRepository extends EntityRepository
      */
     public function getLastThoughts($limit, $sortField, $sortDirection)
     {
+//        dump($sortField, $sortDirection);die;
         $qb = $this->createQueryBuilder('t');
+
         $qb
             ->select('t')
             ->where('t.published = :published')
             ->setParameter('published', true)
             ->setMaxResults($limit)
-            ->orderBy($sortField, $sortDirection);
+
+        ;
+
+        if ($sortField == 'likesCount') {
+            $qb
+                ->select('t, count(l.id) as HIDDEN likesCount')
+                ->join('t.likes', 'l')
+                ->groupBy('t.id')
+                ->orderBy($sortField, $sortDirection)
+            ;
+            return $qb->getQuery();
+        }
+
+
+        $qb->orderBy('t.' . $sortField, $sortDirection);
 
         return $qb->getQuery();
     }

@@ -235,6 +235,8 @@ fos_elastica:
               type: "integer"
             likesCount:
                 type: "integer"
+            createdAt:
+              type: "date"
           persistence:
             driver: orm
             model: ThoughtBundle\Entity\Thought

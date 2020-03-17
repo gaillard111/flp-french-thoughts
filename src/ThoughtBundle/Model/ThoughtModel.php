@@ -127,7 +127,7 @@ class ThoughtModel
             /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $this->getThoughtsFromElastic($search, $page);
         } else {
-            $thoughts = $this->getLastThoughts(50 * $page, 't.amount');
+            $thoughts = $this->getLastThoughts(50 * $page, 'amount');
         }
 
         return $thoughts;
@@ -180,7 +180,7 @@ class ThoughtModel
             $terms = array_merge($terms, $this->getTerms($request['term']));
         }
 
-        $sort = ['amount' => 'asc'];
+        $sort = ['createdAt' => 'desc'];
 
         if (isset($request['sorting']) && $request['sorting']) {
             if (isset($request['sorting_desc'])) {
@@ -237,8 +237,7 @@ class ThoughtModel
         $filterException = $this->compileExceptions($fields, $wordExceptions);
 
         if (!$words) {
-//            $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms);
-            return $this->getLastThoughts(50 * $page, 't.createdAt', 'DESC');
+            return $this->getLastThoughts(50 * $page, array_keys($sort)[0], $sort[array_keys($sort)[0]]);
         }
 
         if ($strict) {
@@ -249,6 +248,9 @@ class ThoughtModel
         $words = $this->filterWord($words);
 
         if (count(explode(' ', $words)) > 1) {
+            if ($request['sorting'] == '') {
+                $sort = ['amount' => 'asc'];
+            }
             $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
             return $this->finder->createPaginatorAdapter($query);
         }

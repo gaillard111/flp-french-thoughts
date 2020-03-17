@@ -32,17 +32,7 @@
                         placeholder="{{ 'thought.filter.content.placeholder'|trans }}">
                 </div>
                 <div class="form-group">
-                    <button
-                        href="{{ path('thought_homepage_index', {
-                            'search[words]': '',
-                            'search[field][content]': 'on',
-                            'search[field][category]': 'on',
-                            'search[field][tags]': 'on',
-                            'search[field][author]': 'on',
-                            'search[field][thoughtInfo]': 'on',
-                            'search[sorting]': 'amount',
-                            'search[sorting_desc]':'true'
-                        }) }}" class="btn btn-info">
+                    <button class="btn btn-info">
                         {{ 'thought.filter.buttons.search'|trans }}
                     </button>
                     <a href="{{ path('thought_homepage_index') }}" class="btn btn-warning">{{ 'thought.filter.buttons.reset'|trans }}</a>
@@ -83,7 +73,17 @@
                     </div>
                     <div id="cloud_block" class="col-sm-12 margin-bottom-17 hidden">
                         {% for word, size in cloud %}
-                            <a href="{{ path('thought_homepage_index', {'search[words]': word, 'search[field][content]': 'on', 'search[field][category]': 'on', 'search[field][tags]': 'on', 'search[field][author]': 'on', 'search[field][thoughtInfo]': 'on'}) }}" style='color: #000; margin-right: 10px; font-size: {{ cloudStyle[word]['font-size'] }}px ; font-weight: {{ cloudStyle[word]['font-weight'] }} ;'>
+                            <a
+                                href="{{ path('thought_homepage_index', {
+                                    'search[words]': word,
+                                    'search[field][content]': 'on',
+                                    'search[field][category]': 'on',
+                                    'search[field][tags]': 'on',
+                                    'search[field][author]': 'on',
+                                    'search[field][thoughtInfo]': 'on'
+                                }) }}"
+                                style='color: #000; margin-right: 10px; font-size: {{ cloudStyle[word]['font-size'] }}px ; font-weight: {{ cloudStyle[word]['font-weight'] }} ;'
+                            >
                                 {{ word }}
                             </a>
                         {% endfor %}
