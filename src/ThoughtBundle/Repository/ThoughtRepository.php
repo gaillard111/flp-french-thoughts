@@ -54,7 +54,7 @@ class ThoughtRepository extends EntityRepository
      *
      * @return Query
      */
-    public function getLastThoughts($limit)
+    public function getLastThoughts($limit, $sortField, $sortDirection)
     {
         $qb = $this->createQueryBuilder('t');
         $qb
@@ -62,7 +62,7 @@ class ThoughtRepository extends EntityRepository
             ->where('t.published = :published')
             ->setParameter('published', true)
             ->setMaxResults($limit)
-            ->orderBy('t.createdAt', 'ASC');
+            ->orderBy($sortField, $sortDirection);
 
         return $qb->getQuery();
     }

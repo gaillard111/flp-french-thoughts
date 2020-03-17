@@ -125,9 +125,9 @@ class ThoughtModel
     {
         if ($search || $default) {
             /** @var PaginatorAdapterInterface $thoughts */
-            $thoughts = $this->getThoughtsFromElastic($search);
+            $thoughts = $this->getThoughtsFromElastic($search, $page);
         } else {
-            $thoughts = $this->getLastThoughts(50 * $page);
+            $thoughts = $this->getLastThoughts(50 * $page, 't.amount');
         }
 
         return $thoughts;
@@ -138,7 +138,7 @@ class ThoughtModel
      *
      * @return DoctrineQuery|PaginatorAdapterInterface|TransformedPaginatorAdapter
      */
-    public function getThoughtsFromElastic($request)
+    public function getThoughtsFromElastic($request, $page)
     {
         $fields = [
             'tags',
@@ -180,10 +180,9 @@ class ThoughtModel
             $terms = array_merge($terms, $this->getTerms($request['term']));
         }
 
-        $sort = ['likesCount' => 'desc'];
+        $sort = ['amount' => 'asc'];
 
         if (isset($request['sorting']) && $request['sorting']) {
-
             if (isset($request['sorting_desc'])) {
                 if ($request['sorting_desc'] == 'true') {
                     $sortingDirection = 'desc';
@@ -192,7 +191,7 @@ class ThoughtModel
                 }
 
                 $sort = [
-                    $request['sorting'] => $sortingDirection
+                    $request['sorting'] => $sortingDirection,
                 ];
             }
         }
@@ -238,20 +237,23 @@ class ThoughtModel
         $filterException = $this->compileExceptions($fields, $wordExceptions);
 
         if (!$words) {
-            $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms);
-        } else {
-            if ($strict) {
-                $query = $this->searchExactly($words, $fields, $minWords, $maxWords, $sort);
-            } else {
-                $words = $this->filterWord($words);
-
-                if (count(explode(' ', $words)) > 1) {
-                    $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
-                } else {
-                    $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
-                }
-            }
+//            $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms);
+            return $this->getLastThoughts(50 * $page, 't.createdAt', 'DESC');
         }
+
+        if ($strict) {
+            $query = $this->searchExactly($words, $fields, $minWords, $maxWords, $sort);
+            return $this->finder->createPaginatorAdapter($query);
+        }
+
+        $words = $this->filterWord($words);
+
+        if (count(explode(' ', $words)) > 1) {
+            $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
+            return $this->finder->createPaginatorAdapter($query);
+        }
+
+        $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
 
         return $this->finder->createPaginatorAdapter($query);
     }
@@ -645,9 +647,9 @@ class ThoughtModel
      *
      * @return mixed
      */
-    public function getLastThoughts($limit)
+    public function getLastThoughts($limit, $sortField, $sortDirection = 'ASC')
     {
-        return $this->repository->getLastThoughts($limit);
+        return $this->repository->getLastThoughts($limit, $sortField, $sortDirection);
     }
 
     /**
