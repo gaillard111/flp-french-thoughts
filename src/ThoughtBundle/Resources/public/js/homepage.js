@@ -68,14 +68,16 @@ if (document.getElementById('filters_button')) {
     }());
 }
 
-if (document.getElementById('cloud_button')) {
-    document.getElementById('cloud_button').onclick = (function() {
-        var table = document.getElementById('cloud_block');
-        return function() {
-            buttonToggle(this, table, 'View', 'Hide');
-        };
-    }());
-}
+$(document).on('click', "#cloud_button", function () {
+    var $cloudBlock = $("#cloud_block");
+
+    if ($cloudBlock.hasClass("hidden")) {
+        $cloudBlock.removeClass("hidden");
+    } else {
+        $cloudBlock.addClass("hidden");
+    }
+});
+
 
 $(document).ready(function() {
 

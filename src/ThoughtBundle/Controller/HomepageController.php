@@ -71,6 +71,8 @@ class HomepageController extends Controller
 
         $cloud = $modelThought->getCloud($search['field'], $thoughts, $search['words']);
 
+//        dump($search['field'], $thoughts, $search['words']);die;
+
         $comments = [];
         foreach ($pagination as $thought) {
             $comments[$thought->getId()][] = $em->getRepository(Comment::class)->getLastComments($thought);
