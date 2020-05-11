@@ -2,6 +2,44 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="https://cdn.ckeditor.com/4.11.1/standard/ckeditor.js"></script>
+    <script type="text/javascript">
+        window.ckeditorImgUploadPath = '{{ path('ckeditor_image_upload') }}';
+        $( document ).ready(function()
+        {
+            CKEDITOR.plugins.addExternal('imageuploader', '/bundles/thought/js/imageuploader/');
+
+            var editor = $('.js-ckeditor');
+            var editor_id = editor.attr('id');
+            var full_editor = $('.js-full-ckeditor');
+            var full_editor_id = full_editor.attr('id');
+
+            if (editor_id) {
+                CKEDITOR.replace( editor_id, {
+                    toolbar: [
+                        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
+                        { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+                        '/',
+                        { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+                    ]
+                });
+            }
+
+            if (full_editor_id) {
+                CKEDITOR.replace( full_editor_id, {
+                    toolbar: [
+                        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
+                        { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+                        '/',
+                        { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+                    ],
+                    extraPlugins: 'imageuploader',
+                });
+
+            }
+        });
+
+    </script>
     <script src="{{ asset('bundles/thought/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}" type="text/javascript"></script>
 {% endblock %}
 {% block stylesheets %}

@@ -30,7 +30,11 @@ class ThoughtAdmin extends Admin
     {
         $formMapper
             ->add('category', 'text')
-            ->add('content')
+            ->add('content', 'textarea', [
+                'attr' => [
+                    'class' => 'js-full-ckeditor',
+                ],
+            ])
             ->add('thoughtInfo')
             ->add('author', 'text')
             ->add('tags', 'text', [
