@@ -8,6 +8,30 @@ th {
     border-bottom: 1px solid #ddd !important;
 }
 
+.related-thoughts-block {
+    padding: 10px 30px 0;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.related-thoughts-block > a {
+    text-decoration: dashed;
+    text-decoration-line: underline;
+}
+
+.related-thoughts {
+    display: none;
+    flex-direction: column;
+}
+
+.related-thoughts > a {
+    display: flex;
+    padding: 3px 0;
+    cursor: pointer;
+
+}
+
 .new-message {
     background-color: #eaf3f6
 }

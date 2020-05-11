@@ -117,4 +117,16 @@ $(document).ready(function() {
         }
     });
 
+    $(".related-thoughts-label").click(function () {
+        var $this = $(this);
+        var $relatedThoughts = $this.next();
+
+        if ($relatedThoughts.is(":hidden")) {
+            $relatedThoughts.css('display', 'flex');
+        } else {
+            $relatedThoughts.hide();
+        }
+
+    });
+
 });

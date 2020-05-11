@@ -5,7 +5,9 @@ namespace ThoughtBundle\Controller;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use ThoughtBundle\Entity\Thought;
 
 /**
  * Class ThoughtAdminController
@@ -19,6 +21,7 @@ class ThoughtAdminController extends Controller
      */
     public function publishAction()
     {
+        /** @var Thought $object */
         $object = $this->admin->getSubject();
 
         if (!$object) {
@@ -39,7 +42,7 @@ class ThoughtAdminController extends Controller
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function exportAction(Request $request)
     {

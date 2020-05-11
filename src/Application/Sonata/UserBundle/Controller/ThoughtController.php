@@ -7,9 +7,11 @@ use Application\Sonata\UserBundle\Entity\User;
 use Application\Sonata\UserBundle\Form\Object\SearchObject;
 use Application\Sonata\UserBundle\Form\Type\SortSearchForm;
 use Application\Sonata\UserBundle\Form\Type\ThoughtType;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,7 +48,7 @@ class ThoughtController extends Controller
      *
      * @return Response
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      * @throws \Doctrine\ORM\Query\QueryException
      */
     public function menuAction($routeName, $mobile = false)
@@ -91,7 +93,7 @@ class ThoughtController extends Controller
      *
      * @return JsonResponse
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function ajaxCounter()
     {
@@ -235,7 +237,7 @@ class ThoughtController extends Controller
      *
      * @param Request $request
      *
-     * @return Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      *
      * @throws \Exception
      */

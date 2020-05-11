@@ -102,7 +102,21 @@
                 </div>
             </div>
         </div>
-        {#{% endif %}#}
+        {% if thought.owner %}
+            <div class="row">
+                <div class="col-sm-12 related-thoughts-block">
+                    <a class="related-thoughts-label">Citations liées:</a>
+                    <div class="related-thoughts">
+                        {% for counter, thought in thought.owner.thoughts %}
+                            {% if counter < 50 %}
+                                <a href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">{{ thought.category }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        {% endif %}
         <div class="col-sm-6 pull-left">
             <div class="row">
                 <div class="col-sm-12">
@@ -193,16 +207,5 @@
                 </div>
             </div>
         </div>
-        {% endif %}
-
-    {#{{ dump(already_chains) }}#}
-
-
-    {#{% if app.request.get('thoughtId') == null %}#}
-        {#<p>#}
-            {#<a class="btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">#}
-                {#{{ 'thought.comment.page_quote'|trans }}#}
-            {#</a>#}
-        {#</p>#}
-    {#{% endif %}#}
+    {% endif %}
 </div>

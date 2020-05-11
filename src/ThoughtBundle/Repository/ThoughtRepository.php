@@ -62,7 +62,9 @@ class ThoughtRepository extends EntityRepository
         $qb
             ->select('t')
             ->where('t.published = :published')
-            ->setParameter('published', true)
+            ->setParameters([
+                'published' => true,
+            ])
             ->setMaxResults($limit)
 
         ;
