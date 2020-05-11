@@ -1,4 +1,4 @@
-$(function(){
+$(function() {
     $('[data-toggle="tooltip"]').tooltip();
 
     $('.jumbotron .like-quote').on('click', function(e){
@@ -27,6 +27,10 @@ $(function(){
                 }
             }
         });
+    });
+
+    $(".like-popup").click(function () {
+        $("#likeModal").modal('show');
     });
 
     $('.jumbotron .add_chain').on('click', function(e){

@@ -56,17 +56,16 @@
             </span>
     </p>
     <p>
-        {% if app.user %}
-            {% set liked = thought.likes %}
 
-            <button class="btn btn-info btn-sm like-quote" data-quote="{{ thought.id }}" type="button">
-                    <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
-                        <span class="badge-text">
-                            {{ liked ? 'thought.property.liked'|trans : 'thought.property.like'|trans }}
-                        </span> <span class="badge" style="display: {{ (thought.likes.count > 0) ? 'inline-block' : 'none' }}">{{ thought.likes.count }}</span>
-                    </span>
-            </button>
-        {% endif %}
+        {% set liked = thought.likes %}
+
+        <button class="btn btn-info btn-sm {% if app.user %} like-quote {% else %} like-popup {% endif %}" data-quote="{{ thought.id }}" type="button">
+                <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
+                    <span class="badge-text">
+                        {{ liked ? 'thought.property.liked'|trans : 'thought.property.like'|trans }}
+                    </span> <span class="badge" style="display: {{ (thought.likes.count > 0) ? 'inline-block' : 'none' }}">{{ thought.likes.count }}</span>
+                </span>
+        </button>
 
         {% if app.request.get('thoughtId') == null %}
             <a class="page_quote_button btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">
@@ -79,7 +78,6 @@
         {% set already_chains = already_chains|merge([{name: arr_chain.chain.name, id: arr_chain.chain.id}]) %}
     {% endfor %}
     <div class="row">
-        {#{% if thought.comments.count > 0 %}#}
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-12 ">
@@ -140,7 +138,6 @@
                                             <a href="{{ path('thought_profile', { 'userId': chainThought.user.id } ) }}">
                                                {{ chainThought.user.firstname }}
                                             </a>
-
                                         </span>
                                     {% endif %}
                                 {% endfor %}
@@ -201,9 +198,7 @@
                         <div class="col-xs-3 col-lg-2 chain-button">
                             <a href="#" class="add_chain btn btn-info btn-xs w100">{{ 'thought.chain.add_to_chain'|trans }}</a>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>

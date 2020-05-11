@@ -3,6 +3,11 @@
 {% block page_title %}Les fils de la pensée{% endblock %}
 
 {% block content %}
+
+    {% if not app.user %}
+        {{ include('@Thought/include/likeModal.html.twig') }}
+    {% endif %}
+
     {{ include('@Thought/quoteLayout.html.twig', {'thought': thought}) }}
 
     <div class="row block_comments">

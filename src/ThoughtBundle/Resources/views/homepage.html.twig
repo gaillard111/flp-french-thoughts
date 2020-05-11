@@ -6,6 +6,7 @@
     {% set search = app.request.get('search') %}
     {% set is_fields = search.field is defined ? true : false %}
     {% if not app.user %}
+        {{ include('@Thought/include/likeModal.html.twig') }}
         {% if not app.request.cookies.get('modal') %}
             {% block popup %}
                 {{ include('@Thought/include/tutorialModal.html.twig') }}
