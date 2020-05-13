@@ -625,11 +625,12 @@ div.panel-heading {
 }
 
 .modal-header {
-    padding: 25px 25px 0;
+    padding: 25px;
+    text-align: center;
 }
 
 .modal-body {
-    padding: 15px 25px 0;
+    padding: 25px;
 }
 
 .modal-footer {
