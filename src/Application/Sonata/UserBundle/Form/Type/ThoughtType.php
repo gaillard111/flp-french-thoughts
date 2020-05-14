@@ -30,7 +30,7 @@ class ThoughtType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label_attr' => ['class' => 'control-label col-sm-2'],
-                'attr'       => ['class' => 'form-control'],
+                'attr'       => ['class' => 'form-control js-ckeditor'],
                 'label'      => 'thought.filter.fields.content.label',
             ])
             ->add('thoughtInfo', TextType::class, [

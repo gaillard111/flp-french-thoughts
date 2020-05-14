@@ -7,6 +7,14 @@ services:
             - ~
         tags:
             - { name: sonata.admin, manager_type: orm, group: Thoughts, label: "Topics" }
+    thought.admin.chain:
+        class: ThoughtBundle\Admin\ChainAdmin
+        arguments:
+            - ~
+            - ThoughtBundle\Entity\Chain
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Thoughts, label: "Chains" }
 
     thought.admin.thought:
         class: ThoughtBundle\Admin\ThoughtAdmin

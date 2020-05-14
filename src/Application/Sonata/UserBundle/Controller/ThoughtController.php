@@ -237,7 +237,7 @@ class ThoughtController extends Controller
      *
      * @param Request $request
      *
-     * @return Response|RedirectResponse
+     * @return RedirectResponse|Response
      *
      * @throws \Exception
      */
@@ -281,6 +281,44 @@ class ThoughtController extends Controller
                 return $this->redirect($this->generateUrl('sonata_user_thoughts'));
             }
         }
+        return $this->render('ApplicationSonataUserBundle:Thought:create.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     *
+     * @return Response
+     *
+     * @throws OptimisticLockException
+     * @Route("/thought/{id}/edit", name="sonata_user_thought_edit", requirements={"id"="\d+"})
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var Thought $thought */
+        $thought = $em->getRepository(Thought::class)->find($id);
+
+        if (!$thought) {
+            return $this->redirectToRoute('thought_homepage_index');
+        }
+
+        if (($thought->getOwner() != $this->getUser()) && !$this->isGranted('ROLE_MODERATOR')) {
+            return $this->redirectToRoute('thought_homepage_index');
+        }
+
+        $form = $this->createForm(new ThoughtType(), $thought);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $thought->setOwner($this->getUser());
+
+            $em->persist($thought);
+            $em->flush();
+        }
+
         return $this->render('ApplicationSonataUserBundle:Thought:create.html.twig', [
             'form' => $form->createView(),
         ]);

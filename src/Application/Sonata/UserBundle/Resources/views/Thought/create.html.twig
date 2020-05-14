@@ -1,4 +1,4 @@
-{% form_theme form '@ApplicationSonataUser/Profile/Form/form-edit-profile.html.twig' %}
+{#{% form_theme form '@ApplicationSonataUser/Profile/Form/form-edit-profile.html.twig' %}#}
 {% extends 'ApplicationSonataUserBundle:Profile:action.html.twig' %}
 
 {% block sonata_profile_title %}{{ 'user.thought.create_page.title'|trans }}{% endblock %}
@@ -12,26 +12,57 @@
                 </div>
                 <div class="panel-body">
                     <form class="form-horizontal" method="post" {{ form_enctype(form) }}>
-                        {{ form_widget(form) }}
+                        <div class="form-group">
+                            {{ form_label(form.category, null, { 'attr': { 'class': 'col-sm-2' } }) }}
+                            <div class="col-sm-8">
+                                {{ form_widget(form.category) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.content, null, { 'attr': { 'class': 'col-sm-2' } }) }}
+                            <div class="col-sm-8">
+                                {{ form_widget(form.content) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.thoughtInfo, null, { 'attr': { 'class': 'col-sm-2' } }) }}
+                            <div class="col-sm-8">
+                                {{ form_widget(form.thoughtInfo) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.tags, null, { 'attr': { 'class': 'col-sm-2' } }) }}
+                            <div class="col-sm-8">
+                                {{ form_widget(form.tags) }}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.author, null, { 'attr': { 'class': 'col-sm-2' } }) }}
+                            <div class="col-sm-8">
+                                {{ form_widget(form.author) }}
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.sex.label'|trans }}</label>
-                            <div class="col-sm-5"><input type="text" id="sonata_user_author_create_sex" name="sonata_user_author_create[sex]"  class="form-control" ></div>
+                            <div class="col-sm-8"><input type="text" id="sonata_user_author_create_sex" name="sonata_user_author_create[sex]"  class="form-control" ></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.job.label'|trans }}</label>
-                            <div class="col-sm-5"><input type="text" id="sonata_user_author_create_job" name="sonata_user_author_create[job]" class="form-control" ></div>
+                            <div class="col-sm-8"><input type="text" id="sonata_user_author_create_job" name="sonata_user_author_create[job]" class="form-control" ></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.continent.label'|trans }}</label>
-                            <div class="col-sm-5"><input type="text" id="sonata_user_author_create_continent" name="sonata_user_author_create[continent]" class="form-control" ></div>
+                            <div class="col-sm-8"><input type="text" id="sonata_user_author_create_continent" name="sonata_user_author_create[continent]" class="form-control" ></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.country.label'|trans }} (<a href="/?search[words]=insérer une nouvelle citation&search[field][content]=on&search[field][category]=on&search[field][tags]=on&search[field][author]=on&search[field][thoughtInfo]=on&search[max_words]=0&search[min_words]=0&search[sorting]=">{{ 'author.filter.fields.instruction.label'|trans}}</a>)</label>
-                            <div class="col-sm-5"><input type="text" id="sonata_user_author_create_country" name="sonata_user_author_create[country]" class="form-control" ></div>
+                            <div class="col-sm-8"><input type="text" id="sonata_user_author_create_country" name="sonata_user_author_create[country]" class="form-control" ></div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.birthDate.label'|trans }} </label>
-                            <div class="col-sm-5"><input type="text" id="sonata_user_author_create_birthDate" name="sonata_user_author_create[birthDate]" class="form-control" ></div>
+                            <div class="col-sm-8"><input type="text" id="sonata_user_author_create_birthDate" name="sonata_user_author_create[birthDate]" class="form-control" ></div>
                         </div>
 
                         <div class="pull-right">
@@ -103,6 +134,44 @@
             },
             minLength: 2
         });
+    </script>
+    <script src="https://cdn.ckeditor.com/4.11.1/standard/ckeditor.js"></script>
+    <script type="text/javascript">
+        window.ckeditorImgUploadPath = '{{ path('ckeditor_image_upload') }}';
+        $( document ).ready(function()
+        {
+            CKEDITOR.plugins.addExternal('imageuploader', '/bundles/thought/js/imageuploader/');
+
+            var editor = $('.js-ckeditor');
+            var editor_id = editor.attr('id');
+            var full_editor = $('.js-full-ckeditor');
+            var full_editor_id = full_editor.attr('id');
+
+            if (editor_id) {
+                CKEDITOR.replace( editor_id, {
+                    toolbar: [
+                        { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
+                        { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+                        '/',
+                        { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+                    ]
+                });
+            }
+
+            if (full_editor_id) {
+                CKEDITOR.replace( full_editor_id, {
+                    // toolbar: [
+                    //     { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
+                    //     { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+                    //     '/',
+                    //     { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+                    // ],
+                    extraPlugins: 'imageuploader',
+                });
+
+            }
+        });
+
     </script>
 
 {% endblock %}

@@ -3,8 +3,11 @@
 namespace Application\Sonata\UserBundle\Controller;
 
 use Application\Sonata\UserBundle\Form\Type\TopicType;
+use Doctrine\ORM\OptimisticLockException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use ThoughtBundle\Entity\Topic;
 
@@ -15,9 +18,9 @@ class TopicController extends Controller
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
      */
     public function createAction(Request $request)
     {
@@ -46,9 +49,9 @@ class TopicController extends Controller
      * @param Request $request
      * @param $topicId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      *
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws OptimisticLockException
      */
     public function editAction(Request $request, $topicId)
     {
@@ -79,11 +82,25 @@ class TopicController extends Controller
     }
 
     /**
+     * @Route("/topic/{topicId}/delete", name="sonata_user_topic_remove", requirements={"topicId"="\d+"})
+     */
+    public function removeAction($topicId)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+        /** @var Topic $topic */
+        $topic = $em->getRepository(Topic::class)->find($topicId);
+        $em->remove($topic);
+        $em->flush();
+
+        return $this->redirectToRoute('sonata_user_topics');
+    }
+
+    /**
      * @Route("/topics", name="sonata_user_topics")
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function listAction(Request $request)
     {

@@ -141,6 +141,10 @@ sonata_admin:
                 label: Topics
                 items:
                     - thought.admin.topic
+            Chains:
+                label: Chains
+                items:
+                    - thought.admin.chain
             Content:
                 label: Content
                 items: {Content: thought.admin.content}

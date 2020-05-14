@@ -5,12 +5,14 @@
                 {{ thought.category }}
             </a>
         </span>
-        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR') %}
-            <span class="quote_edit">
-                <a href="{{ path('admin_thought_thought_edit', {'id': thought.id}) }}">
-                    {{ 'user.thought.list_page.link.edit'|trans }}
-                </a>
-            </span>
+        {% if app.user %}
+            {% if is_granted('ROLE_MODERATOR') or thought.owner.id == app.user.id %}
+                <span class="quote_edit">
+                    <a href="{{ path('sonata_user_thought_edit', {'id': thought.id}) }}">
+                        {{ 'user.thought.list_page.link.edit'|trans }}
+                    </a>
+                </span>
+            {% endif %}
         {% endif %}
 
     </p>
