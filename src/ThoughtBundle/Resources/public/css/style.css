@@ -514,6 +514,7 @@ label.required:after{
 
 .topic-link a {
     padding-right: 10px;
+    cursor: pointer;
 }
 
 .quote-list {
