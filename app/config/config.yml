@@ -137,6 +137,7 @@ sonata_admin:
                 label: Thoughts
                 items:
                     - thought.admin.thought
+                roles: ['ROLE_MODERATOR']
             Topics:
                 label: Topics
                 items:

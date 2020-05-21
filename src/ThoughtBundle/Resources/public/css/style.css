@@ -107,10 +107,7 @@ th {
     padding-bottom: 30px;
 }
 
-.topic-link {
-    font-weight: bold;
-    color: #337ab7 !important;
-}
+
 
 .favorite-thougts-title {
     display: block;
@@ -501,10 +498,40 @@ label.required:after{
     text-align: left;
 }
 
-.chain-list {
+
+.topic-list {
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
     margin-top: 20px !important;
+}
+
+.topic-link {
+    display: flex;
+    padding: 10px 0;
+    font-weight: bold;
+    color: #337ab7 !important;
+}
+
+.topic-link a {
+    padding-right: 10px;
+}
+
+.quote-list {
+    display: none;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.chain-list {
+    display: none;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.chain-link {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
 }
 
 .chain-edit {

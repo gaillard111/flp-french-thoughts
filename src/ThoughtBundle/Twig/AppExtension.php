@@ -2,10 +2,15 @@
 
 namespace ThoughtBundle\Twig;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
+use Exception;
 use FOS\ElasticaBundle\Finder\FinderInterface;
 use Symfony\Component\DependencyInjection\Container;
 use ThoughtBundle\Entity\Author;
+use ThoughtBundle\Entity\ThoughtChain;
 use ThoughtBundle\Model\AuthorModel;
+use Twig_SimpleFilter;
 
 /**
  * Class AppExtension
@@ -35,12 +40,18 @@ class AppExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('customTag', [$this, 'customTagFilter']),
-            new \Twig_SimpleFilter('shortText', [$this, 'customShortText']),
-            new \Twig_SimpleFilter('alphabetAuthersLinks', [$this, 'alphabetAuthersLinks'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFilter('authorsInfo', [$this, 'authorsInfo']),
-
+            new Twig_SimpleFilter('customTag', [$this, 'customTagFilter']),
+            new Twig_SimpleFilter('shortText', [$this, 'customShortText']),
+            new Twig_SimpleFilter('alphabetAuthersLinks', [$this, 'alphabetAuthersLinks'], ['is_safe' => ['html']]),
+            new Twig_SimpleFilter('authorsInfo', [$this, 'authorsInfo']),
+            new Twig_SimpleFilter('asort', [$this, 'asort']),
         ];
+    }
+
+    public function asort($array)
+    {
+        /** @var ArrayCollection $array */
+        return $array->matching(Criteria::create()->orderBy(['name' => 'ASC']));
     }
 
     /**
@@ -49,6 +60,8 @@ class AppExtension extends \Twig_Extension
      * @param string $link
      *
      * @return string
+     *
+     * @throws Exception
      */
     public function customShortText($string, $length = 1, $link = null)
     {
@@ -149,9 +162,7 @@ class AppExtension extends \Twig_Extension
         }
 
         /** @var Author $author */
-        $author = $authors[0];
-
-        return $author;
+        return $authors[0];
     }
 
     /**

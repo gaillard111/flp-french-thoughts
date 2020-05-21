@@ -24,17 +24,30 @@ class TopicRepository extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function searchTopics(Topic $topic)
+    public function searchTopics(Topic $topic = null)
     {
         $qb = $this->createQueryBuilder('t');
         $qb
-            ->select('t')
+            ->select('t, c, ct, thought')
             ->leftJoin('t.chains', 'c')
-            ->where('t.name LIKE :topicName')
-            ->orWhere('c.name LIKE :topicName')
-            ->setParameters([
-                'topicName' => '%' . $topic->getName() . '%',
-            ]);
+            ->leftJoin('c.chainThoughts', 'ct')
+            ->leftJoin('ct.thought', 'thought')
+        ;
+        if ($topic) {
+            $qb
+//                ->where('t.name LIKE :topicName')
+                ->orWhere('c.name LIKE :topicName')
+                ->setParameters([
+                    'topicName' => '%' . $topic->getName() . '%',
+                ])
+            ;
+        }
+
+        $qb
+            ->orderBy('t.name', 'ASC')
+            ->orderBy('c.name', 'ASC')
+            ->orderBy('thought.category', 'ASC')
+        ;
         return $qb->getQuery()->getResult();
     }
 }

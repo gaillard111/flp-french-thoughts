@@ -36,7 +36,7 @@ class TopicController extends Controller
     {
         $em = $this->get('doctrine.orm.entity_manager');
 
-        $topics = $em->getRepository(Topic::class)->findAll();
+        $topics = $em->getRepository(Topic::class)->searchTopics();
 
         $topic = new Topic();
         $form  = $this->createForm(TopicSearchForm::class, $topic);

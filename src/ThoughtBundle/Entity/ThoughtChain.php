@@ -27,6 +27,8 @@ class ThoughtChain
     protected $chain;
 
     /**
+     * @var Thought
+     *
      * @ORM\ManyToOne(targetEntity="ThoughtBundle\Entity\Thought", inversedBy="chainThoughts")
      * @ORM\JoinColumn(name="thought_id", referencedColumnName="id")
      */
