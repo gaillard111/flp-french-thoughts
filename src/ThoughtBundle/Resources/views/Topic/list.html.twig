@@ -102,6 +102,7 @@
             let $quoteList = $(".quote-list[data-chain=" + chainId + "]");
 
             if ($this.children(".quote-list").children(".quote-link").length === 0) {
+
                 return;
             }
 
@@ -118,12 +119,16 @@
             let $this = $(this);
             let topicId = $this.data('topic');
             let $chainList = $(".chain-list[data-topic=" + topicId + "]");
+            let $chainLinks = $this.children(".chain-list").children(".chain-link");
 
-            if ($this.children(".chain-list").children(".chain-link").length === 0) {
+            if ($chainLinks.length === 0) {
+                $chainLinks.children('a').css('cursor', 'default');
+                $chainLinks.children('a').css('text-decoration', 'none');
                 return;
             }
 
             if ($chainList.css('display') === 'none') {
+
                 $chainList.css('display', 'flex');
             } else {
                 $chainList.hide();
