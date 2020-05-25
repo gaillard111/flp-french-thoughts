@@ -37,8 +37,7 @@
                                 </div>
                             {% endif %}
                         {% endif %}
-                    </div>
-                    <div class="chain-list" {% if query == true %} style="display: flex" {% endif %} data-topic="{{ topic.id }}">
+                        <div class="chain-list" {% if query == true %} style="display: flex" {% endif %} data-topic="{{ topic.id }}">
                             {% for chain in topic.chains|asort %}
                                 <div class="chain-link" data-chain="{{ chain.id }}">
                                     <a>{{ chain.name }}</a>
@@ -62,18 +61,18 @@
                                             {% endif %}
                                         {% endif %}
                                     </div>
-                                </div>
-
-
-                                <div class="quote-list" data-chain="{{ chain.id }}">
-                                    {% for chainThought in chain.chainThoughts %}
-                                        <a class="quote-link" data-quote="{{ chainThought.thought.id }}" href="{{ path('thought_thoughtpage_index', { 'thoughtId': chainThought.thought.id }) }}">
-                                            {{ chainThought.thought.category }}
-                                        </a>
-                                    {% endfor %}
+                                    <div class="quote-list" data-chain="{{ chain.id }}">
+                                        {% for chainThought in chain.chainThoughts %}
+                                            <a class="quote-link" data-quote="{{ chainThought.thought.id }}" href="{{ path('thought_thoughtpage_index', { 'thoughtId': chainThought.thought.id }) }}">
+                                                {{ chainThought.thought.category }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             {% endfor %}
                         </div>
+                    </div>
+
                 {% endfor %}
             </div>
         </div>
