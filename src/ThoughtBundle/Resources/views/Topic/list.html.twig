@@ -84,6 +84,16 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+
+        function redirect(selector) {
+            $(selector).click(function (event) {
+                event.stopPropagation();
+                event.preventDefault();
+                let $this = $(this);
+                window.location.href = $this.attr('href');
+            });
+        }
+
         $(".chain-link").click(function (event) {
             event.stopPropagation();
             event.preventDefault();
@@ -120,11 +130,7 @@
             }
         });
 
-        $(".open-chain").click(function (event) {
-            event.stopPropagation();
-            event.preventDefault();
-            let $this = $(this);
-            window.location.href = $this.attr('href');
-        })
+        redirect(".open-chain");
+        redirect(".quote-link");
     </script>
 {% endblock %}
