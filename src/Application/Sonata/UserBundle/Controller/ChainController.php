@@ -5,6 +5,7 @@ namespace Application\Sonata\UserBundle\Controller;
 use Application\Sonata\UserBundle\Entity\User;
 use Application\Sonata\UserBundle\Form\Type\ChainType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -106,7 +107,7 @@ class ChainController extends Controller
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function changeFavoriteAction(Request $request)
     {
@@ -222,7 +223,7 @@ class ChainController extends Controller
      * @param Request $request
      * @param int     $chainId
      *
-     * @return Response|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function editAction(Request $request, $chainId)
     {
@@ -268,7 +269,7 @@ class ChainController extends Controller
      *
      * @param int $chainId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function removeAction($chainId)
     {
@@ -301,7 +302,7 @@ class ChainController extends Controller
      *
      * @param int $chainId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function shareAction($chainId)
     {
@@ -343,7 +344,7 @@ class ChainController extends Controller
      *
      * @param int $chainId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function collectiveAction($chainId)
     {

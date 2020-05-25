@@ -27,16 +27,18 @@
             <div class="topic-list">
                 {% for topic in topics %}
                     <div class="topic-link" data-topic="{{ topic.id }}">
-                        <a title="{{ topic.name }}">{{ topic.name|striptags|truncate(25) }}</a>
-                        {% if topic.user == app.user %}
-                            <div class="topic-edit">
-                                <a class="text-primary plain" href="{{ path('sonata_user_topic_edit', { 'topicId': topic.id }) }}">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </a>
-                            </div>
+                        {% if query == false %}
+                            <a title="{{ topic.name }}">{{ topic.name|striptags|truncate(25) }}</a>
+                            {% if topic.user == app.user %}
+                                <div class="topic-edit">
+                                    <a class="text-primary plain" href="{{ path('sonata_user_topic_edit', { 'topicId': topic.id }) }}">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                    </a>
+                                </div>
+                            {% endif %}
                         {% endif %}
                     </div>
-                    <div class="chain-list" data-topic="{{ topic.id }}">
+                    <div class="chain-list" {% if query == true %} style="display: flex" {% endif %} data-topic="{{ topic.id }}">
                             {% for chain in topic.chains|asort %}
                                 <div class="chain-link" data-chain="{{ chain.id }}">
                                     <a>{{ chain.name }}</a>
@@ -81,7 +83,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $(".chain-link").click(function () {
+        $(".chain-link").hover(function () {
             let $this = $(this);
             let chainId = $this.data('chain');
             let $quoteList = $(".quote-list[data-chain=" + chainId + "]");
@@ -93,7 +95,7 @@
             }
         });
 
-        $(".topic-link").click(function () {
+        $(".topic-link").hover(function () {
             let $this = $(this);
             let topicId = $this.data('topic');
             let $chainList = $(".chain-list[data-topic=" + topicId + "]");

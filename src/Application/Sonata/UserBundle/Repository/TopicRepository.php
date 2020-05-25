@@ -41,13 +41,14 @@ class TopicRepository extends EntityRepository
                     'topicName' => '%' . $topic->getName() . '%',
                 ])
             ;
+
+            $qb
+                ->orderBy('c.name', 'ASC')
+                ->orderBy('thought.category', 'ASC')
+            ;
         }
 
-        $qb
-            ->orderBy('t.name', 'ASC')
-            ->orderBy('c.name', 'ASC')
-            ->orderBy('thought.category', 'ASC')
-        ;
+        $qb->orderBy('t.name', 'ASC');
         return $qb->getQuery()->getResult();
     }
 }
