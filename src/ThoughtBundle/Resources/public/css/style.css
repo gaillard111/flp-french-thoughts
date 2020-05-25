@@ -503,12 +503,15 @@ label.required:after{
     display:flex;
     flex-direction: column;
     margin-top: 20px !important;
+    font-weight: 300;
+}
+
+.topic-edit {
+    display: inline;
 }
 
 .topic-link {
-    /*display: flex;*/
     padding: 10px 0;
-    font-weight: bold;
     color: #337ab7 !important;
 }
 
