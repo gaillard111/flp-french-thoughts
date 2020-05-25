@@ -45,6 +45,7 @@ class AppExtension extends \Twig_Extension
             new Twig_SimpleFilter('alphabetAuthersLinks', [$this, 'alphabetAuthersLinks'], ['is_safe' => ['html']]),
             new Twig_SimpleFilter('authorsInfo', [$this, 'authorsInfo']),
             new Twig_SimpleFilter('asort', [$this, 'asort']),
+            new Twig_SimpleFilter('some_sort_filter', [$this, 'some_sort_filter']),
         ];
     }
 
@@ -52,6 +53,19 @@ class AppExtension extends \Twig_Extension
     {
         /** @var ArrayCollection $array */
         return $array->matching(Criteria::create()->orderBy(['name' => 'ASC']));
+    }
+
+    public function some_sort_filter($array)
+    {   /** @var ThoughtChain[] $array */
+        usort($array, function ($elem1, $elem2) {
+            /**
+             * @var ThoughtChain $elem1
+             * @var ThoughtChain $elem2
+             */
+            return strcmp($elem1->getThought()->getCategory(), $elem2->getThought()->getCategory());
+        });
+
+        return $array;
     }
 
     /**
