@@ -51,25 +51,27 @@ class AppExtension extends \Twig_Extension
 
     public function asort($array)
     {
-        usort($array, function ($elem1, $elem2) {
+        $collator = new Collator('fr_FR');
+        usort($array, function ($elem1, $elem2) use ($collator) {
             /**
              * @var Chain $elem1
              * @var Chain $elem2
              */
-            setlocale(LC_COLLATE, 'fr_FR');
-            return strcoll($elem1->getName(), $elem2->getName());
+            return $collator->compare($elem1->getName(), $elem2->getName());
         });
         return $array;
     }
 
     public function some_sort_filter($array)
-    {   /** @var ThoughtChain[] $array */
-        usort($array, function ($elem1, $elem2) {
+    {
+        $collator = new Collator('fr_FR');
+        /** @var ThoughtChain[] $array */
+        usort($array, function ($elem1, $elem2) use ($collator) {
             /**
              * @var ThoughtChain $elem1
              * @var ThoughtChain $elem2
              */
-            return strcmp($elem1->getThought()->getCategory(), $elem2->getThought()->getCategory());
+            return $collator->compare($elem1->getThought()->getCategory(), $elem2->getThought()->getCategory());
         });
 
         return $array;
