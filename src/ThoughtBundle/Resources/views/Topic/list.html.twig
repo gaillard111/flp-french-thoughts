@@ -38,7 +38,7 @@
                             {% endif %}
                         {% endif %}
                         <div class="chain-list" {% if query == true %} style="display: flex" {% endif %} data-topic="{{ topic.id }}">
-                            {% for chain in topic.chains|asort %}
+                            {% for chain in topic.chains.toArray|asort %}
                                 <div class="chain-link" data-chain="{{ chain.id }}">
                                     <a>{{ chain.name }}</a>
                                     <div class="chain-edit">

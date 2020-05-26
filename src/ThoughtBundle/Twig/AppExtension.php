@@ -2,12 +2,12 @@
 
 namespace ThoughtBundle\Twig;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Criteria;
+use Collator;
 use Exception;
 use FOS\ElasticaBundle\Finder\FinderInterface;
 use Symfony\Component\DependencyInjection\Container;
 use ThoughtBundle\Entity\Author;
+use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ThoughtChain;
 use ThoughtBundle\Model\AuthorModel;
 use Twig_SimpleFilter;
@@ -51,8 +51,15 @@ class AppExtension extends \Twig_Extension
 
     public function asort($array)
     {
-        /** @var ArrayCollection $array */
-        return $array->matching(Criteria::create()->orderBy(['name' => 'ASC']));
+        usort($array, function ($elem1, $elem2) {
+            /**
+             * @var Chain $elem1
+             * @var Chain $elem2
+             */
+            setlocale(LC_COLLATE, 'fr_FR');
+            return strcoll($elem1->getName(), $elem2->getName());
+        });
+        return $array;
     }
 
     public function some_sort_filter($array)
