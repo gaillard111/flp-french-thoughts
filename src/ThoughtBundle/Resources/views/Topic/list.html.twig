@@ -95,7 +95,7 @@
         }
 
         let $topicLink = $(".topic-link");
-
+        let $chainLink = $(".chain-link");
 
         $topicLink.hover(function () {
             let $this = $(this);
@@ -103,12 +103,23 @@
 
             if ($chainLinks.length === 0) {
                 $this.children('a').css('cursor', 'default');
+                $this.children('a').css('color', '#337ab7');
                 $this.children('a').css('text-decoration', 'none');
             }
-
         });
 
-        $(".chain-link").click(function (event) {
+        $chainLink.hover(function () {
+            let $this = $(this);
+            let $quoteLinks = $this.children(".quote-list").children(".quote-link");
+
+            if ($quoteLinks.length === 0) {
+                $this.children('a').css('cursor', 'default');
+                $this.children('a').css('color', '#337ab7');
+                $this.children('a').css('text-decoration', 'none');
+            }
+        });
+
+        $chainLink.click(function (event) {
             event.stopPropagation();
             event.preventDefault();
             let $this = $(this);
@@ -116,7 +127,6 @@
             let $quoteList = $(".quote-list[data-chain=" + chainId + "]");
 
             if ($this.children(".quote-list").children(".quote-link").length === 0) {
-
                 return;
             }
 
