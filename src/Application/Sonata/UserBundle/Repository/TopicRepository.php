@@ -33,22 +33,22 @@ class TopicRepository extends EntityRepository
             ->leftJoin('c.chainThoughts', 'ct')
             ->leftJoin('ct.thought', 'thought')
         ;
+
+        $qb->orderBy('c.name', 'ASC');
+        $qb->orderBy('thought.category', 'ASC');
+        $qb->orderBy('t.name', 'ASC');
+
         if ($topic) {
             $qb
-//                ->where('t.name LIKE :topicName')
                 ->orWhere('c.name LIKE :topicName')
                 ->setParameters([
                     'topicName' => '%' . $topic->getName() . '%',
                 ])
             ;
-
+            $qb->orderBy('c.name', 'ASC');
 
         }
-        $qb
-            ->orderBy('c.name', 'ASC')
-            ->orderBy('thought.category', 'ASC')
-        ;
-        $qb->orderBy('t.name', 'ASC');
+
 
         return $qb->getQuery()->getResult();
     }

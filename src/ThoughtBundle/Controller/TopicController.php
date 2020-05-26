@@ -44,7 +44,7 @@ class TopicController extends Controller
 
         if ($form->isSubmitted()) {
             $query  = true;
-            $topic  = $form-> getData();
+            $topic  = $form->getData();
             $topics = $em->getRepository(Topic::class)->searchTopics($topic);
 
             return $this->render('ThoughtBundle:Topic:list.html.twig', [
