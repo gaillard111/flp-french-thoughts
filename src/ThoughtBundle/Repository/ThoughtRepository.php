@@ -56,7 +56,6 @@ class ThoughtRepository extends EntityRepository
      */
     public function getLastThoughts($limit, $sortField, $sortDirection)
     {
-//        dump($sortField, $sortDirection);die;
         $qb = $this->createQueryBuilder('t');
 
         $qb
@@ -72,7 +71,7 @@ class ThoughtRepository extends EntityRepository
         if ($sortField == 'likesCount') {
             $qb
                 ->select('t, count(l.id) as HIDDEN likesCount')
-                ->join('t.likes', 'l')
+                ->leftJoin('t.likes', 'l')
                 ->groupBy('t.id')
                 ->orderBy($sortField, $sortDirection)
             ;

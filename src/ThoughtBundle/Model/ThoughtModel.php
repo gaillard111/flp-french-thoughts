@@ -127,7 +127,7 @@ class ThoughtModel
             /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $this->getThoughtsFromElastic($search, $page);
         } else {
-            $thoughts = $this->getLastThoughts(50 * $page, 'amount');
+            $thoughts = $this->getLastThoughts(50 * $page, 'id', 'DESC');
         }
 
         return $thoughts;
@@ -180,7 +180,7 @@ class ThoughtModel
             $terms = array_merge($terms, $this->getTerms($request['term']));
         }
 
-        $sort = ['createdAt' => 'desc'];
+        $sort = ['amount' => 'asc'];
 
         if (isset($request['sorting']) && $request['sorting']) {
             if (isset($request['sorting_desc'])) {
@@ -251,6 +251,7 @@ class ThoughtModel
             if ($request['sorting'] == '') {
                 $sort = ['amount' => 'asc'];
             }
+
             $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
             return $this->finder->createPaginatorAdapter($query);
         }
