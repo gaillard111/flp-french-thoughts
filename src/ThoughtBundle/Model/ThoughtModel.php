@@ -169,10 +169,26 @@ class ThoughtModel
         if ($isAuthor) {
             $names = $this->getNames($terms);
 
+            $matches = [];
+            $filters = [];
+
+            foreach ($names as $key => $name) {
+                $matches[] = [
+                    'match' => [
+                        'author' => $name,
+                    ],
+                ];
+
+                $filters[] = [
+                    'term' => [
+                        'author_exact' => $name,
+                    ],
+                ];
+            }
             $terms[] = [
-                'terms' => [
-                    'author_exact' => $names,
-                ],
+                'matches' => $matches,
+                'filters' => $filters,
+
             ];
         }
 
@@ -181,6 +197,7 @@ class ThoughtModel
         }
 
         $sort = ['amount' => 'asc'];
+//        $sort = ['birth_date' => 'asc'];
 
         if (isset($request['sorting']) && $request['sorting']) {
             if (isset($request['sorting_desc'])) {
@@ -236,7 +253,7 @@ class ThoughtModel
 
         $filterException = $this->compileExceptions($fields, $wordExceptions);
 
-        if (!$words) {
+        if (!$words && !$isAuthor) {
             return $this->getLastThoughts(50 * $page, array_keys($sort)[0], $sort[array_keys($sort)[0]]);
         }
 
@@ -255,9 +272,9 @@ class ThoughtModel
             $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
             return $this->finder->createPaginatorAdapter($query);
         }
-
+//        dump($terms);die;
         $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
-
+//        dump($this->finder->find($query));die;
         return $this->finder->createPaginatorAdapter($query);
     }
 
@@ -485,42 +502,56 @@ class ThoughtModel
      */
     public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms)
     {
-        $must = [
-            [
-                'range' => [
-                    'amount' => [
-                        'gte' => $minWords,
-                        'lte' => $maxWords,
-                    ],
-                ],
-            ],
+        $must             = [];
+        $querySearchArray = [];
+
+        $boolSearchArray = [
+            'must_not' => $filterException,
         ];
 
+        if (!empty($words)) {
+            $wordSearch = [];
+
+            $wordSearch = array_merge($wordSearch, [
+                [
+                    'term' => [
+                        'category' => $words,
+                        'content'  => $words,
+                    ],
+                ],
+            ]);
+
+            $boolSearchArray['must'] = $wordSearch;
+        }
+
         if (!empty($terms)) {
-            $must[] = $terms;
+            $must = $terms;
+            if (isset($terms[1]['filters'])) {
+                $boolSearchArray['should'] = $must[1]['filters'];
+            }
+        }
+
+        if (isset($must[1]['matches'])) {
+            $querySearchArray = $must[1]['matches'];
         }
 
         $query = new Query();
         $query->setParams(
             [
                 'query' => [
-                    'multi_match' => [
-                        'query'                => $words,
-                        'fields'               => $fields,
-                        'operator'             => 'and',
-                        'minimum_should_match' => '100%',
+                    'filtered' => [
+                        'query'  => $querySearchArray,
+                        'filter' => [
+                            'bool' => $boolSearchArray,
+                        ],
                     ],
                 ],
-                'filter' => [
-                    'bool' => [
-                        'must_not' => $filterException,
-                        'must'     => $must,
-                    ],
-                ],
-                'sort' => $sort,
+                'fields' => $fields,
+
+                //                'sort' => $sort,
             ]
         );
-
+//        dump($query); die;
         return $query;
     }
 
@@ -985,7 +1016,7 @@ class ThoughtModel
                         [
                             'regexp' => [
                                 'birthDate' => [
-                                    'value' => '6.*5',
+                                    'value' => $terms[0]['query']['multi_match']['query'],
                                 ],
                             ],
                         ],
@@ -993,7 +1024,8 @@ class ThoughtModel
                 ],
             ],
         ]);
-        $authors = $this->authorsFinder->find($query, 100000);
+
+        $authors = $this->authorsFinder->find($query, 10000);
 
         $names = [];
 
