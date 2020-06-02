@@ -300,6 +300,9 @@ class ThoughtController extends Controller
         $em = $this->get('doctrine.orm.entity_manager');
         /** @var Thought $thought */
         $thought = $em->getRepository(Thought::class)->find($id);
+        $author = $em->getRepository(Author::class)->findOneBy([
+            'name' => $thought->getAuthor()
+        ]);
 
         if (!$thought) {
             return $this->redirectToRoute('thought_homepage_index');
@@ -321,6 +324,7 @@ class ThoughtController extends Controller
 
         return $this->render('ApplicationSonataUserBundle:Thought:create.html.twig', [
             'form' => $form->createView(),
+            'author' => $author
         ]);
     }
 

@@ -129,4 +129,17 @@ $(document).ready(function() {
 
     });
 
+    // $(window).focus(function () {
+    setInterval(function () {
+        $.ajax({
+            url:        "{{ path('ajax_counter') }}",
+            method:     "POST",
+            success:    function (data) {
+                console.log(data);
+                $("#messages-counter").html('(+' + data['count'][1] + ')');
+            }
+        });
+    }, 30000);
+    // });
+
 });

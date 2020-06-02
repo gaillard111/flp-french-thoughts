@@ -48,7 +48,7 @@
                                 {{ 'author.filter.fields.sex.label'|trans }}
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" id="sonata_user_author_create_sex" name="sonata_user_author_create[sex]"  class="form-control" >
+                                <input type="text" id="sonata_user_author_create_sex" name="sonata_user_author_create[sex]" value="{{ author.sex }}" class="form-control" >
                             </div>
                         </div>
                         <div class="form-group">
@@ -56,7 +56,7 @@
                                 {{ 'author.filter.fields.job.label'|trans }}
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" id="sonata_user_author_create_job" name="sonata_user_author_create[job]" class="form-control" >
+                                <input type="text" id="sonata_user_author_create_job" name="sonata_user_author_create[job]" value="{{ author.job }}" class="form-control" >
                             </div>
                         </div>
                         <div class="form-group">
@@ -64,7 +64,7 @@
                                 {{ 'author.filter.fields.continent.label'|trans }}
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" id="sonata_user_author_create_continent" name="sonata_user_author_create[continent]" class="form-control" >
+                                <input type="text" id="sonata_user_author_create_continent" name="sonata_user_author_create[continent]" value="{{ author.continent }}" class="form-control" >
                             </div>
                         </div>
                         <div class="form-group">
@@ -72,13 +72,13 @@
                                 {{ 'author.filter.fields.country.label'|trans }} (<a href="/?search[words]=insérer une nouvelle citation&search[field][content]=on&search[field][category]=on&search[field][tags]=on&search[field][author]=on&search[field][thoughtInfo]=on&search[max_words]=0&search[min_words]=0&search[sorting]=">{{ 'author.filter.fields.instruction.label'|trans}}</a>)
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" id="sonata_user_author_create_country" name="sonata_user_author_create[country]" class="form-control" >
+                                <input type="text" id="sonata_user_author_create_country" name="sonata_user_author_create[country]" value="{{ author.country }}" class="form-control" >
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="sonata_user_author_create_birthDate">{{ 'author.filter.fields.birthDate.label'|trans }} </label>
                             <div class="col-sm-8">
-                                <input type="text" id="sonata_user_author_create_birthDate" name="sonata_user_author_create[birthDate]" class="form-control">
+                                <input type="text" id="sonata_user_author_create_birthDate" name="sonata_user_author_create[birthDate]" value="{{ author.birthdate }}" class="form-control">
                             </div>
                         </div>
 
@@ -94,10 +94,18 @@
 {% endblock %}
 
 {% block javascripts %}
-    <link href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
+        let $sexField = $('input#sonata_user_author_create_sex');
+        let $jobField = $('input#sonata_user_author_create_job');
+        let $nameField = $('input#sonata_user_author_create_name');
+        let $continentField = $('input#sonata_user_author_create_continent');
+        let $countryField = $('input#sonata_user_author_create_country');
+        let $birthdayField = $('input#sonata_user_author_create_birthDate');
+
+
         $('#sonata_user_thought_create_author').autocomplete({
             source: function(request, response){
                 $.ajax({
@@ -121,33 +129,33 @@
                 });
             },
             select: function( event, ui ) {
-                $('input#sonata_user_author_create_sex').val(ui.item.sex);
-                $('input#sonata_user_author_create_sex').attr('disabled', 'disabled');
-                $('input#sonata_user_author_create_job').val(ui.item.job);
-                $('input#sonata_user_author_create_job').attr('disabled', 'disabled');
-                $('input#sonata_user_author_create_name').val(ui.item.label);
-                $('input#sonata_user_author_create_name').attr('disabled', 'disabled');
-                $('input#sonata_user_author_create_continent').val(ui.item.continent);
-                $('input#sonata_user_author_create_continent').attr('disabled', 'disabled');
-                $('input#sonata_user_author_create_country').val(ui.item.country);
-                $('input#sonata_user_author_create_country').attr('disabled', 'disabled');
-                $('input#sonata_user_author_create_birthDate').val(ui.item.birthDate);
-                $('input#sonata_user_author_create_birthDate').attr('disabled', 'disabled');
+                $sexField.val(ui.item.sex);
+                $sexField.attr('disabled', 'disabled');
+                $jobField.val(ui.item.job);
+                $jobField.attr('disabled', 'disabled');
+                $nameField.val(ui.item.label);
+                $nameField.attr('disabled', 'disabled');
+                $continentField.val(ui.item.continent);
+                $continentField.attr('disabled', 'disabled');
+                $countryField.val(ui.item.country);
+                $countryField.attr('disabled', 'disabled');
+                $birthdayField.val(ui.item.birthDate);
+                $birthdayField.attr('disabled', 'disabled');
             },
             search: function( event, ui ) {
-                $('input#sonata_user_author_create_sex').val('');
-                $('input#sonata_user_author_create_job').val('');
-                $('input#sonata_user_author_create_name').val('');
-                $('input#sonata_user_author_create_continent').val('');
-                $('input#sonata_user_author_create_country').val('');
-                $('input#sonata_user_author_create_birthDate').val('');
+                $sexField.val('');
+                $jobField.val('');
+                $nameField.val('');
+                $continentField.val('');
+                $countryField.val('');
+                $birthdayField.val('');
 
-                $('input#sonata_user_author_create_sex').removeAttr('disabled');
-                $('input#sonata_user_author_create_job').removeAttr('disabled');
-                $('input#sonata_user_author_create_name').removeAttr('disabled');
-                $('input#sonata_user_author_create_continent').removeAttr('disabled');
-                $('input#sonata_user_author_create_country').removeAttr('disabled');
-                $('input#sonata_user_author_create_birthDate').removeAttr('disabled');
+                $sexField.removeAttr('disabled');
+                $jobField.removeAttr('disabled');
+                $nameField.removeAttr('disabled');
+                $continentField.removeAttr('disabled');
+                $countryField.removeAttr('disabled');
+                $birthdayField.removeAttr('disabled');
             },
             minLength: 2
         });
