@@ -1,4 +1,3 @@
-{#{% form_theme form '@ApplicationSonataUser/Profile/Form/form-edit-profile.html.twig' %}#}
 {% extends 'ApplicationSonataUserBundle:Profile:action.html.twig' %}
 
 {% block sonata_profile_title %}{{ 'user.thought.create_page.title'|trans }}{% endblock %}
@@ -11,7 +10,7 @@
                     <h3 class="panel-title">{{ 'user.thought.create_page.title'|trans }}</h3>
                 </div>
                 <div class="panel-body">
-                    <form class="form-horizontal" method="post" {{ form_enctype(form) }}>
+                    {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
                         <div class="form-group">
                             {{ form_label(form.category, null, { 'attr': { 'class': 'col-sm-2' } }) }}
                             <div class="col-sm-8">
@@ -45,30 +44,48 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.sex.label'|trans }}</label>
-                            <div class="col-sm-8"><input type="text" id="sonata_user_author_create_sex" name="sonata_user_author_create[sex]"  class="form-control" ></div>
+                            <label for="sonata_user_author_create_sex" class="control-label col-sm-2" for="sonata_user_thought_create_author">
+                                {{ 'author.filter.fields.sex.label'|trans }}
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" id="sonata_user_author_create_sex" name="sonata_user_author_create[sex]"  class="form-control" >
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.job.label'|trans }}</label>
-                            <div class="col-sm-8"><input type="text" id="sonata_user_author_create_job" name="sonata_user_author_create[job]" class="form-control" ></div>
+                            <label for="sonata_user_author_create_job" class="control-label col-sm-2" for="sonata_user_thought_create_author">
+                                {{ 'author.filter.fields.job.label'|trans }}
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" id="sonata_user_author_create_job" name="sonata_user_author_create[job]" class="form-control" >
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.continent.label'|trans }}</label>
-                            <div class="col-sm-8"><input type="text" id="sonata_user_author_create_continent" name="sonata_user_author_create[continent]" class="form-control" ></div>
+                            <label class="control-label col-sm-2" for="sonata_user_author_create_continent">
+                                {{ 'author.filter.fields.continent.label'|trans }}
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" id="sonata_user_author_create_continent" name="sonata_user_author_create[continent]" class="form-control" >
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.country.label'|trans }} (<a href="/?search[words]=insérer une nouvelle citation&search[field][content]=on&search[field][category]=on&search[field][tags]=on&search[field][author]=on&search[field][thoughtInfo]=on&search[max_words]=0&search[min_words]=0&search[sorting]=">{{ 'author.filter.fields.instruction.label'|trans}}</a>)</label>
-                            <div class="col-sm-8"><input type="text" id="sonata_user_author_create_country" name="sonata_user_author_create[country]" class="form-control" ></div>
+                            <label class="control-label col-sm-2" for="sonata_user_author_create_country">
+                                {{ 'author.filter.fields.country.label'|trans }} (<a href="/?search[words]=insérer une nouvelle citation&search[field][content]=on&search[field][category]=on&search[field][tags]=on&search[field][author]=on&search[field][thoughtInfo]=on&search[max_words]=0&search[min_words]=0&search[sorting]=">{{ 'author.filter.fields.instruction.label'|trans}}</a>)
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" id="sonata_user_author_create_country" name="sonata_user_author_create[country]" class="form-control" >
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="sonata_user_thought_create_author">{{ 'author.filter.fields.birthDate.label'|trans }} </label>
-                            <div class="col-sm-8"><input type="text" id="sonata_user_author_create_birthDate" name="sonata_user_author_create[birthDate]" class="form-control" ></div>
+                            <label class="control-label col-sm-2" for="sonata_user_author_create_birthDate">{{ 'author.filter.fields.birthDate.label'|trans }} </label>
+                            <div class="col-sm-8">
+                                <input type="text" id="sonata_user_author_create_birthDate" name="sonata_user_author_create[birthDate]" class="form-control">
+                            </div>
                         </div>
 
                         <div class="pull-right">
                             <button class="btn btn-success">{{ 'user.thought.create_page.submit'|trans }}</button>
                         </div>
-                    </form>
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>
@@ -104,18 +121,18 @@
                 });
             },
             select: function( event, ui ) {
-                $('input#sonata_user_author_create_sex').val(ui.item.sex)
-                $('input#sonata_user_author_create_sex').attr('disabled', 'disabled')
-                $('input#sonata_user_author_create_job').val(ui.item.job)
-                $('input#sonata_user_author_create_job').attr('disabled', 'disabled')
-                $('input#sonata_user_author_create_name').val(ui.item.label)
-                $('input#sonata_user_author_create_name').attr('disabled', 'disabled')
-                $('input#sonata_user_author_create_continent').val(ui.item.continent)
-                $('input#sonata_user_author_create_continent').attr('disabled', 'disabled')
-                $('input#sonata_user_author_create_country').val(ui.item.country)
-                $('input#sonata_user_author_create_country').attr('disabled', 'disabled')
-                $('input#sonata_user_author_create_birthDate').val(ui.item.birthDate)
-                $('input#sonata_user_author_create_birthDate').attr('disabled', 'disabled')
+                $('input#sonata_user_author_create_sex').val(ui.item.sex);
+                $('input#sonata_user_author_create_sex').attr('disabled', 'disabled');
+                $('input#sonata_user_author_create_job').val(ui.item.job);
+                $('input#sonata_user_author_create_job').attr('disabled', 'disabled');
+                $('input#sonata_user_author_create_name').val(ui.item.label);
+                $('input#sonata_user_author_create_name').attr('disabled', 'disabled');
+                $('input#sonata_user_author_create_continent').val(ui.item.continent);
+                $('input#sonata_user_author_create_continent').attr('disabled', 'disabled');
+                $('input#sonata_user_author_create_country').val(ui.item.country);
+                $('input#sonata_user_author_create_country').attr('disabled', 'disabled');
+                $('input#sonata_user_author_create_birthDate').val(ui.item.birthDate);
+                $('input#sonata_user_author_create_birthDate').attr('disabled', 'disabled');
             },
             search: function( event, ui ) {
                 $('input#sonata_user_author_create_sex').val('');
