@@ -13,7 +13,6 @@ use FOS\ElasticaBundle\Finder\TransformedFinder;
 use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
 use FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter;
 use Symfony\Component\DependencyInjection\Container;
-use ThoughtBundle\Entity\Author;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
 
@@ -706,6 +705,11 @@ class ThoughtModel
             'avait', 'avaient', 'autre', 'beaucoup', 'chose', 'choses',
             'entre', 'encore', 'était', 'étaient', 'lequel', 'parce',
             'parle', 'parlent', 'quelque', 'sommes', 'seule', 'toutes',
+            'ainsi', 'appelons', 'autres', 'chacun', 'chaque', 'celles', 'celles-ci',
+            'certains', 'c’est', 'court', 'cours', 'devrions', 'd\'une, n’est',
+            'place', 'point', 'plutôt', 'pourrez', 'peuvent', 'propre', 'propres', 'peut-être',
+            'quelle', 'quelques', 'qu’elle', 'qu’il', 's’est', 'selon', 'seulement', 'seules', 'serez',
+            'semble', 'souvent', 'tellement', 'vient', 'vraiment',
         ];
 
         if (!is_array($thoughts) && $words) {
@@ -714,27 +718,29 @@ class ThoughtModel
 
             if ($thoughts->getTotalHits() > 0) {
                 /** @var Thought $thought */
-                if ($thoughts->getTotalHits() > 5000) {
+                $offset = $thoughts->getTotalHits();
+                if ($offset > 5000) {
                     $offset = 5000;
-                } else {
-                    $offset = $thoughts->getTotalHits();
                 }
                 foreach ($thoughts->getResults(0, $offset)->toArray() as $thought) {
                     $tags  = explode(',', $thought->getTags());
                     $words = explode(' ', $thought->getContent());
-                    if (count($words) <= 80) {
-                        foreach ($words as $word) {
-                            if (in_array($this->formatCloudWord($word), $avoidWords)) {
-                                continue;
+
+                    foreach ($words as $key => $word) {
+                        if (in_array($this->formatCloudWord($word), $avoidWords)) {
+                            continue;
+                        }
+
+                        if (mb_strlen($this->formatCloudWord($word), 'UTF-8') >= 5) {
+                            if (!isset($cloudContent[$this->formatCloudWord($word)])) {
+                                $cloudContent[$this->formatCloudWord($word)] = 0;
                             }
 
-                            if (mb_strlen($this->formatCloudWord($word), 'UTF-8') >= 5) {
-                                if (!isset($cloudContent[$this->formatCloudWord($word)])) {
-                                    $cloudContent[$this->formatCloudWord($word)] = 0;
-                                }
+                            $cloudContent[$this->formatCloudWord($word)]++;
+                        }
 
-                                $cloudContent[$this->formatCloudWord($word)]++;
-                            }
+                        if ($key >= 80) {
+                            break;
                         }
                     }
 
