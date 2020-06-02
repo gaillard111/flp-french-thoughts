@@ -13,6 +13,7 @@ use FOS\ElasticaBundle\Finder\TransformedFinder;
 use FOS\ElasticaBundle\Paginator\PaginatorAdapterInterface;
 use FOS\ElasticaBundle\Paginator\TransformedPaginatorAdapter;
 use Symfony\Component\DependencyInjection\Container;
+use ThoughtBundle\Entity\Author;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
 
@@ -221,18 +222,20 @@ class ThoughtModel
 
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
-        $lastChar  = $words[mb_strlen($words) - 1];
-        $firstChar = $words[0];
+        if ($words) {
+            $lastChar  = $words[mb_strlen($words) - 1];
+            $firstChar = $words[0];
 
-        $words = ($lastChar == ',' || $lastChar == '.' || $lastChar == '!') ? mb_substr($words, 0, -1) : $words;
-        $words = ($firstChar == ',' || $firstChar == '.' || $firstChar == '!') ? mb_substr($words, 1) : $words;
+            $words = ($lastChar == ',' || $lastChar == '.' || $lastChar == '!') ? mb_substr($words, 0, -1) : $words;
+            $words = ($firstChar == ',' || $firstChar == '.' || $firstChar == '!') ? mb_substr($words, 1) : $words;
 
-        $countQuote = explode('"', $words);
+            $countQuote = explode('"', $words);
 
-        if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
-            $query = $this->searchQuoteString($countQuote[1], $fields, $minWords, $maxWords, $sort, $terms);
+            if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
+                $query = $this->searchQuoteString($countQuote[1], $fields, $minWords, $maxWords, $sort, $terms);
 
-            return $this->finder->createPaginatorAdapter($query);
+                return $this->finder->createPaginatorAdapter($query);
+            }
         }
 
         $arrWords = explode(' ', $words);
