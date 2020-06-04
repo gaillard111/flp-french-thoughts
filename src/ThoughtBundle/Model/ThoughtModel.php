@@ -973,20 +973,21 @@ class ThoughtModel
         if (!empty($request['name'])) {
         }
 
-        if (!empty($request['birthDate']) || isset($request['envjc'])) {
+        if (!empty($request['birthDate'])) {
 
-
-            if (isset($request['envjc']) && ($request['envjc'] == 'on')) {
-                $birthDate = 'j|c';
-            } else {
-                $birthDate = str_replace('?', '.', $request['birthDate']);
-            }
-
+            $birthDate = str_replace('?', '.', $request['birthDate']);
             if (isset($request['env1000']) && ($request['env1000'] == 'on')) {
-                $birthDate = str_replace('?', '.', $request['birthDate']);
                 $birthDate = '[^1]' . $birthDate;
             }
+        }
 
+        if (isset($request['envjc'])) {
+            if (isset($request['envjc']) && ($request['envjc'] == 'on')) {
+                $birthDate = 'j|c';
+            }
+        }
+
+        if (isset($birthDate)) {
             $terms['birthDate'] = [
                 'query' => [
                     'regexp' => [
@@ -998,11 +999,20 @@ class ThoughtModel
             ];
         }
 
+
         if (!empty($request['sex'])) {
             $terms['sex'] = [
                 'match' => [
                     'sex' => [
                         'query' => $request['sex'],
+                    ],
+                ],
+            ];
+        } else {
+            $terms['sex'] = [
+                'match' => [
+                    'sex' => [
+                        'query' => '.*',
                     ],
                 ],
             ];
