@@ -129,7 +129,6 @@ $(document).ready(function() {
 
     });
 
-    // $(window).focus(function () {
     setInterval(function () {
         $.ajax({
             url:        "{{ path('ajax_counter') }}",
@@ -140,9 +139,8 @@ $(document).ready(function() {
             }
         });
     }, 30000);
-    // });
 
-    $("input[name='search[author][envjc]']").click(function () {
+    $("input[name='search[author][avjc]']").click(function () {
         let $birthDateField = $("input[name='search[author][birthDate]']");
 
         if($birthDateField.attr('disabled') !== 'disabled') {
