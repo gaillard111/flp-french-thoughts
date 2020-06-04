@@ -154,20 +154,13 @@ class ThoughtModel
 
         $isAuthor = false;
 
-        $terms = [];
-
-        if (isset($request['author']) && count($request['author']) > 0) {
-            $authorsData = $this->getAuthors($request['author'], $isAuthor);
-
-            $terms = array_merge($terms, $authorsData['terms']);
-
-            $isAuthor = $authorsData['isAuthor'];
-        }
-
         $names = [];
+        if (isset($request['author']) && count($request['author']) > 0) {
+            $names = $this->getNames($request['author']);
 
-        if ($isAuthor) {
-            $names = $this->getNames($terms);
+            if ($names) {
+                $isAuthor = true;
+            }
 
             $matches = [];
             $filters = [];
@@ -525,16 +518,16 @@ class ThoughtModel
 
             $boolSearchArray['must'] = $wordSearch;
         }
-
+//        dump($terms);die;
         if (!empty($terms)) {
-            $must = $terms;
-            if (isset($terms[1]['filters'])) {
-                $boolSearchArray['should'] = $must[1]['filters'];
+            $must = $terms[0];
+            if (isset($must['filters'])) {
+                $boolSearchArray['should'] = $must['filters'];
             }
         }
 
-        if (isset($must[1]['matches'])) {
-            $querySearchArray = $must[1]['matches'];
+        if (isset($must['matches'])) {
+            $querySearchArray = $must['matches'];
         }
 
         $query = new Query();
@@ -797,46 +790,6 @@ class ThoughtModel
      */
     private function getAuthors($requestAuthor, $isAuthor)
     {
-        $terms = [];
-
-        foreach ($requestAuthor as $key => $val) {
-            if ($val) {
-                $isAuthor = true;
-
-                $val = trim($val);
-
-                $countQuote = explode('"', $val);
-
-                if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
-                    $val = $countQuote[1];
-
-                    $terms[] = [
-                        'query' => [
-                            'term' => [
-                                $key . '_exact' => $val,
-                            ],
-                        ],
-                    ];
-                } else {
-                    $terms[] = [
-                        'query' => [
-                            'multi_match' => [
-                                'query'  => $val,
-                                'fields' => [
-                                    $key,
-                                ],
-                                'minimum_should_match' => '100%',
-                                'type'                 => 'cross_fields',
-                                'operator'             => 'and',
-                                'tie_breaker'          => '1.0',
-                                'analyzer'             => 'standard',
-                            ],
-                        ],
-                    ];
-                }
-            }
-        }
-
         return [
             'terms'    => $terms,
             'isAuthor' => $isAuthor,
@@ -1008,33 +961,81 @@ class ThoughtModel
      *
      * @return array
      */
-    private function getNames($terms)
+    private function getNames($request)
     {
-        $query = new Query();
+        $terms['name']      = [];
+        $terms['birthDate'] = [];
+        $terms['sex']       = [];
+        $terms['country']   = [];
+        $terms['continent'] = [];
+        $terms['job']       = [];
 
-        $must = [];
-
-        if (!empty($terms)) {
-            $must[] = $terms;
+        if (!empty($request['name'])) {
         }
+
+        if (!empty($request['birthDate']) || isset($request['envjc'])) {
+
+
+            if (isset($request['envjc']) && ($request['envjc'] == 'on')) {
+                $birthDate = 'j|c';
+            } else {
+                $birthDate = str_replace('?', '.', $request['birthDate']);
+            }
+
+            if (isset($request['env1000']) && ($request['env1000'] == 'on')) {
+                $birthDate = str_replace('?', '.', $request['birthDate']);
+                $birthDate = '[^1]' . $birthDate;
+            }
+
+            $terms['birthDate'] = [
+                'query' => [
+                    'regexp' => [
+                        'birthDate' => [
+                            'value' => $birthDate, //'[^1]9..',
+                        ],
+                    ],
+                ],
+            ];
+        }
+
+        if (!empty($request['sex'])) {
+            $terms['sex'] = [
+                'match' => [
+                    'sex' => [
+                        'query' => $request['sex'],
+                    ],
+                ],
+            ];
+        }
+
+        if (!empty($request['country'])) {
+        }
+
+        if (!empty($request['continent'])) {
+        }
+
+        if (!empty($request['job'])) {
+        }
+
+        $query = new Query();
 
         $query->setRawQuery([
             'filter' => [
                 'bool' => [
-                    'must' => array_merge($must, [
-                        [
-                            'regexp' => [
-                                'birthDate' => [
-                                    'value' => $terms[0]['query']['multi_match']['query'],
-                                ],
-                            ],
-                        ],
-                    ]),
+                    'must' => [
+                        'query'  => $terms['sex'],
+                        'filter' => $terms['birthDate'],
+                    ],
                 ],
+                'size' => 10000,
             ],
         ]);
 
+//        dump($query);die;
+
         $authors = $this->authorsFinder->find($query, 10000);
+//        dump($query, $authors);
+//        die;
 
         $names = [];
 

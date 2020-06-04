@@ -1,12 +1,3 @@
-<script>
-    $(
-        function() {
-            if ($(window).width() > 992) {
-                $("#collapseOne").attr('class', 'in');
-            }
-        }
-    );
-</script>
 <div class="row">
     <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
@@ -108,7 +99,9 @@
                                     <input type="text" name="search[author][name]" class="form-control" placeholder="{{ 'author.filter.fields.name.label'|trans }}" value="{{search.author is defined ? search.author.name : ''}}">
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" name="search[author][birthDate]" class="form-control" placeholder="{{ 'author.filter.fields.birthDate.label'|trans }}" value="{{search.author is defined ? search.author.birthDate : ''}}">
+                                    <input type="text" name="search[author][birthDate]" class="form-control" placeholder="{{ 'author.filter.fields.birthDate.label'|trans }}" value="{{search.author.birthDate is defined ? search.author.birthDate : ''}}" {% if app.request.query.get('search')['author']['envjc'] is defined and app.request.query.get('search')['author']['envjc'] == 'on' %} disabled="disabled" {% endif %}>
+                                    <input type="checkbox" name="search[author][envjc]" {% if app.request.query.get('search')['author']['envjc'] is defined and app.request.query.get('search')['author']['envjc'] == 'on' %} checked="checked" {% endif %}>env. J.C.
+                                    <input type="checkbox" name="search[author][env1000]" {% if app.request.query.get('search')['author']['env1000'] is defined and app.request.query.get('search')['author']['env1000'] == 'on' %} checked="checked" {% endif %}>env. 1000
                                 </div>
                                 <div class="form-group">
                                     <input type="text" name="search[author][sex]" class="form-control" placeholder="{{ 'author.filter.fields.sex.label'|trans }}" value="{{search.author is defined ? search.author.sex : ''}}">
@@ -186,15 +179,23 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $(
+        function() {
+            if ($(window).width() > 992) {
+                $("#collapseOne").attr('class', 'in');
+            }
+        }
+    );
+</script>

@@ -142,4 +142,14 @@ $(document).ready(function() {
     }, 30000);
     // });
 
+    $("input[name='search[author][envjc]']").click(function () {
+        let $birthDateField = $("input[name='search[author][birthDate]']");
+
+        if($birthDateField.attr('disabled') !== 'disabled') {
+            $birthDateField.attr('disabled', 'disabled');
+        } else {
+            $birthDateField.removeAttr('disabled');
+        }
+    });
+
 });
