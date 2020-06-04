@@ -965,7 +965,13 @@ class ThoughtModel
     {
         $terms['name']      = [];
         $terms['birthDate'] = [];
-        $terms['sex']       = [];
+        $terms['sex']       = [
+            'match' => [
+                'sex' => [
+                    'query' => '.*',
+                ],
+            ],
+        ];
         $terms['country']   = [];
         $terms['continent'] = [];
         $terms['job']       = [];
@@ -974,7 +980,6 @@ class ThoughtModel
         }
 
         if (!empty($request['birthDate'])) {
-
             $birthDate = str_replace('?', '.', $request['birthDate']);
             if (isset($request['env1000']) && ($request['env1000'] == 'on')) {
                 $birthDate = '[^1]' . $birthDate;
@@ -992,27 +997,25 @@ class ThoughtModel
                 'query' => [
                     'regexp' => [
                         'birthDate' => [
-                            'value' => $birthDate, //'[^1]9..',
+                            'value' => $birthDate,
                         ],
                     ],
                 ],
             ];
+            $terms['sex'] = [
+                'match' => [
+                    'sex' => [
+                        'query' => 'F|H',
+                    ],
+                ],
+            ];
         }
-
 
         if (!empty($request['sex'])) {
             $terms['sex'] = [
                 'match' => [
                     'sex' => [
                         'query' => $request['sex'],
-                    ],
-                ],
-            ];
-        } else {
-            $terms['sex'] = [
-                'match' => [
-                    'sex' => [
-                        'query' => '.*',
                     ],
                 ],
             ];
