@@ -981,13 +981,13 @@ class ThoughtModel
 
         if (!empty($request['birthDate'])) {
             $birthDate = str_replace('?', '.', $request['birthDate']);
-            if (isset($request['env1000']) && ($request['env1000'] == 'on')) {
+            if (isset($request['av1000']) && ($request['av1000'] == 'on')) {
                 $birthDate = '[^1]' . $birthDate;
             }
         }
 
-        if (isset($request['envjc'])) {
-            if (isset($request['envjc']) && ($request['envjc'] == 'on')) {
+        if (isset($request['avjc'])) {
+            if (isset($request['avjc']) && ($request['avjc'] == 'on')) {
                 $birthDate = 'j|c';
             }
         }
