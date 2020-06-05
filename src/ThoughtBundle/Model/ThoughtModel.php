@@ -518,19 +518,21 @@ class ThoughtModel
 
             $boolSearchArray['must'] = $wordSearch;
         }
-//        dump($terms);die;
+
         if (!empty($terms)) {
             $must = $terms[0];
             if (isset($must['filters'])) {
-                $boolSearchArray['should'] = $must['filters'];
+                $boolSearchArray['should'] = array_slice($must['filters'], 0, 10000);
             }
         }
 
         if (isset($must['matches'])) {
-            $querySearchArray = $must['matches'];
+            $querySearchArray = array_slice($must['matches'], 0, 10000);
         }
 
         $query = new Query();
+//        dump($boolSearchArray);die;
+
         $query->setParams(
             [
                 'query' => [
@@ -542,8 +544,6 @@ class ThoughtModel
                     ],
                 ],
                 'fields' => $fields,
-
-                //                'sort' => $sort,
             ]
         );
 //        dump($query); die;
@@ -965,20 +965,24 @@ class ThoughtModel
     {
         $terms['name']      = [];
         $terms['birthDate'] = [];
-        $terms['sex']       = [
-            'match' => [
-                'sex' => [
-                    'query' => '.*',
-                ],
-            ],
-        ];
+        $terms['sex']       = [];
         $terms['country']   = [];
         $terms['continent'] = [];
         $terms['job']       = [];
 
         if (!empty($request['name'])) {
-        }
+            $name      = explode(' ', trim($request['name']));
+            $firstname = array_shift($name);
+            $firstname = strtolower($firstname);
 
+            $terms['name'] = [
+                'regexp' => [
+                    'name' => [
+                        'value' => $firstname,
+                    ],
+                ],
+            ];
+        }
         if (!empty($request['birthDate'])) {
             $birthDate = str_replace('?', '.', $request['birthDate']);
             if (isset($request['av1000']) && ($request['av1000'] == 'on')) {
@@ -1010,7 +1014,6 @@ class ThoughtModel
                 ],
             ];
         }
-
         if (!empty($request['sex'])) {
             $terms['sex'] = [
                 'match' => [
@@ -1032,19 +1035,39 @@ class ThoughtModel
 
         $query = new Query();
 
-        $query->setRawQuery([
-            'filter' => [
-                'bool' => [
-                    'must' => [
-                        'query'  => $terms['sex'],
-                        'filter' => $terms['birthDate'],
-                    ],
-                ],
-                'size' => 10000,
+        $must = [];
+
+        if (!empty($terms['sex'])) {
+            $must = array_merge($must, ['query' => $terms['sex']]);
+        }
+
+        if (!empty($terms['birthDate'])) {
+            $must = array_merge($must, ['filter' => $terms['birthDate']]);
+        }
+
+        if (!empty($terms['name'])) {
+            $must = array_merge($must, [
+                'query' =>  $terms['name']
+            ]);
+        }
+
+        $filter = [
+            'bool' => [
+                'must' => $must,
             ],
+        ];
+
+        if (count($must) > 1) {
+//            dump($must);die;
+            $filter = array_merge($filter, ['size' => 10000]);
+        }
+
+        $query->setRawQuery([
+            'filter' => $filter,
         ]);
 
-//        dump($query);die;
+//        dump($query);
+//        die;
 
         $authors = $this->authorsFinder->find($query, 10000);
 //        dump($query, $authors);
