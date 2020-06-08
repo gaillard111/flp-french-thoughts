@@ -969,7 +969,7 @@ class ThoughtModel
         $terms['country']   = [];
         $terms['continent'] = [];
         $terms['job']       = [];
-
+//        dump($request);
         if (!empty($request['name'])) {
             $name      = explode(' ', trim($request['name']));
             $firstname = array_shift($name);
@@ -998,11 +998,9 @@ class ThoughtModel
 
         if (isset($birthDate)) {
             $terms['birthDate'] = [
-                'query' => [
-                    'regexp' => [
-                        'birthDate' => [
-                            'value' => $birthDate,
-                        ],
+                'regexp' => [
+                    'birthDate' => [
+                        'value' => $birthDate,
                     ],
                 ],
             ];
@@ -1025,12 +1023,33 @@ class ThoughtModel
         }
 
         if (!empty($request['country'])) {
+            $terms['country'] = [
+                'regexp' => [
+                    'country' => [
+                        'value' => $request['country'],
+                    ],
+                ],
+            ];
         }
 
         if (!empty($request['continent'])) {
+            $terms['continent'] = [
+                'regexp' => [
+                    'continent' => [
+                        'value' => '*',
+                    ],
+                ],
+            ];
         }
 
         if (!empty($request['job'])) {
+            $terms['job'] = [
+                'regexp' => [
+                    'job' => [
+                        'value' => $request['job'],
+                    ],
+                ],
+            ];
         }
 
         $query = new Query();
@@ -1038,39 +1057,53 @@ class ThoughtModel
         $must = [];
 
         if (!empty($terms['sex'])) {
-            $must = array_merge($must, ['query' => $terms['sex']]);
+            $must = array_merge($must, [$terms['sex']]);
         }
 
         if (!empty($terms['birthDate'])) {
-            $must = array_merge($must, ['filter' => $terms['birthDate']]);
+            $must = array_merge($must, [$terms['birthDate']]);
         }
 
         if (!empty($terms['name'])) {
-            $must = array_merge($must, [
-                'query' =>  $terms['name']
-            ]);
+            $must = array_merge($must, [$terms['name']]);
+        }
+
+        if (!empty($terms['continent'])) {
+//            $must = array_merge($must, [$terms['continent']]);
+        }
+
+        if (!empty($terms['country'])) {
+            $must = array_merge($must, [$terms['country']]);
+        }
+
+        if (!empty($terms['job'])) {
+            $must = array_merge($must, [$terms['job']]);
         }
 
         $filter = [
-            'bool' => [
-                'must' => $must,
+            'query' => [
+                'bool' => [
+                    'must' => $must,
+                ],
             ],
         ];
 
-        if (count($must) > 1) {
+//        if (count($must) > 1) {
 //            dump($must);die;
-            $filter = array_merge($filter, ['size' => 10000]);
-        }
+//            $filter = array_merge($filter, ['size' => 10000]);
+//        }
 
         $query->setRawQuery([
-            'filter' => $filter,
+            'query' => [
+                'filtered' => $filter,
+            ],
         ]);
 
 //        dump($query);
 //        die;
 
         $authors = $this->authorsFinder->find($query, 10000);
-//        dump($query, $authors);
+//        dump($query, $authors, $must);
 //        die;
 
         $names = [];
