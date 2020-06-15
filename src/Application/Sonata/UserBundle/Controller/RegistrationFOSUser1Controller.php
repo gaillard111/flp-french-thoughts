@@ -2,10 +2,12 @@
 
 namespace Application\Sonata\UserBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\User;
 use FOS\UserBundle\Model\UserInterface;
+use Sonata\UserBundle\Controller\RegistrationFOSUser1Controller as BaseRegistrationFOSUser1Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class RegistrationFOSUser1Controller extends \Sonata\UserBundle\Controller\RegistrationFOSUser1Controller
+class RegistrationFOSUser1Controller extends BaseRegistrationFOSUser1Controller
 {
     /**
      * @return RedirectResponse
@@ -29,7 +31,10 @@ class RegistrationFOSUser1Controller extends \Sonata\UserBundle\Controller\Regis
         $process = $formHandler->process($confirmationEnabled);
 
         if ($process) {
-            $user          = $form->getData();
+            /** @var User $user */
+            $user       = $form->getData();
+            $typeOfUser = $form['roles']->getData();
+
             $reCapthaToken = $form->get('reCaptcha')->getData();
             $authUser      = false;
             if ($reCapthaToken) {
@@ -56,9 +61,18 @@ class RegistrationFOSUser1Controller extends \Sonata\UserBundle\Controller\Regis
 
                 $response = new RedirectResponse($url);
 
+                if ($typeOfUser == 'student') {
+                    $user->setRoles(['ROLE_STUDENT']);
+                    $em = $this->get('doctrine.orm.entity_manager');
+                    $em->persist($user);
+                    $em->flush();
+                }
+
                 if ($authUser) {
                     $this->authenticateUser($user, $response);
                 }
+
+
 
                 return $response;
             }

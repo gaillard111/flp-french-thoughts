@@ -248,6 +248,7 @@ class ThoughtController extends Controller
 
         $form = $this->createForm(new ThoughtType(), $thought);
         $form->handleRequest($request);
+        $author = new Author();
         if ($request->getMethod() == 'POST') {
             if ($form->isValid()) {
                 /** @var AuthorModel $authorModel */
@@ -257,8 +258,6 @@ class ThoughtController extends Controller
 
                 if (!$authorModel->findAuthorByName($authorName)) {
                     $authorData = $request->get('sonata_user_author_create');
-
-                    $author = new Author();
 
                     $author->setName($authorName);
                     $author->setSex($authorData['sex']);
@@ -282,7 +281,8 @@ class ThoughtController extends Controller
             }
         }
         return $this->render('ApplicationSonataUserBundle:Thought:create.html.twig', [
-            'form' => $form->createView(),
+            'form'   => $form->createView(),
+            'author' => $author,
         ]);
     }
 
@@ -300,8 +300,8 @@ class ThoughtController extends Controller
         $em = $this->get('doctrine.orm.entity_manager');
         /** @var Thought $thought */
         $thought = $em->getRepository(Thought::class)->find($id);
-        $author = $em->getRepository(Author::class)->findOneBy([
-            'name' => $thought->getAuthor()
+        $author  = $em->getRepository(Author::class)->findOneBy([
+            'name' => $thought->getAuthor(),
         ]);
 
         if (!$thought) {
@@ -323,8 +323,8 @@ class ThoughtController extends Controller
         }
 
         return $this->render('ApplicationSonataUserBundle:Thought:create.html.twig', [
-            'form' => $form->createView(),
-            'author' => $author
+            'form'   => $form->createView(),
+            'author' => $author,
         ]);
     }
 

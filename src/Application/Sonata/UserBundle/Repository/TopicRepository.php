@@ -24,32 +24,49 @@ class TopicRepository extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function searchTopics(Topic $topic = null)
+    public function searchTopics($role, Topic $topic = null)
     {
+        $parameters = [];
+
+        $notLikeRole = User::ROLE_STUDENT;
+
+        if ($role == User::ROLE_STUDENT) {
+            $notLikeRole = User::ROLE_USER;
+        }
+
         $qb = $this->createQueryBuilder('t');
         $qb
-            ->select('t, c, ct, thought')
+            ->select('t, c, ct, thought, u')
             ->leftJoin('t.chains', 'c')
             ->leftJoin('c.chainThoughts', 'ct')
             ->leftJoin('ct.thought', 'thought')
+            ->leftJoin('thought.owner', 'u')
         ;
+
+        if ($role == User::ROLE_USER) {
+//            dump($notLikeRole);die;
+            $qb->andWhere('u.roles NOT LIKE :roles');
+            $parameters = array_merge($parameters, [
+                'roles' => '%' . $notLikeRole . '%',
+            ]);
+        }
 
         $qb->orderBy('c.name', 'ASC');
         $qb->orderBy('thought.category', 'ASC');
         $qb->orderBy('t.name', 'ASC');
 
         if ($topic) {
+            $parameters = array_merge($parameters, [
+                'topicName' => '%' . $topic->getName() . '%',
+            ]);
             $qb
                 ->orWhere('c.name LIKE :topicName')
-                ->setParameters([
-                    'topicName' => '%' . $topic->getName() . '%',
-                ])
+                ->orderBy('c.name', 'ASC')
             ;
-            $qb->orderBy('c.name', 'ASC');
-
         }
 
-
+        $qb->setParameters($parameters);
+//        dump($qb->getQuery()->getResult(2));die;
         return $qb->getQuery()->getResult();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace ThoughtBundle\Entity;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -73,6 +74,14 @@ class Thought
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $owner;
+
+    public function getOwnerStudent()
+    {
+        if ($this->getOwner() !== null) {
+            return in_array('ROLE_STUDENT', $this->getOwner()->getRoles());
+        }
+        return false;
+    }
 
     /**
      * @var ArrayCollection|Like[]

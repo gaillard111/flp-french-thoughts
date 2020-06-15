@@ -25,21 +25,56 @@ class RegisterType extends RegistrationFormType
                 'label'    => 'user.form.registration.username.label',
             ))*/
             ->add('email', 'email', [
-                'label' => 'user.form.registration.email.label',
+                'label'      => 'user.form.registration.email.label',
+                'label_attr' => [
+                    'class' => 'col-sm-2',
+                ],
             ])
             ->add('firstname', null, [
-                'label'    => 'user.form.registration.firstname.label',
+                'label'      => 'user.form.registration.firstname.label',
+                'label_attr' => [
+                    'class' => 'col-sm-2',
+                ],
                 'required' => true,
             ])
             ->add('lastname', null, [
-                'label'    => 'user.form.registration.lastname.label',
+                'label'      => 'user.form.registration.lastname.label',
+                'label_attr' => [
+                    'class' => 'col-sm-2',
+                ],
                 'required' => true,
             ])
             ->add('plainPassword', 'repeated', [
-                'type'            => 'password',
-                'first_options'   => ['label' => 'user.form.registration.password.label'],
-                'second_options'  => ['label' => 'user.form.registration.verification.label'],
+                'type'          => 'password',
+                'first_options' => [
+                    'label'      => 'user.form.registration.password.label',
+                    'label_attr' => [
+                        'class' => 'col-sm-2',
+                    ],
+                ],
+                'second_options' => [
+                    'label'      => 'user.form.registration.verification.label',
+                    'label_attr' => [
+                        'class' => 'col-sm-2',
+                    ],
+                ],
                 'invalid_message' => 'user.form.registration.password.mismatch',
+
+            ])
+            ->add('roles', 'choice', [
+                'label' => 'Type Account',
+                'label_attr' => [
+                    'class' => 'col-sm-2',
+                ],
+                'attr' => [
+                    'class' => 'role-select',
+                ],
+                'choices' => [
+                    'student' => 'Student',
+                    'user'    => 'User',
+                ],
+                'expanded' => true,
+                'mapped'   => false,
             ])
             ->add('reCaptcha', 'hidden', [
                 'mapped' => false,

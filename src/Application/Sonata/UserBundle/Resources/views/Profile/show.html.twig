@@ -1,6 +1,9 @@
 {% extends "SonataUserBundle:Profile:action.html.twig" %}
 
 {% block sonata_profile_content %}
+
+    {{ dump(app.user.roles, app.user.id ) }}
+
     <div class="row row-fluid">
         {% set has_center = false %}
         {% for block in blocks %}

@@ -2,6 +2,7 @@
 
 namespace ThoughtBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +37,13 @@ class TopicController extends Controller
     {
         $em = $this->get('doctrine.orm.entity_manager');
 
-        $topics = $em->getRepository(Topic::class)->searchTopics();
+        $role = User::ROLE_USER;
+
+        if ($this->isGranted(User::ROLE_STUDENT)) {
+            $role = User::ROLE_STUDENT;
+        }
+
+        $topics = $em->getRepository(Topic::class)->searchTopics($role);
 
         $topic = new Topic();
         $form  = $this->createForm(TopicSearchForm::class, $topic);
@@ -45,7 +52,7 @@ class TopicController extends Controller
         if ($form->isSubmitted()) {
             $query  = true;
             $topic  = $form->getData();
-            $topics = $em->getRepository(Topic::class)->searchTopics($topic);
+            $topics = $em->getRepository(Topic::class)->searchTopics($role, $topic);
 
             return $this->render('ThoughtBundle:Topic:list.html.twig', [
                 'query'  => $query,

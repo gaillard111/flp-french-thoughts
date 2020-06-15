@@ -37,7 +37,7 @@
                 {{ 'thought.comment.no_comments'|trans }}
             {% endfor %}
         </div>
-        {% if app.user %}
+        {% if app.user and is_granted('ROLE_USER') %}
             <div class="col-sm-12 col-md-6 form_comments">
                 <h3>{{ 'thought.comment.add'|trans }}</h3>
                 <form method="post" class="form-horizontal" {{ form_enctype(form) }}>

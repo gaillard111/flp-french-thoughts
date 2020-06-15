@@ -12,9 +12,12 @@
 namespace Application\Sonata\UserBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Sonata\UserBundle\Entity\BaseUser as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
+use ThoughtBundle\Entity\Chain;
+use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\WatchedThought;
@@ -25,6 +28,9 @@ use ThoughtBundle\Entity\WatchedThought;
  */
 class User extends BaseUser
 {
+    const ROLE_STUDENT = 'ROLE_STUDENT';
+    const ROLE_USER = 'ROLE_USER';
+
     /**
      * @var int $id
      */
@@ -148,6 +154,22 @@ class User extends BaseUser
         parent::__construct();
     }
 
+    public function getRoles()
+    {
+        $roles = $this->roles;
+
+        if (count($roles) == 0) {
+            $roles[] = static::ROLE_DEFAULT;
+            return array_unique($roles);
+        }
+
+        foreach ($this->getGroups() as $group) {
+            $roles = array_merge($roles, $group->getRoles());
+        }
+
+        return array_unique($roles);
+    }
+
     /**
      * Get id
      *
@@ -161,11 +183,11 @@ class User extends BaseUser
     /**
      * Add thoughts
      *
-     * @param \ThoughtBundle\Entity\Thought $thoughts
+     * @param Thought $thoughts
      *
      * @return User
      */
-    public function addThought(\ThoughtBundle\Entity\Thought $thoughts)
+    public function addThought(Thought $thoughts)
     {
         $this->thoughts[] = $thoughts;
 
@@ -175,9 +197,9 @@ class User extends BaseUser
     /**
      * Remove thoughts
      *
-     * @param \ThoughtBundle\Entity\Thought $thoughts
+     * @param Thought $thoughts
      */
-    public function removeThought(\ThoughtBundle\Entity\Thought $thoughts)
+    public function removeThought(Thought $thoughts)
     {
         $this->thoughts->removeElement($thoughts);
     }
@@ -185,7 +207,7 @@ class User extends BaseUser
     /**
      * Get thoughts
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getThoughts()
     {
@@ -213,11 +235,11 @@ class User extends BaseUser
     /**
      * Add chains
      *
-     * @param \ThoughtBundle\Entity\Chain $chains
+     * @param Chain $chains
      *
      * @return User
      */
-    public function addChain(\ThoughtBundle\Entity\Chain $chains)
+    public function addChain(Chain $chains)
     {
         $this->chains[] = $chains;
 
@@ -227,9 +249,9 @@ class User extends BaseUser
     /**
      * Remove chains
      *
-     * @param \ThoughtBundle\Entity\Chain $chains
+     * @param Chain $chains
      */
-    public function removeChain(\ThoughtBundle\Entity\Chain $chains)
+    public function removeChain(Chain $chains)
     {
         $this->chains->removeElement($chains);
     }
@@ -237,7 +259,7 @@ class User extends BaseUser
     /**
      * Get chains
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getChains()
     {
@@ -247,11 +269,11 @@ class User extends BaseUser
     /**
      * Add chainComments
      *
-     * @param \ThoughtBundle\Entity\ChainComment $chainComments
+     * @param ChainComment $chainComments
      *
      * @return User
      */
-    public function addChainComment(\ThoughtBundle\Entity\ChainComment $chainComments)
+    public function addChainComment(ChainComment $chainComments)
     {
         $this->chainComments[] = $chainComments;
 
@@ -280,9 +302,9 @@ class User extends BaseUser
     /**
      * Remove chainComments
      *
-     * @param \ThoughtBundle\Entity\ChainComment $chainComments
+     * @param ChainComment $chainComments
      */
-    public function removeChainComment(\ThoughtBundle\Entity\ChainComment $chainComments)
+    public function removeChainComment(ChainComment $chainComments)
     {
         $this->chainComments->removeElement($chainComments);
     }
@@ -290,7 +312,7 @@ class User extends BaseUser
     /**
      * Get chainComments
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getChainComments()
     {
@@ -384,11 +406,11 @@ class User extends BaseUser
     /**
      * Add friendship
      *
-     * @param \Application\Sonata\UserBundle\Entity\Friendship $friendship
+     * @param Friendship $friendship
      *
      * @return User
      */
-    public function addFriendship(\Application\Sonata\UserBundle\Entity\Friendship $friendship)
+    public function addFriendship(Friendship $friendship)
     {
         $this->friendship[] = $friendship;
 
@@ -398,9 +420,9 @@ class User extends BaseUser
     /**
      * Remove friendship
      *
-     * @param \Application\Sonata\UserBundle\Entity\Friendship $friendship
+     * @param Friendship $friendship
      */
-    public function removeFriendship(\Application\Sonata\UserBundle\Entity\Friendship $friendship)
+    public function removeFriendship(Friendship $friendship)
     {
         $this->friendship->removeElement($friendship);
     }
@@ -408,7 +430,7 @@ class User extends BaseUser
     /**
      * Get friendship
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getFriendship()
     {
@@ -418,11 +440,11 @@ class User extends BaseUser
     /**
      * Add friends
      *
-     * @param \Application\Sonata\UserBundle\Entity\Friendship $friends
+     * @param Friendship $friends
      *
      * @return User
      */
-    public function addFriend(\Application\Sonata\UserBundle\Entity\Friendship $friends)
+    public function addFriend(Friendship $friends)
     {
         $this->friends[] = $friends;
 
@@ -432,9 +454,9 @@ class User extends BaseUser
     /**
      * Remove friends
      *
-     * @param \Application\Sonata\UserBundle\Entity\Friendship $friends
+     * @param Friendship $friends
      */
-    public function removeFriend(\Application\Sonata\UserBundle\Entity\Friendship $friends)
+    public function removeFriend(Friendship $friends)
     {
         $this->friends->removeElement($friends);
     }
@@ -442,7 +464,7 @@ class User extends BaseUser
     /**
      * Get friends
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getFriends()
     {

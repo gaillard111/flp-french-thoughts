@@ -121,13 +121,13 @@ class ThoughtModel
      *
      * @return PaginatorAdapterInterface|Thought[]
      */
-    public function getThoughts($search, $default, $page = 1)
+    public function getThoughts($search, $default, $role, $page = 1)
     {
         if ($search || $default) {
             /** @var PaginatorAdapterInterface $thoughts */
-            $thoughts = $this->getThoughtsFromElastic($search, $page);
+            $thoughts = $this->getThoughtsFromElastic($search, $page, $role);
         } else {
-            $thoughts = $this->getLastThoughts(50 * $page, 'id', 'DESC');
+            $thoughts = $this->getLastThoughts(50 * $page, 'id', $role, 'DESC');
         }
 
         return $thoughts;
@@ -138,7 +138,7 @@ class ThoughtModel
      *
      * @return DoctrineQuery|PaginatorAdapterInterface|TransformedPaginatorAdapter
      */
-    public function getThoughtsFromElastic($request, $page)
+    public function getThoughtsFromElastic($request, $page, $role)
     {
         $fields = [
             'tags',
@@ -264,11 +264,11 @@ class ThoughtModel
                 $sort = ['amount' => 'asc'];
             }
 
-            $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
+            $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role);
             return $this->finder->createPaginatorAdapter($query);
         }
-//        dump($terms);die;
-        $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms);
+
+        $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role);
 //        dump($this->finder->find($query));die;
         return $this->finder->createPaginatorAdapter($query);
     }
@@ -442,28 +442,46 @@ class ThoughtModel
      *
      * @return Query
      */
-    public function searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms)
+    public function searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role)
     {
+
+//        dump($terms);die;
         $query = new Query();
 
         $must = [
-            [
-                'range' => [
-                    'amount' => [
-                        'gte' => $minWords,
-                        'lte' => $maxWords,
-                    ],
+            // [
+            //     'range' => [
+            //         'amount' => [
+            //             'gte' => $minWords,
+            //             'lte' => $maxWords,
+            //         ],
+            //     ],
+            // ],
+        ];
+
+//        $boolSearchArray = [];
+
+        $boolSearchArray = [
+            'must_not' => [
+                'term' => [
+                    'ownerStudent' => true,
                 ],
             ],
         ];
 
-        if (!empty($terms)) {
-            $must[] = $terms;
-        }
+//        if (!empty($terms)) {
+//            $boolSearchArray['must'] = array_slice($terms[0]['filters'], 0, 5000);
+//        }
 
-        return $query->setParams(
-            [
-                'query' => [
+        $filter = [
+            'filter' => [
+                'bool' => $boolSearchArray,
+            ],
+        ];
+
+        $queryArray = [
+            'query' => [
+                [
                     'multi_match' => [
                         'query'                => $words,
                         'fields'               => $fields,
@@ -474,15 +492,26 @@ class ThoughtModel
                         'analyzer'             => 'standard',
                     ],
                 ],
-                'filter' => [
-                    'bool' => [
-                        'must_not' => $filterException,
-                        'must'     => $must,
-                    ],
-                ],
-                'sort' => $sort,
-            ]
-        );
+            ],
+        ];
+
+        if ($role == User::ROLE_USER) {
+            $queryArray = array_merge($queryArray, $filter);
+        }
+
+        $filteredArray = [
+            'filtered' => $queryArray,
+        ];
+
+        $searchParameters = [
+            'query' => $filteredArray,
+        ];
+
+        $query->setParams($searchParameters);
+
+//        dump($query);die;
+
+        return $query;
     }
 
     /**
@@ -495,14 +524,21 @@ class ThoughtModel
      *
      * @return Query
      */
-    public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms)
+    public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role)
     {
         $must             = [];
         $querySearchArray = [];
+        $boolSearchArray  = [];
 
-        $boolSearchArray = [
-            'must_not' => $filterException,
-        ];
+        if ($role == User::ROLE_USER) {
+            $boolSearchArray = [
+                'must_not' => [
+                    'term' => [
+                        'ownerStudent' => true,
+                    ],
+                ],
+            ];
+        }
 
         if (!empty($words)) {
             $wordSearch = [];
@@ -522,7 +558,7 @@ class ThoughtModel
         if (!empty($terms)) {
             $must = $terms[0];
             if (isset($must['filters'])) {
-                $boolSearchArray['should'] = array_slice($must['filters'], 0, 10000);
+                $boolSearchArray['should'] = array_slice($must['filters'], 0, 5000);
             }
         }
 
@@ -676,9 +712,9 @@ class ThoughtModel
      *
      * @return mixed
      */
-    public function getLastThoughts($limit, $sortField, $sortDirection = 'ASC')
+    public function getLastThoughts($limit, $sortField, $role, $sortDirection = 'ASC')
     {
-        return $this->repository->getLastThoughts($limit, $sortField, $sortDirection);
+        return $this->repository->getLastThoughts($limit, $sortField, $sortDirection, $role);
     }
 
     /**

@@ -6,7 +6,17 @@
             </a>
         </span>
         {% if app.user %}
-            {% if is_granted('ROLE_MODERATOR') or thought.owner.id == app.user.id %}
+            {% set editThought = false %}
+            {% if thought.owner is defined and thought.owner is not null %}
+                {% if thought.owner.id == app.user.id %}
+                    {% set editThought = true %}
+                {% endif %}
+            {% endif %}
+
+            {% if is_granted('ROLE_MODERATOR') %}
+                {% set editThought = true %}
+            {% endif %}
+            {% if editThought %}
                 <span class="quote_edit">
                     <a href="{{ path('sonata_user_thought_edit', {'id': thought.id}) }}">
                         {{ 'user.thought.list_page.link.edit'|trans }}
@@ -60,16 +70,17 @@
     <p>
 
         {% set liked = thought.likes %}
+        {% if is_granted('ROLE_USER') %}
+            <button class="btn btn-info btn-sm {% if app.user %} like-quote {% else %} like-popup {% endif %}" data-quote="{{ thought.id }}" type="button">
+                    <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
+                        <span class="badge-text">
+                            {{ liked ? 'thought.property.liked'|trans : 'thought.property.like'|trans }}
+                        </span> <span class="badge" style="display: {{ (thought.likes.count > 0) ? 'inline-block' : 'none' }}">{{ thought.likes.count }}</span>
+                    </span>
+            </button>
+        {% endif %}
 
-        <button class="btn btn-info btn-sm {% if app.user %} like-quote {% else %} like-popup {% endif %}" data-quote="{{ thought.id }}" type="button">
-                <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
-                    <span class="badge-text">
-                        {{ liked ? 'thought.property.liked'|trans : 'thought.property.like'|trans }}
-                    </span> <span class="badge" style="display: {{ (thought.likes.count > 0) ? 'inline-block' : 'none' }}">{{ thought.likes.count }}</span>
-                </span>
-        </button>
-
-        {% if app.request.get('thoughtId') == null %}
+        {% if app.request.get('thoughtId') == null and is_granted('ROLE_USER') %}
             <a class="page_quote_button btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">
                 {{ 'thought.comment.page_quote'|trans }}
             </a>
@@ -160,7 +171,7 @@
 
     </div>
 
-    {% if app.user %}
+    {% if app.user and is_granted('ROLE_USER') %}
         <div class="row">
             <div class="col-xs-12 col-lg-6 chain-row">
                 <div class="quote_chain">

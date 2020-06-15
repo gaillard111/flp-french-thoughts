@@ -2,6 +2,7 @@
 
 namespace ThoughtBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Exception;
@@ -59,7 +60,13 @@ class HomepageController extends Controller
 
         $default = $request->query->get('default');
 
-        $thoughts = $modelThought->getThoughts($search, $default, $page);
+        $role = User::ROLE_USER;
+
+        if ($this->isGranted(User::ROLE_STUDENT)) {
+            $role = User::ROLE_STUDENT;
+        }
+//        dump($role);die;
+        $thoughts = $modelThought->getThoughts($search, $default, $role, $page);
 
         /** @var PaginationInterface|Thought[] $pagination */
 
@@ -106,16 +113,12 @@ class HomepageController extends Controller
             $response->headers->setCookie(new Cookie('modal', true, $time));
         }
 
-        if (($pagination->getTotalItemCount() > 0) && $search) {
-            if ((!$request->cookies->get('comment_modal')) && ($request->cookies->get('modal'))) {
-                $response->headers->setCookie(new Cookie('comment_modal', true, $time));
-            }
+        if (($pagination->getTotalItemCount() > 0) && $search && (!$request->cookies->get('comment_modal')) && ($request->cookies->get('modal'))) {
+            $response->headers->setCookie(new Cookie('comment_modal', true, $time));
         }
 
-        if ($pagination->getTotalItemCount() == 0) {
-            if ((!$request->cookies->get('add_thought_modal')) && ($request->cookies->get('modal'))) {
-                $response->headers->setCookie(new Cookie('add_thought_modal', true, $time));
-            }
+        if ($pagination->getTotalItemCount() == 0 && (!$request->cookies->get('add_thought_modal')) && ($request->cookies->get('modal'))) {
+            $response->headers->setCookie(new Cookie('add_thought_modal', true, $time));
         }
 
         return $response;

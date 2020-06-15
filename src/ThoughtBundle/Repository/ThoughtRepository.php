@@ -51,22 +51,42 @@ class ThoughtRepository extends EntityRepository
 
     /**
      * @param $limit
+     * @param $sortField
+     * @param $sortDirection
+     * @param $role
      *
      * @return Query
      */
-    public function getLastThoughts($limit, $sortField, $sortDirection)
+    public function getLastThoughts($limit, $sortField, $sortDirection, $role)
     {
+        $notLikeRole = User::ROLE_STUDENT;
+        $parameters  = [
+            'published' => true,
+        ];
+
+        if ($role == User::ROLE_STUDENT) {
+            $notLikeRole = User::ROLE_USER;
+        }
+
         $qb = $this->createQueryBuilder('t');
 
         $qb
             ->select('t')
+            ->leftJoin('t.owner', 'u')
             ->where('t.published = :published')
-            ->setParameters([
-                'published' => true,
-            ])
-            ->setMaxResults($limit)
-
         ;
+
+        if ($role == User::ROLE_USER) {
+            $qb->andWhere('u.roles NOT LIKE :roles OR u.roles IS NULL');
+
+            $parameters = array_merge($parameters, [
+                'roles' => '%"' . $notLikeRole . '"%',
+            ]);
+        }
+
+        $qb
+            ->setParameters($parameters)
+            ->setMaxResults($limit);
 
         if ($sortField == 'likesCount') {
             $qb
@@ -77,7 +97,6 @@ class ThoughtRepository extends EntityRepository
             ;
             return $qb->getQuery();
         }
-
 
         $qb->orderBy('t.' . $sortField, $sortDirection);
 

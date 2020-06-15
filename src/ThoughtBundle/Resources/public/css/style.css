@@ -683,3 +683,12 @@ div.panel-heading {
     padding: 25px 0 25px;
     font-size: 16px;
 }
+
+.role-select {
+    display: flex;
+    flex-direction: row;
+}
+
+.role-select input {
+    margin: 0 10px;
+}

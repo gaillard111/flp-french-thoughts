@@ -60,7 +60,6 @@
                 {% include '@Thought/search_thought.html.twig' %}
             </div>
             <div class="col-md-8">
-
                 <div class="row">
                     <div class="col-sm-12 margin-bottom-17" style="clear: both;">{{ welcomeText ? welcomeText.content|shortText(350, path('content', {'code' : 'welcome'}))|raw : '' }}</div>
                 </div>
@@ -129,7 +128,7 @@
 
             </div>
             <div class="col-md-2 hidden-xs hidden-sm">
-                {% if is_granted('ROLE_USER') %}
+                {% if app.user %}
                     {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
                 {% endif %}
             </div>
