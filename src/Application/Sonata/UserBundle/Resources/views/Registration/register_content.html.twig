@@ -32,7 +32,18 @@
     <div class="panel-body">
         <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" id="registerForm" class="fos_user_registration_register form-horizontal">
 
-            {{ form_widget(form) }}
+            {{ form_start(form) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.firstname) }}
+                {{ form_row(form.lastname) }}
+                {{ form_row(form.plainPassword) }}
+                {{ form_label(form.roles) }}
+                <div class="role-select">
+                    {{ form_widget(form.roles[0]) }} <div class="label-role">{{ form.roles[0].vars['label'] }}</div>
+                    {{ form_widget(form.roles[1]) }} <div class="label-role">{{ form.roles[1].vars['label'] }}</div>
+                </div>
+
+            {{ form_end(form) }}
 
             <div class="form-actions col-sm-7">
                <input

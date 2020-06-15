@@ -690,5 +690,9 @@ div.panel-heading {
 }
 
 .role-select input {
-    margin: 0 10px;
+    margin: 10px;
+}
+
+.label-role {
+    margin: 10px 0;
 }

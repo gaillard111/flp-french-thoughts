@@ -66,15 +66,13 @@ class RegisterType extends RegistrationFormType
                 'label_attr' => [
                     'class' => 'col-sm-2',
                 ],
-                'attr' => [
-                    'class' => 'role-select',
-                ],
                 'choices' => [
                     'student' => 'Student',
                     'user'    => 'User',
                 ],
                 'expanded' => true,
                 'mapped'   => false,
+//                'required' => false,
             ])
             ->add('reCaptcha', 'hidden', [
                 'mapped' => false,
