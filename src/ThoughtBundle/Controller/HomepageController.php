@@ -89,9 +89,7 @@ class HomepageController extends Controller
 
         $timeExecute = microtime(true) - $start;
 
-        $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->findBy([
-            'isCollective' => true,
-        ]);
+        $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains($role);
 
         $dynamicBanners = $em->getRepository(Banner::class)->findAll();
 
@@ -103,7 +101,7 @@ class HomepageController extends Controller
             'cloud'       => $cloud['cloud'],
             'cloudStyle'  => $cloud['cloudStyle'],
             'filtersOpen' => isset($search['filter_open']) ? $search['filter_open'] : false,
-            'colChains'   => $collectiveChains,
+            'colChains'   => $collectiveChains->getResult(),
             'banners'     => $dynamicBanners,
         ]);
 
