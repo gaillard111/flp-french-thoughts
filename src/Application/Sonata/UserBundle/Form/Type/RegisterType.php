@@ -62,7 +62,7 @@ class RegisterType extends RegistrationFormType
 
             ])
             ->add('roles', 'choice', [
-                'label' => 'Type Account',
+                'label' => 'Account Type',
                 'label_attr' => [
                     'class' => 'col-sm-2',
                 ],
@@ -72,7 +72,6 @@ class RegisterType extends RegistrationFormType
                 ],
                 'expanded' => true,
                 'mapped'   => false,
-//                'required' => false,
             ])
             ->add('reCaptcha', 'hidden', [
                 'mapped' => false,
