@@ -543,6 +543,24 @@ label.required:after{
     margin-left: 10px;
 }
 
+.my-topics {
+    padding: 10px;
+}
+
+.my-topics .chain-list {
+    display: flex;
+    flex-direction: row;
+}
+
+.profile-chains {
+    padding: 10px;
+}
+
+.profile-chains .chain-list {
+    display: flex;
+    flex-direction: row;
+}
+
 .plain {
     text-decoration: none !important;
 }

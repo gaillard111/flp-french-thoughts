@@ -6,7 +6,7 @@
     {% block chain_navigation %}
         {{ render(controller('ApplicationSonataUserBundle:Chain:navigation', { 'routeName': app.request.get('_route') })) }}
     {% endblock %}
-    <div class="row">
+    <div class="row profile-chains">
         {% for chain in chains %}
             <div class="col-sm-4 chain-list">
                 <td>

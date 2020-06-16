@@ -199,7 +199,15 @@ class ChainController extends Controller
         $chain = new Chain();
         $em    = $this->getDoctrine()->getManager();
 
-        $form = $this->createForm(new ChainType(), $chain);
+        $role = User::ROLE_USER;
+
+        if ($this->isGranted(User::ROLE_STUDENT)) {
+            $role = User::ROLE_STUDENT;
+        }
+        dump($role);
+        $form = $this->createForm(new ChainType(), $chain, [
+            'role' => $role,
+        ]);
         $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST') {
@@ -223,7 +231,7 @@ class ChainController extends Controller
      * @param Request $request
      * @param int     $chainId
      *
-     * @return Response|RedirectResponse
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, $chainId)
     {
@@ -376,7 +384,13 @@ class ChainController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $chains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains();
+        $role = User::ROLE_USER;
+
+        if ($this->isGranted(User::ROLE_STUDENT)) {
+            $role = User::ROLE_STUDENT;
+        }
+
+        $chains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains($role);
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -402,7 +416,13 @@ class ChainController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $chains = $em->getRepository('ThoughtBundle:Chain')->getAllSharedChains();
+        $role = User::ROLE_USER;
+
+        if ($this->isGranted(User::ROLE_STUDENT)) {
+            $role = User::ROLE_STUDENT;
+        }
+
+        $chains = $em->getRepository('ThoughtBundle:Chain')->getAllSharedChains($role);
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(

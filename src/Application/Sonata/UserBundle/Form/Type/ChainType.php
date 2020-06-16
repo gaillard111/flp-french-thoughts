@@ -2,6 +2,8 @@
 
 namespace Application\Sonata\UserBundle\Form\Type;
 
+use Application\Sonata\UserBundle\Entity\User;
+use Application\Sonata\UserBundle\Repository\TopicRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -35,7 +37,26 @@ class ChainType extends AbstractType
                 'label' => 'chain.property.name.label',
             ])
             ->add('topic', EntityType::class, [
-                'class'        => 'ThoughtBundle\Entity\Topic',
+                'class'         => 'ThoughtBundle\Entity\Topic',
+                'query_builder' => function (TopicRepository $repository) use ($options) {
+                    $qb = $repository->createQueryBuilder('t');
+                    $qb->leftJoin('t.user', 'u');
+
+                    if ($options['role'] == User::ROLE_STUDENT) {
+                        $qb->andWhere('u.roles LIKE :roles');
+                        $parameters = [
+                            'roles' => '%' . User::ROLE_STUDENT . '%',
+                        ];
+                    } else {
+                        $qb->andWhere('u.roles NOT LIKE :roles');
+                        $parameters = [
+                            'roles' => '%' . User::ROLE_STUDENT . '%',
+                        ];
+                    }
+
+                    $qb->setParameters($parameters);
+                    return $qb;
+                },
                 'choice_label' => 'name',
                 'label_attr'   => [
                     'class' => 'control-label col-sm-2 topic-select',
@@ -86,6 +107,7 @@ class ChainType extends AbstractType
             'attr'       => [
                 'class' => 'form-horizontal',
             ],
+            'role' => User::ROLE_USER,
         ]);
     }
 

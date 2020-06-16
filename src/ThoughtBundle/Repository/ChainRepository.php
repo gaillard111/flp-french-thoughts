@@ -2,7 +2,9 @@
 
 namespace ThoughtBundle\Repository;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 
 /**
  * Class ChainRepository
@@ -12,33 +14,56 @@ use Doctrine\ORM\EntityRepository;
 class ChainRepository extends EntityRepository
 {
     /**
-     * Get all shared chains
+     * @param $role
      *
      * @return array
      */
-    public function getAllSharedChains()
+    public function getAllSharedChains($role)
     {
-        return $this->createQueryBuilder('c')
+        $qb = $this->createQueryBuilder('c');
+        $qb
             ->where('c.isPrivate = false')
-            ->getQuery()->getResult();
+            ->leftJoin('c.user', 'u');
+        if ($role == User::ROLE_STUDENT) {
+            $qb->andWhere('u.roles LIKE :roles');
+        } else {
+            $qb->andWhere('u.roles NOT LIKE :roles');
+        }
+
+        $qb->setParameters([
+            'roles' => '%' . User::ROLE_STUDENT . '%',
+        ]);
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
-     * @return \Doctrine\ORM\Query
+     * @return Query
      */
-    public function getAllCollectiveChains()
+    public function getAllCollectiveChains($role)
     {
         $qb = $this->createQueryBuilder('c');
         $qb
             ->select('c')
-            ->where('c.isCollective = true');
+            ->where('c.isCollective = true')
+            ->leftJoin('c.user', 'u');
+
+        if ($role == User::ROLE_STUDENT) {
+            $qb->andWhere('u.roles LIKE :roles');
+        } else {
+            $qb->andWhere('u.roles NOT LIKE :roles');
+        }
+
+        $qb->setParameters([
+            'roles' => '%' . User::ROLE_STUDENT . '%',
+        ]);
         return $qb->getQuery();
     }
 
     /**
      * @param $user
      *
-     * @return \Doctrine\ORM\Query
+     * @return Query
      */
     public function getAllFavoriteChains($user)
     {

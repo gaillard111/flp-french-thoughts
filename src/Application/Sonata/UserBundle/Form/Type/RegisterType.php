@@ -62,7 +62,7 @@ class RegisterType extends RegistrationFormType
 
             ])
             ->add('roles', 'choice', [
-                'label' => 'Account Type',
+                'label'      => 'Account Type',
                 'label_attr' => [
                     'class' => 'col-sm-2',
                 ],

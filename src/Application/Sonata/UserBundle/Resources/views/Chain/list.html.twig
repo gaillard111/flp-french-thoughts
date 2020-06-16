@@ -7,7 +7,7 @@
         {{ render(controller('ApplicationSonataUserBundle:Chain:navigation', { 'routeName': app.request.get('_route') })) }}
     {% endblock %}
     <p><a href="{{ path('sonata_user_chain_create') }}" class="btn btn-info">{{ 'user.chain.list_page.add_button'|trans }}</a></p>
-    <div class="row">
+    <div class="row profile-chains">
         {% for chain in chains %}
             <div class="col-xs-12 col-sm-6 col-md-4 chain-list">
                 <a class="chain-item" data-html="true" data-toggle="tooltip" data-placement="bottom" title="
