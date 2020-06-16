@@ -50,6 +50,12 @@ class UserProfileController extends Controller
         $user           = $this->getUser();
         $possibleFriend = $entityManager->getRepository(User::class)->find($userId);
 
+        $role = User::ROLE_USER;
+
+        if ($this->isGranted(User::ROLE_STUDENT)) {
+            $role = User::ROLE_STUDENT;
+        }
+
         if ($user && $possibleFriend) {
             $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
             return $this->render('@ApplicationSonataUser/Thought/userProfile.html.twig', [

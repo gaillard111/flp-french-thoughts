@@ -251,20 +251,27 @@ class ChainController extends Controller
             return $this->redirect($this->generateUrl('sonata_user_chains'));
         }
 
-        $form = $this->createForm(new ChainType(), $chain);
+        $role = User::ROLE_USER;
+
+        if ($this->isGranted(User::ROLE_STUDENT)) {
+            $role = User::ROLE_STUDENT;
+        }
+
+        $form = $this->createForm(new ChainType(), $chain, [
+            'role' => $role,
+        ]);
+
         $form->handleRequest($request);
 
-        if ($request->getMethod() == 'POST') {
-            if ($form->isValid()) {
-                $chain->setUser($this->getUser());
-                if ($chain->getIsPrivate()) {
-                    $chain->setTopic(null);
-                }
-                $em->persist($chain);
-                $em->flush();
-
-                return $this->redirect($this->generateUrl('sonata_user_chains'));
+        if ($request->getMethod() == 'POST' && $form->isValid()) {
+            $chain->setUser($this->getUser());
+            if ($chain->getIsPrivate()) {
+                $chain->setTopic(null);
             }
+            $em->persist($chain);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('sonata_user_chains'));
         }
 
         return $this->render('ApplicationSonataUserBundle:Chain:edit.html.twig', [
