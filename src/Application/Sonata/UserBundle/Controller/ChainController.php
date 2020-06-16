@@ -204,7 +204,7 @@ class ChainController extends Controller
         if ($this->isGranted(User::ROLE_STUDENT)) {
             $role = User::ROLE_STUDENT;
         }
-        dump($role);
+
         $form = $this->createForm(new ChainType(), $chain, [
             'role' => $role,
         ]);
