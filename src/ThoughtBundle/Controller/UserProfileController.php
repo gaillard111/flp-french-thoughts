@@ -50,14 +50,12 @@ class UserProfileController extends Controller
         $user           = $this->getUser();
         $possibleFriend = $entityManager->getRepository(User::class)->find($userId);
 
-        if ($user) {
-            if ($possibleFriend) {
-                $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
-                return $this->render('@ApplicationSonataUser/Thought/userProfile.html.twig', [
-                    'user'       => $possibleFriend,
-                    'friendship' => $friendship,
-                ]);
-            }
+        if ($user && $possibleFriend) {
+            $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
+            return $this->render('@ApplicationSonataUser/Thought/userProfile.html.twig', [
+                'user'       => $possibleFriend,
+                'friendship' => $friendship,
+            ]);
         }
         return $this->redirectToRoute('sonata_user_profile_edit');
     }

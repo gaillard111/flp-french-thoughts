@@ -2,6 +2,7 @@
 
 namespace Application\Sonata\UserBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Application\Sonata\UserBundle\Form\Type\TopicType;
 use Doctrine\ORM\OptimisticLockException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -106,9 +107,13 @@ class TopicController extends Controller
     {
         $em = $this->get('doctrine.orm.entity_manager');
 
-        $topics = $em->getRepository(Topic::class)->findBy([
-            'user' => $this->getUser(),
-        ]);
+        $role = User::ROLE_USER;
+
+        if ($this->isGranted(User::ROLE_STUDENT)) {
+            $role = User::ROLE_STUDENT;
+        }
+
+        $topics = $em->getRepository(Topic::class)->searchTopics($role, null, $this->getUser());
 
 //        dump($topics); die;
 

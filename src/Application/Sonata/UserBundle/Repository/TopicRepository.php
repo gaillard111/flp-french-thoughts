@@ -24,7 +24,7 @@ class TopicRepository extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function searchTopics($role, Topic $topic = null)
+    public function searchTopics($role, Topic $topic = null, User $user = null)
     {
         $parameters = [];
 
@@ -48,6 +48,13 @@ class TopicRepository extends EntityRepository
             $qb->andWhere('u.roles NOT LIKE :roles');
             $parameters = array_merge($parameters, [
                 'roles' => '%' . $notLikeRole . '%',
+            ]);
+        }
+
+        if ($user) {
+            $qb->andWhere('t.user = :user');
+            $parameters = array_merge($parameters, [
+                'user' => $user,
             ]);
         }
 
