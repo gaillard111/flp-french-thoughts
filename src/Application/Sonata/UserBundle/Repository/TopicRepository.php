@@ -43,19 +43,19 @@ class TopicRepository extends EntityRepository
             ->leftJoin('thought.owner', 'u')
         ;
 
-        if ($role == User::ROLE_USER) {
-//            dump($notLikeRole);die;
-            $qb->andWhere('u.roles NOT LIKE :roles');
-            $parameters = array_merge($parameters, [
-                'roles' => '%' . $notLikeRole . '%',
-            ]);
-        }
 
         if ($user) {
             $qb->andWhere('t.user = :user');
             $parameters = array_merge($parameters, [
                 'user' => $user,
             ]);
+        } else {
+            if ($role == User::ROLE_USER) {
+                $qb->andWhere('u.roles NOT LIKE :roles');
+                $parameters = array_merge($parameters, [
+                    'roles' => '%' . $notLikeRole . '%',
+                ]);
+            }
         }
 
         $qb->orderBy('c.name', 'ASC');
