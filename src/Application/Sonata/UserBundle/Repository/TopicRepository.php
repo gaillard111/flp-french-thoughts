@@ -28,21 +28,15 @@ class TopicRepository extends EntityRepository
     {
         $parameters = [];
 
-        $notLikeRole = User::ROLE_STUDENT;
-
-        if ($role == User::ROLE_STUDENT) {
-            $notLikeRole = User::ROLE_USER;
-        }
-
         $qb = $this->createQueryBuilder('t');
         $qb
-            ->select('t, c, ct, thought, u')
+            ->select('t, c, ct, thought, u, topicowner')
+            ->leftJoin('t.user', 'topicowner')
             ->leftJoin('t.chains', 'c')
             ->leftJoin('c.chainThoughts', 'ct')
             ->leftJoin('ct.thought', 'thought')
             ->leftJoin('thought.owner', 'u')
         ;
-
 
         if ($user) {
             $qb->andWhere('t.user = :user');
@@ -51,11 +45,15 @@ class TopicRepository extends EntityRepository
             ]);
         } else {
             if ($role == User::ROLE_USER) {
-                $qb->andWhere('u.roles NOT LIKE :roles');
-                $parameters = array_merge($parameters, [
-                    'roles' => '%' . $notLikeRole . '%',
-                ]);
+                $qb->andWhere('topicowner.roles NOT LIKE :roles');
+//                $qb->orWhere('u.roles IS NULL');
+            } else {
+                $qb->andWhere('topicowner.roles LIKE :roles');
+//                $qb->orWhere('u.roles IS NULL');
             }
+            $parameters = array_merge($parameters, [
+                'roles'    => '%' . User::ROLE_STUDENT . '%',
+            ]);
         }
 
         $qb->orderBy('c.name', 'ASC');
