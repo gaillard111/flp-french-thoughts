@@ -171,7 +171,24 @@
 
     </div>
 
-    {% if app.user %}
+    {% set check1 = false %}
+    {% set check2 = false %}
+
+    {% if is_granted('ROLE_STUDENT') %}
+        {% set check1 = true %}
+    {% endif %}
+
+    {% if thought.owner.roles is defined and 'ROLE_STUDENT' in thought.owner.roles %}
+        {% set check2 = true %}
+    {% endif %}
+
+    {% if check1 == check2 %}
+        {% set check = true %}
+    {% else %}
+        {% set check = false %}
+    {% endif %}
+
+    {% if app.user and check %}
         <div class="row">
             <div class="col-xs-12 col-lg-6 chain-row">
                 <div class="quote_chain">
