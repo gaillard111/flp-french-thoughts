@@ -67,8 +67,8 @@ class RegisterType extends RegistrationFormType
                     'class' => 'col-sm-2',
                 ],
                 'choices' => [
-                    'student' => 'Student',
-                    'user'    => 'User',
+                    'student' => 'S\'enregistrer comme étudiant',
+                    'user'    => 'S\'enregistrer normalement',
                 ],
                 'expanded' => true,
                 'mapped'   => false,

@@ -39,8 +39,13 @@
                 {{ form_row(form.plainPassword) }}
                 {{ form_label(form.roles) }}
                 <div class="role-select">
-                    {{ form_widget(form.roles[0]) }} <label for="front_user_registration_form_roles_0" class="label-role">{{ form.roles[0].vars['label'] }}</label>
-                    {{ form_widget(form.roles[1]) }} <label for="front_user_registration_form_roles_1" class="label-role">{{ form.roles[1].vars['label'] }}</label>
+                    <div class="role-item">
+                        {{ form_widget(form.roles[0]) }} <label for="front_user_registration_form_roles_0" class="label-role">{{ form.roles[0].vars['label'] }}</label>
+                    </div>
+                    <div class="role-item">
+                        {{ form_widget(form.roles[1]) }} <label for="front_user_registration_form_roles_1" class="label-role">{{ form.roles[1].vars['label'] }}</label>
+                    </div>
+
                 </div>
 
             {{ form_end(form) }}

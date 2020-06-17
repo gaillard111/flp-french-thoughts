@@ -36,6 +36,9 @@ user:
             verification:
                 label:       Répéter le mot de passe
                 placeholder: Répéter le mot de passe
+            type_account:
+                user:        S'enregistrer normalement
+                student:     S'enregistrer comme étudiant
             button:          Go
         authorization:
             forgotten_pass: Mot de passe oublié

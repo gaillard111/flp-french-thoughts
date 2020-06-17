@@ -704,7 +704,7 @@ div.panel-heading {
 
 .role-select {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .role-select input {
@@ -715,4 +715,16 @@ div.panel-heading {
 .label-role {
     cursor: pointer;
     margin: 8px 23px 5px 0;
+}
+
+.role-item {
+    display: flex;
+}
+
+.avjc {
+    padding: 5px;
+}
+
+.av1000 {
+    padding: 5px;
 }
