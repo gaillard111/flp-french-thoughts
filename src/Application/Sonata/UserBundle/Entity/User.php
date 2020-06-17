@@ -23,7 +23,7 @@ use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\WatchedThought;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Application\Sonata\UserBundle\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
  */
 class User extends BaseUser

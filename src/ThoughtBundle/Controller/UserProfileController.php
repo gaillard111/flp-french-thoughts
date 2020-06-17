@@ -12,18 +12,29 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig_Error;
 
 class UserProfileController extends Controller
 {
     /**
      * @Route("/userslist", name="user_list")
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function userListAction(Request $request)
     {
         /** @var EntityManager $entityManager */
-        $entityManager   = $this->container->get('doctrine.orm.entity_manager');
-        $usersRepository = $entityManager->getRepository(User::class);
-        $usersQuery      = $usersRepository->createQueryBuilder('u')->select('u')->getQuery();
+        $entityManager = $this->container->get('doctrine.orm.entity_manager');
+
+        $role = User::ROLE_USER;
+
+        if ($this->isGranted(User::ROLE_STUDENT)) {
+            $role = User::ROLE_STUDENT;
+        }
+
+        $usersQuery = $entityManager->getRepository(User::class)->getUsersList($role);
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -46,24 +57,20 @@ class UserProfileController extends Controller
      */
     public function showAction($userId)
     {
-        $entityManager  = $this->container->get('doctrine.orm.entity_manager');
-        $user           = $this->getUser();
+        $entityManager = $this->container->get('doctrine.orm.entity_manager');
+        /** @var User $user */
+        $user = $this->getUser();
+        /** @var User $possibleFriend */
         $possibleFriend = $entityManager->getRepository(User::class)->find($userId);
 
-        $role = User::ROLE_USER;
-
-        if ($this->isGranted(User::ROLE_STUDENT)) {
-            $role = User::ROLE_STUDENT;
-        }
-
-        if ($user && $possibleFriend) {
+        if ($user && $possibleFriend && $this->isGranted(User::ROLE_STUDENT) == in_array(User::ROLE_STUDENT, $possibleFriend->getRoles())) {
             $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
             return $this->render('@ApplicationSonataUser/Thought/userProfile.html.twig', [
                 'user'       => $possibleFriend,
                 'friendship' => $friendship,
             ]);
         }
-        return $this->redirectToRoute('sonata_user_profile_edit');
+        return new Response('Access Denied', 403);
     }
 
     /**
@@ -72,12 +79,17 @@ class UserProfileController extends Controller
      * @param int $userId
      *
      * @return RedirectResponse
+     *
+     * @throws OptimisticLockException
+     * @throws Twig_Error
      */
     public function friendRequestAction($userId)
     {
         $entityManager = $this->container->get('doctrine.orm.entity_manager');
-        $user          = $this->getUser();
-        $friend        = $entityManager->getRepository(User::class)->find($userId);
+        /** @var User $user */
+        $user = $this->getUser();
+        /** @var User $friend */
+        $friend = $entityManager->getRepository(User::class)->find($userId);
 
         if ($user && $friend) {
             $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $friend);
@@ -113,13 +125,11 @@ class UserProfileController extends Controller
         /** @var Friendship $friendship */
         $friendship = $entityManager->getRepository(Friendship::class)->find($requestId);
 
-        if ($this->getUser() != $friendship->getUser()) {
-            if ($friendship) {
-                $friendship->setAccepted(true);
+        if ($this->getUser() != $friendship->getUser() && $friendship) {
+            $friendship->setAccepted(true);
 
-                $entityManager->persist($friendship);
-                $entityManager->flush();
-            }
+            $entityManager->persist($friendship);
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('friends');
@@ -127,6 +137,9 @@ class UserProfileController extends Controller
 
     /**
      * @Route("/newdialog/{userId}", name="new_dialog")
+     * @param $userId
+     * @return RedirectResponse
+     * @throws OptimisticLockException
      */
     public function newDialogAction($userId)
     {
