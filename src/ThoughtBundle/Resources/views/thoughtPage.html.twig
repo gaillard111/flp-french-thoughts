@@ -46,7 +46,7 @@
             {% set check1 = true %}
         {% endif %}
 
-        {% if thought.owner.roles is defined 'ROLE_STUDENT' in thought.owner.roles %}
+        {% if thought.owner.roles is defined and 'ROLE_STUDENT' in thought.owner.roles %}
             {% set check2 = true %}
         {% endif %}
 
