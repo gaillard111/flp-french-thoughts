@@ -18,5 +18,9 @@
             {% render(controller('ApplicationSonataUserBundle:ProfileFOSUser1:friendRequests') ) %}
         </div>
     </div>
-
+    {% if is_granted('ROLE_STUDENT') %}
+        <div>
+            <a href="" class="btn btn-info">Create group</a>
+        </div>
+    {% endif %}
 {% endblock %}

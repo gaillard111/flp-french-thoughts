@@ -2,9 +2,13 @@
 
 namespace ThoughtBundle\Controller;
 
+use Application\Sonata\UserBundle\Entity\User;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\WatchedThought;
 use ThoughtBundle\Form\CommentType;
@@ -22,9 +26,9 @@ class ThoughtPageController extends Controller
      * @param Request $request
      * @param int     $thoughtId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function indexAction(Request $request, $thoughtId)
     {
@@ -36,6 +40,12 @@ class ThoughtPageController extends Controller
         $comment->setThought($thought);
 
         $form = $this->createForm(new CommentType(), $comment);
+
+        $role = User::ROLE_USER;
+
+        if ($this->isGranted(User::ROLE_STUDENT)) {
+            $role = User::ROLE_STUDENT;
+        }
 
         if ($this->getUser()) {
             $watchedThought = $em->getRepository(WatchedThought::class)->findOneBy([
@@ -83,17 +93,24 @@ class ThoughtPageController extends Controller
             return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
 
+        $userIsStudent  = $this->isGranted(User::ROLE_STUDENT);
+        $ownerIsStudent = in_array(User::ROLE_STUDENT, $thought->getOwner()->getRoles());
+
+        if ($userIsStudent != $ownerIsStudent && (!$userIsStudent && $ownerIsStudent)) {
+            $this->addFlash('success', $this->get('translator')->trans('thought.not_found'));
+
+            return $this->redirect($this->generateUrl('thought_homepage_index'));
+        }
+
         $comments[$thought->getId()][] = $em->getRepository(Comment::class)->getLastComments($thought);
 
-        $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->findBy([
-            'isCollective' => true,
-        ]);
+        $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains($role);
 
         return $this->render('@Thought/thoughtPage.html.twig', [
             'thought'   => $thought,
             'comments'  => $comments,
             'form'      => $form->createView(),
-            'colChains' => $collectiveChains,
+            'colChains' => $collectiveChains->getResult(),
         ]);
     }
 
@@ -103,7 +120,7 @@ class ThoughtPageController extends Controller
      * @param Request $request
      * @param int     $commentId
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteCommentAction(Request $request, $commentId)
     {
@@ -122,7 +139,7 @@ class ThoughtPageController extends Controller
             $em->flush();
 
             $this->addFlash('success', $this->get('translator')->trans('thought.comment.deleted'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->addFlash('success', $e->getMessage());
         }
 

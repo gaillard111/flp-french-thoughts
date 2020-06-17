@@ -37,7 +37,26 @@
                 {{ 'thought.comment.no_comments'|trans }}
             {% endfor %}
         </div>
-        {% if app.user and is_granted('ROLE_USER') %}
+{#        {{ dump(thought.owner.roles, app.user.roles, is_granted('ROLE_STUDENT'), 'ROLE_STUDENT' in thought.owner.roles) }}#}
+
+        {% set check1 = false %}
+        {% set check2 = false %}
+
+        {% if is_granted('ROLE_STUDENT') %}
+            {% set check1 = true %}
+        {% endif %}
+
+        {% if 'ROLE_STUDENT' in thought.owner.roles %}
+            {% set check2 = true %}
+        {% endif %}
+
+        {% if check1 == check2 %}
+            {% set check = true %}
+        {% else %}
+            {% set check = false %}
+        {% endif %}
+
+        {% if app.user and check %}
             <div class="col-sm-12 col-md-6 form_comments">
                 <h3>{{ 'thought.comment.add'|trans }}</h3>
                 <form method="post" class="form-horizontal" {{ form_enctype(form) }}>

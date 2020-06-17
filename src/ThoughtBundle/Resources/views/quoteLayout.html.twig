@@ -80,7 +80,7 @@
             </button>
         {% endif %}
 
-        {% if app.request.get('thoughtId') == null and is_granted('ROLE_USER') %}
+        {% if app.request.get('thoughtId') == null %}
             <a class="page_quote_button btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">
                 {{ 'thought.comment.page_quote'|trans }}
             </a>

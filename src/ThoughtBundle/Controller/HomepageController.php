@@ -65,7 +65,7 @@ class HomepageController extends Controller
         if ($this->isGranted(User::ROLE_STUDENT)) {
             $role = User::ROLE_STUDENT;
         }
-//        dump($role);die;
+
         $thoughts = $modelThought->getThoughts($search, $default, $role, $page);
 
         /** @var PaginationInterface|Thought[] $pagination */
