@@ -17,6 +17,7 @@ use ThoughtBundle\Entity\Banner;
 use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
+use ThoughtBundle\Entity\Topic;
 use ThoughtBundle\Model\ThoughtModel;
 use ThoughtBundle\Service\Search;
 
@@ -69,7 +70,6 @@ class HomepageController extends Controller
         $thoughts = $modelThought->getThoughts($search, $default, $role, $page);
 
         /** @var PaginationInterface|Thought[] $pagination */
-
         $pagination = $paginator->paginate(
             $thoughts,
             $page,
@@ -90,6 +90,27 @@ class HomepageController extends Controller
         $timeExecute = microtime(true) - $start;
 
         $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains($role);
+        $topics           = $em->getRepository(Topic::class)->searchTopics($role);
+
+        $selectArray = [];
+
+        foreach ($topics as $topic) {
+            $chainArray = [];
+            foreach ($topic->getChains() as $chain) {
+                $chainArray[] = [
+                    'c' => 'chain-' . $chain->getId(),
+                    'n' => $chain->getName(),
+                ];
+            }
+
+            $selectArray[] = [
+                'c' => 'topic-' . $topic->getId(),
+                'n' => $topic->getName(),
+                'd' => $chainArray,
+            ];
+        }
+
+        $selectArray = json_encode($selectArray);
 
         $dynamicBanners = $em->getRepository(Banner::class)->findAll();
 
@@ -102,6 +123,7 @@ class HomepageController extends Controller
             'cloudStyle'  => $cloud['cloudStyle'],
             'filtersOpen' => isset($search['filter_open']) ? $search['filter_open'] : false,
             'colChains'   => $collectiveChains->getResult(),
+            'selectArray' => $selectArray,
             'banners'     => $dynamicBanners,
         ]);
 

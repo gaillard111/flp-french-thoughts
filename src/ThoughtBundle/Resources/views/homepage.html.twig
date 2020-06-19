@@ -140,4 +140,48 @@
 
 {% block javascripts %}
     <script src="{{ asset('bundles/thought/js/homepage.js') }}"></script>
+    <script src="{{ asset('bundles/thought/js/cascader/dist/js/bootstrap-cascader.min.js') }}"></script>
+    <script>
+
+        var a = {{ selectArray|raw }};
+
+        $("div[id^='thought-']").each(function () {
+            $(this).bsCascader({
+                placeHolder: '{{ 'thought.chain.add_quote_collective'|trans }}',
+                btnCls: 'btn-default',
+                loadData: function(n, c) {
+                    c(a)
+                },
+            });
+        });
+
+        $(".bootstrap-cascader").click(function () {
+            var $this = $(this);
+            var $chain = $this.find(".last-child .selected").parent().attr('code');
+            var $quote = $this.closest("div[id^='thought-']").attr('id');
+            if ($chain && $quote) {
+                $.ajax({
+                    url : Routing.generate('chain_add_quote'),
+                    data: {
+                        quote: $quote,
+                        chain: $chain
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.success) {
+                            noticer.success(data.message[0]);
+                        } else {
+                            var error = '';
+                            $.each(data.message, function(k, v){
+                                error += '<p>' + v + '</p>';
+                            });
+
+                            noticer.alert(error);
+                        }
+                    }
+                });
+            }
+        });
+
+    </script>
 {% endblock %}

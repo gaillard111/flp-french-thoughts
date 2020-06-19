@@ -2,6 +2,7 @@
 
 namespace ThoughtBundle\Controller;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,6 +16,7 @@ use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\ThoughtChain;
 use ThoughtBundle\Form\ChainCommentType;
 use ThoughtBundle\Service\Mail;
+use Twig_Error;
 
 /**
  * Class ChainController
@@ -115,8 +117,8 @@ class ChainController extends Controller
      *
      * @return JsonResponse
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Twig_Error
+     * @throws NonUniqueResultException
+     * @throws Twig_Error
      */
     public function addQuoteToChain(Request $request)
     {
@@ -130,6 +132,12 @@ class ChainController extends Controller
         }
 
         $thoughtId = $request->query->get('quote');
+
+        $chainId   = explode('-', $chainId);
+        $thoughtId = explode('-', $thoughtId);
+
+        $chainId   = end($chainId);
+        $thoughtId = end($thoughtId);
 
         if (!$chainId) {
             return new JsonResponse([
@@ -328,7 +336,7 @@ class ChainController extends Controller
      *
      * @return JsonResponse
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function lowerQuoteToChain(Request $request)
     {

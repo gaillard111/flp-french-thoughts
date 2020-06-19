@@ -728,3 +728,21 @@ div.panel-heading {
 .av1000 {
     padding: 5px;
 }
+
+.bs-placeholder {
+    width: 100%;
+    text-align: right;
+}
+
+.dropdown-toggle.selected {
+    width: 100%;
+    text-align: right;
+}
+
+.bootstrap-cascader > ul {
+    left: 15px;
+}
+
+.dropdown-toggle.selected > ul {
+    left: 15px;
+}
