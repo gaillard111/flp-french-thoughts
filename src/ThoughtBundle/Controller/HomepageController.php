@@ -94,20 +94,26 @@ class HomepageController extends Controller
 
         $selectArray = [];
 
-        foreach ($topics as $topic) {
-            $chainArray = [];
-            foreach ($topic->getChains() as $chain) {
-                $chainArray[] = [
-                    'c' => 'chain-' . $chain->getId(),
-                    'n' => $chain->getName(),
+        foreach ($pagination->getItems() as $item) {
+
+            $thoughtChainsArray = [];
+
+            foreach ($topics as $topic) {
+                $chainArray = [];
+                foreach ($topic->getChains() as $chain) {
+                    $chainArray[] = [
+                        'c' => 'chain-' . $chain->getId(),
+                        'n' => $chain->getName(),
+                    ];
+                }
+
+                $thoughtChainsArray[] = [
+                    'c' => 'topic-' . $topic->getId(),
+                    'n' => $topic->getName(),
+                    'd' => $chainArray,
                 ];
             }
-
-            $selectArray[] = [
-                'c' => 'topic-' . $topic->getId(),
-                'n' => $topic->getName(),
-                'd' => $chainArray,
-            ];
+            $selectArray[$item->getId()] = $thoughtChainsArray;
         }
 
         $selectArray = json_encode($selectArray);
