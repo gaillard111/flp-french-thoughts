@@ -190,47 +190,39 @@
 
     {% if app.user and check %}
         <div class="row">
-            <div class="col-xs-12 chain-row">
+            <div class="col-sm-6 pull-left quote_chain" id="thought-{{ thought.id }}">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Mettre dans chaine <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        {% for topic in topicsArray %}
+                            {% if topic['topic_chains'] is not empty %}
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" >{{ topic['topic_name'] }}</a>
+                                    <ul class="dropdown-menu chains-selector">
+                                        {% for chain in topic['topic_chains']  %}
 
-                <div class="quote_chain">
-                    <div class="row">
-                        <div class="col-xs-6 col-lg-6">
-                            <div id="thought-{{ thought.id }}"></div>
-{#                            <select class="w100" name="quote_collective_chain">#}
-{#                                <option value="">{{ 'thought.chain.add_quote_collective'|trans }}</option>#}
-{#                                {% for chain in colChains %}#}
-{#                                    {% if chain.name not in already_chains %}#}
-{#                                        <option value="{{ chain.id }}">{{ chain.name }}</option>#}
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
-{#                            </select>#}
-                        </div>
-{#                        <div class="col-xs-3 col-lg-2 chain-button">#}
-{#                            <a href="#" class="add_collective_chain btn btn-info btn-xs w100">{{ 'thought.chain.add_to_collective_chain'|trans }}</a>#}
-{#                        </div>#}
-                    </div>
+                                            {% set switcher = '' %}
+                                            {% for already_chain in already_chains %}
+                                                {% if already_chain.id == chain.id %}
+                                                    {% set switcher = 'disabled' %}
+                                                {% endif %}
+                                            {% endfor %}
+
+                                            {% if chain in colChains or chain in app.user.chains  %}
+                                                <li class="chain {{ switcher }}" id="{{ chain.id }}"><a>{{ chain.name }}</a></li>
+                                            {% endif %}
+
+                                        {% endfor %}
+
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        {% endfor%}
+                    </ul>
                 </div>
             </div>
-{#            <div class="col-xs-12 col-lg-6 chain-row">#}
-{#                <div class="quote_chain">#}
-{#                    <div class="row">#}
-{#                        <div class="col-xs-9 col-lg-10">#}
-{#                            <select class="w100" name="quote_chain">#}
-{#                                <option value="">{{ 'thought.chain.add_quote'|trans }}</option>#}
-
-{#                                {% for chain in app.user.chains %}#}
-{#                                    {% if chain.name not in already_chains %}#}
-{#                                        <option value="{{ chain.id }}">{{ chain.name }}</option>#}
-{#                                    {% endif %}#}
-{#                                {% endfor %}#}
-{#                            </select>#}
-{#                        </div>#}
-{#                        <div class="col-xs-3 col-lg-2 chain-button">#}
-{#                            <a href="#" class="add_chain btn btn-info btn-xs w100">{{ 'thought.chain.add_to_chain'|trans }}</a>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
         </div>
     {% endif %}
 </div>

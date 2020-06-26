@@ -10,11 +10,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\ThoughtChain;
 use ThoughtBundle\Form\ChainCommentType;
+use ThoughtBundle\Model\TopicChainModel;
 use ThoughtBundle\Service\Mail;
 use Twig_Error;
 
@@ -50,6 +50,8 @@ class ChainController extends Controller
 
         /** @var ThoughtChain[] $chainThoughts */
         $chainThoughts = $chain->getChainThoughts();
+        /** @var TopicChainModel $modelTopicChain */
+        $modelTopicChain = $this->container->get("thought.model.topicchain_model");
 
         $thoughts = [];
 
@@ -97,6 +99,8 @@ class ChainController extends Controller
 
         $thoughtChains = $em->getRepository('ThoughtBundle:ThoughtChain')->getSortingThoughtChain($chain);
 
+        $topicsArray = $modelTopicChain->getTopicsWithChains();
+
         $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->findBy([
             'isCollective' => true,
         ]);
@@ -107,6 +111,7 @@ class ChainController extends Controller
             'thoughtChains' => $thoughtChains,
             'colChains'     => $collectiveChains,
             'chainId'       => $chainId,
+            'topicsArray' => $topicsArray
         ]);
     }
 

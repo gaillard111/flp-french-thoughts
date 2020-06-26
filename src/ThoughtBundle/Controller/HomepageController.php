@@ -17,8 +17,8 @@ use ThoughtBundle\Entity\Banner;
 use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
-use ThoughtBundle\Entity\Topic;
 use ThoughtBundle\Model\ThoughtModel;
+use ThoughtBundle\Model\TopicChainModel;
 use ThoughtBundle\Service\Search;
 
 /**
@@ -47,7 +47,8 @@ class HomepageController extends Controller
         $em = $this->container->get('doctrine.orm.entity_manager');
         /** @var PaginationInterface $paginator */
         $paginator = $this->get('knp_paginator');
-
+        /** @var TopicChainModel $modelTopicChain */
+        $modelTopicChain = $this->container->get("thought.model.topicchain_model");
         $start = microtime(true);
 
         $page = $request->query->getInt('page', 1);
@@ -90,34 +91,7 @@ class HomepageController extends Controller
         $timeExecute = microtime(true) - $start;
 
         $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains($role);
-        $topics           = $em->getRepository(Topic::class)->searchTopics($role);
-
-        $selectArray = [];
-
-        foreach ($pagination->getItems() as $item) {
-
-            $thoughtChainsArray = [];
-
-            foreach ($topics as $topic) {
-                $chainArray = [];
-                foreach ($topic->getChains() as $chain) {
-                    $chainArray[] = [
-                        'c' => 'chain-' . $chain->getId(),
-                        'n' => $chain->getName(),
-                    ];
-                }
-
-                $thoughtChainsArray[] = [
-                    'c' => 'topic-' . $topic->getId(),
-                    'n' => $topic->getName(),
-                    'd' => $chainArray,
-                ];
-            }
-            $selectArray[$item->getId()] = $thoughtChainsArray;
-        }
-
-        $selectArray = json_encode($selectArray);
-
+        $topicsArray = $modelTopicChain->getTopicsWithChains();
         $dynamicBanners = $em->getRepository(Banner::class)->findAll();
 
         $response = $this->render('ThoughtBundle::homepage.html.twig', [
@@ -129,8 +103,8 @@ class HomepageController extends Controller
             'cloudStyle'  => $cloud['cloudStyle'],
             'filtersOpen' => isset($search['filter_open']) ? $search['filter_open'] : false,
             'colChains'   => $collectiveChains->getResult(),
-            'selectArray' => $selectArray,
             'banners'     => $dynamicBanners,
+            'topicsArray' => $topicsArray
         ]);
 
         $time = time() + (3600 * 24 * 7);
