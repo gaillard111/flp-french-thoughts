@@ -235,7 +235,7 @@ thought:
         added_to_site: Ajouté à la BD par
         added_to_chain: Extrait déjà ajouté à
         add_quote: Mettre dans ma chaine
-        add_quote_collective: Mettre dans la chaine partagées
+        add_quote_collective: Mettre dans la chaine
         not_exist: Chain not found.
         access_denied: Access to this chain forbidden.
         quote_add_chain: Quote successfully added to chain.

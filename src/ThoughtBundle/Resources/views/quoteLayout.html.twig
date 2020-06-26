@@ -193,7 +193,7 @@
             <div class="col-sm-6 pull-left quote_chain" id="thought-{{ thought.id }}">
                 <div class="btn-group">
                     <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Mettre dans chaine <span class="caret"></span>
+                        {{ 'thought.chain.add_quote_collective'|trans }} <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                         {% for topic in topicsArray %}
@@ -204,14 +204,24 @@
                                         {% for chain in topic['topic_chains']  %}
 
                                             {% set switcher = '' %}
+                                            {% set type = 'private' %}
                                             {% for already_chain in already_chains %}
                                                 {% if already_chain.id == chain.id %}
                                                     {% set switcher = 'disabled' %}
                                                 {% endif %}
                                             {% endfor %}
 
+                                            {% if not chain.isPrivate %}
+                                                {% if chain.isCollective %}
+                                                    {% set type = 'collective' %}
+                                                {% else %}
+                                                    {% set type = 'publiques' %}
+                                                {% endif %}
+                                            {% endif %}
+
                                             {% if chain in colChains or chain in app.user.chains  %}
-                                                <li class="chain {{ switcher }}" id="{{ chain.id }}"><a>{{ chain.name }}</a></li>
+                                                <li class="chain {{ switcher }}" id="{{ chain.id }}"><a>{{ chain.name }} ({{ type }})</a></li>
+
                                             {% endif %}
 
                                         {% endfor %}
