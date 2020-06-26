@@ -9,7 +9,6 @@ use ThoughtBundle\Entity\Topic;
 
 class TopicChainModel
 {
-
     private $entityManager;
     private $authorizationChecker;
 
@@ -51,7 +50,22 @@ class TopicChainModel
                 'topic_chains' => $topic->getChains()->toArray()
             ];
         }
-
         return $topicsArray;
     }
+
+    public function getUserPrivateChaines(User $user) {
+        $arrayChaines = [];
+        foreach ($user->getChains() as $userChain) {
+            if ($userChain->getIsPrivate()) {
+                $arrayChaines[] = $userChain;
+            }
+        }
+
+        return [
+            'topic_id' => 0,
+            'topic_name' => 'Private',
+            'topic_chains' => $arrayChaines
+        ];
+    }
+
 }

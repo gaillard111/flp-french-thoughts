@@ -203,7 +203,7 @@
                                     <ul class="dropdown-menu chains-selector">
                                         {% for chain in topic['topic_chains']  %}
 
-                                            {% set switcher = '' %}
+                                            {% set switcher = '' %}             {# To disable after аdditions #}
                                             {% set type = 'private' %}
                                             {% for already_chain in already_chains %}
                                                 {% if already_chain.id == chain.id %}
@@ -211,7 +211,7 @@
                                                 {% endif %}
                                             {% endfor %}
 
-                                            {% if not chain.isPrivate %}
+                                            {% if not chain.isPrivate %}        {# type chains after name in selector #}
                                                 {% if chain.isCollective %}
                                                     {% set type = 'collective' %}
                                                 {% else %}
@@ -221,11 +221,9 @@
 
                                             {% if chain in colChains or chain in app.user.chains  %}
                                                 <li class="chain {{ switcher }}" id="{{ chain.id }}"><a>{{ chain.name }} ({{ type }})</a></li>
-
                                             {% endif %}
 
                                         {% endfor %}
-
                                     </ul>
                                 </li>
                             {% endif %}

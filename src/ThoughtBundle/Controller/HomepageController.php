@@ -91,8 +91,18 @@ class HomepageController extends Controller
         $timeExecute = microtime(true) - $start;
 
         $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains($role);
-        $topicsArray = $modelTopicChain->getTopicsWithChains();
         $dynamicBanners = $em->getRepository(Banner::class)->findAll();
+
+        // Get topics with chains for selector
+            $topicsArray = $modelTopicChain->getTopicsWithChains();
+
+            $topicPrivateItem = [];
+            if ($this->getUser()) {
+                $topicPrivateItem = $modelTopicChain->getUserPrivateChaines($this->getUser());
+            }
+
+            $topicsArray[] = $topicPrivateItem;
+        //---
 
         $response = $this->render('ThoughtBundle::homepage.html.twig', [
             'thoughts'    => $pagination,
@@ -104,7 +114,7 @@ class HomepageController extends Controller
             'filtersOpen' => isset($search['filter_open']) ? $search['filter_open'] : false,
             'colChains'   => $collectiveChains->getResult(),
             'banners'     => $dynamicBanners,
-            'topicsArray' => $topicsArray
+            'topicsArray' => $topicsArray,
         ]);
 
         $time = time() + (3600 * 24 * 7);

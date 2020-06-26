@@ -99,11 +99,21 @@ class ChainController extends Controller
 
         $thoughtChains = $em->getRepository('ThoughtBundle:ThoughtChain')->getSortingThoughtChain($chain);
 
-        $topicsArray = $modelTopicChain->getTopicsWithChains();
-
         $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->findBy([
             'isCollective' => true,
         ]);
+
+        // Get topics with chains for selector
+            $topicsArray = $modelTopicChain->getTopicsWithChains();
+
+            $topicPrivateItem = [];
+            if ($this->getUser()) {
+                $topicPrivateItem = $modelTopicChain->getUserPrivateChaines($this->getUser());
+            }
+
+            $topicsArray[] = $topicPrivateItem;
+        //---
+
         return $this->render('@Thought/chainPage.html.twig', [
             'chain'         => $chain,
             'comments'      => $comments,
