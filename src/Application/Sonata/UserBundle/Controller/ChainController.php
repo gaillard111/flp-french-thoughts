@@ -57,7 +57,7 @@ class ChainController extends Controller
         $topics    = $user->getTopics();
         $sidebar   = [];
         $sidebar[] = [
-            'label' => 'All',
+            'label' => 'Mes sujets',
             'route' => 'sonata_user_chains',
         ];
 
