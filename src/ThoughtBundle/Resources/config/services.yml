@@ -24,6 +24,7 @@ services:
             - ~
             - ThoughtBundle\Entity\Thought
             - 'ThoughtBundle:ThoughtAdmin'
+
     thought.admin.content:
         class: ThoughtBundle\Admin\ContentAdmin
         tags:
