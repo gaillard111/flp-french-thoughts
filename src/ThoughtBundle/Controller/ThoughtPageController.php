@@ -94,7 +94,12 @@ class ThoughtPageController extends Controller
         }
 
         $userIsStudent  = $this->isGranted(User::ROLE_STUDENT);
-        $ownerIsStudent = in_array(User::ROLE_STUDENT, $thought->getOwner()->getRoles());
+
+        if (is_null($thought->getOwner())) {
+            $ownerIsStudent = false;
+        } else {
+            $ownerIsStudent = in_array(User::ROLE_STUDENT, $thought->getOwner()->getRoles());
+        }
 
         if ($userIsStudent != $ownerIsStudent && (!$userIsStudent && $ownerIsStudent)) {
             $this->addFlash('success', $this->get('translator')->trans('thought.not_found'));
