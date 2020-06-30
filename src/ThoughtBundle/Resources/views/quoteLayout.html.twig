@@ -70,7 +70,7 @@
     <p>
 
         {% set liked = thought.likes %}
-        {% if is_granted('ROLE_USER') %}
+        {% if app.user %}
             <button class="btn btn-info btn-sm {% if app.user %} like-quote {% else %} like-popup {% endif %}" data-quote="{{ thought.id }}" type="button">
                     <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
                         <span class="badge-text">
