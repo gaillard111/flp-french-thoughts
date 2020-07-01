@@ -1,10 +1,16 @@
 <div class="jumbotron quote" data-quote="{{ thought.id }}">
+
+    {% if thought.owner.roles is defined and 'ROLE_STUDENT' not in thought.owner.roles and is_granted('ROLE_STUDENT') %}
+        <span class="thought-lable label label-warning">Véritable citation, pas validée</span>
+    {% endif %}
+
     <p class="quote_title">
         <span>
             <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">
                 {{ thought.category }}
             </a>
         </span>
+
         {% if app.user %}
             {% set editThought = false %}
             {% if thought.owner is defined and thought.owner is not null %}
@@ -70,7 +76,7 @@
     <p>
 
         {% set liked = thought.likes %}
-        {% if app.user %}
+{#        {% if is_granted('ROLE_USER') %}#}
             <button class="btn btn-info btn-sm {% if app.user %} like-quote {% else %} like-popup {% endif %}" data-quote="{{ thought.id }}" type="button">
                     <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
                         <span class="badge-text">
@@ -78,7 +84,7 @@
                         </span> <span class="badge" style="display: {{ (thought.likes.count > 0) ? 'inline-block' : 'none' }}">{{ thought.likes.count }}</span>
                     </span>
             </button>
-        {% endif %}
+{#        {% endif %}#}
 
         {% if app.request.get('thoughtId') == null %}
             <a class="page_quote_button btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">

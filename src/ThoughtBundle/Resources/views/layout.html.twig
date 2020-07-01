@@ -39,6 +39,9 @@
     <!-- End Hotjar Tracking Code-->
 </head>
 <body>
+    {% if is_granted('ROLE_STUDENT') %}
+        <div id="top-alert"> Sandbox mod </div>
+    {% endif %}
     {{ render(controller('ApplicationSonataUserBundle:Thought:navbar')) }}
     <div class="container">
         {% if app.session.flashBag.has('success') %}
