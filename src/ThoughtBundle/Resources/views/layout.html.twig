@@ -40,7 +40,7 @@
 </head>
 <body>
     {% if is_granted('ROLE_STUDENT') %}
-        <div id="top-alert"> Sandbox mod </div>
+        <div id="top-alert"> Mode étudiant </div>
     {% endif %}
     {{ render(controller('ApplicationSonataUserBundle:Thought:navbar')) }}
     <div class="container">

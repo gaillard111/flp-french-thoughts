@@ -1,7 +1,7 @@
 <div class="jumbotron quote" data-quote="{{ thought.id }}">
 
     {% if thought.owner.roles is defined and 'ROLE_STUDENT' not in thought.owner.roles and is_granted('ROLE_STUDENT') %}
-        <span class="thought-lable label label-warning">Véritable citation, pas validée</span>
+        <span class="thought-lable label label-warning">Véritable Cination non validée</span>
     {% endif %}
 
     <p class="quote_title">
