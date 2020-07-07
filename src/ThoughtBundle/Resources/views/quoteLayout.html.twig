@@ -127,7 +127,7 @@
                 </div>
             </div>
         </div>
-        {% if app.user %}
+        {% if app.user and (thought.relatedThoughts|length or thought.inverseRelatedThoughts|length) %}
             <div class="row">
                 <div class="col-sm-12 related-thoughts-block">
                     <a class="related-thoughts-label">Citations liées:</a>
