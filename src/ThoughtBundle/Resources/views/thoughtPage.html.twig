@@ -86,6 +86,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('bundles/thought/js/quote_functions.js') }}"></script>
     <script>
         $(".related-thoughts-label").click(function () {
             var $this = $(this);

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\WatchedThought;
 use ThoughtBundle\Form\CommentType;
+use ThoughtBundle\Model\TopicChainModel;
 
 /**
  * Class ThoughtPageController
@@ -111,11 +112,39 @@ class ThoughtPageController extends Controller
 
         $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains($role);
 
+
+        /** @var TopicChainModel $modelTopicChain */
+        $modelTopicChain = $this->container->get("thought.model.topicchain_model");
+
+        // Get topics with chains for selector
+            $topicsArray = $modelTopicChain->getTopicsWithChains();
+
+            $topicPrivateItem = [];
+            if ($this->getUser()) {
+                $topicPrivateItem = $modelTopicChain->getUserPrivateChaines($this->getUser());
+            }
+
+            $topicsArray[] = $topicPrivateItem;
+        //---
+
+        // Array friends for related quotes
+        $userFriend = [];
+        $user = $this->getUser();
+        if ($user) {
+            foreach ($user->getFriends() as $friend) {
+                $userFriend[$friend->getUser()->getId()] = $friend->getUser()->getFirstname();
+            }
+            $userFriend[$user->getId()] = 'Yours';
+        }
+        //---
+
         return $this->render('@Thought/thoughtPage.html.twig', [
             'thought'   => $thought,
             'comments'  => $comments,
             'form'      => $form->createView(),
             'colChains' => $collectiveChains->getResult(),
+            'topicsArray' => $topicsArray,
+            'userFriends' => $userFriend
         ]);
     }
 

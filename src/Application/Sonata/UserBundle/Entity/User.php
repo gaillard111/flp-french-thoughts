@@ -20,6 +20,7 @@ use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
+use ThoughtBundle\Entity\ThoughtRelated;
 use ThoughtBundle\Entity\WatchedThought;
 
 /**
@@ -118,6 +119,14 @@ class User extends BaseUser
      *     )
      */
     protected $mostFavoriteThoughts;
+
+
+    /**
+     * @var ArrayCollection|ThoughtRelated[]
+     *
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtRelated", mappedBy="owner")
+     */
+    protected $relatedThought;
 
     /**
      * @return ArrayCollection

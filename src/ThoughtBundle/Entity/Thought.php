@@ -2,8 +2,8 @@
 
 namespace ThoughtBundle\Entity;
 
-use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -75,6 +75,7 @@ class Thought
      */
     protected $owner;
 
+
     public function getOwnerStudent()
     {
         if ($this->getOwner() !== null) {
@@ -107,10 +108,32 @@ class Thought
      */
     protected $watchedThoughts;
 
+    /**
+     * @var ArrayCollection|ThoughtRelated[]
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtRelated", mappedBy="thought")
+     */
+    protected $relatedThoughts;
+
+    /**
+     * @var ArrayCollection|ThoughtRelated[]
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtRelated", mappedBy="relatedThought")
+     */
+    protected $inverseRelatedThoughts;
+
     public function likesCount()
     {
         return $this->likes->count();
     }
+
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+        $this->likes    = new ArrayCollection();
+        $this->relatedThoughts = new ArrayCollection();
+        $this->inverseRelatedThoughts = new ArrayCollection();
+    }
+
 
     /**
      * Get id
@@ -429,15 +452,6 @@ class Thought
     }
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->comments = new ArrayCollection();
-        $this->likes    = new ArrayCollection();
-    }
-
-    /**
      * Add comments
      *
      * @param \ThoughtBundle\Entity\Comment $comments
@@ -504,4 +518,37 @@ class Thought
     {
         return $this->chainThoughts;
     }
+
+    /**
+     * @return ArrayCollection|ThoughtRelated[]
+     */
+    public function getRelatedThoughts()
+    {
+        return $this->relatedThoughts;
+    }
+
+    /**
+     * @param ArrayCollection|ThoughtRelated[] $relatedThoughts
+     */
+    public function setRelatedThoughts($relatedThoughts)
+    {
+        $this->relatedThoughts = $relatedThoughts;
+    }
+
+    /**
+     * @return ArrayCollection|ThoughtRelated[]
+     */
+    public function getInverseRelatedThoughts()
+    {
+        return $this->inverseRelatedThoughts;
+    }
+
+    /**
+     * @param ArrayCollection|ThoughtRelated[] $inverseRelatedThoughts
+     */
+    public function setInverseRelatedThoughts($inverseRelatedThoughts)
+    {
+        $this->inverseRelatedThoughts = $inverseRelatedThoughts;
+    }
+
 }

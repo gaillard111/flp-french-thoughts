@@ -91,7 +91,15 @@
                 {{ 'thought.comment.page_quote'|trans }}
             </a>
         {% endif %}
-    </p>
+         <form></form>
+        {% if app.user %}
+            <form id="bind-thoughts-form" action="{{ path('link-quotes') }}" method="post" >
+                <input type="hidden" name="thought_id" value="{{ thought.id }}" />
+                <input type="number" name="thoughtRelated_id" value="" placeholder="Quote ID" />
+                <a class="send_id_for_related btn btn-info btn-sm">Lier une citation</a>
+            </form>
+        {% endif %}
+
     {% set already_chains = [] %}
     {% for arr_chain in thought.chainThoughts %}
         {% set already_chains = already_chains|merge([{name: arr_chain.chain.name, id: arr_chain.chain.id}]) %}
@@ -119,16 +127,24 @@
                 </div>
             </div>
         </div>
-        {% if thought.owner %}
+        {% if app.user %}
             <div class="row">
                 <div class="col-sm-12 related-thoughts-block">
                     <a class="related-thoughts-label">Citations liées:</a>
                     <div class="related-thoughts">
-                        {% for counter, thought in thought.owner.thoughts %}
-                            {% if counter < 50 %}
-                                <a href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">{{ thought.category }}</a>
+
+                        {% for relatedThought in thought.relatedThoughts %}
+                            {% if userFriends[relatedThought.owner.id] is defined  %}
+                                <a href="{{ path('thought_thoughtpage_index', {'thoughtId': relatedThought.relatedThought.id}) }}">{{ relatedThought.relatedThought.category }} ({{ userFriends[relatedThought.owner.id] }})</a>
                             {% endif %}
                         {% endfor %}
+
+                        {% for inverseThought in thought.inverseRelatedThoughts %}
+                            {% if userFriends[inverseThought.owner.id] is defined  %}
+                                <a href="{{ path('thought_thoughtpage_index', {'thoughtId': inverseThought.thought.id}) }}">{{ inverseThought.thought.category }} ({{ userFriends[inverseThought.owner.id] }})</a>
+                            {% endif %}
+                        {% endfor %}
+
                     </div>
 
                 </div>

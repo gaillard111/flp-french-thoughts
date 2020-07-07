@@ -17,6 +17,7 @@ use ThoughtBundle\Entity\Banner;
 use ThoughtBundle\Entity\Comment;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
+use ThoughtBundle\Entity\ThoughtRelated;
 use ThoughtBundle\Model\ThoughtModel;
 use ThoughtBundle\Model\TopicChainModel;
 use ThoughtBundle\Service\Search;
@@ -104,6 +105,17 @@ class HomepageController extends Controller
             $topicsArray[] = $topicPrivateItem;
         //---
 
+        // Array friends for related quotes
+            $userFriend = [];
+            $user = $this->getUser();
+            if ($user) {
+                foreach ($user->getFriends() as $friend) {
+                    $userFriend[$friend->getUser()->getId()] = $friend->getUser()->getFirstname();
+                }
+                $userFriend[$user->getId()] = 'Yours';
+            }
+        //---
+
         $response = $this->render('ThoughtBundle::homepage.html.twig', [
             'thoughts'    => $pagination,
             'comments'    => $comments,
@@ -115,6 +127,7 @@ class HomepageController extends Controller
             'colChains'   => $collectiveChains->getResult(),
             'banners'     => $dynamicBanners,
             'topicsArray' => $topicsArray,
+            'userFriends' => $userFriend
         ]);
 
         $time = time() + (3600 * 24 * 7);
@@ -132,6 +145,48 @@ class HomepageController extends Controller
         }
 
         return $response;
+    }
+
+    /**
+     * @Route("/link-quotes", name="link-quotes", options={"expose"=true})
+     * @param Request $request
+     */
+    public function linkQuotes(Request $request)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $thoughtId = $request->get('thought_id');
+        $thoughtRelatedId = $request->get('thoughtRelated_id');
+        $user = $this->getUser();
+        $thought = $em->getRepository(Thought::class)->find($thoughtId);
+        $thoughtR = $em->getRepository(Thought::class)->find($thoughtRelatedId);
+
+        if (!$thought or !$thoughtR) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => 'There is no such quote found',
+            ]);
+        }
+
+        if ($em->getRepository(ThoughtRelated::class)->findOneBy(['thought' => $thoughtId, 'relatedThought' => $thoughtR])) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => 'This related already exists.',
+            ]);
+        }
+
+        if ($user) {
+            $thoughtRelated = new ThoughtRelated();
+            $thoughtRelated->setThought($thought);
+            $thoughtRelated->setRelatedThought($thoughtR);
+            $thoughtRelated->setOwner($user);
+            $em->persist($thoughtRelated);
+            $em->flush();
+        }
+
+        return new JsonResponse([
+            'success' => true,
+            'message' => 'The quote was successfully',
+        ]);
     }
 
     public function bannerAction(Banner $banner)

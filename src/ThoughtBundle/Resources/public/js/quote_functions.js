@@ -1,4 +1,5 @@
- $(".chains-selector .chain").click(function () {   var $this = $(this);
+ $(".chains-selector .chain").click(function () {
+     var $this = $(this);
     if (!$this.hasClass('disabled')) {
         var $chain = $this.attr('id');
         var $quote = $this.closest("div[id^='thought-']").attr('id');
@@ -26,3 +27,21 @@
         }
     }
  });
+
+$(".send_id_for_related").click(function () {
+    var $this = $(this);
+    const action = Routing.generate('link-quotes');
+    let data = $this.parent().serialize();
+    $.ajax({
+        type: 'POST',
+        url: action,
+        data: data,
+        success: function (response) {
+            if (response.success) {
+                noticer.success(response.message);
+            } else {
+                noticer.alert(response.message);
+            }
+        }
+    });
+});
