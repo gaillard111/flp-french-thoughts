@@ -174,7 +174,7 @@ class HomepageController extends Controller
             ]);
         }
 
-        if ($em->getRepository(ThoughtRelated::class)->findOneBy(['thought' => $thoughtId, 'relatedThought' => $thoughtR])) {
+        if ($em->getRepository(ThoughtRelated::class)->findOneBy(['owner' => $user ,'thought' => $thoughtId, 'relatedThought' => $thoughtR])) {
             return new JsonResponse([
                 'success' => false,
                 'message' => 'This related already exists.',
