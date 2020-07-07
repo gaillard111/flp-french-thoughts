@@ -132,7 +132,11 @@ class ThoughtPageController extends Controller
         $user = $this->getUser();
         if ($user) {
             foreach ($user->getFriends() as $friend) {
-                $userFriend[$friend->getUser()->getId()] = $friend->getUser()->getFirstname();
+                if ($friend->getUser() == $user) {
+                    $userFriend[$friend->getFriend()->getId()] = $friend->getFriend()->getFirstname();
+                } else {
+                    $userFriend[$friend->getUser()->getId()] = $friend->getUser()->getFirstname();
+                }
             }
             $userFriend[$user->getId()] = 'Yours';
         }

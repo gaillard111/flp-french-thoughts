@@ -127,29 +127,43 @@
                 </div>
             </div>
         </div>
-        {% if app.user and (thought.relatedThoughts|length or thought.inverseRelatedThoughts|length) %}
+
+
+        {# This! This is not ok! This is vary bad сode! #}
+        {% set relatedThoughtCount = 0 %}
+        {% for thought in thought.relatedThoughts %}
+            {% if userFriends[thought.owner.id] is defined  %}
+                {% set relatedThoughtCount = +1 %}
+            {% endif %}
+        {% endfor %}
+        {% for thought in thought.inverseRelatedThoughts %}
+            {% if userFriends[thought.owner.id] is defined  %}
+                {% set relatedThoughtCount = +1 %}
+            {% endif %}
+        {% endfor %}
+
+
+        {% if app.user and relatedThoughtCount > 0 %}
             <div class="row">
                 <div class="col-sm-12 related-thoughts-block">
                     <a class="related-thoughts-label">Citations liées:</a>
                     <div class="related-thoughts">
-
                         {% for relatedThought in thought.relatedThoughts %}
                             {% if userFriends[relatedThought.owner.id] is defined  %}
                                 <a href="{{ path('thought_thoughtpage_index', {'thoughtId': relatedThought.relatedThought.id}) }}">{{ relatedThought.relatedThought.category }} ({{ userFriends[relatedThought.owner.id] }})</a>
                             {% endif %}
                         {% endfor %}
-
                         {% for inverseThought in thought.inverseRelatedThoughts %}
                             {% if userFriends[inverseThought.owner.id] is defined  %}
                                 <a href="{{ path('thought_thoughtpage_index', {'thoughtId': inverseThought.thought.id}) }}">{{ inverseThought.thought.category }} ({{ userFriends[inverseThought.owner.id] }})</a>
                             {% endif %}
                         {% endfor %}
-
                     </div>
 
                 </div>
             </div>
         {% endif %}
+
         <div class="col-sm-6 pull-left">
             <div class="row">
                 <div class="col-sm-12">

@@ -108,12 +108,19 @@ class HomepageController extends Controller
         // Array friends for related quotes
             $userFriend = [];
             $user = $this->getUser();
+
             if ($user) {
-                foreach ($user->getFriends() as $friend) {
-                    $userFriend[$friend->getUser()->getId()] = $friend->getUser()->getFirstname();
+                $friends = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Friendship')->getFriends($user);
+                foreach ($friends as $friend) {
+                    if ($friend->getUser() == $user) {
+                        $userFriend[$friend->getFriend()->getId()] = $friend->getFriend()->getFirstname();
+                    } else {
+                        $userFriend[$friend->getUser()->getId()] = $friend->getUser()->getFirstname();
+                    }
                 }
                 $userFriend[$user->getId()] = 'Yours';
             }
+
         //---
 
         $response = $this->render('ThoughtBundle::homepage.html.twig', [
@@ -185,7 +192,7 @@ class HomepageController extends Controller
 
         return new JsonResponse([
             'success' => true,
-            'message' => 'The quote was successfully',
+            'message' => 'The quote was successfully linked',
         ]);
     }
 
