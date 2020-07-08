@@ -4,6 +4,11 @@
         <span class="thought-lable label label-warning">Véritable Cination non validée</span>
     {% endif %}
 
+    {% set already_chains = [] %}
+    {% for arr_chain in thought.chainThoughts %}
+        {% set already_chains = already_chains|merge([{name: arr_chain.chain.name, id: arr_chain.chain.id}]) %}
+    {% endfor %}
+
     <p class="quote_title">
         <span>
             <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">
@@ -32,6 +37,7 @@
         {% endif %}
 
     </p>
+
     <p class="quote_content">
         <span>{{ thought.content|customTag|raw|nl2br }}</span>
     </p>
@@ -73,130 +79,73 @@
                 {% endfor %}
             </span>
     </p>
-    <p>
 
-        {% set liked = thought.likes %}
-{#        {% if is_granted('ROLE_USER') %}#}
+    {#  button like and comment  #}
+    <div class="quote_row">
+        <div>
+            {% set liked = thought.likes %}
             <button class="btn btn-info btn-sm {% if app.user %} like-quote {% else %} like-popup {% endif %}" data-quote="{{ thought.id }}" type="button">
-                    <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
-                        <span class="badge-text">
-                            {{ liked ? 'thought.property.liked'|trans : 'thought.property.like'|trans }}
-                        </span> <span class="badge" style="display: {{ (thought.likes.count > 0) ? 'inline-block' : 'none' }}">{{ thought.likes.count }}</span>
-                    </span>
+            <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
+                <span class="badge-text">
+                    {{ liked ? 'thought.property.liked'|trans : 'thought.property.like'|trans }}
+                </span> <span class="badge" style="display: {{ (thought.likes.count > 0) ? 'inline-block' : 'none' }}">{{ thought.likes.count }}</span>
+            </span>
             </button>
-{#        {% endif %}#}
+        </div>
+        &nbsp;
+        <div>
+            {% if app.request.get('thoughtId') == null %}
+                <a class="page_quote_button btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">
+                    {{ 'thought.comment.page_quote'|trans }}
+                </a>
+            {% endif %}
+        </div>
+        &ensp;
+        <div>
+            {% if app.user %}
+                <form></form>
+                <form id="bind-thoughts-form" class="form-inline" action="{{ path('link-quotes') }}" method="post" >
+                    <input type="hidden" name="thought_id" value="{{ thought.id }}" />
+                    <input type="number" class="form-control"  name="thoughtRelated_id" value="" placeholder="Quote ID" />
+                    <a class="send_id_for_related btn btn-info btn-sm">Lier une citation</a>
+                </form>
+            {% endif %}
+        </div>
+    </div>
 
-        {% if app.request.get('thoughtId') == null %}
-            <a class="page_quote_button btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">
-                {{ 'thought.comment.page_quote'|trans }}
-            </a>
+    {# This! This is not ok! This is vary bad сode! #}
+    {% set relatedThoughtCount = 0 %}
+    {% for thought in thought.relatedThoughts %}
+        {% if userFriends[thought.owner.id] is defined  %}
+            {% set relatedThoughtCount = +1 %}
         {% endif %}
-         <form></form>
-        {% if app.user %}
-            <form id="bind-thoughts-form" action="{{ path('link-quotes') }}" method="post" >
-                <input type="hidden" name="thought_id" value="{{ thought.id }}" />
-                <input type="number" name="thoughtRelated_id" value="" placeholder="Quote ID" />
-                <a class="send_id_for_related btn btn-info btn-sm">Lier une citation</a>
-            </form>
-        {% endif %}
-
-    {% set already_chains = [] %}
-    {% for arr_chain in thought.chainThoughts %}
-        {% set already_chains = already_chains|merge([{name: arr_chain.chain.name, id: arr_chain.chain.id}]) %}
     {% endfor %}
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-12 ">
-                    {% if thought.comments|length and app.request.get('_route') == 'thought_homepage_index' %}
-                        <a class="show-link" data-id="{{ thought.id }}">{{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}</a>
-                    {% else %}
-                        <p>{{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}</p>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 comments hidden" data-id="{{ thought.id }}">
-                    {% for thoughtComments in comments[thought.id] %}
-                        {% for comment in thoughtComments %}
-                            <p class="profile-link"><a href="">{{ comment.name }}</a></p>
-                            <p class="comment-data">{{ comment.createdAt|date('d.m.Y') }}</p>
-                            <p>{{ comment.text }}</p>
-                        {% endfor %}
+    {% for thought in thought.inverseRelatedThoughts %}
+        {% if userFriends[thought.owner.id] is defined  %}
+            {% set relatedThoughtCount = +1 %}
+        {% endif %}
+    {% endfor %}
+
+    {#  Citations and Mis dans la chaine  #}
+    <div class="quote_row">
+        {% if app.user and relatedThoughtCount > 0 %}
+            <div class="related-thoughts-block">
+                <a class="related-thoughts-label">Citations liées:</a>
+                <div class="related-thoughts">
+                    {% for relatedThought in thought.relatedThoughts %}
+                        {% if userFriends[relatedThought.owner.id] is defined  %}
+                            <a href="{{ path('thought_thoughtpage_index', {'thoughtId': relatedThought.relatedThought.id}) }}">{{ relatedThought.relatedThought.category }} ({{ userFriends[relatedThought.owner.id] }})</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% for inverseThought in thought.inverseRelatedThoughts %}
+                        {% if userFriends[inverseThought.owner.id] is defined  %}
+                            <a href="{{ path('thought_thoughtpage_index', {'thoughtId': inverseThought.thought.id}) }}">{{ inverseThought.thought.category }} ({{ userFriends[inverseThought.owner.id] }})</a>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
-        </div>
-
-
-        {# This! This is not ok! This is vary bad сode! #}
-        {% set relatedThoughtCount = 0 %}
-        {% for thought in thought.relatedThoughts %}
-            {% if userFriends[thought.owner.id] is defined  %}
-                {% set relatedThoughtCount = +1 %}
-            {% endif %}
-        {% endfor %}
-        {% for thought in thought.inverseRelatedThoughts %}
-            {% if userFriends[thought.owner.id] is defined  %}
-                {% set relatedThoughtCount = +1 %}
-            {% endif %}
-        {% endfor %}
-
-
-        {% if app.user and relatedThoughtCount > 0 %}
-            <div class="row">
-                <div class="col-sm-12 related-thoughts-block">
-                    <a class="related-thoughts-label">Citations liées:</a>
-                    <div class="related-thoughts">
-                        {% for relatedThought in thought.relatedThoughts %}
-                            {% if userFriends[relatedThought.owner.id] is defined  %}
-                                <a href="{{ path('thought_thoughtpage_index', {'thoughtId': relatedThought.relatedThought.id}) }}">{{ relatedThought.relatedThought.category }} ({{ userFriends[relatedThought.owner.id] }})</a>
-                            {% endif %}
-                        {% endfor %}
-                        {% for inverseThought in thought.inverseRelatedThoughts %}
-                            {% if userFriends[inverseThought.owner.id] is defined  %}
-                                <a href="{{ path('thought_thoughtpage_index', {'thoughtId': inverseThought.thought.id}) }}">{{ inverseThought.thought.category }} ({{ userFriends[inverseThought.owner.id] }})</a>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-
-                </div>
-            </div>
         {% endif %}
-
-        <div class="col-sm-6 pull-left">
-            <div class="row">
-                <div class="col-sm-12">
-                    {% if thought.owner %}
-                        <span>
-                        {{ 'thought.chain.added_to_site'|trans }}
-                            <a href="{{ path('thought_profile', { 'userId': thought.owner.id } ) }}">
-                               {{ thought.owner.firstname }}
-                            </a>
-                        </span>
-                    {% endif %}
-                </div>
-                <div class="col-sm-12">
-                    {% if chainId is defined %}
-                        {% if app.user %}
-                            {% if already_chains|length %}
-                                {% for chainThought in thought.chainThoughts %}
-                                    {% if chainThought.user != null and chainThought.chain.id == chainId %}
-                                        <span>
-                                            {{ 'thought.chain.added_by'|trans }}
-                                            <a href="{{ path('thought_profile', { 'userId': chainThought.user.id } ) }}">
-                                               {{ chainThought.user.firstname }}
-                                            </a>
-                                        </span>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
+        <div class="put-in-chain">
             {% if already_chains|length %}
                 {% set template = '@Thought/include/chainsTooltip.html.twig'  %}
                 <span class="is-added pull-right hastooltip" data-toggle="tooltip" data-placement="bottom" data-html="true" title="{{ 'thought.chain.added_to_chain'|trans }} {{ include(template)|escape }}">
@@ -204,69 +153,58 @@
                 </span>
             {% endif %}
         </div>
-
     </div>
 
-    {% set check1 = false %}
-    {% set check2 = false %}
+    {#  Commentaires  #}
+    <div class="quote_row">
+        <div class="commentaires">
+            {% if thought.comments|length and app.request.get('_route') == 'thought_homepage_index' %}
+                <a class="show-link" data-id="{{ thought.id }}">{{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}</a>
+            {% else %}
+                <p>{{ 'thought.comment.quantity_comments'|trans }}: {{ thought.comments|length }}</p>
+            {% endif %}
 
-    {% if is_granted('ROLE_STUDENT') %}
-        {% set check1 = true %}
-    {% endif %}
-
-    {% if thought.owner.roles is defined and 'ROLE_STUDENT' in thought.owner.roles %}
-        {% set check2 = true %}
-    {% endif %}
-
-    {% if check1 == check2 %}
-        {% set check = true %}
-    {% else %}
-        {% set check = false %}
-    {% endif %}
-
-    {% if app.user and check %}
-        <div class="row">
-            <div class="col-sm-6 pull-left quote_chain" id="thought-{{ thought.id }}">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ 'thought.chain.add_quote_collective'|trans }} <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                        {% for topic in topicsArray %}
-                            {% if topic['topic_chains'] is not empty %}
-                                <li class="dropdown-submenu">
-                                    <a tabindex="-1" >{{ topic['topic_name'] }}</a>
-                                    <ul class="dropdown-menu chains-selector">
-                                        {% for chain in topic['topic_chains']  %}
-
-                                            {% set switcher = '' %}             {# To disable after аdditions #}
-                                            {% set type = 'private' %}
-                                            {% for already_chain in already_chains %}
-                                                {% if already_chain.id == chain.id %}
-                                                    {% set switcher = 'disabled' %}
-                                                {% endif %}
-                                            {% endfor %}
-
-                                            {% if not chain.isPrivate %}        {# type chains after name in selector #}
-                                                {% if chain.isCollective %}
-                                                    {% set type = 'collective' %}
-                                                {% else %}
-                                                    {% set type = 'publiques' %}
-                                                {% endif %}
-                                            {% endif %}
-
-                                            {% if chain in colChains or chain in app.user.chains  %}
-                                                <li class="chain {{ switcher }}" id="{{ chain.id }}"><a>{{ chain.name }} ({{ type }})</a></li>
-                                            {% endif %}
-
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            {% endif %}
-                        {% endfor%}
-                    </ul>
-                </div>
+            <div class="comments hidden" data-id="{{ thought.id }}">
+                {% for thoughtComments in comments[thought.id] %}
+                    {% for comment in thoughtComments %}
+                        <p class="profile-link"><a href="">{{ comment.name }}</a></p>
+                        <p class="comment-data">{{ comment.createdAt|date('d.m.Y') }}</p>
+                        <p>{{ comment.text }}</p>
+                    {% endfor %}
+                {% endfor %}
             </div>
         </div>
-    {% endif %}
+        {{ include('@Thought/chainSelector.html.twig') }}
+    </div>
+
+    <div class="quote_row">
+        <div class="owner">
+            {% if thought.owner %}
+                <span>
+                    {{ 'thought.chain.added_to_site'|trans }}
+                    <a href="{{ path('thought_profile', { 'userId': thought.owner.id } ) }}">
+                        {{ thought.owner.firstname }}
+                    </a>
+                </span>
+            {% endif %}
+        </div>
+        <div>
+            {% if chainId is defined %}
+                {% if app.user %}
+                    {% if already_chains|length %}
+                        {% for chainThought in thought.chainThoughts %}
+                            {% if chainThought.user != null and chainThought.chain.id == chainId %}
+                                <span>
+                                    {{ 'thought.chain.added_by'|trans }}
+                                    <a href="{{ path('thought_profile', { 'userId': chainThought.user.id } ) }}">
+                                        {{ chainThought.user.firstname }}
+                                    </a>
+                                </span>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
 </div>

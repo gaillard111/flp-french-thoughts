@@ -1,0 +1,62 @@
+{% set check1 = false %}
+{% set check2 = false %}
+
+{% if is_granted('ROLE_STUDENT') %}
+    {% set check1 = true %}
+{% endif %}
+
+{% if thought.owner.roles is defined and 'ROLE_STUDENT' in thought.owner.roles %}
+    {% set check2 = true %}
+{% endif %}
+
+{% if check1 == check2 %}
+    {% set check = true %}
+{% else %}
+    {% set check = false %}
+{% endif %}
+
+{% if app.user and check %}
+    <div class="chain-selector">
+        <div class="quote_chain" id="thought-{{ thought.id }}">
+            <div class="btn-group">
+                <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ 'thought.chain.add_quote_collective'|trans }} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                    {% for topic in topicsArray %}
+                        {% if topic['topic_chains'] is not empty %}
+                            <li class="dropdown-submenu">
+                                <a tabindex="-1" >{{ topic['topic_name'] }}</a>
+                                <ul class="dropdown-menu chains-selector">
+                                    {% for chain in topic['topic_chains']  %}
+
+                                        {% set switcher = '' %}          {#  To disable after аdditions   #}
+                                        {% set type = 'private' %}
+                                        {% for already_chain in already_chains %}
+                                            {% if already_chain.id == chain.id %}
+                                                {% set switcher = 'disabled' %}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                       {% if not chain.isPrivate %}    {#  type chains after name in selector   #}
+                                            {% if chain.isCollective %}
+                                                {% set type = 'collective' %}
+                                            {% else %}
+                                                {% set type = 'publiques' %}
+                                            {% endif %}
+                                        {% endif %}
+
+                                        {% if chain in colChains or chain in app.user.chains  %}
+                                            <li class="chain {{ switcher }}" id="{{ chain.id }}"><a>{{ chain.name }} ({{ type }})</a></li>
+                                        {% endif %}
+
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                    {% endfor%}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endif %}
