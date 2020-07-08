@@ -14,7 +14,7 @@
                         <tr>
                             <td><a href="{{ path('thought_profile', { 'userId': friend.id  } ) }}">{{ friend.firstname }} {{ friend.lastname }}</a></td>
                             <td>{{ friend.email }}</td>
-                            <th><a href="{{ path('delete_friend', { 'userId': friend.id }) }}">Remove</a></th>
+                            <th><a href="{{ path('delete_friend', { 'userId': friend.id }) }}">supprimer</a></th>
                         </tr>
                     {% endfor %}
                     </tbody>

@@ -118,7 +118,7 @@ class HomepageController extends Controller
                         $userFriend[$friend->getUser()->getId()] = $friend->getUser()->getFirstname();
                     }
                 }
-                $userFriend[$user->getId()] = 'Yours';
+                $userFriend[$user->getId()] = 'moi';
             }
 
         //---
