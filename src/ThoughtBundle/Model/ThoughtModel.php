@@ -1036,17 +1036,17 @@ class ThoughtModel
             $terms['birthDate'] = [
                 'regexp' => [
                     'birthDate' => [
-                        'value' => $birthDate,
+                        'value' => $birthDate . '.*|.*' . $birthDate,
                     ],
                 ],
             ];
-            $terms['sex'] = [
-                'match' => [
-                    'sex' => [
-                        'query' => 'F|H',
-                    ],
-                ],
-            ];
+//            $terms['sex'] = [
+//                'match' => [
+//                    'sex' => [
+//                        'query' => 'F|H',
+//                    ],
+//                ],
+//            ];
         }
         if (!empty($request['sex'])) {
             $terms['sex'] = [

@@ -73,7 +73,7 @@ fos_elastica:
                 birthDate:
                   type:     "string"
                   index:    "analyzed"
-                  analyzer: app_analyzer
+                  analyzer: keyword
                 birthDate_exact:
                   type:     "string"
                   index:    "not_analyzed"
