@@ -567,7 +567,7 @@ class ThoughtModel
         }
 
         $query = new Query();
-//        dump($boolSearchArray);die;
+//        dump($boolSearchArray);die;да
 
         $query->setParams(
             [
@@ -1027,13 +1027,13 @@ class ThoughtModel
                     ],
                 ],
             ];
-//            $terms['sex'] = [
-//                'match' => [
-//                    'sex' => [
-//                        'query' => 'F|H',
-//                    ],
-//                ],
-//            ];
+            $terms['sex'] = [
+                'match' => [
+                    'sex' => [
+                        'query' => 'F|H',
+                    ],
+                ],
+            ];
         }
         if (!empty($request['sex'])) {
             $terms['sex'] = [
@@ -1126,7 +1126,7 @@ class ThoughtModel
 //        die;
 
         $authors = $this->authorsFinder->find($query, 7000);
-//        dump($query, $authors, $must);
+//        dump($terms);
 //        die;
 
         $names = [];
