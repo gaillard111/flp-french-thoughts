@@ -158,6 +158,8 @@ class HomepageController extends Controller
      * @Route("/link-quotes", name="link-quotes", options={"expose"=true})
      *
      * @param Request $request
+     * @return JsonResponse
+     * @throws OptimisticLockException
      */
     public function linkQuotes(Request $request)
     {

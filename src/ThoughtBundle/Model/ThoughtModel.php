@@ -738,7 +738,7 @@ class ThoughtModel
             'certains', 'c’est', 'court', 'cours', 'devrions', 'd\'une, n’est',
             'place', 'point', 'plutôt', 'pourrez', 'peuvent', 'propre', 'propres', 'peut-être',
             'quelle', 'quelques', 'qu’elle', 'qu’il', 's’est', 'selon', 'seulement', 'seules', 'serez',
-            'semble', 'souvent', 'tellement', 'vient', 'vraiment', '&lt',  '&gt'
+            'semble', 'souvent', 'tellement', 'vient', 'vraiment', '&lt',  '&gt',
         ];
 
         if (!is_array($thoughts) && $words) {
@@ -816,19 +816,6 @@ class ThoughtModel
         return [
             'cloud'      => $cloud,
             'cloudStyle' => $cloudStyle,
-        ];
-    }
-
-    /**
-     * @param $requestAuthor array
-     *
-     * @return array
-     */
-    private function getAuthors($requestAuthor, $isAuthor)
-    {
-        return [
-            'terms'    => $terms,
-            'isAuthor' => $isAuthor,
         ];
     }
 
@@ -1138,7 +1125,7 @@ class ThoughtModel
 //        dump($query);
 //        die;
 
-        $authors = $this->authorsFinder->find($query, 10000);
+        $authors = $this->authorsFinder->find($query, 7000);
 //        dump($query, $authors, $must);
 //        die;
 
