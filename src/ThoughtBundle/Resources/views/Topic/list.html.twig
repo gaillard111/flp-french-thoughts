@@ -28,7 +28,7 @@
                 {% for topic in topics %}
                     <div class="topic-link {% if query == true %} topic-link-empty {% endif %}" data-topic="{{ topic.id }}">
                         {% if query == false %}
-                            <a title="{{ topic.name }}">{{ topic.name|striptags|truncate(25) }}</a>
+                            <a title="{{ topic.name }}">{{ topic.name|striptags }}</a>
                             {% if topic.user == app.user %}
                                 <div class="topic-edit">
                                     <a class="text-primary plain" href="{{ path('sonata_user_topic_edit', { 'topicId': topic.id }) }}">
