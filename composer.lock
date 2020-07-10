@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "df4d4c201a2a6a4be7f2ab300d146515",
+    "content-hash": "e920dced025fce52929dc64ed3edb38e",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1929,12 +1929,12 @@
             "version": "v1.0.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/whiteoctober/Pagerfanta.git",
+                "url": "https://github.com/BabDev/Pagerfanta.git",
                 "reference": "a874d3612d954dcbbb49e5ffe178890918fb76fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/whiteoctober/Pagerfanta/zipball/a874d3612d954dcbbb49e5ffe178890918fb76fb",
+                "url": "https://api.github.com/repos/BabDev/Pagerfanta/zipball/a874d3612d954dcbbb49e5ffe178890918fb76fb",
                 "reference": "a874d3612d954dcbbb49e5ffe178890918fb76fb",
                 "shasum": ""
             },
@@ -4465,7 +4465,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.3.9"
+        "php": ">=5.3.9",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "platform-overrides": {
