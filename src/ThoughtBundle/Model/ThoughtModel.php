@@ -555,6 +555,18 @@ class ThoughtModel
             $boolSearchArray['must'] = $wordSearch;
         }
 
+        $boolSearchArray['must'] = array_merge($boolSearchArray['must'], [
+            [
+
+                'range' => [
+                    'amount' => [
+                        'gte' => 1,
+                    ],
+                ],
+
+            ],
+        ]);
+
         if (!empty($terms)) {
             $must = $terms[0];
             if (isset($must['filters'])) {
@@ -567,7 +579,7 @@ class ThoughtModel
         }
 
         $query = new Query();
-//        dump($boolSearchArray);die;да
+//        dump($boolSearchArray);die;
 
         $query->setParams(
             [
@@ -980,8 +992,7 @@ class ThoughtModel
     }
 
     /**
-     * @param $terms
-     *
+     * @param $request
      * @return array
      */
     private function getNames($request)
@@ -1125,7 +1136,7 @@ class ThoughtModel
 //        dump($query);
 //        die;
 
-        $authors = $this->authorsFinder->find($query, 7000);
+        $authors = $this->authorsFinder->find($query, 10000);
 //        dump($terms);
 //        die;
 
