@@ -49,8 +49,8 @@ class HomepageController extends Controller
         /** @var PaginationInterface $paginator */
         $paginator = $this->get('knp_paginator');
         /** @var TopicChainModel $modelTopicChain */
-        $modelTopicChain = $this->container->get("thought.model.topicchain_model");
-        $start = microtime(true);
+        $modelTopicChain = $this->container->get('thought.model.topicchain_model');
+        $start           = microtime(true);
 
         $page = $request->query->getInt('page', 1);
 
@@ -92,34 +92,34 @@ class HomepageController extends Controller
         $timeExecute = microtime(true) - $start;
 
         $collectiveChains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains($role);
-        $dynamicBanners = $em->getRepository(Banner::class)->findAll();
+        $dynamicBanners   = $em->getRepository(Banner::class)->findAll();
 
         // Get topics with chains for selector
-            $topicsArray = $modelTopicChain->getTopicsWithChains();
+        $topicsArray = $modelTopicChain->getTopicsWithChains();
 
-            $topicPrivateItem = [];
-            if ($this->getUser()) {
-                $topicPrivateItem = $modelTopicChain->getUserPrivateChaines($this->getUser());
-            }
+        $topicPrivateItem = [];
+        if ($this->getUser()) {
+            $topicPrivateItem = $modelTopicChain->getUserPrivateChaines($this->getUser());
+        }
 
-            $topicsArray[] = $topicPrivateItem;
+        $topicsArray[] = $topicPrivateItem;
         //---
 
         // Array friends for related quotes
-            $userFriend = [];
-            $user = $this->getUser();
+        $userFriend = [];
+        $user       = $this->getUser();
 
-            if ($user) {
-                $friends = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Friendship')->getFriends($user);
-                foreach ($friends as $friend) {
-                    if ($friend->getUser() == $user) {
-                        $userFriend[$friend->getFriend()->getId()] = $friend->getFriend()->getFirstname();
-                    } else {
-                        $userFriend[$friend->getUser()->getId()] = $friend->getUser()->getFirstname();
-                    }
+        if ($user) {
+            $friends = $this->getDoctrine()->getRepository('ApplicationSonataUserBundle:Friendship')->getFriends($user);
+            foreach ($friends as $friend) {
+                if ($friend->getUser() == $user) {
+                    $userFriend[$friend->getFriend()->getId()] = $friend->getFriend()->getFirstname();
+                } else {
+                    $userFriend[$friend->getUser()->getId()] = $friend->getUser()->getFirstname();
                 }
-                $userFriend[$user->getId()] = 'moi';
             }
+            $userFriend[$user->getId()] = 'moi';
+        }
 
         //---
 
@@ -134,7 +134,7 @@ class HomepageController extends Controller
             'colChains'   => $collectiveChains->getResult(),
             'banners'     => $dynamicBanners,
             'topicsArray' => $topicsArray,
-            'userFriends' => $userFriend
+            'userFriends' => $userFriend,
         ]);
 
         $time = time() + (3600 * 24 * 7);
@@ -156,16 +156,17 @@ class HomepageController extends Controller
 
     /**
      * @Route("/link-quotes", name="link-quotes", options={"expose"=true})
+     *
      * @param Request $request
      */
     public function linkQuotes(Request $request)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-        $thoughtId = $request->get('thought_id');
+        $em               = $this->getDoctrine()->getEntityManager();
+        $thoughtId        = $request->get('thought_id');
         $thoughtRelatedId = $request->get('thoughtRelated_id');
-        $user = $this->getUser();
-        $thought = $em->getRepository(Thought::class)->find($thoughtId);
-        $thoughtR = $em->getRepository(Thought::class)->find($thoughtRelatedId);
+        $user             = $this->getUser();
+        $thought          = $em->getRepository(Thought::class)->find($thoughtId);
+        $thoughtR         = $em->getRepository(Thought::class)->find($thoughtRelatedId);
 
         if (!$thought or !$thoughtR) {
             return new JsonResponse([
@@ -174,7 +175,7 @@ class HomepageController extends Controller
             ]);
         }
 
-        if ($em->getRepository(ThoughtRelated::class)->findOneBy(['owner' => $user ,'thought' => $thoughtId, 'relatedThought' => $thoughtR])) {
+        if ($em->getRepository(ThoughtRelated::class)->findOneBy(['owner' => $user, 'thought' => $thoughtId, 'relatedThought' => $thoughtR])) {
             return new JsonResponse([
                 'success' => false,
                 'message' => 'This related already exists.',
