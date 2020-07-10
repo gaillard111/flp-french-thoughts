@@ -560,7 +560,8 @@ class ThoughtModel
 
                 'range' => [
                     'amount' => [
-                        'gte' => 1,
+                        'gte' => $minWords,
+                        'lte' => $maxWords,
                     ],
                 ],
 
