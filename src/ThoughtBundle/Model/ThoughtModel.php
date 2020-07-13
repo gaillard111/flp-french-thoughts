@@ -154,8 +154,10 @@ class ThoughtModel
 
         $isAuthor = false;
 
-        $names = [];
-        if (isset($request['author']) && count($request['author']) > 0) {
+        $terms = [];
+
+        if (in_array(!null, $request['author'])) {
+
             $names = $this->getNames($request['author']);
 
             if ($names) {
@@ -181,18 +183,16 @@ class ThoughtModel
             $terms[] = [
                 'matches' => $matches,
                 'filters' => $filters,
-
             ];
         }
 
-        if (isset($request['term']) && count($request['term']) > 0) {
+        if (in_array(!null, $request['term'])) {
             $terms = array_merge($terms, $this->getTerms($request['term']));
         }
 
         $sort = ['amount' => 'asc'];
-//        $sort = ['birth_date' => 'asc'];
 
-        if (isset($request['sorting']) && $request['sorting']) {
+        if (isset($request['sorting']) && $request['sorting'] !== "") {
             if (isset($request['sorting_desc'])) {
                 if ($request['sorting_desc'] == 'true') {
                     $sortingDirection = 'desc';
@@ -208,7 +208,7 @@ class ThoughtModel
 
         $strict = isset($request['strict']) && $request['strict'];
 
-        $maxWords = (isset($request['max_words']) && $request['max_words'] > 0) ? intval($request['max_words']) : 99999999;
+        $maxWords = (isset($request['max_words']) && $request['max_words'] > 0) ? intval($request['max_words']) : 10000;
 
         $minWords = isset($request['min_words']) ? intval($request['min_words']) : 0;
 
@@ -555,19 +555,6 @@ class ThoughtModel
             $boolSearchArray['must'] = $wordSearch;
         }
 
-        $boolSearchArray['must'] = array_merge($boolSearchArray['must'], [
-            [
-
-                'range' => [
-                    'amount' => [
-                        'gte' => $minWords,
-                        'lte' => $maxWords,
-                    ],
-                ],
-
-            ],
-        ]);
-
         if (!empty($terms)) {
             $must = $terms[0];
             if (isset($must['filters'])) {
@@ -751,7 +738,7 @@ class ThoughtModel
             'certains', 'c’est', 'court', 'cours', 'devrions', 'd\'une, n’est',
             'place', 'point', 'plutôt', 'pourrez', 'peuvent', 'propre', 'propres', 'peut-être',
             'quelle', 'quelques', 'qu’elle', 'qu’il', 's’est', 'selon', 'seulement', 'seules', 'serez',
-            'semble', 'souvent', 'tellement', 'vient', 'vraiment', '&lt',  '&gt',
+            'semble', 'souvent', 'tellement', 'vient', 'vraiment', '&lt',  '&gt'
         ];
 
         if (!is_array($thoughts) && $words) {
@@ -761,8 +748,8 @@ class ThoughtModel
             if ($thoughts->getTotalHits() > 0) {
                 /** @var Thought $thought */
                 $offset = $thoughts->getTotalHits();
-                if ($offset > 5000) {
-                    $offset = 5000;
+                if ($offset > 100) {
+                    $offset = 100;
                 }
                 foreach ($thoughts->getResults(0, $offset)->toArray() as $thought) {
                     $tags  = explode(',', $thought->getTags());
@@ -829,6 +816,19 @@ class ThoughtModel
         return [
             'cloud'      => $cloud,
             'cloudStyle' => $cloudStyle,
+        ];
+    }
+
+    /**
+     * @param $requestAuthor array
+     *
+     * @return array
+     */
+    private function getAuthors($requestAuthor, $isAuthor)
+    {
+        return [
+            'terms'    => $terms,
+            'isAuthor' => $isAuthor,
         ];
     }
 
@@ -993,7 +993,8 @@ class ThoughtModel
     }
 
     /**
-     * @param $request
+     * @param $terms
+     *
      * @return array
      */
     private function getNames($request)
@@ -1039,13 +1040,13 @@ class ThoughtModel
                     ],
                 ],
             ];
-            $terms['sex'] = [
-                'match' => [
-                    'sex' => [
-                        'query' => 'F|H',
-                    ],
-                ],
-            ];
+//            $terms['sex'] = [
+//                'match' => [
+//                    'sex' => [
+//                        'query' => 'F|H',
+//                    ],
+//                ],
+//            ];
         }
         if (!empty($request['sex'])) {
             $terms['sex'] = [
@@ -1137,8 +1138,9 @@ class ThoughtModel
 //        dump($query);
 //        die;
 
-        $authors = $this->authorsFinder->find($query, 10000);
-//        dump($terms);
+        $authors = $this->authorsFinder->find($query, 1000);
+
+//        dump($query, $authors, $must);
 //        die;
 
         $names = [];
