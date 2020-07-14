@@ -724,7 +724,7 @@ class ThoughtModel
             'semble', 'souvent', 'tellement', 'vient', 'vraiment', '&lt',  '&gt'
         ];
 
-        if (!is_array($thoughts) && $words) {
+        if (!is_array($thoughts) && method_exists($thoughts, 'getTotalHits') && $words) {
             $cloud        = [];
             $cloudContent = [];
 
