@@ -153,10 +153,8 @@ class ThoughtModel
         }
 
         $isAuthor = false;
-
-        $terms = [];
-
-        if (in_array(!null, $request['author'])) {
+        $authors = [];
+        if (isset($request['author']) && in_array(!null, $request['author'])) {
 
             $names = $this->getNames($request['author']);
 
@@ -180,18 +178,18 @@ class ThoughtModel
                     ],
                 ];
             }
-            $terms[] = [
+            $authors[] = [
                 'matches' => $matches,
                 'filters' => $filters,
             ];
         }
 
-        if (in_array(!null, $request['term'])) {
-            $terms = array_merge($terms, $this->getTerms($request['term']));
+        $terms = [];
+        if (isset($request['term']) && in_array(!null, $request['term'])) {
+            $terms = $this->getTerms($request['term']);
         }
 
         $sort = ['amount' => 'asc'];
-
         if (isset($request['sorting']) && $request['sorting'] !== "") {
             if (isset($request['sorting_desc'])) {
                 if ($request['sorting_desc'] == 'true') {
@@ -268,8 +266,9 @@ class ThoughtModel
             return $this->finder->createPaginatorAdapter($query);
         }
 
-        $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role);
+        $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors);
 //        dump($this->finder->find($query));die;
+
         return $this->finder->createPaginatorAdapter($query);
     }
 
@@ -444,44 +443,35 @@ class ThoughtModel
      */
     public function searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role)
     {
+        $boolSearchArray = $filterException;
 
-//        dump($terms);die;
-        $query = new Query();
-
-        $must = [
-            // [
-            //     'range' => [
-            //         'amount' => [
-            //             'gte' => $minWords,
-            //             'lte' => $maxWords,
-            //         ],
-            //     ],
-            // ],
-        ];
-
-//        $boolSearchArray = [];
-
-        $boolSearchArray = [
-            'must_not' => [
+        if ($role == User::ROLE_USER) {
+            $boolSearchArray[] = [
                 'term' => [
                     'ownerStudent' => true,
                 ],
-            ],
+            ];
+        }
+
+        $query = new Query();
+
+        $must = [
+             [
+                 'range' => [
+                     'amount' => [
+                         'gte' => $minWords,
+                         'lte' => $maxWords,
+                     ],
+                 ],
+             ],
         ];
 
-//        if (!empty($terms)) {
-//            $boolSearchArray['must'] = array_slice($terms[0]['filters'], 0, 5000);
-//        }
+        if (!empty($terms)) {
+            $must[] = $terms;
+        }
 
-        $filter = [
-            'filter' => [
-                'bool' => $boolSearchArray,
-            ],
-        ];
-
-        $queryArray = [
-            'query' => [
-                [
+        $query->setParams([
+                'query' => [
                     'multi_match' => [
                         'query'                => $words,
                         'fields'               => $fields,
@@ -492,24 +482,14 @@ class ThoughtModel
                         'analyzer'             => 'standard',
                     ],
                 ],
-            ],
-        ];
-
-        if ($role == User::ROLE_USER) {
-            $queryArray = array_merge($queryArray, $filter);
-        }
-
-        $filteredArray = [
-            'filtered' => $queryArray,
-        ];
-
-        $searchParameters = [
-            'query' => $filteredArray,
-        ];
-
-        $query->setParams($searchParameters);
-
-//        dump($query);die;
+                'filter' => [
+                    'bool' => [
+                        'must_not' => $boolSearchArray,
+                        'must' => $must
+                    ],
+                ],
+                'sort' => $sort,
+        ]);
 
         return $query;
     }
@@ -524,65 +504,69 @@ class ThoughtModel
      *
      * @return Query
      */
-    public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role)
+    public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors)
     {
-        $must             = [];
-        $querySearchArray = [];
-        $boolSearchArray  = [];
+        $boolSearchArray = $filterException;
 
         if ($role == User::ROLE_USER) {
-            $boolSearchArray = [
-                'must_not' => [
+            $boolSearchArray[] = [
                     'term' => [
                         'ownerStudent' => true,
                     ],
-                ],
-            ];
+                ];
         }
 
-        if (!empty($words)) {
-            $wordSearch = [];
-
-            $wordSearch = array_merge($wordSearch, [
-                [
-                    'term' => [
-                        'category' => $words,
-                        'content'  => $words,
-                    ],
-                ],
-            ]);
-
-            $boolSearchArray['must'] = $wordSearch;
-        }
-
-        if (!empty($terms)) {
-            $must = $terms[0];
-            if (isset($must['filters'])) {
-                $boolSearchArray['should'] = array_slice($must['filters'], 0, 5000);
+        $should = []; $matches = [];
+        if (!empty($authors)) {
+            if (isset($authors[0]['filters'])) {
+                $should = array_slice($authors[0]['filters'], 0, 5000);
+            }
+            if (isset($authors[0]['matches'])) {
+                $matches = array_slice($authors[0]['matches'], 0, 10000);
             }
         }
 
-        if (isset($must['matches'])) {
-            $querySearchArray = array_slice($must['matches'], 0, 10000);
-        }
-
         $query = new Query();
-//        dump($boolSearchArray);die;
+
+        $must = [
+            [
+                'range' => [
+                    'amount' => [
+                        'gte' => $minWords,
+                        'lte' => $maxWords,
+                    ],
+                ],
+            ],
+        ];
+
+        if (!empty($terms)) {
+            $must[] = $terms;
+        }
 
         $query->setParams(
             [
                 'query' => [
-                    'filtered' => [
-                        'query'  => $querySearchArray,
-                        'filter' => [
-                            'bool' => $boolSearchArray,
-                        ],
+                    'multi_match' => [
+                        'query'                => $words,
+                        'fields'               => $fields,
+                        'operator'             => 'and',
+                        'minimum_should_match' => '100%',
+                    ],
+//                    'filtered' => [
+//                        'query' => $matches,
+//                    ],
+                ],
+                'filter' => [
+                    'bool' => [
+                        'must_not' => $boolSearchArray,
+//                        'should' => $should,
+                        'must'     => $must,
                     ],
                 ],
-                'fields' => $fields,
+                'sort' => $sort,
             ]
         );
-//        dump($query); die;
+
         return $query;
     }
 
@@ -624,7 +608,6 @@ class ThoughtModel
                 'sort' => $sort,
             ]
         );
-
         return $query;
     }
 
