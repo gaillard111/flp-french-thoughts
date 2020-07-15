@@ -42,7 +42,9 @@ class MailAdmin extends Admin
             ->addIdentifier('id')
 //            ->add('mailTo')
             ->add('subject')
-            ->add('body')
+            ->add('body', 'html', [
+                'strip' => true
+            ])
             ->add('isSended');
     }
 
