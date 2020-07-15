@@ -55,7 +55,9 @@ class ThoughtAdmin extends Admin
     {
         $listMapper
             ->addIdentifier('id')
-            ->add('content')
+            ->add('content', 'html', [
+                'strip' => true
+            ])
             ->add('category')
             ->add('author')
             ->add('_action', 'action', [
