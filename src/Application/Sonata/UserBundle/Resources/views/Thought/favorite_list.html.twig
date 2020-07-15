@@ -22,7 +22,7 @@
                     <tr>
                         <td>
                             <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
-                                {{ thought.content|slice(0, 50)}} (<a href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id }) }}">{{ thought.id }}</a>)
+                                {{ thought.content|striptags|slice(0, 50)}} (<a href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id }) }}">{{ thought.id }}</a>)
                             </span>
                         </td>
                         <td>{{ thought.author }}</td>
