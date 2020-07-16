@@ -127,7 +127,7 @@ class ThoughtModel
             /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $this->getThoughtsFromElastic($search, $page, $role);
         } else {
-            $thoughts = $this->getLastThoughts(50 * $page, 'id', $role, 'ASC');
+            $thoughts = $this->getLastThoughts(50 * $page, 'id', $role, 'DESC');
         }
 
         return $thoughts;
