@@ -240,7 +240,7 @@ class ThoughtModel
 
         if (!$words && !$isAuthor) {
 
-            $query_sort = 'title';
+            $query_sort = 'category';
             if ($request['sorting'] == 'category_sort') {
                 $query_sort = 'category';
             } else if ($request['sorting'] == 'author_sort'){
