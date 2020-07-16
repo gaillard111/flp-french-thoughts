@@ -162,26 +162,17 @@ class ThoughtModel
                 $isAuthor = true;
             }
 
-            $matches = [];
-            $filters = [];
-
             foreach ($names as $key => $name) {
-                $matches[] = [
-                    'term' => [
-                        'author' => $name,
-                    ],
-                ];
-
-                $filters[] = [
+                $authors[] = [
                     'term' => [
                         'author_exact' => $name,
                     ],
                 ];
             }
-            $authors[] = [
-                'matches' => $matches,
-                'filters' => $filters,
-            ];
+        }
+
+        if (!empty($authors)) {
+            $authors = array_slice($authors, 0, 500);
         }
 
         $terms = [];
@@ -249,7 +240,7 @@ class ThoughtModel
 
         if (!$words && !$isAuthor) {
 
-            $query_sort = 'category';
+            $query_sort = 'title';
             if ($request['sorting'] == 'category_sort') {
                 $query_sort = 'category';
             } else if ($request['sorting'] == 'author_sort'){
@@ -273,7 +264,7 @@ class ThoughtModel
                 $sort = ['amount' => 'asc'];
             }
 
-            $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role);
+            $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors);
             return $this->finder->createPaginatorAdapter($query);
         }
 
@@ -452,7 +443,7 @@ class ThoughtModel
      *
      * @return Query
      */
-    public function searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role)
+    public function searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors)
     {
         $boolSearchArray = $filterException;
 
@@ -482,24 +473,29 @@ class ThoughtModel
         }
 
         $query->setParams([
-                'query' => [
-                    'multi_match' => [
-                        'query'                => $words,
-                        'fields'               => $fields,
-                        'minimum_should_match' => '100%',
-                        'type'                 => 'cross_fields',
-                        'operator'             => 'and',
-                        'tie_breaker'          => '1.0',
-                        'analyzer'             => 'standard',
+            'query' => [
+                'filtered' => [
+                    'query' => [
+                        'multi_match' => [
+                            'query'                => $words,
+                            'fields'               => $fields,
+                            'minimum_should_match' => '100%',
+                            'type'                 => 'cross_fields',
+                            'operator'             => 'and',
+                            'tie_breaker'          => '1.0',
+                            'analyzer'             => 'standard',
+                        ],
+                    ],
+                    'filter' => [
+                        'bool' => [
+                            'must_not' => $boolSearchArray,
+                            'should'     => $authors,
+                            'must'     => $must,
+                        ],
                     ],
                 ],
-                'filter' => [
-                    'bool' => [
-                        'must_not' => $boolSearchArray,
-                        'must' => $must
-                    ],
-                ],
-                'sort' => $sort,
+            ],
+            'sort' => $sort,
         ]);
 
         return $query;
@@ -517,6 +513,7 @@ class ThoughtModel
      */
     public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors)
     {
+
         $boolSearchArray = $filterException;
 
         if ($role == User::ROLE_USER) {
@@ -525,16 +522,6 @@ class ThoughtModel
                         'ownerStudent' => true,
                     ],
                 ];
-        }
-
-        $should = []; $matches = [];
-        if (!empty($authors)) {
-            if (isset($authors[0]['filters'])) {
-                $should = array_slice($authors[0]['filters'], 0, 5000);
-            }
-            if (isset($authors[0]['matches'])) {
-                $matches = array_slice($authors[0]['matches'], 0, 10000);
-            }
         }
 
         $query = new Query();
@@ -554,31 +541,29 @@ class ThoughtModel
             $must[] = $terms;
         }
 
-        $query->setParams(
-            [
-                'query' => [
-                    'multi_match' => [
-                        'query'                => $words,
-                        'fields'               => $fields,
-                        'operator'             => 'and',
-                        'minimum_should_match' => '100%',
+        $query->setParams([
+            'query' => [
+                'filtered' => [
+                    'query' => [
+                        'multi_match' => [
+                            'query'                => $words,
+                            'fields'               => $fields,
+                            'operator'             => 'and',
+                            'minimum_should_match' => '100%',
+                        ],
                     ],
-//                    'filtered' => [
-//                        'query' => $matches,
-//                    ],
+                    'filter' => [
+                        'bool' => [
+                            'must_not' => $boolSearchArray,
+                            'should'     => $authors,
+                            'must'     => $must,
+                        ]
+                    ]
                 ],
-                'filter' => [
-                    'bool' => [
-                        'must_not' => $boolSearchArray,
-//                        'should' => $should,
-                        'must'     => $must,
-                    ],
-//                    'or' => $matches
-                ],
-                'sort' => $sort,
-            ]
-        );
-//        dump($query);die;
+            ],
+            'sort' => $sort,
+        ]);
+
         return $query;
     }
 
