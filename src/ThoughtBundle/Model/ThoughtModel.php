@@ -127,7 +127,7 @@ class ThoughtModel
             /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $this->getThoughtsFromElastic($search, $page, $role);
         } else {
-            $thoughts = $this->getLastThoughts(50 * $page, 'id', $role, 'DESC');
+            $thoughts = $this->getLastThoughts(50 * $page, 'id', $role, 'ASC');
         }
 
         return $thoughts;
@@ -167,7 +167,7 @@ class ThoughtModel
 
             foreach ($names as $key => $name) {
                 $matches[] = [
-                    'match' => [
+                    'term' => [
                         'author' => $name,
                     ],
                 ];
@@ -191,17 +191,18 @@ class ThoughtModel
 
         $sort = ['amount' => 'asc'];
         if (isset($request['sorting']) && $request['sorting'] !== "") {
-            if (isset($request['sorting_desc'])) {
-                if ($request['sorting_desc'] == 'true') {
-                    $sortingDirection = 'desc';
-                } else {
-                    $sortingDirection = 'asc';
-                }
 
-                $sort = [
-                    $request['sorting'] => $sortingDirection,
-                ];
+            $sortingDirection = 'asc';
+
+            if (isset($request['sorting_desc'])) {
+                if ($request['sorting_desc'] == 'on') {
+                    $sortingDirection = 'desc';
+                }
             }
+
+            $sort = [
+                $request['sorting'] => $sortingDirection,
+            ];
         }
 
         $strict = isset($request['strict']) && $request['strict'];
@@ -237,7 +238,7 @@ class ThoughtModel
                 continue;
             }
             if ($valueArrWords[0] == '-') {
-                $wordExceptions[] = $this->filterWord($valueArrWords);
+                $wordExceptions[] = strtolower($this->filterWord($valueArrWords));
                 unset($arrWords[$keyArrWords]);
             }
         }
@@ -247,7 +248,17 @@ class ThoughtModel
         $filterException = $this->compileExceptions($fields, $wordExceptions);
 
         if (!$words && !$isAuthor) {
-            return $this->getLastThoughts(50 * $page, array_keys($sort)[0], $sort[array_keys($sort)[0]]);
+
+            $query_sort = 'title';
+            if ($request['sorting'] == 'category_sort') {
+                $query_sort = 'category';
+            } else if ($request['sorting'] == 'author_sort'){
+                $query_sort = 'author';
+            }
+
+            $query_order = isset($request['sorting_desc']) ? 'DESC' : 'ASC';
+
+            return $this->getLastThoughts(50 * $page, $query_sort, $role, $query_order);
         }
 
         if ($strict) {
@@ -562,11 +573,12 @@ class ThoughtModel
 //                        'should' => $should,
                         'must'     => $must,
                     ],
+//                    'or' => $matches
                 ],
                 'sort' => $sort,
             ]
         );
-
+//        dump($query);die;
         return $query;
     }
 
@@ -695,7 +707,7 @@ class ThoughtModel
      *
      * @return mixed
      */
-    public function getLastThoughts($limit, $sortField, $role, $sortDirection = 'ASC')
+    public function getLastThoughts($limit, $sortField, $role, $sortDirection = 'DESC')
     {
         return $this->repository->getLastThoughts($limit, $sortField, $sortDirection, $role);
     }
