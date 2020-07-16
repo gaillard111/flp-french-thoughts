@@ -238,18 +238,9 @@ class ThoughtModel
 
         $filterException = $this->compileExceptions($fields, $wordExceptions);
 
-        if (!$words && !$isAuthor) {
-
-            $query_sort = 'category';
-            if ($request['sorting'] == 'category_sort') {
-                $query_sort = 'category';
-            } else if ($request['sorting'] == 'author_sort'){
-                $query_sort = 'author';
-            }
-
-            $query_order = isset($request['sorting_desc']) ? 'DESC' : 'ASC';
-
-            return $this->getLastThoughts(50 * $page, $query_sort, $role, $query_order);
+        if (!$words) {
+            $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms, $authors);
+            return $this->finder->createPaginatorAdapter($query);
         }
 
         if ($strict) {
@@ -575,7 +566,7 @@ class ThoughtModel
      *
      * @return Query
      */
-    public function searchDefault($minWords, $maxWords, $sort, $filterException, $terms)
+    public function searchDefault($minWords, $maxWords, $sort, $filterException, $terms, $authors)
     {
         $must = [
             [
@@ -599,6 +590,7 @@ class ThoughtModel
                 'filter' => [
                     'bool' => [
                         'must_not' => $filterException,
+                        'should'     => $authors,
                         'must'     => $must,
                     ],
                 ],
@@ -799,18 +791,6 @@ class ThoughtModel
         ];
     }
 
-    /**
-     * @param $requestAuthor array
-     *
-     * @return array
-     */
-    private function getAuthors($requestAuthor, $isAuthor)
-    {
-        return [
-            'terms'    => $terms,
-            'isAuthor' => $isAuthor,
-        ];
-    }
 
     /**
      * @param $requestTerms array
