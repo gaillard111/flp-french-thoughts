@@ -255,6 +255,7 @@ fos_elastica:
               app_analyzer:
                 type: custom
                 tokenizer: whitespace
+                char_filter:  [html_strip]
                 filter   : [app_ngram, my_asciifolding, lowercase, my_word_delimiter]
               app_sort_analizer:
                 type: custom

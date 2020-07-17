@@ -100,8 +100,8 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="text" name="search[author][birthDate]" class="form-control" placeholder="{{ 'author.filter.fields.birthDate.label'|trans }}" value="{{search.author.birthDate is defined ? search.author.birthDate : ''}}" {% if app.request.query.get('search')['author']['avjc'] is defined and app.request.query.get('search')['author']['avjc'] == 'on' %} disabled="disabled" {% endif %}>
-                                    <input id="avjc" type="checkbox" name="search[author][avjc]" {% if app.request.query.get('search')['author']['avjc'] is defined and app.request.query.get('search')['author']['avjc'] == 'on' %} checked="checked" {% endif %}><label for="avjc" class="avjc">av. J.C.</label>
-                                    <input id="av1000" type="checkbox" name="search[author][av1000]" {% if app.request.query.get('search')['author']['av1000'] is defined and app.request.query.get('search')['author']['av1000'] == 'on' %} checked="checked" {% endif %}><label for="av1000" class="av1000">av. 1000</label>
+{#                                    <input id="avjc" type="checkbox" name="search[author][avjc]" {% if app.request.query.get('search')['author']['avjc'] is defined and app.request.query.get('search')['author']['avjc'] == 'on' %} checked="checked" {% endif %}><label for="avjc" class="avjc">av. J.C.</label>#}
+{#                                    <input id="av1000" type="checkbox" name="search[author][av1000]" {% if app.request.query.get('search')['author']['av1000'] is defined and app.request.query.get('search')['author']['av1000'] == 'on' %} checked="checked" {% endif %}><label for="av1000" class="av1000">av. 1000</label>#}
                                 </div>
                                 <div class="form-group">
                                     <input type="text" name="search[author][sex]" class="form-control" placeholder="{{ 'author.filter.fields.sex.label'|trans }}" value="{{search.author is defined ? search.author.sex : ''}}">

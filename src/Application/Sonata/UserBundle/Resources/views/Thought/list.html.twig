@@ -37,7 +37,7 @@
                     {% for thought in thoughts %}
                         <tr>
 {#                            <td>{{ loop.index }}</td>#}
-                            <td>{{ thought.content|striptags|slice(0, 50)|customTag|raw}} (<a href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id }) }}">{{ thought.id }}</a>)</td>
+                            <td>{{ thought.content|striptags|slice(0, 50)|customTag}} (<a href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id }) }}">{{ thought.id }}</a>)</td>
                             <td>{{ thought.author }}</td>
                             <td>{{ thought.category }}</td>
                             <td>{{ thought.createdAt|date('d.m.Y H:i') }}</td>
