@@ -260,7 +260,7 @@ fos_elastica:
               app_sort_analizer:
                 type: custom
                 tokenizer: keyword
-                filter   : lowercase
+                filter   : [lowercase, french]
               app_prefix_analizer:
                 type: custom
                 tokenizer: keyword
@@ -286,5 +286,5 @@ fos_elastica:
                 type: asciifolding
                 preserve_original: true
               french:
-                type:     asciifolding
+                type:     "icu_collation"
                 language: "fr"
