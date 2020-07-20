@@ -152,14 +152,13 @@ class ThoughtModel
             $fields = array_keys($request['field']);
         }
 
-        $isAuthor = false;
         $authors = [];
         if (isset($request['author']) && in_array(!null, $request['author'])) {
 
             $names = $this->getNames($request['author']);
 
-            if ($names) {
-                $isAuthor = true;
+            if (!$names) {
+                return [];
             }
 
             foreach ($names as $key => $name) {
