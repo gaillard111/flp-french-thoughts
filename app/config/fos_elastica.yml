@@ -37,7 +37,7 @@ fos_elastica:
                 country:
                   type:     "string"
                   index:    "analyzed"
-                  analyzer: app_analyzer
+                  analyzer: keyword
                 country_exact:
                   type:     "string"
                   index:    "not_analyzed"
@@ -92,7 +92,7 @@ fos_elastica:
                 continent:
                   type:     "string"
                   index:    "analyzed"
-                  analyzer: app_analyzer
+                  analyzer: keyword
                 continent_exact:
                   type:     "string"
                   index:    "not_analyzed"
@@ -260,7 +260,7 @@ fos_elastica:
               app_sort_analizer:
                 type: custom
                 tokenizer: keyword
-                filter   : [lowercase, french]
+                filter   : lowercase
               app_prefix_analizer:
                 type: custom
                 tokenizer: keyword
@@ -286,5 +286,5 @@ fos_elastica:
                 type: asciifolding
                 preserve_original: true
               french:
-                type:     "icu_collation"
+                type:     asciifolding
                 language: "fr"

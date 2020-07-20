@@ -965,7 +965,7 @@ class ThoughtModel
         $terms['country']   = [];
         $terms['continent'] = [];
         $terms['job']       = [];
-//        dump($request);
+
         if (!empty($request['name'])) {
             $name      = explode(' ', trim($request['name']));
             $firstname = array_shift($name);
@@ -1000,13 +1000,6 @@ class ThoughtModel
                     ],
                 ],
             ];
-//            $terms['sex'] = [
-//                'match' => [
-//                    'sex' => [
-//                        'query' => 'F|H',
-//                    ],
-//                ],
-//            ];
         }
         if (!empty($request['sex'])) {
             $terms['sex'] = [
@@ -1022,7 +1015,7 @@ class ThoughtModel
             $terms['country'] = [
                 'regexp' => [
                     'country' => [
-                        'value' => $request['country'],
+                        'value' => $request['country'] . '.*|.*' . $request['country'],
                     ],
                 ],
             ];
@@ -1032,7 +1025,7 @@ class ThoughtModel
             $terms['continent'] = [
                 'regexp' => [
                     'continent' => [
-                        'value' => '*',
+                        'value' => $request['continent'] . '.*|.*' . $request['continent'],
                     ],
                 ],
             ];
@@ -1065,7 +1058,7 @@ class ThoughtModel
         }
 
         if (!empty($terms['continent'])) {
-//            $must = array_merge($must, [$terms['continent']]);
+            $must = array_merge($must, [$terms['continent']]);
         }
 
         if (!empty($terms['country'])) {
@@ -1084,24 +1077,13 @@ class ThoughtModel
             ],
         ];
 
-//        if (count($must) > 1) {
-//            dump($must);die;
-//            $filter = array_merge($filter, ['size' => 10000]);
-//        }
-
         $query->setRawQuery([
             'query' => [
                 'filtered' => $filter,
             ],
         ]);
 
-//        dump($query);
-//        die;
-
         $authors = $this->authorsFinder->find($query, 1000);
-
-//        dump($query, $authors, $must);
-//        die;
 
         $names = [];
 
