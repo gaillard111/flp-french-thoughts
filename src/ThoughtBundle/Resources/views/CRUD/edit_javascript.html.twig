@@ -16,9 +16,13 @@
 
             if (editor_id) {
                 CKEDITOR.replace( editor_id, {
+                    language: 'fr',
+                    htmlEncodeOutput: false,
                     entities_latin: false,
                     enterMode: CKEDITOR.ENTER_BR,
                     autoParagraph: false,
+                    entities_additional: false,
+                    entities: false,
                     toolbar: [
                         { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike' ] },
                         { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
