@@ -723,8 +723,9 @@ class ThoughtModel
                     $offset = 100;
                 }
                 foreach ($thoughts->getResults(0, $offset)->toArray() as $thought) {
+
                     $tags  = explode(',', $thought->getTags());
-                    $words = explode(' ', $thought->getContent());
+                    $words = explode(' ', strip_tags(htmlspecialchars_decode($thought->getContent())));
 
                     foreach ($words as $key => $word) {
                         if (in_array($this->formatCloudWord($word), $avoidWords)) {
