@@ -37,6 +37,7 @@
             chain-quote-wrapper" style="padding-top: 8px">
             {% for thoughtChain in thoughtChains %}
                 <div class="chain-quote-block">
+                    {{ include('@Thought/quoteLayout.html.twig', {'thought': thoughtChain.thought}) }}
                     {% if app.user %}
                         {% if app.user.id == thoughtChain.chain.user.id %}
                             <div class="chain-quote-control" data-chain-id="{{ thoughtChain.chain.id }}" data-target="{{ thoughtChain.thought.id }}">
@@ -62,7 +63,6 @@
                             </div>
                         {% endif %}
                     {% endif %}
-                    {{ include('@Thought/quoteLayout.html.twig', {'thought': thoughtChain.thought}) }}
                 </div>
             {% endfor %}
         </div>
