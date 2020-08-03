@@ -93,7 +93,6 @@ class MailAdmin extends Admin
         $mailId  = $object->getId();
         $command = 'nohup php "' . $root . '/console" throught:mail_command ' . $mailId . ' >> ' . $root . '/logs/mail_command_out.log 2>&1 &';
 
-//        dump($command); die;
 
         exec($command);
     }
