@@ -10,11 +10,9 @@ use ThoughtBundle\Service\Mail;
 
 class TestMailCommand extends ContainerAwareCommand
 {
-    public function __construct($name = null)
-    {
-        parent::__construct($name);
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this
@@ -23,7 +21,9 @@ class TestMailCommand extends ContainerAwareCommand
             ->addArgument('mail', InputArgument::REQUIRED);
     }
 
-
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $mail = $input->getArgument('mail');
@@ -31,5 +31,6 @@ class TestMailCommand extends ContainerAwareCommand
         /** @var Mail $serviceMail */
         $serviceMail = $this->getContainer()->get('thought.service.mail_service');
         $serviceMail->sendMail('Test email from fthoughts', $mail, 'Test sending email');
+
     }
 }
