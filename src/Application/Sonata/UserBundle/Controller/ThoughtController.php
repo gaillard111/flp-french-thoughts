@@ -315,12 +315,8 @@ class ThoughtController extends Controller
         $form = $this->createForm(new ThoughtType(), $thought);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $thought->setOwner($this->getUser());
-
-            $em->persist($thought);
-            $em->flush();
-        }
+        $em->persist($thought);
+        $em->flush();
 
         return $this->render('ApplicationSonataUserBundle:Thought:create.html.twig', [
             'form'   => $form->createView(),
