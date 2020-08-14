@@ -25,14 +25,17 @@
             {% endif %}
 
             {% if is_granted('ROLE_MODERATOR') %}
-                {% set editThought = true %}
-            {% endif %}
-            {% if editThought %}
-                <span class="quote_edit">
-                    <a href="{{ path('sonata_user_thought_edit', {'id': thought.id}) }}">
-                        {{ 'user.thought.list_page.link.edit'|trans }}
-                    </a>
-                </span>
+                    <span class="quote_edit">
+                        <a href="{{ path('admin_thought_thought_edit', {'id': thought.id}) }}">
+                            {{ 'user.thought.list_page.link.edit'|trans }}
+                        </a>
+                    </span>
+            {% elseif editThought%}
+                    <span class="quote_edit">
+                        <a href="{{ path('sonata_user_thought_edit', {'id': thought.id}) }}">
+                            {{ 'user.thought.list_page.link.edit'|trans }}
+                        </a>
+                    </span>
             {% endif %}
         {% endif %}
 
@@ -62,7 +65,6 @@
             <p><strong>{{ 'author.filter.fields.continent.label'|trans }}:</strong> <span>{{ author.continent }}</span></p>
         </div>
     {% endif %}
-
 
     <p>
         <strong>{{ 'thought.property.thoughtInfo'|trans|capitalize }}:</strong>
