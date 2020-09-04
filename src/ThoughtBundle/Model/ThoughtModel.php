@@ -170,10 +170,6 @@ class ThoughtModel
             }
         }
 
-        if (!empty($authors)) {
-            $authors = array_slice($authors, 0, 3000);
-        }
-
         $terms = [];
         if (isset($request['term']) && in_array(!null, $request['term'])) {
             $terms = $this->getTerms($request['term']);
