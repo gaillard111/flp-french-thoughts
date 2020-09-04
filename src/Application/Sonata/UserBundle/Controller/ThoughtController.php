@@ -250,7 +250,7 @@ class ThoughtController extends Controller
         $form->handleRequest($request);
         $author = new Author();
         if ($request->getMethod() == 'POST') {
-            if ($form->isValid()) {
+//            if ($form->isValid()) {
                 /** @var AuthorModel $authorModel */
                 $authorModel = $this->container->get('thought.model.author_model');
 
@@ -279,7 +279,7 @@ class ThoughtController extends Controller
 
                 return $this->redirect($this->generateUrl('sonata_user_thoughts'));
             }
-        }
+//        }
         return $this->render('ApplicationSonataUserBundle:Thought:create.html.twig', [
             'form'   => $form->createView(),
             'author' => $author,
