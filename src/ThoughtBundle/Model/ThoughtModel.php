@@ -171,7 +171,7 @@ class ThoughtModel
         }
 
         if (!empty($authors)) {
-            $authors = array_slice($authors, 0, 500);
+            $authors = array_slice($authors, 0, 3000);
         }
 
         $terms = [];
@@ -689,7 +689,7 @@ class ThoughtModel
     }
 
     /**
-     * @param array                     $fields
+     * @param array $fields
      * @param PaginatorAdapterInterface $thoughts
      *
      * @return array
@@ -1083,7 +1083,7 @@ class ThoughtModel
             ],
         ]);
 
-        $authors = $this->authorsFinder->find($query, 1000);
+        $authors = $this->authorsFinder->find($query, 5000);
 
         $names = [];
 
