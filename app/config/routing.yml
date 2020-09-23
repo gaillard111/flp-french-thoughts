@@ -1,61 +1,22 @@
+admin:
+    resource: "@AdminBundle/Resources/config/routing.yml"
+
 thought:
     resource: "@ThoughtBundle/Controller/"
     type:     annotation
     prefix:   /
 
-sonata:
-    resource: "@ApplicationSonataUserBundle/Controller/"
-    type:     annotation
-    prefix:   /profile
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
-public_sonata_user_shared_chains:
-    pattern:  /shared-chains
-    defaults: { _controller: 'ApplicationSonataUserBundle:Chain:publicListShared' }
-
-sonata_user_security:
-    resource: "@SonataUserBundle/Resources/config/routing/sonata_security_1.xml"
-
-sonata_user_resetting:
-    resource: "@SonataUserBundle/Resources/config/routing/sonata_resetting_1.xml"
-    prefix: /resetting
-
-sonata_user_profile:
-    resource: "@SonataUserBundle/Resources/config/routing/sonata_profile_1.xml"
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
     prefix: /profile
 
-sonata_user_register:
-    resource: "@SonataUserBundle/Resources/config/routing/sonata_registration_1.xml"
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
     prefix: /register
 
-sonata_user_change_password:
-    resource: "@SonataUserBundle/Resources/config/routing/sonata_change_password_1.xml"
-    prefix: /profile
-
-# Admin's routing
-sonata_user:
-  resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
-  prefix: /admin
-
-admin:
-  resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
-  prefix: /admin
-
-_sonata_admin:
-  resource: .
-  type: sonata_admin
-  prefix: /admin
-
+#js_routing
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-
-sonata_admin_custompage:
-    pattern:  /admin/thought/import-thought
-    defaults: { _controller: 'ThoughtBundle:ImportAdmin:importAdminPage' }
-
-sonata_admin_author_import:
-    pattern:  /admin/thought/import-author
-    defaults: { _controller: 'ThoughtBundle:ImportAdmin:importAdminPageAuthor' }
-
-PrestaSitemapBundle:
-    resource: "@PrestaSitemapBundle/Resources/config/routing.yml"
-    prefix:   /

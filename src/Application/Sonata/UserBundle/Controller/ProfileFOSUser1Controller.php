@@ -4,9 +4,9 @@ namespace Application\Sonata\UserBundle\Controller;
 
 use Application\Sonata\UserBundle\Entity\Dialog;
 use Application\Sonata\UserBundle\Entity\Message;
-use Application\Sonata\UserBundle\Entity\User;
 use Application\Sonata\UserBundle\Form\Type\MessageType;
 use Application\Sonata\UserBundle\Form\Type\ProfileInfoType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
  *
  * @package Application\Sonata\UserBundle\Controller
  */
-class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOSUser1Controller
+class ProfileFOSUser1Controller extends Controller
 {
     /**
      * @Route("/profile-info", name="sonata_user_edit_profile_info")
@@ -81,7 +81,7 @@ class ProfileFOSUser1Controller extends \Sonata\UserBundle\Controller\ProfileFOS
         if (!isset($lastMessages)) {
             $lastMessages = [];
         }
-        return $this->render('@ApplicationSonataUser/Profile/dialogs.html.twig', [
+        return $this->render('@ApplicationSonataUser/Profile/dialog.html.twig', [
             'dialogs'      => $dialogs,
             'lastMessages' => $lastMessages,
         ]);

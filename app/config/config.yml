@@ -2,73 +2,57 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: "@ThoughtBundle/Resources/config/services.yml" }
-    - { resource: "@ApplicationSonataUserBundle/Resources/config/services.yml" }
     - { resource: fos_elastica.yml }
-    - { resource: sonata_user.yml }
+    - { resource: fos_ck_editor.yml }
+    - { resource: "@ThoughtBundle/Resources/config/services.yml" }
+    - { resource: "@AdminBundle/Resources/config/services.yml"}
+    - { resource: "@AdminBundle/Resources/config/sonata_config.yml"}
 
 # Put parameters here that don't need to change on each machine where the app is deployed
-# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
 
 framework:
-    #esi:             ~
-    translator:      { fallbacks: ["%locale%"] }
-    secret:          "%secret%"
+    #esi: ~
+    translator: { fallbacks: ['%locale%'] }
+    secret: '%secret%'
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
+        resource: '%kernel.root_dir%/config/routing.yml'
         strict_requirements: ~
-    form:            ~
+    form: ~
     csrf_protection: ~
-    validation:      { enable_annotations: true }
-    #serializer:      { enable_annotations: true }
+    validation: { enable_annotations: true }
+    #serializer: { enable_annotations: true }
     templating:
         engines: ['twig']
-    default_locale:  "%locale%"
-    trusted_hosts:   ~
+    default_locale: '%locale%'
+    trusted_hosts: ~
     trusted_proxies: ~
     session:
         # handler_id set to null will use default session handler from php.ini
-        handler_id:  ~
-    fragments:       ~
+        handler_id: ~
+    fragments: ~
     http_method_override: true
 
 # Twig Configuration
 twig:
-    cache: false
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-
-    #sonata
-    form:
-        resources:
-            - 'SonataFormatterBundle:Form:formatter.html.twig'
 
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   pdo_mysql
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%"
-        user:     "%database_user%"
-        password: "%database_password%"
-        charset:  UTF8
-        # if using pdo_sqlite as your database driver:
-        #   1. add the path in parameters.yml
-        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
-        #   2. Uncomment database_path in parameters.yml.dist
-        #   3. Uncomment next line:
-        #     path:     "%database_path%"
-        types:
-            json: Sonata\Doctrine\Types\JsonType
+        driver: pdo_mysql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        charset: UTF8
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-
-        #auto_mapping: true
-
         entity_managers:
             default:
                 auto_mapping: true
@@ -81,132 +65,37 @@ doctrine:
                         alias: GedmoTree # (optional) it will default to the name set for the mapping
                         is_bundle: false
 
+stof_doctrine_extensions:
+    default_locale: en_US
+    orm:
+        default:
+            tree: true
+
 # Swiftmailer Configuration
 swiftmailer:
-    transport:  "%mailer_transport%"
-    host:       "%mailer_host%"
-    username:   "%mailer_user%"
-    password:   "%mailer_password%"
-
-sonata_block:
-    default_contexts: [cms]
-    blocks:
-        # Enable the SonataAdminBundle block
-        sonata.admin.block.admin_list:
-           contexts:  [admin]
-        sonata.user.block.menu:  # used to display the menu in profile pages
-        sonata.user.block.account: # used to display menu option (login option)
-        sonata.block.service.text: # used to if you plan to use Sonata user routes
-
-sonata_admin:
-    title: 'French thoughts'
-    security:
-        handler: sonata.admin.security.handler.role
-        information:
-            EDIT: EDIT
-            LIST: LIST
-            CREATE: CREATE
-            VIEW: VIEW
-            DELETE: DELETE
-            EXPORT: EXPORT
-            OPERATOR: OPERATOR
-            MASTER: MASTER
-            ALL: ALL
-    templates:
-        # default global templates
-        layout:  ThoughtBundle::Sonata/Admin/layout.html.twig
-#        list:    ThoughtBundle::CRUD/base_list.html.twig
-
-    dashboard:
-        groups:
-            sonata_user:
-                label: Users
-                items:
-                    - sonata.user.admin.user
-            Emails:
-                label: Emails
-                items:
-                    - thought.admin.mail
-            Thoughts:
-                label: Thoughts
-                items:
-                    - thought.admin.thought
-                roles: ['ROLE_MODERATOR']
-            Topics:
-                label: Topics
-                items:
-                    - thought.admin.topic
-            Chains:
-                label: Chains
-                items:
-                    - thought.admin.chain
-            Content:
-                label: Content
-                items: {Content: thought.admin.content}
-
-            Authors:
-                label: Authors
-                items: {Content: thought.admin.author}
-
-            Pages:
-                label: Pages
-                items: {Content: thought.admin.dynamicpage}
-
-            Menu:
-                label: Menu
-                items: {Content: thought.admin.menu}
-
-            Banners:
-                label: Banners
-                items: {Content: thought.admin.banner}
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool: { type: memory }
 
 
-sonata_formatter:
-    formatters:
-        markdown:
-            service: sonata.formatter.text.markdown
-            extensions:
-                - sonata.formatter.twig.control_flow
-                - sonata.formatter.twig.gist
-        #        - sonata.media.formatter.twig #keep this commented unless you are using media bundle.
-
-        text:
-            service: sonata.formatter.text.text
-            extensions:
-                - sonata.formatter.twig.control_flow
-                - sonata.formatter.twig.gist
-        #        - sonata.media.formatter.twig
-
-        rawhtml:
-            service: sonata.formatter.text.raw
-            extensions:
-                - sonata.formatter.twig.control_flow
-                - sonata.formatter.twig.gist
-        #        - sonata.media.formatter.twig
-
-        richhtml:
-            service: sonata.formatter.text.raw
-            extensions:
-                - sonata.formatter.twig.control_flow
-                - sonata.formatter.twig.gist
-        #        - sonata.media.formatter.twig
-
-        twig:
-            service: sonata.formatter.text.twigengine
-            extensions: [] # Twig formatter cannot have extensions
-
+# fosUser
 fos_user:
-    db_driver:  orm # can be orm or odm
-    firewall_name:  main
-    user_class:  Application\Sonata\UserBundle\Entity\User
-
-    group:
-        group_class:  Application\Sonata\UserBundle\Entity\Group
-        group_manager: sonata.user.orm.group_manager
-
+    db_driver: orm
+    firewall_name: main
+    user_class: Application\Sonata\UserBundle\Entity\User
+    registration:
+        form:
+            type: ThoughtBundle\Form\RegistrationType
+            validation_groups:  [CustomRegistration]
     service:
         user_manager: sonata.user.orm.user_manager
-
+    from_email:
+        address: "%mailer_user%"
+        sender_name: "%mailer_user%"
+    group:
+        group_class:  false
 
 knp_paginator:
     page_range: 5                      # default page range used in pagination control
@@ -216,11 +105,5 @@ knp_paginator:
         sort_direction_name: direction # sort direction query parameter name
         distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
     template:
-        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig     # sliding pagination controls template
-        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
-
-stof_doctrine_extensions:
-    default_locale: en_US
-    orm:
-        default:
-            tree: true
+        pagination: KnpPaginatorBundle:Pagination:twitter_bootstrap_v3_pagination.html.twig
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig

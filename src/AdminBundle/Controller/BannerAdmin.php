@@ -1,0 +1,67 @@
+<?php
+
+//        dump($thought);
+/**
+ * Created by PhpStorm.
+ * User: ars
+ * Date: 09.07.19
+ * Time: 14:31
+ */
+
+namespace AdminBundle\Controller;
+
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
+use ThoughtBundle\Entity\Author;
+use ThoughtBundle\Entity\Banner;
+use ThoughtBundle\Entity\DynamicPage;
+
+class BannerAdmin extends AbstractAdmin
+{
+    /**
+     * @param FormMapper $formMapper
+     */
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->add('title', 'text', [
+                'required' => false,
+            ])
+            ->add('content', 'textarea', [
+                'attr' => [
+                    'class' => 'js-full-ckeditor',
+                ],
+                'label' => 'Banner text',
+            ])
+            ->add('page', 'entity', [
+                'class'        => DynamicPage::class,
+                'choice_label' => 'title',
+                'required'     => false,
+                'label'        => 'Link to the page',
+            ])
+            ->add('isActive', 'checkbox', [
+                'required' => false,
+            ])
+        ;
+    }
+
+    /**
+     * @param ListMapper $listMapper
+     */
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->addIdentifier('title')
+            ->add('page.title')
+            ->add('isActive')
+        ;
+    }
+
+    public function toString($object)
+    {
+        return $object instanceof Banner
+            ? $object->getTitle()
+            : 'Banner';
+    }
+}

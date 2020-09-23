@@ -14,7 +14,7 @@ namespace Application\Sonata\UserBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Sonata\UserBundle\Entity\BaseUser as BaseUser;
+use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ChainComment;
@@ -33,7 +33,9 @@ class User extends BaseUser
     const ROLE_USER = 'ROLE_USER';
 
     /**
-     * @var int $id
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
      */
     protected $id;
 
@@ -79,6 +81,9 @@ class User extends BaseUser
     protected $lastname;
 
     protected $gender;
+
+
+    protected $locked = false;
 
     /**
      * @ORM\OneToMany(targetEntity="Application\Sonata\UserBundle\Entity\Friendship", mappedBy="user")
@@ -226,7 +231,7 @@ class User extends BaseUser
     /**
      * @inheritdoc
      */
-    public function prePersist()
+    public function prePersist(): void
     {
         parent::prePersist();
         $this->username = $this->email;
@@ -235,7 +240,7 @@ class User extends BaseUser
     /**
      * @inheritdoc
      */
-    public function preUpdate()
+    public function preUpdate(): void
     {
         parent::preUpdate();
         $this->username = $this->email;

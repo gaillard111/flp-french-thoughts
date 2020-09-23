@@ -1,0 +1,27 @@
+# Admin
+sonata_admin:
+  title: 'FLP Admin'
+  title_logo: icon.ico
+  security:
+    handler: sonata.admin.security.handler.role
+    information:
+      ALL: ALL
+  templates:
+    layout:  ThoughtBundle::Sonata/Admin/layout.html.twig
+
+sonata_block:
+  default_contexts: [cms]
+  blocks:
+    sonata.admin.block.admin_list:
+      contexts: [admin]
+    sonata.user.block.account:
+    sonata.admin.block.search_result:
+
+#sonata user
+sonata_user:
+  class:
+    user: Application\Sonata\UserBundle\Entity\User
+    group: Application\Sonata\UserBundle\Entity\Group
+  admin:
+    user:
+      class: AdminBundle\Controller\UserAdmin

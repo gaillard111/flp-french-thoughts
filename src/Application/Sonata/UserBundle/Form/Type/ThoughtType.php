@@ -2,6 +2,7 @@
 
 namespace Application\Sonata\UserBundle\Form\Type;
 
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,9 +29,10 @@ class ThoughtType extends AbstractType
                 'attr'       => ['class' => 'form-control'],
                 'label'      => 'thought.filter.fields.category.label',
             ])
-            ->add('content', TextareaType::class, [
+            ->add('content', CKEditorType::class, [
+                'config'    => ['toolbar' => 'toolbar_for_thought'],
                 'label_attr' => ['class' => 'control-label col-sm-2'],
-                'attr'       => ['class' => 'form-control js-ckeditor'],
+                'attr'       => ['class' => 'form-control'],
                 'label'      => 'thought.filter.fields.content.label',
             ])
             ->add('thoughtInfo', TextType::class, [

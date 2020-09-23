@@ -1,0 +1,28 @@
+#admin bundle
+admin_area:
+  resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+  prefix: /admin
+
+_sonata_admin:
+  resource: .
+  type: sonata_admin
+  prefix: /admin
+
+#sonata user
+sonata_user_admin_security:
+  resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+  prefix: /admin
+
+sonata:
+  resource: "@ApplicationSonataUserBundle/Controller/"
+  type:     annotation
+  prefix:   /profile
+
+#admin import
+sonata_admin_custompage:
+  pattern:  /admin/thought/import-thought
+  defaults: { _controller: 'ThoughtBundle:ImportAdmin:importAdminPage' }
+
+sonata_admin_author_import:
+  pattern:  /admin/thought/import-author
+  defaults: { _controller: 'ThoughtBundle:ImportAdmin:importAdminPageAuthor' }

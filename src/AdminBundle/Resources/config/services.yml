@@ -1,0 +1,65 @@
+services:
+    admin.author:
+        class: AdminBundle\Controller\AuthorAdmin
+        arguments: [~, ThoughtBundle\Entity\Author, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Authors, label: Authors }
+
+    admin.banner:
+        class: AdminBundle\Controller\BannerAdmin
+        arguments: [~, ThoughtBundle\Entity\Banner, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Banners, label: Banners }
+
+    admin.chain:
+        class: AdminBundle\Controller\ChainAdmin
+        arguments: [~, ThoughtBundle\Entity\Chain, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Thoughts, label: Chains }
+
+    admin.content:
+        class: AdminBundle\Controller\ContentAdmin
+        arguments: [~, ThoughtBundle\Entity\Content, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Content, label: Content }
+
+    admin.dynamicpage:
+        class: AdminBundle\Controller\DynamicPageAdmin
+        arguments: [~, ThoughtBundle\Entity\DynamicPage, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Pages, label: Pages }
+
+    admin.mail:
+        class: AdminBundle\Controller\MailAdmin
+        arguments: [~, ThoughtBundle\Entity\GeneralMail, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Content, label: Emails }
+        calls:
+            - method: setMyRootPath
+              arguments:
+                  - '%kernel.root_dir%'
+
+    admin.menu:
+        class: AdminBundle\Controller\MenuAdmin
+        arguments: [~, ThoughtBundle\Entity\MenuItem, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Menu, label: Menu }
+
+    admin.thought:
+        class: AdminBundle\Controller\ThoughtAdmin
+        arguments: [~, ThoughtBundle\Entity\Thought, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Thoughts, label: Thought }
+
+    admin.topic:
+        class: AdminBundle\Controller\TopicAdmin
+        arguments: [~, ThoughtBundle\Entity\Topic, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Thoughts, label: Topics }
+
+    #Sonata left menu listener
+    app.menu_admin:
+        class: AdminBundle\EventListener\MenuBuilderListener
+        arguments: ['@security.authorization_checker']
+        tags:
+            - { name: kernel.event_listener, event: sonata.admin.event.configure.menu.sidebar, method: adminMenuItems }

@@ -1,0 +1,25 @@
+fos_ck_editor:
+  default_config: default
+  configs:
+    default:
+      language: fr
+      entities: false
+      basicEntities: false
+      enterMode: CKEDITOR.ENTER_BR
+      toolbar: full
+
+  plugins:
+    imageuploader:
+      path: '/bundles/thought/js/imageuploader/'
+      filename: 'plugin.js'
+
+  toolbars:
+    configs:
+      toolbar_for_thought: [ "@basicstyles", "@paragraph", "@styles", "@document" ]
+      toolbar_for_content: [ "@basicstyles", "@paragraph", "@document", "/", "@styles", "@media" ]
+    items:
+      document: [ "Source", "Maximize" ]
+      basicstyles: [ 'Bold', 'Italic', 'Underline', 'Strike' ]
+      paragraph: [ 'NumberedList', 'BulletedList', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ]
+      styles: [ 'Styles', 'Format', 'Font', 'FontSize']
+      media: [ 'Image' ]
