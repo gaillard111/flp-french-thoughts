@@ -55,7 +55,7 @@ class Message
     /**
      * @return mixed
      */
-    public function getisViewed()
+    public function getIsViewed()
     {
         return $this->isViewed;
     }

@@ -15,6 +15,20 @@ use ThoughtBundle\Entity\Topic;
 class TopicController extends Controller
 {
     /**
+     * @Route("/topics/{topicId}", name="topic_page", requirements={"topicId"="\d+"})
+     */
+    public function indexAction(Request $request)
+    {
+        $topicId = $request->get('topicId');
+        $em      = $this->getDoctrine()->getManager();
+        $topic   = $em->getRepository(Topic::class)->find($topicId);
+
+        return $this->render('ApplicationSonataUserBundle:Topic:topicPage.html.twig', [
+            'topic' => $topic,
+        ]);
+    }
+
+    /**
      * @Route("/topic/create", name="sonata_user_topic_create")
      *
      * @param Request $request

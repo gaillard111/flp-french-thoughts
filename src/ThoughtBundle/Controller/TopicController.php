@@ -2,70 +2,45 @@
 
 namespace ThoughtBundle\Controller;
 
-use Application\Sonata\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\Topic;
 use ThoughtBundle\Form\TopicSearchForm;
 
 class TopicController extends Controller
 {
     /**
-     * @Route("/topics/{topicId}", name="topic_page", requirements={"topicId"="\d+"})
+     * @Route("/topics", name="topics")
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $topicId = $request->get('topicId');
-        $em      = $this->getDoctrine()->getManager();
-        $topic   = $em->getRepository(Topic::class)->find($topicId);
-
-        return $this->render('@Thought/Topic/topicPage.html.twig', [
-            'topic' => $topic,
+        $allTopics = $this->getDoctrine()->getRepository(Topic::class)->findAll();
+        $form  = $this->createForm(TopicSearchForm::class);
+        return $this->render('ThoughtBundle:Topics:topicsList.html.twig', [
+            'topics' => $allTopics,
+            'form'   => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/topics", name="all_topics")
-     *
-     * @param Request $request
-     *
-     * @return Response
+     * @Route("/topics/search", name="topics_search")
      */
-    public function AllAction(Request $request)
-    {
-        $em = $this->get('doctrine.orm.entity_manager');
-
-        $role = User::ROLE_USER;
-
-        if ($this->isGranted(User::ROLE_STUDENT)) {
-            $role = User::ROLE_STUDENT;
-        }
-
-        $topics = $em->getRepository(Topic::class)->searchTopics($role);
-
-        $topic = new Topic();
-        $form  = $this->createForm(TopicSearchForm::class, $topic);
+    public function searchChains(Request $request) {
+        $form  = $this->createForm(TopicSearchForm::class);
         $form->handleRequest($request);
-
         if ($form->isSubmitted()) {
-            $query  = true;
-            $topic  = $form->getData();
-            $topics = $em->getRepository(Topic::class)->searchTopics($role, $topic);
-
-            return $this->render('ThoughtBundle:Topic:list.html.twig', [
-                'query'  => $query,
-                'topics' => $topics,
+            $searchText = $form->getData()['searchText'];
+            $foundChains = $this
+                ->getDoctrine()
+                ->getRepository(Chain::class)
+                ->findChainesByRegex($searchText);
+            return $this->render('ThoughtBundle:Topics:searchChains.html.twig', [
+                'chains' => $foundChains,
                 'form'   => $form->createView(),
             ]);
         }
-
-        $query = false;
-        return $this->render('ThoughtBundle:Topic:list.html.twig', [
-            'query'  => $query,
-            'topics' => $topics,
-            'form'   => $form->createView(),
-        ]);
+        return $this->redirectToRoute('topics');
     }
 }

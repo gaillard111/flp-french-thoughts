@@ -14,7 +14,7 @@ class TopicSearchForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, [
+            ->add('searchText', TextType::class, [
                 'required'           => false,
                 'label'              => 'thought.topic.search_form.labels.name',
                 'translation_domain' => 'messages',
@@ -31,10 +31,6 @@ class TopicSearchForm extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
-                'data_class' => Topic::class,
-            ]);
     }
 
     public function getBlockPrefix()

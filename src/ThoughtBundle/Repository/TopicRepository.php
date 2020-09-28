@@ -6,7 +6,7 @@
  * Time: 14:57
  */
 
-namespace Application\Sonata\UserBundle\Repository;
+namespace ThoughtBundle\Repository;
 
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
@@ -64,6 +64,7 @@ class TopicRepository extends EntityRepository
             $parameters = array_merge($parameters, [
                 'topicName' => '%' . $topic->getName() . '%',
             ]);
+
             $qb
                 ->orWhere('c.name LIKE :topicName')
                 ->orderBy('c.name', 'ASC')
@@ -71,7 +72,7 @@ class TopicRepository extends EntityRepository
         }
 
         $qb->setParameters($parameters);
-//        dump($qb->getQuery()->getResult(2));die;
+
         return $qb->getQuery()->getResult();
     }
 }

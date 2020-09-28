@@ -10,9 +10,8 @@
     </div>
     <div class="row">
         <div class="span12 col-lg-8 profile-user">
-
             <div class="row">
-                {% for chain in topic.chains %}
+                {% for chain in topic.chains.toArray %}
                     <div class="col-sm-4 chain-list">
                         <a class="chain-item" data-html="true" data-toggle="tooltip" data-placement="bottom" title="
                 <div class=&quot;my-tooltip&quot;>

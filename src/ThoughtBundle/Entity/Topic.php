@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="Application\Sonata\UserBundle\Repository\TopicRepository")
+ * @ORM\Entity(repositoryClass="ThoughtBundle\Repository\TopicRepository")
  * @ORM\Table(name="topics")
  */
 class Topic
@@ -89,7 +89,7 @@ class Topic
     }
 
     /**
-     * @return mixed
+     * @return Chain
      */
     public function getChains()
     {

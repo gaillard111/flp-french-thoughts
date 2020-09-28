@@ -13,9 +13,16 @@ use Doctrine\ORM\Query;
  */
 class ChainRepository extends EntityRepository
 {
+    public function findChainesByRegex($regex) {
+        return $qb = $this->createQueryBuilder('c')
+            ->where('REGEXP(c.name, :regexp) = true')
+            ->andWhere('c.isPrivate = false')
+            ->setParameter('regexp', $regex)
+            ->getQuery()->getResult();
+    }
+
     /**
      * @param $role
-     *
      * @return array
      */
     public function getAllSharedChains($role)
@@ -62,7 +69,6 @@ class ChainRepository extends EntityRepository
 
     /**
      * @param $user
-     *
      * @return Query
      */
     public function getAllFavoriteChains($user)

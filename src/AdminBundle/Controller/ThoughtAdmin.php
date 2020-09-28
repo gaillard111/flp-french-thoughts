@@ -8,6 +8,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use ThoughtBundle\Entity\Thought;
 
 class ThoughtAdmin extends AbstractAdmin
@@ -29,7 +30,7 @@ class ThoughtAdmin extends AbstractAdmin
                     'data-role' => 'tagsinput',
                 ],
             ])
-            ->add('published', null, [
+            ->add('published', CheckboxType::class, [
                 'required' => false,
             ])
         ;

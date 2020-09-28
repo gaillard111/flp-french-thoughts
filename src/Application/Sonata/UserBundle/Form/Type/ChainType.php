@@ -3,7 +3,7 @@
 namespace Application\Sonata\UserBundle\Form\Type;
 
 use Application\Sonata\UserBundle\Entity\User;
-use Application\Sonata\UserBundle\Repository\TopicRepository;
+use ThoughtBundle\Repository\TopicRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

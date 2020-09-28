@@ -2,6 +2,13 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <style>
+        .checkbox label,
+        .radio label {
+            font-weight: 700;
+            margin-left: 0px;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}
