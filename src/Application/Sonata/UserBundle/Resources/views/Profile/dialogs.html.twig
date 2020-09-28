@@ -9,7 +9,6 @@
         <div class="col-sm-12">
             <div class="media">
                 {% for dialog in dialogs %}
-                    {#{{ dump(dialog.messages.last.isViewed) }}#}
                     <div class="row">
                         <div class="col-sm-8">
                             <div class="message_preview" data-check="{% if dialog.messages.last.sender != app.user %}{% if not dialog.messages.last.isViewed %}new{% endif %}{% endif %}">
@@ -57,7 +56,6 @@
         $().ready(function () {
             let $messages = $(".message_preview");
             $messages.each(function (index) {
-                // console.log($($messages[index]));
                 if ($($messages[index]).data('check') === 'new') {
                     $($messages[index]).addClass('new-message');
                 }
