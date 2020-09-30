@@ -41,6 +41,10 @@ class RegistrationListener implements EventSubscriberInterface
         if ($formData['roles'] == 'student') {
             $user->setRoles(['ROLE_STUDENT']);
         }
+
+        if ($formData['roles'] == 'teacher') {
+            $user->setRoles(['ROLE_TEACHER']);
+        }
     }
 
 }

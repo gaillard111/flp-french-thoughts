@@ -2,28 +2,28 @@
 {% form_theme form '@ApplicationSonataUser/Profile/Form/form-change-password-content.html.twig' %}
 
 <script>
-    $(document).ready(function () {
-
-        grecaptcha.ready(function () {
-            grecaptcha.render('captcha', {
-                'sitekey' : '6Lf0gnIUAAAAAIOcDJST9QKJdz7KhbvcacgvizF5',
-                'callback' : function (token) {
-                    // console.log(token);
-                    $('[id=front_user_registration_form_reCaptcha]').attr('value', token );
-                    $('[id=registerForm]').submit();
-                }
-            });
-        });
-
-        // $('#registerForm').submit(function(event) {
-        //
-        //     event.preventDefault();
-        //     event.stopPropagation();
-        // });
-        $('.btn').click(function () {
-            $('[id=registerForm]').submit();
-        })
-    });
+    // $(document).ready(function () {
+    //
+    //     grecaptcha.ready(function () {
+    //         grecaptcha.render('captcha', {
+    //             'sitekey' : '6Lf0gnIUAAAAAIOcDJST9QKJdz7KhbvcacgvizF5',
+    //             'callback' : function (token) {
+    //                 // console.log(token);
+    //                 $('[id=front_user_registration_form_reCaptcha]').attr('value', token );
+    //                 $('[id=registerForm]').submit();
+    //             }
+    //         });
+    //     });
+    //
+    //     // $('#registerForm').submit(function(event) {
+    //     //
+    //     //     event.preventDefault();
+    //     //     event.stopPropagation();
+    //     // });
+    //     $('.btn').click(function () {
+    //         $('[id=registerForm]').submit();
+    //     })
+    // });
 </script>
 
 
@@ -47,19 +47,20 @@
                 <div class="role-item">
                     {{ form_widget(form.roles[1]) }} <label for="front_user_registration_form_roles_1" class="label-role">{{ form.roles[1].vars['label'] }}</label>
                 </div>
-
+                <div class="role-item">
+                    {{ form_widget(form.roles[2]) }} <label for="front_user_registration_form_roles_1" class="label-role">{{ form.roles[2].vars['label'] }}</label>
+                </div>
             </div>
-
-            {{ form_end(form) }}
 
             <div class="form-actions col-sm-7">
                 <input
                         type="submit"
                         value="{{ 'user.form.registration.button'|trans({}, 'messages') }}"
                         class="btn btn-info pull-right"
-                        id="captcha"
+{#                        id="captcha"#}
                 />
             </div>
+            {{ form_end(form) }}
         </form>
     </div>
 </div>
