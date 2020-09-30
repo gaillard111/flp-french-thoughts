@@ -64,14 +64,13 @@ class AppExtension extends \Twig_Extension
 
     public function some_sort_filter($array)
     {
-        $collator = new Collator('fr_FR');
         /** @var ThoughtChain[] $array */
-        usort($array, function ($elem1, $elem2) use ($collator) {
+        usort($array, function ($elem1, $elem2) {
             /**
              * @var ThoughtChain $elem1
              * @var ThoughtChain $elem2
              */
-            return $collator->compare($elem1->getThought()->getCategory(), $elem2->getThought()->getCategory());
+            return strcmp($elem1->getThought()->getCategory(), $elem2->getThought()->getCategory());
         });
 
         return $array;
