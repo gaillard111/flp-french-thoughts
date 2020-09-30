@@ -9,6 +9,7 @@
 namespace ThoughtBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -39,6 +40,7 @@ class Topic
 
     /**
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Chain", mappedBy="topic")
+     * @OrderBy({"name" = "ASC"})
      */
     protected $chains;
 
