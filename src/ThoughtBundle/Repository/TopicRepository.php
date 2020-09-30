@@ -24,6 +24,25 @@ class TopicRepository extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    public function findAllTopics($roleStudent) {
+        $qb = $this->createQueryBuilder('t');
+        $qb
+            ->orderBy('t.name', 'ASC')
+            ->leftJoin('t.user', 'topicowner');
+
+        if ($roleStudent) {
+            $qb->andWhere('topicowner.roles LIKE :role');
+        } else {
+            $qb->andWhere('topicowner.roles NOT LIKE :role');
+        }
+
+        $qb
+            ->setParameter('role', '%' . User::ROLE_STUDENT . '%')
+            ->getQuery();
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function searchTopics($role, Topic $topic = null, User $user = null)
     {
         $parameters = [];

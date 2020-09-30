@@ -13,12 +13,25 @@ use Doctrine\ORM\Query;
  */
 class ChainRepository extends EntityRepository
 {
-    public function findChainesByRegex($regex) {
-        return $qb = $this->createQueryBuilder('c')
+    public function findChainesByRegex($regex, $roleStudent) {
+        $qb = $this->createQueryBuilder('c')
+            ->leftJoin('c.user', 'topicowner')
             ->where('REGEXP(c.name, :regexp) = true')
             ->andWhere('c.isPrivate = false')
-            ->setParameter('regexp', $regex)
-            ->getQuery()->getResult();
+            ->orderBy('c.name', 'ASC');
+
+            if ($roleStudent) {
+                $qb->andWhere('topicowner.roles LIKE :role');
+            } else {
+                $qb->andWhere('topicowner.roles NOT LIKE :role');
+            }
+
+            $qb ->setParameters([
+                'regexp' => $regex,
+                'role' => '%' . User::ROLE_STUDENT . '%'
+            ]);
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
