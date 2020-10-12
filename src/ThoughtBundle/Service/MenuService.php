@@ -26,16 +26,17 @@ class MenuService
 
         $menu[] = [
             'label' => $this->translator->trans('navbar.profile'),
-            'route' => 'fos_user_profile_edit',
+            'route' => 'my_settings',
         ];
 
         $menu[] = [
             'label'      => $this->translator->trans('user.form.profile.profile_edit'),
-            'route'      => 'thought_profile',
+            'route'      => 'user_profile',
             'parameters' => [
                 'userId' => $user->getId(),
             ],
         ];
+
         $menu[] = [
             'label' => $this->translator->trans('user.friendship.title'),
             'route' => 'friends',
@@ -53,23 +54,30 @@ class MenuService
 
         $menu[] = [
             'label' => $this->translator->trans('user.thought.list_page.title'),
-            'route' => 'sonata_user_thoughts',
+            'route' => 'profile_thoughts_list',
         ];
 
         $menu[] = [
             'label' => $this->translator->trans('thought.menu.favorite_thoughts'),
-            'route' => 'favorite-quotes',
+            'route' => 'favorite-list',
         ];
 
         $menu[] = [
             'label' => $this->translator->trans('user.topic.list_page.title'),
-            'route' => 'sonata_user_topics',
+            'route' => 'profile_topics_list',
         ];
 
         $menu[] = [
             'label' => $this->translator->trans('user.chain.list_page.title'),
             'route' => 'sonata_user_chains',
         ];
+
+        if (in_array('ROLE_TEACHER', $user->getRoles())) {
+            $menu[] = [
+                'label' => 'Group',
+                'route' => 'teacher_groups_list'
+            ];
+        }
 
         return $menu;
     }

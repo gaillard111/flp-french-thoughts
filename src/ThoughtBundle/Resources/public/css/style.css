@@ -8,12 +8,24 @@ th {
     border-bottom: 1px solid #ddd !important;
 }
 
-#top-alert {
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+.top-alert {
     background: #e38d11;
     text-align: center;
     font-size: 15px;
     font-weight: bold;
     color: white;
+}
+
+.top-alert.orange {
+    background: #e38d11;
+}
+
+.top-alert.blue {
+    background: #3e56ae;
 }
 
 .related-thoughts-block {
@@ -793,4 +805,46 @@ div.panel-heading {
 
 .quote_row .commentaires {
     padding-top: 4px;
+}
+
+/*Groups of teachers*/
+.teacher-group-panel .panel-heading {
+    padding-left: 0px;
+}
+
+.teacher-group-panel a {
+    text-decoration: none;
+}
+
+.teacher-group-panel .panel-title {
+    white-space: nowrap;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.teacher-group-panel .panel-title .title {
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline;
+}
+
+.teacher-group-panel .panel-title .title a{
+    color: #262626;
+}
+
+.teacher-group-panel .panel-title .group-buttons {
+    display: inline;
+    visibility: hidden;
+    letter-spacing: 2px
+}
+
+.teacher-group-panel .panel-body {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 30px;
+    border-top: 0px !important;
+}
+
+.teacher-group-panel .panel-body a{
+    color: #636161;
 }

@@ -1,0 +1,72 @@
+{% extends "@Thought/Profile/layout.html.twig" %}
+
+{% block sonata_profile_title %}
+    {{ 'user.dialogs.title'|trans }}
+{% endblock %}
+
+{% block sonata_profile_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="media">
+                {% for dialog in dialogs %}
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="message_preview" data-check="{% if dialog.messages.last.sender != app.user %}{% if not dialog.messages.last.isViewed %}new{% endif %}{% endif %}">
+                                <div class="media-body">
+                                    <div class="row">
+                                        <div class="col-sm-10">
+                                            <h4 class="media-heading">
+                                                <a href="{{ path('dialog', { 'dialogId': dialog.id }) }}">
+                                                    {% for user in dialog.users %}
+                                                        {% if user != app.user %}
+                                                            {{ user.firstname }} {{ user.lastname }}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </a>
+                                            </h4>
+
+                                            <p>
+                                                {% for message in lastMessages %}
+                                                    {% if message %}
+                                                        {% if message.dialog.id == dialog.id %}
+                                                            {{ message.messageText }}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <a href="{{ path('dialog', { 'dialogId': dialog.id }) }}" data-url="{{ url('dialog', { 'dialogId': dialog.id }) }}" class="btn btn-info pull-right reply-button">
+                                                {{ 'user.dialogs.reply'|trans }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $().ready(function () {
+            let $messages = $(".message_preview");
+            $messages.each(function (index) {
+                if ($($messages[index]).data('check') === 'new') {
+                    $($messages[index]).addClass('new-message');
+                }
+            });
+
+        });
+        $(".reply-button").click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).closest(".new-message").removeClass("new-message");
+            window.location.href = $(this).data('url');
+        });
+    </script>
+{% endblock %}

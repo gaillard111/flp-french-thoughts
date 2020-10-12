@@ -1,5 +1,5 @@
 <p>
-    User <a href="{{ url('thought_profile', { 'userId': user.id }) }}">{{ user.firstname }} {{ user.lastname }}</a> has sent you friend request.
+    User <a href="{{ url('user_profile', { 'userId': user.id }) }}">{{ user.firstname }} {{ user.lastname }}</a> has sent you friend request.
 </p>
 <p>
     To accept the request view
@@ -8,5 +8,5 @@
     {% else %}
     her
     {% endif %}
-    <a href="{{ url('thought_profile', { 'userId': user.id }) }}">profile</a>
+    <a href="{{ url('user_profile', { 'userId': user.id }) }}">profile</a>
 </p>

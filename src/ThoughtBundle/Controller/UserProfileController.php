@@ -48,30 +48,6 @@ class UserProfileController extends Controller
         ]);
     }
 
-    /**
-     * @Route("/userprofile/{userId}", name="thought_profile")
-     *
-     * @param int $userId
-     *
-     * @return RedirectResponse|Response
-     */
-    public function showAction($userId)
-    {
-        $entityManager = $this->container->get('doctrine.orm.entity_manager');
-        /** @var User $user */
-        $user = $this->getUser();
-        /** @var User $possibleFriend */
-        $possibleFriend = $entityManager->getRepository(User::class)->find($userId);
-
-        if ($user && $possibleFriend && $this->isGranted(User::ROLE_STUDENT) == in_array(User::ROLE_STUDENT, $possibleFriend->getRoles())) {
-            $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
-            return $this->render('@ApplicationSonataUser/Thought/userProfile.html.twig', [
-                'user'       => $possibleFriend,
-                'friendship' => $friendship,
-            ]);
-        }
-        return new Response('Access Denied', 403);
-    }
 
     /**
      * @Route("/friendrequest/{userId}", name="friend_request")

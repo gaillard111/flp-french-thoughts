@@ -129,7 +129,7 @@
             </div>
             <div class="col-md-2 hidden-xs hidden-sm">
                 {% if app.user %}
-                    {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route') })) }}
+                    {{ render(controller('ThoughtBundle:Render:menu', { 'routeName': app.request.get('_route') })) }}
                 {% endif %}
             </div>
         </div>

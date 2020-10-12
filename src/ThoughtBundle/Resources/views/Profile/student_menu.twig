@@ -1,0 +1,26 @@
+<div class="list-group">
+    {% set rout = app.request.attributes.get('_route') %}
+
+    <a href="{{ path('student_profile',  {'user_id': student.id }) }}"
+       class="list-group-item {% if rout == 'student_profile' %} active {% endif %}"
+    >
+        Profile
+    </a>
+
+    <a href="{{ path('student_thoughts',  {'user_id': student.id }) }}"
+       class="list-group-item {% if rout == 'student_thoughts' %} active {% endif %}"
+    >
+        Thoughts
+    </a>
+
+    <a href="{{ path('student_chains',  {'user_id': student.id }) }}"
+       class="list-group-item {% if rout == 'student_chains' %} active {% endif %}"
+    >
+        Chains
+    </a>
+    <a href="{{ path('student_topics', {'user_id': student.id }) }}"
+       class="list-group-item {% if rout == 'student_topics' %} active {% endif %}"
+    >
+        Topics
+    </a>
+</div>

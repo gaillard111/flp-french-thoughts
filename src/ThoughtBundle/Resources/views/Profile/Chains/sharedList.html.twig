@@ -1,0 +1,54 @@
+{% extends '@Thought/Profile/layout.html.twig' %}
+
+{% block sonata_profile_title %}{{ 'thought.chain.public_chains'|trans }}{% endblock %}
+
+{% block sonata_profile_content %}
+    {% block chain_navigation %}
+        {{ render(controller('ThoughtBundle:Profile\\Chain:navigation', { 'routeName': app.request.get('_route') })) }}
+    {% endblock %}
+    <div class="row profile-chains">
+        {% for chain in chains %}
+            <div class="col-sm-4 chain-list">
+                <td>
+                    <a class="chain-item" data-html="true" data-toggle="tooltip" data-placement="bottom" title="
+                        <div>
+                            Status:
+                            {% if chain.isPrivate %}
+                                Private
+                            {% else %}
+                                Public,
+                                {% if chain.isCollective %}
+                                    collective
+                                {% else %}
+                                    personally
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div>
+                            Quotes: {{ chain.chainThoughts|length }}
+                        </div>
+                        <div>
+                            Created: {{ chain.createdAt|date('d.m.Y') }}
+                        </div>
+                        " href="{{ path('chain_page', {'chainId': chain.id}) }}">{{ chain.name }}</a>
+                    {% if chain.isPrivate == false %}
+                        {#( {{ url('chain_page', {'chainId': chain.id}) }} )#}
+                        <div class="chain-edit">
+                            {% if chain.user.firstname != null %}
+                                (<a href="{{ path('user_profile', { 'userId': chain.user.id }) }}">{{ chain.user.firstname }}</a>)
+                            {% else %}
+                                ( - , {{ chain.id }})
+                            {% endif %}
+                        </div>
+
+                    {% endif %}
+                </td>
+            </div>
+
+        {% endfor %}
+    </div>
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(chains) }}
+    </div>
+{% endblock %}

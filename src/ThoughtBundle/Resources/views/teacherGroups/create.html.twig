@@ -1,0 +1,27 @@
+{% extends "@Thought/Profile/layout.html.twig" %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block sonata_profile_title %}
+    {{ 'teacher.create_group.title'|trans }}
+{% endblock %}
+
+{% block sonata_profile_content %}
+
+    <div class="col-sm-offset-1 col-sm-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title text-center">Create new group</h3>
+            </div>
+            <div class="panel-body">
+                {{ form_start(form) }}
+                    {{ form_widget(form.title) }}
+                    <div class="col-lg-offset-4 col-sm-4 margin-top-20">
+                        {{ form_row(form.submit, {'attr': {'class': 'btn-info'}}) }}
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

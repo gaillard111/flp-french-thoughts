@@ -12,7 +12,7 @@
     <!-- Bootstrap -->
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('bundles/thought/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
@@ -41,9 +41,12 @@
 </head>
 <body>
     {% if is_granted('ROLE_STUDENT') %}
-        <div id="top-alert"> Mode étudiant </div>
+        <div class="top-alert orange"> Mode étudiant </div>
+    {% elseif is_granted('ROLE_TEACHER')%}
+        <div class="top-alert blue">Teacher Mode</div>
     {% endif %}
-    {{ render(controller('ApplicationSonataUserBundle:Thought:navbar')) }}
+
+    {{ render(controller('ThoughtBundle:Render:navbar')) }}
     <div class="container">
         {% if app.session.flashBag.has('success') %}
             <div class="alert alert-success">
@@ -77,6 +80,10 @@
     <script src="{{ asset('bundles/thought/js/notice_script.js') }}"></script>
     <script src="{{ asset('bundles/thought/js/popup_script.js') }}"></script>
     <script src="{{ asset('bundles/thought/js/script.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+
     <script>
         (function ($) {
             $(document).ready(function () {

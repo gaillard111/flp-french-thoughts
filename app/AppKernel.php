@@ -18,13 +18,13 @@ class AppKernel extends Kernel
 
             new ThoughtBundle\ThoughtBundle(),
             new AdminBundle\AdminBundle(),
+            new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
 
             new FOS\UserBundle\FOSUserBundle(),
             new Sonata\CoreBundle\SonataCoreBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\BlockBundle\SonataBlockBundle(),
             new Sonata\UserBundle\SonataUserBundle(),
-            new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new FOS\CKEditorBundle\FOSCKEditorBundle(),
@@ -33,6 +33,7 @@ class AppKernel extends Kernel
             new FOS\ElasticaBundle\FOSElasticaBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

@@ -1,0 +1,8 @@
+{
+    "results": [
+        {% for student in results -%}
+            {{ {id: student.id, text: student.firstname}|json_encode|raw }}
+            {%- if not loop.last %},{% endif -%}
+        {%- endfor %}
+    ]
+}

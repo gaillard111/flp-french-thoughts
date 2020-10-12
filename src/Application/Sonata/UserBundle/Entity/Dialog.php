@@ -28,7 +28,7 @@ class Dialog
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity="Application\Sonata\UserBundle\Entity\Message", mappedBy="dialog")
+     * @ORM\OneToMany(targetEntity="Application\Sonata\UserBundle\Entity\Message", mappedBy="dialog", orphanRemoval=true)
      */
     private $messages;
 

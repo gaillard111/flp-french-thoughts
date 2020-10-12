@@ -87,7 +87,7 @@
         <div>
             {% set liked = thought.likes %}
             <button class="btn btn-info btn-sm {% if app.user %} like-quote {% else %} like-popup {% endif %}" data-quote="{{ thought.id }}" type="button">
-            <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@ApplicationSonataUser/Thought/also_liked_tooltip.html.twig') }}">
+            <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('ThoughtBundle::also_liked_tooltip.html.twig') }}">
                 <span class="badge-text">
                     {{ liked ? 'thought.property.liked'|trans : 'thought.property.like'|trans }}
                 </span> <span class="badge" style="display: {{ (thought.likes.count > 0) ? 'inline-block' : 'none' }}">{{ thought.likes.count }}</span>
@@ -184,7 +184,7 @@
             {% if thought.owner %}
                 <span>
                     {{ 'thought.chain.added_to_site'|trans }}
-                    <a href="{{ path('thought_profile', { 'userId': thought.owner.id } ) }}">
+                    <a href="{{ path('user_profile', { 'userId': thought.owner.id } ) }}">
                         {{ thought.owner.firstname }}
                     </a>
                 </span>
@@ -198,7 +198,7 @@
                             {% if chainThought.user != null and chainThought.chain.id == chainId %}
                                 <span>
                                     {{ 'thought.chain.added_by'|trans }}
-                                    <a href="{{ path('thought_profile', { 'userId': chainThought.user.id } ) }}">
+                                    <a href="{{ path('user_profile', { 'userId': chainThought.user.id } ) }}">
                                         {{ chainThought.user.firstname }}
                                     </a>
                                 </span>

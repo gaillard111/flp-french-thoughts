@@ -1,0 +1,111 @@
+{% extends '@Thought/Profile/layout.html.twig' %}
+
+{% block sonata_profile_title %}
+    {% if user != app.user %}
+       {{ user.firstname }} {{ user.lastname }} - Profil
+    {% else %}
+        Mes paramètres
+    {% endif %}
+{% endblock %}
+
+{% block sonata_profile_content %}
+        <div class="row margin-bottom-20">
+            <div class="col-sm-7">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="control-label">
+                            {{ 'user.form.profile.interests.label'|trans }}
+                        </label>
+                    </div>
+                    <div class="col-sm-8">
+                        <p>
+                            {{ user.interests }}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="control-label">
+                            {{ 'user.form.profile.country.label'|trans }}
+                        </label>
+
+                    </div>
+                    <div class="col-sm-8">
+                        <p>
+                            {{ user.country }}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="control-label">
+                            {{ 'user.form.profile.gender.label'|trans }}
+                        </label>
+
+                    </div>
+                    <div class="col-sm-8">
+                        <p>
+                            {% if (user.gender == 'u') %}
+                                Undefined
+                            {% elseif user.gender == 'm' %}
+                                {{ 'user.form.profile.gender.genderm'|trans }}
+                            {% elseif user.gender == 'f' %}
+                                {{ 'user.form.profile.gender.genderf'|trans }}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="control-label">
+                            {{ 'user.form.profile.about.label'|trans }}
+                        </label>
+
+                    </div>
+                    <div class="col-sm-8">
+                        <p>
+                            {{ user.about }}
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-sm-5 pull-right">
+                {% if friendship %}
+                    {% if friendship.accepted == false %}
+                        {% if friendship.user != app.user %}
+                            <a href="{{ path('accept_friend_request', { 'requestId': friendship.id }) }}" class="btn btn-info">{{ 'user.friendship.accept'|trans }}</a>
+                        {% endif %}
+                    {% else %}
+
+                        <p class="friend">
+                            <span class="glyphicon glyphicon-ok"></span>Amis
+                        </p>
+                        {% if user != app.user %}
+                            <a href="{{ path('new_dialog', { 'userId': user.id }) }}" class="btn btn-info">{{ 'user.dialogs.send_message'|trans }}</a>
+                        {% endif %}
+                    {% endif %}
+                    <a href="{{ path('delete_friend', { 'userId': user.id }) }}" class="btn btn-warning">{{ 'user.friendship.remove'|trans }}</a>
+                {% else %}
+                    {% if user.id != app.user.id %}
+                        <a href="{{ path('friend_request', { 'userId': user.id }) }}" class="btn btn-info">{{ 'user.friendship.request'|trans }}</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <label class="control-label favorite-thougts-title">
+                    {{ 'user.form.profile.favorite_thoughts'|trans }}
+                </label>
+                {% for thought in user.mostFavoriteThoughts %}
+                    {% if loop.length <= 5 %}
+                        <strong><a href="{{ path('thought_thoughtpage_index', { 'thoughtId': thought.id }) }}" >{{ thought.category }}</a></strong>
+                        <p>{{ thought.content }}</p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+{% endblock %}

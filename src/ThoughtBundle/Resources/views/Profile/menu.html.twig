@@ -1,0 +1,68 @@
+<div class="{% if routeName == 'thought_homepage_index' %}fixed-menu{% endif %}">
+    <div class="list-group">
+        {% for item in menu %}
+            <a class="list-group-item
+            {% if routeName == item.route  %}
+                {% if routeName != 'user_profile' %}
+                    {% if curTopicId is defined %}
+                        {% if item.parameters is defined %}
+                            {% if curTopicId == item.parameters.topicId %}
+                                active
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        active
+                    {% endif %}
+                    {% if item.route == 'sonata_user_chains' %}
+                        {% if item.parameters is not defined %}
+                            active
+                        {% endif %}
+                    {% endif %}
+                {% elseif userProfileId == app.user.id %}
+                    active
+                {% endif %}
+            {% else %}
+                {% if routeName == 'sonata_user_chain_by_topic' and item.route == 'sonata_user_chains' %}
+                    {% if item.label != 'All' %}
+                        active
+                    {% endif %}
+                {% endif %}
+                {% if routeName == 'sonata_user_favorite_chains' and item.route == 'sonata_user_chains' %}
+                    active
+                {% endif %}
+                {% if routeName == 'sonata_user_shared_chains' and item.route == 'sonata_user_chains' %}
+                    active
+                {% endif %}
+                {% if routeName == 'chain_collective' and item.route == 'sonata_user_chains' %}
+                    active
+                {% endif %}
+            {% endif %}
+            {% if item.parameters is defined %}
+            " href="{{ path(item.route, item.parameters) }}
+            {% else %}
+            " href="{{ path(item.route) }}
+            {% endif %}
+            "
+                    {% if item.parameters['topicId'] is defined %}
+                        title="{{ item.label }}"
+                    {% endif %}
+                    {% if item.route == 'favorite-quotes' %}
+                        title="{{ item.label }}"
+                    {% endif %}
+            >{{ item.label|striptags|truncate(20) }}
+                {% if item.route == 'sonata_user_thoughts' %}
+                    ({{ thoughts }})
+                {% endif %}
+                {% if item.route == 'friend_requests' %}
+                    ({{ requestsCount }})
+                {% endif %}
+                {% if item.route == 'dialog_list' and newMessagesCount[1] != 0 %}
+                    <span id="messages-counter">(+{{ newMessagesCount[1] }})</span>
+                {% endif %}
+                {% if item.route == 'sonata_user_topics' %}
+                    ({{ countTopics[1] }})
+                {% endif %}
+            </a>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,31 @@
+{% extends '@Thought/Profile/layout.html.twig' %}
+{% form_theme form_info 'bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block sonata_profile_title %}
+    {% if user != app.user %}
+        {{ user.firstname }} {{ user.lastname }}
+    {% elseif student is defined and student is not null %}
+        Profile {{ student.firstname }}
+    {% else %}
+        Mes paramètres
+    {% endif %}
+{% endblock %}
+
+{% block sonata_profile_content %}
+    {% form_theme form_settings 'bootstrap_3_horizontal_layout.html.twig' %}
+    <div class="panel panel-info">
+        <div class="panel-heading">Profil utilisateur</div>
+        <div class="panel-body">
+            {{ form(form_settings) }}
+        </div>
+    </div>
+
+    <div class="panel panel-info">
+        <div class="panel-heading">Mes paramètres</div>
+        <div class="panel-body">
+            {{ form(form_info) }}
+        </div>
+    </div>
+
+
+{% endblock %}

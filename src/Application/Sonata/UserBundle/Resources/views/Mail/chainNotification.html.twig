@@ -1,5 +1,5 @@
 <p>
-    A quote <a href="{{ url('thought_thoughtpage_index', { 'thoughtId': thought.id }) }}">{{ thought.category }}</a> has been added to your chain by <a href="{{ url('thought_profile', { 'userId': curUser.id }) }}">{{ curUser.firstname }} {{ curUser.lastname }}</a> .
+    A quote <a href="{{ url('thought_thoughtpage_index', { 'thoughtId': thought.id }) }}">{{ thought.category }}</a> has been added to your chain by <a href="{{ url('user_profile', { 'userId': curUser.id }) }}">{{ curUser.firstname }} {{ curUser.lastname }}</a> .
 </p>
 <p>
     View your chain <a href="{{ url('chain_page', {'chainId': chain.id}) }}">{{ chain.name }}</a>.

@@ -66,6 +66,8 @@ class UserAdmin extends BaseUserAdmin
                     'ROLE_ADMIN'     => 'Admin',
                     'ROLE_MODERATOR' => 'Moderator',
                     'ROLE_USER'      => 'User',
+                    'ROLE_TEACHER'   => 'Teacher',
+                    'ROLE_STUDENT'   => 'Student',
                 ],
                 'expanded' => false,
                 'multiple' => true,

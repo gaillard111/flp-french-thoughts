@@ -1,0 +1,92 @@
+{% extends "@Thought/Profile/layout.html.twig" %}
+
+{% block sonata_profile_title %}
+    {{ 'teacher.group.title'|trans }}
+{% endblock %}
+
+{% block sonata_profile_content %}
+
+    <div class="row" style="padding: 10px 30px 20px">
+        <a href="{{ path('teacher_group_create') }}" role="button" id="add-button-row" class="btn btn-info pagination-sm-4">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ 'teacher.group.add_groups'|trans }}
+        </a>
+    </div>
+    {% if groups is empty%}
+        <p class="text-muted" style="padding: 18px ">
+            You don't have groups yet
+        </p>
+    {% endif %}
+    <div class="teacher-group-panel panel-group col-sm-6" id="accordion" role="tablist" aria-multiselectable="true">
+    {% for group in groups %}
+        <div class="panel">
+            <div class="panel-heading" role="tab">
+                <div class="panel-title">
+                    <div class="title">
+                        <a role="button"
+                           data-toggle="collapse"
+                           data-parent="#accordion"
+                           href="#collapse-{{ group.id }}"
+                           aria-expanded="true"
+                           aria-controls="collapse-{{ group.id }}"
+                        >
+                            {{ group.title|slice(0, 20) }}
+                        </a>
+                    </div>
+                    &ensp;
+                    <div class="group-buttons">
+                        <a class="small plain"
+                           href="{{ path('teacher_group_edit', {'id':  group.id}) }}"
+                           data-toggle="tooltip"
+                           data-placement="bottom"
+                           title="Edit Group"
+                        >
+                            <span class="glyphicon glyphicon-pencil text-primary" aria-hidden="true"></span>
+                        </a>
+
+                        <a class="delete-button small plain"
+                           href="{{ path('teacher_group_delete', {'id':  group.id}) }}"
+                           data-toggle="tooltip"
+                           data-placement="bottom"
+                           title="Delete Group"
+                        >
+                            <span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            <div id="collapse-{{ group.id }}" class="panel-collapse collapse" role="tabpanel">
+                <div class="panel-body">
+                    {% if group.students is not empty%}
+                        {% for student in group.students %}
+                            <a href="{{ path('student_profile', {'user_id': student.id}) }}">{{ student.firstname }}</a><br>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">There are no students in this group yet</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+
+            $('.panel-title').hover(
+                function() {
+                    $( this ).find('.group-buttons').css('visibility', 'visible');
+                }, function() {
+                    $( this ).find('.group-buttons').css('visibility', 'hidden');
+                }
+            )
+
+            $('.delete-button').click(function (event) {
+                return confirm("Are you sure you want to delete the group?");
+            })
+        });
+    </script>
+{% endblock %}

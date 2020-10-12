@@ -23,7 +23,7 @@
                 <li class="dropdown hidden-sm hidden-md hidden-lg" style="margin-bottom: 30px;">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">My data<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        {{ render(controller('ApplicationSonataUserBundle:Thought:menu', { 'routeName': app.request.get('_route'), 'mobile': true })) }}
+                        {{ render(controller('ThoughtBundle:Render:menu', { 'routeName': app.request.get('_route'), 'mobile': true })) }}
                     </ul>
                 </li>
                 <li>

@@ -14,7 +14,6 @@ class Friendship
 {
     /**
      * @var int
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -24,20 +23,20 @@ class Friendship
     /**
      * @var int
      * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User", inversedBy="friendship")
-     * @ORM\JoinColumn(name="user_id", type="integer")
+     * @ORM\JoinColumn(name="user_id")
      */
     private $user;
 
     /**
      * @var int
      * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User", inversedBy="friends")
-     * @ORM\JoinColumn(name="friend_id", type="integer")
+     * @ORM\JoinColumn(name="friend_id")
      */
     private $friend;
 
     /**
      * @var bool
-     * @ORM\Column(name="accepted", type="boolean)
+     * @ORM\Column(name="accepted", type="boolean")
      */
     private $accepted = false;
 

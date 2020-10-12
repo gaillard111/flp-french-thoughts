@@ -55,7 +55,7 @@ class LikeNotifier
     private function getMailBody(Like $like)
     {
         $profileRoute = $this->router->generate(
-            'thought_profile',
+            'user_profile',
             ['userId' => $like->getUser()->getId()],
             Router::ABSOLUTE_URL
         );

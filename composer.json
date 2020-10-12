@@ -36,6 +36,7 @@
         "symfony/monolog-bundle": "^3.0.2",
         "symfony/swiftmailer-bundle": "~2.3,>=2.3.10",
         "symfony/symfony": "2.8.*",
+        "tetranz/select2entity-bundle": "^2.10",
         "twig/twig": "2.10"
     },
     "require-dev": {

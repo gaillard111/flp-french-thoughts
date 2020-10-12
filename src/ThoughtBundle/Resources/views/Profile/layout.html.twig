@@ -1,0 +1,55 @@
+{% extends '@Thought/layout.html.twig' %}
+
+{% block content %}
+
+    {% if breadcrumb_context is not defined %}
+        {% set breadcrumb_context = 'user_index' %}
+    {% endif %}
+    <div class="row-fluid clearfix">
+        {{ sonata_block_render_event('breadcrumb', { 'context': breadcrumb_context, 'current_uri': app.request.requestUri }) }}
+    </div>
+
+    <div>
+        <div class="row">
+            <div class="col-md-4">
+                <h2>
+                    {% block sonata_profile_title %}
+                        {% trans from 'SonataUserBundle' %}sonata_profile_title{% endtrans %}
+                    {% endblock %}
+                </h2>
+            </div>
+            <div class="col-md-4 col-md-offset-4 text-right margin-top-20">
+                {% if student is defined and student is not null %}
+                    <a href="{{ path('teacher_groups_list') }}" class="btn btn-info"><- Back to list group</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            {% block my_custom_menu %}
+                <div class="col-md-2 hidden-sm hidden-xs">
+                    <div class="row">
+                        <div class="panel">
+                            <div class="panel-body my-custom-menu">
+                                <div class="row">
+                                    {% if student is defined and student is not null %}
+                                        {% include '@Thought/Profile/student_menu.twig' %}
+                                    {% else %}
+                                        {{ render(controller('ThoughtBundle:Render:menu', { 'routeName': app.request.get('_route') })) }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+            <div class="col-md-8 col-sm-12">
+                {% include 'SonataCoreBundle:FlashMessage:render.html.twig' %}
+
+                {% block sonata_profile_content %}{% endblock %}
+            </div>
+            <div class="col-md-2 hidden-sm hidden-xs">{% block right_sidebar %}{% endblock %}</div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -76,6 +76,7 @@ thought:
         publish:     Publish
         created_at:  Created At
         hoverable:   hover to see more info
+        edit:        edit
 
     filter:
         content:

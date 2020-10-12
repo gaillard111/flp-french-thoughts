@@ -19,7 +19,7 @@
                 <div class="panel panel-info comment-item col-sm-12">
                     <div class="panel-heading row">
                         <div class="col-sm-6">
-                            {#<a href="{{ path('thought_profile', { 'userId': comment.user.id }) }}">#}
+                            {#<a href="{{ path('user_profile', { 'userId': comment.user.id }) }}">#}
                                 {{ comment.fullName }}
                             {#</a>#}
                             {#{{ dump(comment) }}#}
@@ -37,7 +37,6 @@
                 {{ 'thought.comment.no_comments'|trans }}
             {% endfor %}
         </div>
-{#        {{ dump(thought.owner.roles, app.user.roles, is_granted('ROLE_STUDENT'), 'ROLE_STUDENT' in thought.owner.roles) }}#}
 
         {% set check1 = false %}
         {% set check2 = false %}

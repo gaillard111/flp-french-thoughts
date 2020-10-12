@@ -18,6 +18,8 @@ security:
         ROLE_MODERATOR:
             - ROLE_USER
             - ROLE_ADMIN_THOUGHT_ALL
+        ROLE_TEACHER:
+            - ROLE_USER
 
     firewalls:
         dev:
@@ -40,5 +42,6 @@ security:
 
         - { path: ^/admin/, role: [ROLE_MODERATOR] }
         - { path: ^/profile/, role: [ROLE_USER, ROLE_STUDENT] }
+        - { path: ^//teacher/, role: [ROLE_TEACHER] }
         - { path: ^/topics, role: [ROLE_USER, ROLE_STUDENT] }
         - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }

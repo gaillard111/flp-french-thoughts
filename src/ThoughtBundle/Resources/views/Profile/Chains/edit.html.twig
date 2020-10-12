@@ -1,0 +1,48 @@
+{% form_theme form '@Thought/Profile/Form/form-edit-profile.html.twig' %}
+{% extends '@Thought/Profile/layout.html.twig' %}
+
+{% block sonata_profile_title %}{{ 'user.chain.edit_page.title'|trans }}{% endblock %}
+
+{% block sonata_profile_content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ 'user.chain.edit_page.title'|trans }}</h3>
+                </div>
+                <div class="panel-body">
+                    {{ form_start(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function () {
+            var $private    = $('.private');
+            var $collective = $('.collective');
+            var $select     = $('.topic-select');
+
+            if ($private.is(":checked")) {
+                $collective.addClass('hidden');
+                $select.addClass('hidden');
+                $('input.collective').attr('disabled', 'disabled');
+            }
+
+            $private.on("change", function () {
+                if (!$private.is(":checked")) {
+                    $('input.collective').attr('disabled', false);
+                    $collective.removeClass('hidden');
+                    $select.removeClass('hidden');
+                } else {
+                    $collective.addClass('hidden');
+                    $select.addClass('hidden');
+                    $('input.collective').attr('disabled', 'disabled');
+                }
+            });
+        });
+    </script>
+{% endblock %}

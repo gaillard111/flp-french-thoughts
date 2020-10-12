@@ -1,8 +1,0 @@
-{% form_theme form '@ApplicationSonataUser/Profile/Form/form-edit-profile.html.twig' %}
-
-<form action="{{ path('sonata_user_profile_edit') }}" method="POST" class="form-horizontal">
-    {{ form_widget(form) }}
-    <div class="form-actions col-sm-7">
-        <button type="submit" name="submit"  class="btn btn-info pull-right">{{ 'user.form.profile.button'|trans }}</button>
-    </div>
-</form>

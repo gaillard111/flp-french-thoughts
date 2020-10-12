@@ -1,0 +1,66 @@
+{% extends "@Thought/Profile/layout.html.twig" %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+{% form_theme searchForm 'bootstrap_3_layout.html.twig' %}
+
+{% block sonata_profile_title %}
+    {{ 'teacher.create_group.title'|trans }}
+{% endblock %}
+
+{% block sonata_profile_content %}
+    <div class="row">
+        {{ form_start(form, {'attr': {'id': 'group-form'}}) }}
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label for="inputGroupName">Group Name</label>
+                {{ form_widget(form.title, {'attr': {'id': 'inputGroupName'}}) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+
+    <div class="row margin-top-20">
+        <div class="col-sm-7">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Students list</div>
+                <div class="panel-body">
+                        {{ form_start(searchForm, {'attr': {'class': 'form-inline'}}) }}
+                            {{ form_row(searchForm.searchField) }}
+                            {{ form_row(searchForm.add) }}
+                        {{ form_end(searchForm) }}
+                </div>
+                <ul class="list-group">
+                    {% if group.students is empty %}
+                        <li class="list-group-item">
+                            <div class="text-muted">There are no students in this group yet</div>
+                        </li>
+                    {% endif %}
+                    {% for student in group.students %}
+                        <li class="list-group-item">
+                                <span class="label label-danger" style="float: right">
+                                    <a href="{{ path('remove_student_from_group', {'group_id': group.id, 'student_id': student.id}) }}" style="color:#ebebeb;">Delete</a>
+                                </span>
+                            {{ student.firstname }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="row margin-top-20">
+        <div class="col-sm-3">
+            <button id="group-save-button" type="submit" class="btn btn-success">Save</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+        $('#group-save-button').click(function () {
+            $('#group-form').submit();
+        })
+    });
+</script>
+{% endblock %}

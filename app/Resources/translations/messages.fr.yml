@@ -145,6 +145,7 @@ thought:
         publish:     Publié
         like:        J'aime
         liked:       Aimé
+        edit:        Edit
         hoverable:   survolez pour voir plus d'infos
     search: Recherche seulement sur mes citations
 
@@ -355,3 +356,12 @@ modal:
     buttons:
         close: Fermer
         search: Chercher
+
+teacher:
+    group:
+        title: Groups
+        add_groups: Ajouter groupe
+
+    create_group:
+        title: Ajouter groupe
+        create_button: Ajouter

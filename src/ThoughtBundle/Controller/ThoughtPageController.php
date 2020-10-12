@@ -23,12 +23,9 @@ class ThoughtPageController extends Controller
 {
     /**
      * @Route("/quote/{thoughtId}", requirements={"thoughtId"="\d+"})
-     *
      * @param Request $request
      * @param int     $thoughtId
-     *
      * @return RedirectResponse|Response
-     *
      * @throws Exception
      */
     public function indexAction(Request $request, $thoughtId)
@@ -39,11 +36,9 @@ class ThoughtPageController extends Controller
 
         $comment = new Comment();
         $comment->setThought($thought);
-
         $form = $this->createForm(new CommentType(), $comment);
 
         $role = User::ROLE_USER;
-
         if ($this->isGranted(User::ROLE_STUDENT)) {
             $role = User::ROLE_STUDENT;
         }
@@ -94,7 +89,13 @@ class ThoughtPageController extends Controller
             return $this->redirect($this->generateUrl('thought_homepage_index'));
         }
 
-        $userIsStudent  = $this->isGranted(User::ROLE_STUDENT);
+        if ($this->isGranted(User::ROLE_STUDENT)) {
+            $userIsStudent = true;
+        } elseif ($this->isGranted('ROLE_TEACHER')) {
+            $userIsStudent = true;
+        } else {
+            $userIsStudent = false;
+        }
 
         if (is_null($thought->getOwner())) {
             $ownerIsStudent = false;
@@ -105,7 +106,7 @@ class ThoughtPageController extends Controller
         if ($userIsStudent != $ownerIsStudent && (!$userIsStudent && $ownerIsStudent)) {
             $this->addFlash('success', $this->get('translator')->trans('thought.not_found'));
 
-            return $this->redirect($this->generateUrl('thought_homepage_index'));
+            return $this->redirect($this->generateUrl('profile_thoughts_list'));
         }
 
         $comments[$thought->getId()][] = $em->getRepository(Comment::class)->getLastComments($thought);

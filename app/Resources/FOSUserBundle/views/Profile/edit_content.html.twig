@@ -1,9 +1,0 @@
-{% trans_default_domain 'FOSUserBundle' %}
-{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
-
-{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit form-horizontal' } }) }}
-    {{ form_widget(form) }}
-    <div class="form-actions col-sm-7">
-        <input type="submit" class="btn btn-info pull-right" value="{{ 'profile.edit.submit'|trans }}" />
-    </div>
-{{ form_end(form) }}

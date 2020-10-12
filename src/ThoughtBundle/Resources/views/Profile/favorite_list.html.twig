@@ -1,0 +1,104 @@
+{% extends '@Thought/Profile/layout.html.twig' %}
+
+{% block sonata_profile_title %}{{ 'user.thought.favorite_page.title'|trans }}{% endblock %}
+
+{% block sonata_profile_content %}
+<p><a href="{{ path('export-favorite-quotes') }}" class="btn btn-info pull-right margin-bottom-20">Export to CSV</a></p>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{{ 'thought.property.content'|trans }}</th>
+                    <th>{{ 'thought.property.author'|trans }}</th>
+                    <th>{{ 'thought.property.category'|trans }}</th>
+                    <th>{{ 'thought.property.created_at'|trans }}</th>
+                    <th>{{ 'thought.property.top5'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for thought in thoughts %}
+                    <tr>
+                        <td>
+                            <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@Thought/also_liked_tooltip.html.twig') }}">
+                                {{ thought.content|striptags|slice(0, 50)|customTag|raw}} (<a href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id }) }}">{{ thought.id }}</a>)
+                            </span>
+                        </td>
+                        <td>{{ thought.author }}</td>
+                        <td>{{ thought.category }}</td>
+                        <td>{{ thought.createdAt|date('d.m.Y H:i') }}</td>
+                        <td><input data-add-url="{{ path('add_to_most_favorites', { 'thoughtId': thought.id }) }}" data-delete-url="{{ path('delete_from_most_favorites', { 'thoughtId': thought.id }) }}" class="top-5" type="checkbox" {% if thought in app.user.mostFavoriteThoughts %}checked="checked"{% endif %}></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    $().ready(function () {
+        count = countCheckboxes();
+        $checkboxes = $(".top-5");
+
+
+        disableCheckboxes();
+
+
+        $checkboxes.change(function (data) {
+           count = countCheckboxes();
+
+           if (count <= 5) {
+               enableCheckboxes();
+               if (!this.checked) {
+                   $.ajax({
+                       url: $(this).data("delete-url"),
+                       success: enableCheckboxes()
+                   });
+               } else {
+                   $.ajax({
+                       url: $(this).data("add-url"),
+                       success: disableCheckboxes()
+                   });
+               }
+           } else {
+               disableCheckboxes();
+           }
+       });
+    });
+
+    function countCheckboxes() {
+        count = 0;
+        $checkboxes = $(".top-5");
+        $checkboxes.each(function (index, element) {
+            if (element.checked) {
+                count = count + 1;
+            }
+        });
+        return count;
+    }
+
+    function disableCheckboxes() {
+        $checkboxes = $(".top-5");
+        if (count >= 5) {
+            $checkboxes.each(function (index, element) {
+                if (!element.checked) {
+                    $(element).attr('disabled', true);
+                }
+            });
+        }
+    }
+
+    function enableCheckboxes() {
+        $checkboxes = $(".top-5");
+        if (count <= 5) {
+            $checkboxes.each(function (index, element) {
+                if (!element.checked) {
+                    $(element).attr('disabled', false);
+                }
+            });
+        }
+    }
+</script>
+{% endblock %}

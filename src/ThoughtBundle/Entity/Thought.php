@@ -92,12 +92,12 @@ class Thought
     protected $likes;
 
     /**
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Comment", mappedBy="thought")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Comment", mappedBy="thought", orphanRemoval=true)
      */
     protected $comments;
 
     /**
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtChain", mappedBy="thought")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtChain", mappedBy="thought", orphanRemoval=true)
      */
     protected $chainThoughts;
 
@@ -110,13 +110,13 @@ class Thought
 
     /**
      * @var ArrayCollection|ThoughtRelated[]
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtRelated", mappedBy="thought")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtRelated", mappedBy="thought", orphanRemoval=true)
      */
     protected $relatedThoughts;
 
     /**
      * @var ArrayCollection|ThoughtRelated[]
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtRelated", mappedBy="relatedThought")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtRelated", mappedBy="relatedThought", orphanRemoval=true)
      */
     protected $inverseRelatedThoughts;
 

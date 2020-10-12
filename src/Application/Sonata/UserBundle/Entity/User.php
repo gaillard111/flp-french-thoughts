@@ -19,6 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\Like;
+use ThoughtBundle\Entity\TeacherGroup;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\ThoughtRelated;
 use ThoughtBundle\Entity\WatchedThought;
@@ -26,6 +27,7 @@ use ThoughtBundle\Entity\WatchedThought;
 /**
  * @ORM\Entity(repositoryClass="Application\Sonata\UserBundle\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @ORM\Table(name="fos_user_user")
  */
 class User extends BaseUser
 {
@@ -40,17 +42,17 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Thought", mappedBy="owner")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Thought", mappedBy="owner", orphanRemoval=true)
      */
     protected $thoughts;
 
     /**
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Chain", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Chain", mappedBy="user", orphanRemoval=true)
      */
     protected $chains;
 
     /**
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ChainComment", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ChainComment", mappedBy="user", orphanRemoval=true)
      */
     protected $chainComments;
 
@@ -60,14 +62,23 @@ class User extends BaseUser
     protected $collectiveThoughtChains;
 
     /**
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Topic", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Topic", mappedBy="user", orphanRemoval=true)
      */
     protected $topics;
 
+    /**
+     * @ORM\Column(name="about_me", type="string", nullable=true)
+     */
     protected $about;
 
+    /**
+     * @ORM\Column(name="country", type="string", nullable=true)
+     */
     protected $country;
 
+    /**
+     * @ORM\Column(name="interests", type="text", nullable=true, length=250)
+     */
     protected $interests;
 
     /**
@@ -86,7 +97,7 @@ class User extends BaseUser
     protected $locked = false;
 
     /**
-     * @ORM\OneToMany(targetEntity="Application\Sonata\UserBundle\Entity\Friendship", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Application\Sonata\UserBundle\Entity\Friendship", mappedBy="user", orphanRemoval=true)
      */
     protected $friendship;
 
@@ -102,15 +113,13 @@ class User extends BaseUser
 
     /**
      * @var ArrayCollection|Like[]
-     *
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Like", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Like", mappedBy="user", orphanRemoval=true)
      */
     protected $likes;
 
     /**
      * @var ArrayCollection|WatchedThought[]
-     *
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\WatchedThought", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\WatchedThought", mappedBy="user", orphanRemoval=true)
      */
     protected $watchedThoughts;
 
@@ -125,13 +134,82 @@ class User extends BaseUser
      */
     protected $mostFavoriteThoughts;
 
-
     /**
      * @var ArrayCollection|ThoughtRelated[]
-     *
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ThoughtRelated", mappedBy="owner")
      */
     protected $relatedThought;
+
+    /**
+     * @ORM\ManyToMany(
+     *     targetEntity="ThoughtBundle\Entity\TeacherGroup",
+     *     mappedBy="students",
+     *     cascade={"persist"}
+     * )
+     */
+    protected $teacherGroup;
+
+    /**
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\TeacherGroup", mappedBy="owner", orphanRemoval=true)
+     */
+    protected $studentsGroup;
+
+    public function __construct()
+    {
+        $this->dialogs = new ArrayCollection();
+        $this->teacherGroup = new ArrayCollection();
+        $this->studentsGroup = new ArrayCollection();
+        parent::__construct();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getStudentsGroup()
+    {
+        return $this->studentsGroup;
+    }
+
+    /**
+     * @param ArrayCollection $studentsGroup
+     */
+    public function setStudentsGroup(ArrayCollection $studentsGroup): void
+    {
+        $this->studentsGroup = $studentsGroup;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getTeacherGroup()
+    {
+        return $this->teacherGroup;
+    }
+
+    /**
+     * @param ArrayCollection $teacherGroup
+     * @return User
+     */
+    public function setTeacherGroup(ArrayCollection $teacherGroup): self
+    {
+        $this->teacherGroup = $teacherGroup;
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     * @return bool
+     */
+    public function isInTheTeacherGroup(User $user) {
+        foreach ($this->getStudentsGroup() as $group)
+        {
+            if ($group->getStudents()->contains($user)){
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * @return ArrayCollection
@@ -151,7 +229,6 @@ class User extends BaseUser
 
     /**
      * @param Dialog $dialog
-     *
      * @return User
      */
     public function addDialog($dialog)
@@ -162,11 +239,6 @@ class User extends BaseUser
         return $this;
     }
 
-    public function __construct()
-    {
-        $this->dialogs = new ArrayCollection();
-        parent::__construct();
-    }
 
     public function getRoles()
     {
@@ -185,8 +257,6 @@ class User extends BaseUser
     }
 
     /**
-     * Get id
-     *
      * @return int $id
      */
     public function getId()
@@ -195,10 +265,7 @@ class User extends BaseUser
     }
 
     /**
-     * Add thoughts
-     *
      * @param Thought $thoughts
-     *
      * @return User
      */
     public function addThought(Thought $thoughts)
@@ -209,8 +276,6 @@ class User extends BaseUser
     }
 
     /**
-     * Remove thoughts
-     *
      * @param Thought $thoughts
      */
     public function removeThought(Thought $thoughts)
@@ -219,8 +284,6 @@ class User extends BaseUser
     }
 
     /**
-     * Get thoughts
-     *
      * @return Collection
      */
     public function getThoughts()
@@ -247,10 +310,7 @@ class User extends BaseUser
     }
 
     /**
-     * Add chains
-     *
      * @param Chain $chains
-     *
      * @return User
      */
     public function addChain(Chain $chains)
@@ -261,8 +321,6 @@ class User extends BaseUser
     }
 
     /**
-     * Remove chains
-     *
      * @param Chain $chains
      */
     public function removeChain(Chain $chains)
@@ -271,8 +329,6 @@ class User extends BaseUser
     }
 
     /**
-     * Get chains
-     *
      * @return Collection
      */
     public function getChains()
@@ -281,10 +337,7 @@ class User extends BaseUser
     }
 
     /**
-     * Add chainComments
-     *
      * @param ChainComment $chainComments
-     *
      * @return User
      */
     public function addChainComment(ChainComment $chainComments)
@@ -294,17 +347,12 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getTopics()
     {
         return $this->topics;
     }
 
     /**
-     * @param mixed $topics
-     *
      * @return User
      */
     public function setTopics($topics)
@@ -314,8 +362,6 @@ class User extends BaseUser
     }
 
     /**
-     * Remove chainComments
-     *
      * @param ChainComment $chainComments
      */
     public function removeChainComment(ChainComment $chainComments)
@@ -324,8 +370,6 @@ class User extends BaseUser
     }
 
     /**
-     * Get chainComments
-     *
      * @return Collection
      */
     public function getChainComments()
@@ -335,7 +379,6 @@ class User extends BaseUser
 
     /**
      * Get fullName + email
-     *
      * @return string
      */
     public function getFullNameEmail()
@@ -346,10 +389,7 @@ class User extends BaseUser
     }
 
     /**
-     * Set about
-     *
      * @param string $about
-     *
      * @return User
      */
     public function setAbout($about)
@@ -360,8 +400,6 @@ class User extends BaseUser
     }
 
     /**
-     * Get about
-     *
      * @return string
      */
     public function getAbout()
@@ -370,10 +408,7 @@ class User extends BaseUser
     }
 
     /**
-     * Set country
-     *
      * @param string $country
-     *
      * @return User
      */
     public function setCountry($country)
@@ -384,8 +419,6 @@ class User extends BaseUser
     }
 
     /**
-     * Get country
-     *
      * @return string
      */
     public function getCountry()
@@ -394,10 +427,7 @@ class User extends BaseUser
     }
 
     /**
-     * Set interests
-     *
      * @param string $interests
-     *
      * @return User
      */
     public function setInterests($interests)
@@ -408,8 +438,6 @@ class User extends BaseUser
     }
 
     /**
-     * Get interests
-     *
      * @return string
      */
     public function getInterests()
@@ -418,10 +446,7 @@ class User extends BaseUser
     }
 
     /**
-     * Add friendship
-     *
      * @param Friendship $friendship
-     *
      * @return User
      */
     public function addFriendship(Friendship $friendship)
@@ -432,8 +457,6 @@ class User extends BaseUser
     }
 
     /**
-     * Remove friendship
-     *
      * @param Friendship $friendship
      */
     public function removeFriendship(Friendship $friendship)
@@ -442,8 +465,6 @@ class User extends BaseUser
     }
 
     /**
-     * Get friendship
-     *
      * @return Collection
      */
     public function getFriendship()
@@ -452,10 +473,7 @@ class User extends BaseUser
     }
 
     /**
-     * Add friends
-     *
      * @param Friendship $friends
-     *
      * @return User
      */
     public function addFriend(Friendship $friends)
@@ -466,8 +484,6 @@ class User extends BaseUser
     }
 
     /**
-     * Remove friends
-     *
      * @param Friendship $friends
      */
     public function removeFriend(Friendship $friends)
@@ -476,8 +492,6 @@ class User extends BaseUser
     }
 
     /**
-     * Get friends
-     *
      * @return Collection
      */
     public function getFriends()
