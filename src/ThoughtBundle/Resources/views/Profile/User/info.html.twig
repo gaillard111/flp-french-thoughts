@@ -88,7 +88,10 @@
                     <a href="{{ path('delete_friend', { 'userId': user.id }) }}" class="btn btn-warning">{{ 'user.friendship.remove'|trans }}</a>
                 {% else %}
                     {% if user.id != app.user.id %}
-                        <a href="{{ path('friend_request', { 'userId': user.id }) }}" class="btn btn-info">{{ 'user.friendship.request'|trans }}</a>
+                        {% if not ((is_granted('ROLE_STUDENT') and 'ROLE_TEACHER' in user.roles) or
+                            (is_granted('ROLE_TEACHER') and 'ROLE_STUDENT' in user.roles)) %}
+                                <a href="{{ path('friend_request', { 'userId': user.id }) }}" class="btn btn-info">{{ 'user.friendship.request'|trans }}</a>
+                        {% endif %}
                     {% endif %}
                 {% endif %}
             </div>

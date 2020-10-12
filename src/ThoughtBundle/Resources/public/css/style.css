@@ -848,3 +848,7 @@ div.panel-heading {
 .teacher-group-panel .panel-body a{
     color: #636161;
 }
+
+.teacher-group-panel .message-button {
+    visibility: hidden;
+}

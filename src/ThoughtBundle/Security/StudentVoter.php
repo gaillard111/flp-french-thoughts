@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class UserVoter extends Voter
+class StudentVoter extends Voter
 {
     /** @var Container */
     private $service_container;

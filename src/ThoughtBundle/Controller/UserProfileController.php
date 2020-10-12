@@ -51,11 +51,8 @@ class UserProfileController extends Controller
 
     /**
      * @Route("/friendrequest/{userId}", name="friend_request")
-     *
      * @param int $userId
-     *
      * @return RedirectResponse
-     *
      * @throws OptimisticLockException
      * @throws Twig_Error
      */
@@ -127,7 +124,7 @@ class UserProfileController extends Controller
 
         $friends = $entityManager->getRepository(Friendship::class)->isFriend($user, $curUser);
 
-        if ($friends) {
+        if ($friends or $this->isGranted($user, $curUser)) {
             if ($user === $curUser) {
                 return $this->redirectToRoute('profile');
             }

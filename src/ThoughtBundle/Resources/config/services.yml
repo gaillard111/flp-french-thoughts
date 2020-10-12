@@ -60,7 +60,7 @@ services:
         arguments: ["@doctrine.orm.entity_manager","@security.authorization_checker"]
 
     thought.user_voter:
-        class:  ThoughtBundle\Security\UserVoter
+        class:  ThoughtBundle\Security\StudentVoter
         arguments: ["@service_container"]
         tags:
             - { name: security.voter }
@@ -68,6 +68,13 @@ services:
 
     thought.chain_voter:
         class:  ThoughtBundle\Security\ChainVoter
+        arguments: ["@service_container"]
+        tags:
+            - { name: security.voter }
+        public: false
+
+    thought.profile_voter:
+        class:  ThoughtBundle\Security\ProfileVoter
         arguments: ["@service_container"]
         tags:
             - { name: security.voter }

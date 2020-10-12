@@ -73,23 +73,22 @@ class SettingsController extends Controller
 
     /**
      * @Route("/user/{userId}", name="user_profile")
+     * @ParamConverter("user", options={"mapping"={"userId"="id"}})
      * @param int $userId
      * @return RedirectResponse|Response
      */
-    public function showAction($userId)
+    public function showAction($userId, User $user)
     {
-        $entityManager = $this->container->get('doctrine.orm.entity_manager');
-        /** @var User $user */
-        $user = $this->getUser();
-        /** @var User $possibleFriend */
-        $possibleFriend = $entityManager->getRepository(User::class)->find($userId);
-        if ($user->getId() == $userId || in_array('ROLE_USER', $possibleFriend->getRoles())) {
-            $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $possibleFriend);
-            return $this->render('@Thought/Profile/User/info.html.twig', [
-                'user'       => $possibleFriend,
-                'friendship' => $friendship,
-            ]);
-        }
-        return new Response('Access Denied', 403);
+        $this->denyAccessUnlessGranted('view', $user);
+
+        $friendship = $this
+            ->getDoctrine()
+            ->getRepository(Friendship::class)
+            ->isFriend($this->getUser(), $user);
+
+        return $this->render('@Thought/Profile/User/info.html.twig', [
+            'user'       => $user,
+            'friendship' => $friendship,
+        ]);
     }
 }
