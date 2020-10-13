@@ -4,6 +4,7 @@ namespace ThoughtBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,8 +19,7 @@ class ContentController extends Controller
      *
      * @param Request $request
      * @param string  $code
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction(Request $request, $code)
     {

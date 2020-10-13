@@ -78,6 +78,7 @@ class GroupController extends Controller
         $searchForm = $this->createForm(new StudentSearchForm(), null, [
             'action' => $this->generateUrl('add_student_to_group', ['id' => $group->getId()])
         ]);
+
         $form = $this->createForm(new GroupForm(), $group);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
@@ -86,6 +87,7 @@ class GroupController extends Controller
             $em->flush();
             return $this->redirectToRoute('teacher_groups_list');
         }
+
         return $this->render('ThoughtBundle:teacherGroups:edit.html.twig', [
             'searchForm' => $searchForm->createView(),
             'group' => $group,

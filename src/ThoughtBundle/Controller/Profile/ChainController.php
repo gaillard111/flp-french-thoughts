@@ -411,13 +411,10 @@ class ChainController extends Controller
      */
     public function listCollectiveAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $em = $this->getDoctrine()->getManager();
 
-        $role = User::ROLE_USER;
-
-        if ($this->isGranted(User::ROLE_STUDENT)) {
-            $role = User::ROLE_STUDENT;
-        }
+        $role = $this->getUser()->getRole();
 
         $chains = $em->getRepository('ThoughtBundle:Chain')->getAllCollectiveChains($role);
 
@@ -436,21 +433,15 @@ class ChainController extends Controller
 
     /**
      * @Route("/shared-chains", name="sonata_user_shared_chains")
-     *
      * @param Request $request
-     *
      * @return Response
      */
     public function listSharedAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $em = $this->getDoctrine()->getManager();
 
-        $role = User::ROLE_USER;
-
-        if ($this->isGranted(User::ROLE_STUDENT)) {
-            $role = User::ROLE_STUDENT;
-        }
-
+        $role = $this->getUser()->getRole();
         $chains = $em->getRepository('ThoughtBundle:Chain')->getAllSharedChains($role);
 
         $paginator  = $this->get('knp_paginator');

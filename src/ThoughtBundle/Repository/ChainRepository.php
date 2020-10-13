@@ -13,22 +13,23 @@ use Doctrine\ORM\Query;
  */
 class ChainRepository extends EntityRepository
 {
-    public function findChainesByRegex($regex, $roleStudent) {
+    public function findChainesByRegex($regex, $role) {
         $qb = $this->createQueryBuilder('c')
             ->leftJoin('c.user', 'topicowner')
             ->where('REGEXP(c.name, :regexp) = true')
             ->andWhere('c.isPrivate = false')
             ->orderBy('c.name', 'ASC');
 
-            if ($roleStudent) {
-                $qb->andWhere('topicowner.roles LIKE :role');
+            if ($role == User::ROLE_STUDENT || $role == User::ROLE_TEACHER) {
+                $qb->andWhere('topicowner.roles LIKE :role1 OR topicowner.roles LIKE :role2');
             } else {
-                $qb->andWhere('topicowner.roles NOT LIKE :role');
+                $qb->andWhere('topicowner.roles NOT LIKE :role1 AND topicowner.roles NOT LIKE :role2');
             }
 
             $qb ->setParameters([
                 'regexp' => $regex,
-                'role' => '%' . User::ROLE_STUDENT . '%'
+                'role1' => '%'. User::ROLE_STUDENT. '%',
+                'role2' => '%'. User::ROLE_TEACHER. '%'
             ]);
 
         return $qb->getQuery()->getResult();
@@ -44,14 +45,15 @@ class ChainRepository extends EntityRepository
         $qb
             ->where('c.isPrivate = false')
             ->leftJoin('c.user', 'u');
-        if ($role == User::ROLE_STUDENT) {
-            $qb->andWhere('u.roles LIKE :roles');
+        if ($role == User::ROLE_STUDENT || $role == User::ROLE_TEACHER) {
+            $qb->andWhere('u.roles LIKE :role1 OR u.roles LIKE :role2');
         } else {
-            $qb->andWhere('u.roles NOT LIKE :roles');
+            $qb->andWhere('u.roles not LIKE :role1 AND u.roles not LIKE :role2');
         }
 
         $qb->setParameters([
-            'roles' => '%' . User::ROLE_STUDENT . '%',
+            'role1' => '%'. User::ROLE_STUDENT. '%',
+            'role2' => '%'. User::ROLE_TEACHER. '%'
         ]);
 
         return $qb->getQuery()->getResult();
@@ -68,14 +70,15 @@ class ChainRepository extends EntityRepository
             ->where('c.isCollective = true')
             ->leftJoin('c.user', 'u');
 
-        if ($role == User::ROLE_STUDENT) {
-            $qb->andWhere('u.roles LIKE :roles');
+        if ($role == User::ROLE_STUDENT || $role == User::ROLE_TEACHER) {
+            $qb->andWhere('u.roles LIKE :role1 OR u.roles LIKE :role2');
         } else {
-            $qb->andWhere('u.roles NOT LIKE :roles');
+            $qb->andWhere('u.roles not LIKE :role1 AND u.roles not LIKE :role2');
         }
 
         $qb->setParameters([
-            'roles' => '%' . User::ROLE_STUDENT . '%',
+            'role1' => '%'. User::ROLE_STUDENT. '%',
+            'role2' => '%'. User::ROLE_TEACHER. '%'
         ]);
         return $qb->getQuery();
     }

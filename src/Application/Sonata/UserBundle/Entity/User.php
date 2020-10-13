@@ -33,6 +33,7 @@ class User extends BaseUser
 {
     const ROLE_STUDENT = 'ROLE_STUDENT';
     const ROLE_USER = 'ROLE_USER';
+    const ROLE_TEACHER = 'ROLE_TEACHER';
 
     /**
      * @ORM\Id
@@ -515,5 +516,15 @@ class User extends BaseUser
     public function deleteThoughtFromMostFavorites(Thought $thought)
     {
         $this->mostFavoriteThoughts->removeElement($thought);
+    }
+
+    public function getRole() {
+        if (in_array('ROLE_STUDENT', $this->getRoles())) {
+            return $this::ROLE_STUDENT;
+        } elseif (in_array('ROLE_TEACHER', $this->getRoles())) {
+            return $this::ROLE_TEACHER;
+        } else {
+            return $this::ROLE_USER;
+        }
     }
 }

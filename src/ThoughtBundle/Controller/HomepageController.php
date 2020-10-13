@@ -31,11 +31,8 @@ class HomepageController extends Controller
 {
     /**
      * @Route("/", methods={"GET"}, options={"sitemap" = true})
-     *
      * @param Request $request
-     *
      * @return Response
-     *
      * @throws Exception
      */
     public function indexAction(Request $request)

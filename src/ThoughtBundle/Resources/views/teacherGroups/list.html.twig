@@ -7,11 +7,11 @@
 {% block sonata_profile_content %}
 
     <div class="row" style="padding: 10px 30px 20px">
-        <a href="{{ path('teacher_group_create') }}" role="button" id="add-button-row" class="btn btn-info pagination-sm-4">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {{ 'teacher.group.add_groups'|trans }}
+        <a href="{{ path('teacher_group_create') }}" role="button" id="add-button-row" class="btn btn-primary pagination-sm-4">
+            {{ 'teacher.group.add_groups'|trans }}
         </a>
     </div>
-    {% if groups is empty%}
+    {% if groups is empty %}
         <p class="text-muted" style="padding: 18px ">
             You don't have groups yet
         </p>
@@ -34,16 +34,16 @@
                     </div>
                     &ensp;
                     <div class="group-buttons">
-                        <a class="small plain"
+                        <a class="plain"
                            href="{{ path('teacher_group_edit', {'id':  group.id}) }}"
                            data-toggle="tooltip"
                            data-placement="bottom"
                            title="Edit Group"
                         >
-                            <span class="glyphicon glyphicon-pencil text-primary" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-pencil primary" aria-hidden="true"></span>
                         </a>
 
-                        <a class="delete-button small plain"
+                        <a class="delete-button plain"
                            href="{{ path('teacher_group_delete', {'id':  group.id}) }}"
                            data-toggle="tooltip"
                            data-placement="bottom"

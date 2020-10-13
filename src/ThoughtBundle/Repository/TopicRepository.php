@@ -24,21 +24,23 @@ class TopicRepository extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    public function findAllTopics($roleStudent) {
+    public function findAllTopics($role) {
         $qb = $this->createQueryBuilder('t');
         $qb
             ->orderBy('t.name', 'ASC')
             ->leftJoin('t.user', 'topicowner');
 
-        if ($roleStudent) {
-            $qb->andWhere('topicowner.roles LIKE :role');
+        if ($role == User::ROLE_STUDENT || $role == User::ROLE_TEACHER) {
+            $qb->andWhere('topicowner.roles LIKE :role1 OR topicowner.roles LIKE :role2');
         } else {
-            $qb->andWhere('topicowner.roles NOT LIKE :role');
+            $qb->andWhere('topicowner.roles NOT LIKE :role1 AND topicowner.roles NOT LIKE :role2');
         }
 
-        $qb
-            ->setParameter('role', '%' . User::ROLE_STUDENT . '%')
-            ->getQuery();
+        $qb->setParameters([
+                'role1' => '%'. User::ROLE_STUDENT. '%',
+                'role2' => '%'. User::ROLE_TEACHER. '%'
+            ]);
+        $qb->getQuery();
 
         return $qb->getQuery()->getResult();
     }
@@ -64,14 +66,13 @@ class TopicRepository extends EntityRepository
             ]);
         } else {
             if ($role == User::ROLE_USER) {
-                $qb->andWhere('topicowner.roles NOT LIKE :roles');
-//                $qb->orWhere('u.roles IS NULL');
+                $qb->andWhere('topicowner.roles NOT LIKE :role1 AND topicowner.roles NOT LIKE :role2');
             } else {
-                $qb->andWhere('topicowner.roles LIKE :roles');
-//                $qb->orWhere('u.roles IS NULL');
+                $qb->andWhere('topicowner.roles LIKE :role1 OR topicowner.roles LIKE :role2');
             }
             $parameters = array_merge($parameters, [
-                'roles'    => '%' . User::ROLE_STUDENT . '%',
+                'role1' => '%'. User::ROLE_STUDENT. '%',
+                'role2' => '%'. User::ROLE_TEACHER. '%'
             ]);
         }
 

@@ -17,24 +17,21 @@ use Twig_Error;
 class UserProfileController extends Controller
 {
     /**
-     * @Route("/userslist", name="user_list")
-     *
+     * @Route("/users", name="user_list")
      * @param Request $request
-     *
      * @return Response
      */
     public function userListAction(Request $request)
     {
-        /** @var EntityManager $entityManager */
-        $entityManager = $this->container->get('doctrine.orm.entity_manager');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $userRepository = $this->getDoctrine()->getRepository(User::class);
+        $role = $this->getUser()->getRole();
 
-        $role = User::ROLE_USER;
-
-        if ($this->isGranted(User::ROLE_STUDENT)) {
-            $role = User::ROLE_STUDENT;
+        if ($role == User::ROLE_STUDENT or $role == User::ROLE_TEACHER) {
+            $usersQuery = $userRepository->getStudentAndTeacherQuery();
+        } else {
+            $usersQuery = $userRepository->getStandardUsersQuery();
         }
-
-        $usersQuery = $entityManager->getRepository(User::class)->getUsersList($role);
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -47,7 +44,6 @@ class UserProfileController extends Controller
             'users' => $pagination,
         ]);
     }
-
 
     /**
      * @Route("/friendrequest/{userId}", name="friend_request")

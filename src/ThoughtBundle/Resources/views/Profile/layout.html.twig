@@ -5,6 +5,11 @@
     {% if breadcrumb_context is not defined %}
         {% set breadcrumb_context = 'user_index' %}
     {% endif %}
+
+    {% if student is not defined %}
+        {% set student = null %}
+    {% endif %}
+
     <div class="row-fluid clearfix">
         {{ sonata_block_render_event('breadcrumb', { 'context': breadcrumb_context, 'current_uri': app.request.requestUri }) }}
     </div>
@@ -19,8 +24,8 @@
                 </h2>
             </div>
             <div class="col-md-4 col-md-offset-4 text-right margin-top-20">
-                {% if student is defined and student is not null %}
-                    <a href="{{ path('teacher_groups_list') }}" class="btn btn-info"><- Back to list group</a>
+                {% if student %}
+                    <a href="{{ path('teacher_groups_list') }}" class="btn btn-info"><- Back to groups list</a>
                 {% endif %}
             </div>
         </div>
@@ -32,7 +37,7 @@
                         <div class="panel">
                             <div class="panel-body my-custom-menu">
                                 <div class="row">
-                                    {% if student is defined and student is not null %}
+                                    {% if student %}
                                         {% include '@Thought/Profile/student_menu.twig' %}
                                     {% else %}
                                         {{ render(controller('ThoughtBundle:Render:menu', { 'routeName': app.request.get('_route') })) }}

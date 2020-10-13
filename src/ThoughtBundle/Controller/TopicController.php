@@ -17,15 +17,14 @@ class TopicController extends Controller
      */
     public function indexAction()
     {
-        $student = false;
-        if ($this->isGranted(User::ROLE_STUDENT)) {
-            $student = true;
-        }
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $role = $this->getUser()->getRole();
 
         $allTopics = $this
             ->getDoctrine()
             ->getRepository(Topic::class)
-            ->findAllTopics($student);
+            ->findAllTopics($role);
 
         $form  = $this->createForm(TopicSearchForm::class);
 
@@ -38,26 +37,27 @@ class TopicController extends Controller
     /**
      * @Route("/topics/search", name="topics_search")
      */
-    public function searchChains(Request $request) {
-
-        $student = false;
-        if ($this->isGranted(User::ROLE_STUDENT)) {
-            $student = true;
-        }
+    public function searchChains(Request $request)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $role = $this->getUser()->getRole();
 
         $form  = $this->createForm(TopicSearchForm::class);
         $form->handleRequest($request);
+
         if ($form->isSubmitted()) {
             $searchText = $form->getData()['searchText'];
             $foundChains = $this
                 ->getDoctrine()
                 ->getRepository(Chain::class)
-                ->findChainesByRegex($searchText, $student);
+                ->findChainesByRegex($searchText, $role);
+
             return $this->render('ThoughtBundle:Topics:searchChains.html.twig', [
                 'chains' => $foundChains,
                 'form'   => $form->createView(),
             ]);
         }
+
         return $this->redirectToRoute('topics');
     }
 }

@@ -37,6 +37,13 @@ class MenuService
             ],
         ];
 
+        if (in_array('ROLE_TEACHER', $user->getRoles())) {
+            $menu[] = [
+                'label' =>  $this->translator->trans('teacher.group.title'),
+                'route' => 'teacher_groups_list'
+            ];
+        }
+
         $menu[] = [
             'label' => $this->translator->trans('user.friendship.title'),
             'route' => 'friends',
@@ -71,13 +78,6 @@ class MenuService
             'label' => $this->translator->trans('user.chain.list_page.title'),
             'route' => 'sonata_user_chains',
         ];
-
-        if (in_array('ROLE_TEACHER', $user->getRoles())) {
-            $menu[] = [
-                'label' => 'Group',
-                'route' => 'teacher_groups_list'
-            ];
-        }
 
         return $menu;
     }

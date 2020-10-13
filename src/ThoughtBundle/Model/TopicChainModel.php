@@ -24,7 +24,8 @@ class TopicChainModel
     {
         $role = User::ROLE_USER;
 
-        if ($this->authorizationChecker->isGranted(User::ROLE_STUDENT)) {
+        if ($this->authorizationChecker->isGranted(User::ROLE_STUDENT) ||
+            $this->authorizationChecker->isGranted(User::ROLE_TEACHER)) {
             $role = User::ROLE_STUDENT;
         }
         /** @var Topic[] $topics */

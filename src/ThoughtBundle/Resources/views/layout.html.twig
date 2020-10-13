@@ -47,6 +47,7 @@
     {% endif %}
 
     {{ render(controller('ThoughtBundle:Render:navbar')) }}
+
     <div class="container">
         {% if app.session.flashBag.has('success') %}
             <div class="alert alert-success">

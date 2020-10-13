@@ -24,7 +24,7 @@
         {% block my_custom_menu %}
             {% if app.user %}
             <div class="span2 col-sm-2 my-custom-menu">
-                {{ render(controller('ApplicationSonataUserBundle:Chain:navigation', { 'routeName': app.request.get('_route') })) }}
+                {{ render(controller('ThoughtBundle:Profile\\Chain:navigation', { 'routeName': app.request.get('_route') })) }}
             </div>
             {% endif %}
         {% endblock %}

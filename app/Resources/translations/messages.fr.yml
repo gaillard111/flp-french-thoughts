@@ -359,7 +359,7 @@ modal:
 
 teacher:
     group:
-        title: Groups
+        title: Mes groupes
         add_groups: Ajouter groupe
 
     create_group:

@@ -7,23 +7,23 @@ use Doctrine\ORM\EntityRepository;
 
 class UserRepository extends EntityRepository
 {
-    public function getUsersList($role)
-    {
-        $parameters = [];
-
+    public function getStandardUsersQuery () {
         $qb = $this->createQueryBuilder('u');
-
-        if ($role == User::ROLE_USER) {
-            $qb->andWhere('u.roles NOT LIKE :roles');
-        } else {
-            $qb->andWhere('u.roles LIKE :roles');
-        }
-
-        $parameters = array_merge($parameters, [
-            'roles' => '%' . User::ROLE_STUDENT . '%',
+        $qb->andWhere('u.roles not LIKE :role1 AND u.roles not LIKE :role2');
+        $qb->setParameters([
+            'role1' => '%'. User::ROLE_STUDENT. '%',
+            'role2' => '%'. User::ROLE_TEACHER. '%'
         ]);
-        $qb->setParameters($parameters);
-//        dump($qb->getQuery());die;
+        return $qb->getQuery();
+    }
+
+    public function getStudentAndTeacherQuery () {
+        $qb = $this->createQueryBuilder('u');
+        $qb->andWhere('u.roles LIKE :role1 OR u.roles LIKE :role2');
+        $qb->setParameters([
+            'role1' => '%'. User::ROLE_STUDENT. '%',
+            'role2' => '%'. User::ROLE_TEACHER. '%'
+        ]);
         return $qb->getQuery();
     }
 
