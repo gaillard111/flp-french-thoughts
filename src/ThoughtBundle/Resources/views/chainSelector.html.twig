@@ -1,11 +1,11 @@
 {% set check1 = false %}
 {% set check2 = false %}
 
-{% if is_granted('ROLE_STUDENT') %}
+{% if is_granted('ROLE_STUDENT') or is_granted('ROLE_TEACHER') %}
     {% set check1 = true %}
 {% endif %}
 
-{% if thought.owner.roles is defined and 'ROLE_STUDENT' in thought.owner.roles %}
+{% if thought.owner.roles is defined and ('ROLE_STUDENT' in thought.owner.roles or 'ROLE_TEACHER' in thought.owner.roles) %}
     {% set check2 = true %}
 {% endif %}
 
