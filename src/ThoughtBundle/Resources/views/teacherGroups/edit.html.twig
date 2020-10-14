@@ -21,7 +21,7 @@
 
     <div class="row margin-top-20">
         <div class="col-sm-7">
-            <div class="panel panel-primary">
+            <div class="panel panel-info">
                 <div class="panel-heading">Students list</div>
                 <div class="panel-body">
                         {{ form_start(searchForm, {'attr': {'class': 'form-inline'}}) }}
@@ -45,14 +45,14 @@
                     {% endfor %}
                 </ul>
             </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <button id="group-save-button" type="submit" class="btn btn-success">Save</button>
+                </div>
+            </div>
         </div>
     </div>
-    </div>
-    <div class="row margin-top-20">
-        <div class="col-sm-3">
-            <button id="group-save-button" type="submit" class="btn btn-success">Save</button>
-        </div>
-    </div>
+
 {% endblock %}
 
 {% block javascripts %}

@@ -550,5 +550,4 @@ class Thought
     {
         $this->inverseRelatedThoughts = $inverseRelatedThoughts;
     }
-
 }

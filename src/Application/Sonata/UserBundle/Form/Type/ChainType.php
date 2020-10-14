@@ -42,19 +42,17 @@ class ChainType extends AbstractType
                     $qb = $repository->createQueryBuilder('t');
                     $qb->leftJoin('t.user', 'u');
 
-                    if ($options['role'] == User::ROLE_STUDENT) {
-                        $qb->andWhere('u.roles LIKE :roles');
-                        $parameters = [
-                            'roles' => '%' . User::ROLE_STUDENT . '%',
-                        ];
+                    if ($options['role'] == User::ROLE_STUDENT || $options['role'] == User::ROLE_TEACHER) {
+                        $qb->andWhere('u.roles LIKE :role1 OR u.roles LIKE :role2');
                     } else {
-                        $qb->andWhere('u.roles NOT LIKE :roles');
-                        $parameters = [
-                            'roles' => '%' . User::ROLE_STUDENT . '%',
-                        ];
+                        $qb->andWhere('u.roles NOT LIKE :role1 AND u.roles NOT LIKE :role2');
                     }
 
-                    $qb->setParameters($parameters);
+                    $qb->setParameters([
+                        'role1' => '%' . User::ROLE_STUDENT . '%',
+                        'role2' => '%' . User::ROLE_TEACHER . '%',
+                    ]);
+
                     return $qb;
                 },
                 'choice_label' => 'name',

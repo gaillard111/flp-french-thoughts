@@ -262,21 +262,12 @@ class ChainController extends Controller
         $em = $this->getDoctrine()->getManager();
         $chainOwner = $chain->getUser();
         $student = null;
-        $role = User::ROLE_USER;
 
         if ($this->isGranted('ROLE_TEACHER') and ($this->getUser() !== $chainOwner)) {
             $student = $chainOwner;
-            $role = User::ROLE_STUDENT;
         }
 
-        $role = User::ROLE_USER;
-        if ($this->isGranted(User::ROLE_STUDENT)) {
-            $role = User::ROLE_STUDENT;
-        }
-
-        $form = $this->createForm(new ChainType(), $chain, [
-            'role' => $role,
-        ]);
+        $form = $this->createForm(new ChainType(), $chain, ['role' => $this->getUser()->getRole()]);
 
         $form->handleRequest($request);
 

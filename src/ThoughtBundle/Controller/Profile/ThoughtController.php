@@ -184,9 +184,7 @@ class ThoughtController extends Controller
 
     /**
      * @Route("/thought/autocomplete/author", name="sonata_user_thought_autocomplete_author")
-     *
      * @param Request $request
-     *
      * @return Response
      */
     public function autocompleteThoughtAuthorAction(Request $request)
@@ -214,5 +212,24 @@ class ThoughtController extends Controller
         }
 
         return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/thought/{thought_id}/publish", name="thought_publish")
+     * @ParamConverter("thought", options={"mapping"={"thought_id"="id"}})
+     * @param Request $request
+     * @return Response
+     */
+    public function publishThought(Thought $thought) {
+        $this->denyAccessUnlessGranted($thought->getOwner(), $this->getUser());
+        $em = $this->getDoctrine()->getManager();
+        if ($thought->isPublish()) {
+            $thought->setPublished(false);
+        } else {
+            $thought->setPublished(true);
+        }
+        $em->persist($thought);
+        $em->flush();
+        return $this->redirectToRoute('student_thoughts', ['user_id' => $thought->getOwner()->getId()]);
     }
 }

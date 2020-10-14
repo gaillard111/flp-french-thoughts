@@ -365,3 +365,10 @@ teacher:
     create_group:
         title: Ajouter groupe
         create_button: Ajouter
+
+    student:
+        menu:
+            profile: Profil
+            thoughts: Citations
+            topics: Sujets
+            chaines: Chaines

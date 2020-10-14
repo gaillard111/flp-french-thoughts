@@ -3,7 +3,7 @@
 {% form_theme form 'bootstrap_3_layout.html.twig' %}
 
 {% block sonata_profile_title %}
-    {% if student is defined and student is not null %}
+    {% if student %}
         {{ student.firstname }} thoughts
     {% else %}
         {{ 'user.thought.list_page.title'|trans }}
@@ -49,7 +49,7 @@
                             <td>{{ thought.category }}</td>
                             <td>{{ thought.createdAt|date('d.m.Y H:i') }}</td>
                             <td>
-                                {% if student is defined and student is not null %}
+                                {% if student %}
                                     <a href="{{ path('student_thought_edit', {'id': thought.id, 'user_id': student.id}) }}">
                                         Edit
                                     </a>
@@ -60,9 +60,20 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <span class="label label-{{ thought.published ? 'success' : 'danger' }}">
-                                    {{ thought.published ? 'Oui' : 'Non' }}
-                                </span>
+                                {% if student %}
+                                    <a href="{{ path('thought_publish', {'thought_id': thought.id}) }}"
+                                       data-toggle="tooltip"
+                                       title="{{ thought.published ? 'Remove from publication' : 'Publish' }}"
+                                    >
+                                        <span class="label label-{{ thought.published ? 'success' : 'danger' }}">
+                                            {{ thought.published ? 'Oui' : 'Non' }}
+                                        </span>
+                                    </a>
+                                {% else %}
+                                    <span class="label label-{{ thought.published ? 'success' : 'danger' }}">
+                                        {{ thought.published ? 'Oui' : 'Non' }}
+                                    </span>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}

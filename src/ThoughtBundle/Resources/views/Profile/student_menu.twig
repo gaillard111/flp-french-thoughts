@@ -4,23 +4,24 @@
     <a href="{{ path('student_profile',  {'user_id': student.id }) }}"
        class="list-group-item {% if rout == 'student_profile' %} active {% endif %}"
     >
-        Profile
+        {{ 'teacher.student.menu.profile' | trans }}
     </a>
 
     <a href="{{ path('student_thoughts',  {'user_id': student.id }) }}"
        class="list-group-item {% if rout == 'student_thoughts' %} active {% endif %}"
     >
-        Thoughts
+        {{ 'teacher.student.menu.thoughts' | trans }}
+    </a>
+
+    <a href="{{ path('student_topics', {'user_id': student.id }) }}"
+       class="list-group-item {% if rout == 'student_topics' %} active {% endif %}"
+    >
+        {{ 'teacher.student.menu.topics' | trans }}
     </a>
 
     <a href="{{ path('student_chains',  {'user_id': student.id }) }}"
        class="list-group-item {% if rout == 'student_chains' %} active {% endif %}"
     >
-        Chains
-    </a>
-    <a href="{{ path('student_topics', {'user_id': student.id }) }}"
-       class="list-group-item {% if rout == 'student_topics' %} active {% endif %}"
-    >
-        Topics
+        {{ 'teacher.student.menu.chaines' | trans }}
     </a>
 </div>
