@@ -62,8 +62,8 @@ class HomepageController extends Controller
 
         $role = User::ROLE_USER;
 
-        if ($this->isGranted(User::ROLE_STUDENT)) {
-            $role = User::ROLE_STUDENT;
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $role = $this->getUser()->getRole();
         }
 
         $thoughts = $modelThought->getThoughts($search, $default, $role, $page);
@@ -93,7 +93,6 @@ class HomepageController extends Controller
 
         // Get topics with chains for selector
         $topicsArray = $modelTopicChain->getTopicsWithChains();
-
         $topicPrivateItem = [];
         if ($this->getUser()) {
             $topicPrivateItem = $modelTopicChain->getUserPrivateChaines($this->getUser());

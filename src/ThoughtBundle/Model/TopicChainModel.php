@@ -34,29 +34,11 @@ class TopicChainModel
         $topicsArray = [];
         /** @var Topic $topic */
         foreach ($topics as $topic) {
-            $chainArray = [];
-
-            foreach ($topic->getChains() as $chain) {
-                $chainArray[] = [
-                    $chain->getId(),
-                    $chain->getName(),
-                ];
-            }
-
-            $iterator = $topic->getChains()->getIterator();
-            $iterator->uasort(function ($a, $b) {
-                return ($a->getName() < $b->getName()) ? -1 : 1;
-            });
-            $chainArray = new ArrayCollection(iterator_to_array($iterator));
-
-//            usort($chainArray, function ($a, $b) {
-//                return $a[1] > $b[1];
-//            });
-
+            $chainArray = $topic->getChains();
             $topicsArray[] = [
                 'topic_id'     => $topic->getId(),
                 'topic_name'   => $topic->getName(),
-                'topic_chains' => $chainArray->toArray(),
+                'topic_chains' => $chainArray,
             ];
         }
         return $topicsArray;

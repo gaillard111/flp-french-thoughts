@@ -59,34 +59,21 @@ class ThoughtRepository extends EntityRepository
      */
     public function getLastThoughts($limit, $sortField, $sortDirection, $role)
     {
-        $notLikeRole = User::ROLE_STUDENT;
-        $parameters  = [
-            'published' => true,
-        ];
 
-        if ($role == User::ROLE_STUDENT) {
-            $notLikeRole = User::ROLE_USER;
-        }
-
-        $qb = $this->createQueryBuilder('t');
-
-        $qb
+        $qb = $this->createQueryBuilder('t')
             ->select('t')
             ->leftJoin('t.owner', 'u')
-            ->where('t.published = :published')
+            ->where('t.published = true')
+            ->setMaxResults($limit);
         ;
 
-        if ($role == User::ROLE_USER) {
-            $qb->andWhere('u.roles NOT LIKE :roles OR u.roles IS NULL');
-
-            $parameters = array_merge($parameters, [
-                'roles' => '%"' . $notLikeRole . '"%',
+        if ($role !== User::ROLE_STUDENT and $role !== User::ROLE_TEACHER){
+            $qb->andWhere('u.roles NOT LIKE :role1 AND u.roles NOT LIKE :role2');
+            $qb->setParameters([
+                'role1' => '%'. User::ROLE_STUDENT. '%',
+                'role2' => '%'. User::ROLE_TEACHER. '%'
             ]);
         }
-
-        $qb
-            ->setParameters($parameters)
-            ->setMaxResults($limit);
 
         if ($sortField == 'likesCount') {
             $qb
