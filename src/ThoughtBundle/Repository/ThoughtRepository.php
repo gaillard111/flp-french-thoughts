@@ -68,7 +68,7 @@ class ThoughtRepository extends EntityRepository
         ;
 
         if ($role !== User::ROLE_STUDENT and $role !== User::ROLE_TEACHER){
-            $qb->andWhere('u.roles NOT LIKE :role1 AND u.roles NOT LIKE :role2');
+            $qb->andWhere('u.roles NOT LIKE :role1 AND u.roles NOT LIKE :role2 OR t.owner is null');
             $qb->setParameters([
                 'role1' => '%'. User::ROLE_STUDENT. '%',
                 'role2' => '%'. User::ROLE_TEACHER. '%'
