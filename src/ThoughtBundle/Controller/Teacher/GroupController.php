@@ -27,7 +27,6 @@ class GroupController extends Controller
     {
         $this->denyAccessUnlessGranted('ROLE_TEACHER', null, 'Unable to access this page!');
         $allGroups = $this->getUser()->getStudentsGroup();
-
         return $this->render('ThoughtBundle:teacherGroups:list.html.twig', [
             'groups' => $allGroups,
         ]);
@@ -40,6 +39,12 @@ class GroupController extends Controller
      */
     public function createGroup(Request $request){
         $this->denyAccessUnlessGranted('ROLE_TEACHER', null, 'Unable to access this page!');
+
+        if ($this->getUser()->getStudentsGroup()->count() >= 10) {
+            $this->addFlash('errors', 'You can\'t create more than 10 groups');
+            return $this->redirectToRoute('teacher_groups_list');
+        }
+
         $teacherGroup = new TeacherGroup();
         $form = $this->createForm(new GroupForm(), $teacherGroup)
             ->add('submit', SubmitType::class,
@@ -124,6 +129,11 @@ class GroupController extends Controller
     {
         if ($group->getOwner() !== $this->getUser()) {
             throw $this->createAccessDeniedException();
+        }
+
+        if ($group->getStudents()->count() >= 30) {
+            $this->addFlash('errors', 'You can\'t add more than 30 students to one group');
+            return $this->redirectToRoute('teacher_group_edit', ['id' => $group->getId()]);
         }
 
         $em = $this->getDoctrine()->getManager();
