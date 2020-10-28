@@ -31,9 +31,12 @@ use ThoughtBundle\Entity\WatchedThought;
  */
 class User extends BaseUser
 {
+    const ROLE_TEACHER = 'ROLE_TEACHER';
     const ROLE_STUDENT = 'ROLE_STUDENT';
     const ROLE_USER = 'ROLE_USER';
-    const ROLE_TEACHER = 'ROLE_TEACHER';
+    const ROLE_MODERATOR = 'ROLE_MODERATOR';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
     /**
      * @ORM\Id
@@ -523,8 +526,28 @@ class User extends BaseUser
             return $this::ROLE_STUDENT;
         } elseif (in_array('ROLE_TEACHER', $this->getRoles())) {
             return $this::ROLE_TEACHER;
+        } elseif (in_array('ROLE_USER', $this->getRoles())) {
+            return $this::ROLE_USER;
+        } elseif (in_array('ROLE_MODERATOR', $this->getRoles())) {
+            return $this::ROLE_MODERATOR;
+        } elseif (in_array('ROLE_ADMIN', $this->getRoles())) {
+            return $this::ROLE_ADMIN;
+        } elseif (in_array('ROLE_SUPER_ADMIN', $this->getRoles())) {
+            return $this::ROLE_SUPER_ADMIN;
         } else {
             return $this::ROLE_USER;
         }
+    }
+
+    public function getRoleName() {
+        $roleNames = [
+            'ROLE_TEACHER' => 'teacher',
+            'ROLE_STUDENT' => 'student',
+            'ROLE_USER' => 'user',
+            'ROLE_MODERATOR' => 'moderator',
+            'ROLE_ADMIN' => 'admin',
+            'ROLE_SUPER_ADMIN' => 'super admin'
+        ];
+        return $roleNames[$this->getRole()];
     }
 }

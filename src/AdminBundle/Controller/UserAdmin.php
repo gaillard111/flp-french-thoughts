@@ -34,6 +34,9 @@ class UserAdmin extends BaseUserAdmin
                 'editable' => true,
             ])
             ->add('createdAt')
+            ->add('getRoleName', null, [
+                'label' => 'Role'
+            ])
         ;
     }
 
