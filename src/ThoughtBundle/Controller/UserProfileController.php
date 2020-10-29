@@ -5,7 +5,6 @@ namespace ThoughtBundle\Controller;
 use Application\Sonata\UserBundle\Entity\Dialog;
 use Application\Sonata\UserBundle\Entity\Friendship;
 use Application\Sonata\UserBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,6 +25,9 @@ class UserProfileController extends Controller
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $userRepository = $this->getDoctrine()->getRepository(User::class);
         $role = $this->getUser()->getRole();
+
+        $emailService = $this->container->get('thought.service.mail_service');
+        $emailService->newTeacherMail($this->getUser());
 
         if ($role == User::ROLE_STUDENT or $role == User::ROLE_TEACHER) {
             $usersQuery = $userRepository->getStudentAndTeacherQuery();

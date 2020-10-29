@@ -21,5 +21,6 @@ services:
     class: ThoughtBundle\EventListener\RegistrationListener
     arguments:
       entityManager: "@doctrine.orm.entity_manager"
+      container: "@service_container"
     tags:
       - { name: kernel.event_subscriber}

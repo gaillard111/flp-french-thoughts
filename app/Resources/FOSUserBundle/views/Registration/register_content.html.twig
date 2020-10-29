@@ -40,15 +40,29 @@
             {{ form_row(form.lastname) }}
             {{ form_row(form.plainPassword) }}
             {{ form_label(form.roles) }}
+{#            <div class="form-check">#}
+{#                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>#}
+{#                <label class="form-check-label" for="exampleRadios1">#}
+{#                    Default radio#}
+{#                </label>#}
+{#            </div>#}
+
             <div class="role-select">
                 <div class="role-item">
-                    {{ form_widget(form.roles[0]) }} <label for="front_user_registration_form_roles_0" class="label-role">{{ form.roles[0].vars['label'] }}</label>
+                    <label class="label-role">
+                        {{ form_widget(form.roles[0]) }}
+                        {{ form.roles[0].vars['label'] }}
+                    </label>
                 </div>
                 <div class="role-item">
-                    {{ form_widget(form.roles[1]) }} <label for="front_user_registration_form_roles_1" class="label-role">{{ form.roles[1].vars['label'] }}</label>
+                    <label class="label-role">
+                        {{ form_widget(form.roles[1]) }} {{ form.roles[1].vars['label'] }}
+                    </label>
                 </div>
                 <div class="role-item">
-                    {{ form_widget(form.roles[2]) }} <label for="front_user_registration_form_roles_1" class="label-role">{{ form.roles[2].vars['label'] }}</label>
+                    <label class="label-role">
+                        {{ form_widget(form.roles[2]) }} {{ form.roles[2].vars['label'] }}
+                    </label>
                 </div>
             </div>
 

@@ -19,10 +19,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\Like;
-use ThoughtBundle\Entity\TeacherGroup;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\ThoughtRelated;
 use ThoughtBundle\Entity\WatchedThought;
+use ThoughtBundle\Service\Mail;
 
 /**
  * @ORM\Entity(repositoryClass="Application\Sonata\UserBundle\Repository\UserRepository")
@@ -116,6 +116,11 @@ class User extends BaseUser
     protected $dialogs;
 
     /**
+     * @ORM\Column(name="confirm", type="boolean",)
+     */
+    protected $registrationConfirm = false;
+
+    /**
      * @var ArrayCollection|Like[]
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Like", mappedBy="user", orphanRemoval=true)
      */
@@ -164,6 +169,24 @@ class User extends BaseUser
         $this->teacherGroup = new ArrayCollection();
         $this->studentsGroup = new ArrayCollection();
         parent::__construct();
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isRegistrationConfirm(): ?bool
+    {
+        return $this->registrationConfirm;
+    }
+
+    /**
+     * @param bool $registrationConfirm
+     * @return User
+     */
+    public function setRegistrationConfirm(bool $registrationConfirm): self
+    {
+        $this->registrationConfirm = $registrationConfirm;
+        return $this;
     }
 
     /**

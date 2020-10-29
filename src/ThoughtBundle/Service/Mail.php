@@ -4,6 +4,7 @@ namespace ThoughtBundle\Service;
 
 use Application\Sonata\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\Comment;
@@ -16,33 +17,63 @@ use ThoughtBundle\Entity\Thought;
  */
 class Mail
 {
-    /**
-     * @var Container
-     */
+    /** @var Container */
     private $container;
 
-    /**
-     * @var \Symfony\Component\Translation\DataCollectorTranslator
-     */
+    /** @var \Symfony\Component\Translation\DataCollectorTranslator */
     private $translator;
 
     /**
      * Mail constructor.
      *
      * @param Container $container
-     *
      * @throws \Exception
      */
     public function __construct(Container $container)
     {
         $this->container = $container;
-
         $this->translator = $container->get('translator');
     }
 
     /**
+     * @param User $thought
+     * @throws \Exception
+     */
+    public function newTeacherMail(User $teacher) {
+        $subject = 'French thought: Teacher registration request';
+        $email  = [$this->container->getParameter('admin_email')];
+
+        $linkToTeacher = $this->container->get('router')
+            ->generate('admin_sonata_user_user_edit',
+                ['id' => $teacher->getId()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+
+        $body = $this->container->get('templating')
+            ->render(
+                '@Thought/emails/newTeacherEmail.html.twig',
+                ['linkToTeacher' => $linkToTeacher]
+            );
+
+        $this->sendMail($subject, $email, $body);
+    }
+
+    /**
+     * @param User $thought
+     * @throws \Exception
+     */
+    public function teacherActivateEmail(User $teacher) {
+        $subject = 'French thought: Your account is activated';
+        $email = [$teacher->getEmail()];
+        $body = $this->container->get('templating')
+            ->render(
+                '@Thought/emails/TeacherActivateEmail.twig'
+            );
+        $this->sendMail($subject, $email, $body);
+    }
+
+    /**
      * @param Thought $thought
-     *
      * @throws \Exception
      */
     public function mailAddNewThought(Thought $thought)
@@ -57,7 +88,6 @@ class Mail
 
         $emailUsers = $this->container->getParameter('admin_email');
 
-        //dump($subject, $emailUsers, $body); die;
         $this->sendMail($subject, $emailUsers, $body);
     }
 
@@ -65,7 +95,6 @@ class Mail
      * Send email - Add new comment
      *
      * @param Comment $comment
-     *
      * @throws \Exception
      */
     public function mailAddNewComment(Comment $comment)
@@ -88,7 +117,6 @@ class Mail
      * Send email - Add new chain comment
      *
      * @param ChainComment $comment
-     *
      * @throws \Exception
      */
     public function mailAddNewChainComment(ChainComment $comment)
@@ -114,7 +142,6 @@ class Mail
 
     /**
      * @param $users
-     *
      * @throws \Exception
      */
     public function generalMail($users, $subject, $body)
