@@ -7,10 +7,13 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Exception;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ThoughtBundle\Entity\Banner;
@@ -193,6 +196,26 @@ class HomepageController extends Controller
             'success' => true,
             'message' => 'The quote was successfully linked',
         ]);
+    }
+
+    /**
+     * @Route("/unlink-quotes/{thoughtRelatedId}", name="unlink-quotes", options={"expose"=true})
+     * @ParamConverter("thoughtRelated", options={"mapping"={"thoughtRelatedId"="id"}})
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function unlinkQuotes(Request $request, ThoughtRelated $thoughtRelated) {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if ($thoughtRelated->getOwner() !== $this->getUser()) {
+            throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($thoughtRelated);
+        $em->flush();
+
+        return $this->redirect($request->server->get('HTTP_REFERER'));
     }
 
     public function bannerAction(Banner $banner)

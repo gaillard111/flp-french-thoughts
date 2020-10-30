@@ -134,7 +134,7 @@
         {% endif %}
     {% endfor %}
 
-    {#  Citations and Mis dans la chaine  #}
+
     <div class="quote_row">
         {% if app.user and relatedThoughtCount > 0 %}
             <div class="related-thoughts-block">
@@ -142,17 +142,49 @@
                 <div class="related-thoughts">
                     {% for relatedThought in thought.relatedThoughts %}
                         {% if userFriends[relatedThought.owner.id] is defined  %}
-                            <a href="{{ path('thought_thoughtpage_index', {'thoughtId': relatedThought.relatedThought.id}) }}">{{ relatedThought.relatedThought.category }} ({{ userFriends[relatedThought.owner.id] }})</a>
+                            <span>
+                                <a href="{{ path('thought_thoughtpage_index', {'thoughtId': relatedThought.relatedThought.id}) }}">
+                                    {{ relatedThought.relatedThought.category }} ({{ userFriends[relatedThought.owner.id] }})
+                                </a>
+                                {% if relatedThought.owner == app.user  %}
+                                     &ensp;
+                                    <a href="{{ path('unlink-quotes', {'thoughtRelatedId': relatedThought.id}) }}"
+                                       class="message-button"
+                                       data-toggle="tooltip"
+                                       title="Remove relation"
+                                       style="font-size: 12px"
+                                    >
+                                        <span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span>
+                                    </a>
+                                {% endif %}
+                            </span>
                         {% endif %}
                     {% endfor %}
                     {% for inverseThought in thought.inverseRelatedThoughts %}
                         {% if userFriends[inverseThought.owner.id] is defined  %}
-                            <a href="{{ path('thought_thoughtpage_index', {'thoughtId': inverseThought.thought.id}) }}">{{ inverseThought.thought.category }} ({{ userFriends[inverseThought.owner.id] }})</a>
+                            <span>
+                                <a href="{{ path('thought_thoughtpage_index', {'thoughtId': inverseThought.thought.id}) }}">
+                                    {{ inverseThought.thought.category }} ({{ userFriends[inverseThought.owner.id] }})
+                                </a>
+                                {% if inverseThought.owner == app.user  %}
+                                    &ensp;
+                                    <a href="{{ path('unlink-quotes', {'thoughtRelatedId': inverseThought.id}) }}"
+                                       class="message-button"
+                                       data-toggle="tooltip"
+                                       title="Remove relation"
+                                       style="font-size: 12px"
+                                    >
+                                        <span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span>
+                                    </a>
+                                {% endif %}
+                            </span>
                         {% endif %}
                     {% endfor %}
                 </div>
             </div>
         {% endif %}
+
+        {#  Mis dans la chaine  #}
         <div class="put-in-chain">
             {% if already_chains|length %}
                 {% set template = '@Thought/include/chainsTooltip.html.twig'  %}
@@ -161,6 +193,7 @@
                 </span>
             {% endif %}
         </div>
+
     </div>
 
     {#  Commentaires  #}
