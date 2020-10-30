@@ -55,14 +55,14 @@ class ThoughtController extends Controller
             ->get('thought.model.thought_model')
             ->getUserThoughts($user, $searchObject->getSort(), $search)
             ->getResult();
-//        $paginator  = $this->get('knp_paginator');
-//        $pagination = $paginator->paginate(
-//            $thoughts,
-//            $request->query->getInt('page', 1)
-//        );
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $thoughts,
+            $request->query->getInt('page', 1)
+        );
 
         return $this->render('ThoughtBundle:Profile/Thoughts:list.html.twig', [
-            'thoughts' => $thoughts,
+            'thoughts' => $pagination,
             'form'     => $form->createView(),
             'student' => $student,
         ]);

@@ -69,6 +69,18 @@ class ThoughtAdmin extends AbstractAdmin
         }
     }
 
+    public function prePersist($thought)
+    {
+        $user = $this->getConfigurationPool()
+            ->getContainer()
+            ->get('security.token_storage')
+            ->getToken()
+            ->getUser();
+
+        $thought->setOwner($user);
+    }
+
+
     /**
      * @return array
      */
