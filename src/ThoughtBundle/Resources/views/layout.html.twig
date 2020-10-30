@@ -41,9 +41,9 @@
 </head>
 <body>
     {% if is_granted('ROLE_STUDENT') %}
-        <div class="top-alert orange"> Mode étudiant </div>
+        <div class="top-alert orange"> {{ 'sandbox.student_mode'|trans }} </div>
     {% elseif is_granted('ROLE_TEACHER')%}
-        <div class="top-alert blue">Teacher Mode</div>
+        <div class="top-alert blue">{{ 'sandbox.teacher_mode'|trans }}</div>
     {% endif %}
 
     {{ render(controller('ThoughtBundle:Render:navbar')) }}

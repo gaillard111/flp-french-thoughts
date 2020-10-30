@@ -17,7 +17,15 @@
                             <a class="author_name" href="{{ path('user_profile', { 'userId': user.id }) }}">
                                 {{ user.firstname }} {{ user.lastname }}
                             </a>
-                            <span style="white-space: nowrap">( {{ user.roleName }} )</span>
+                            <span style="white-space: nowrap">(
+                                {% if user.getRole == 'ROLE_STUDENT' %}
+                                    étudiant
+                                {% elseif user.getRole == 'ROLE_TEACHER' %}
+                                    enseignant
+                                {% else %}
+                                    {{ user.roleName }}
+                                {% endif %}
+                                )</span>
                         </p>
                     </div>
                 </div>

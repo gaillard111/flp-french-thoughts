@@ -56,7 +56,7 @@ class RegistrationType extends AbstractType
                 ],
                 'choices' => [
                     'student' => 'S\'enregistrer comme étudiant',
-                    'teacher' => 'S\'enregistrer comme professeure',
+                    'teacher' => 'S\'enregistrer comme enseignant/e',
                     'user'    => 'S\'enregistrer normalement',
                 ],
                 'expanded' => true,

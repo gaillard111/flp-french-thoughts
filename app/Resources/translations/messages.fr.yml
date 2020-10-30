@@ -372,3 +372,7 @@ teacher:
             thoughts: Citations
             topics: Sujets
             chaines: Chaines
+
+sandbox:
+    teacher_mode: mode enseignant
+    student_mode: mode étudiant
