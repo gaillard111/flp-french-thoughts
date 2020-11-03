@@ -100,12 +100,6 @@ $(document).ready(function() {
     $('#commentModal').modal('show');
     $('#newThoughtModal').modal('show');
 
-    $('span.author a').mouseover(function(){
-        $(this).parents('div.quote').find('div.authors_info').fadeIn();
-    }).mouseout(function(){
-        $(this).parents('div.quote').find('div.authors_info').fadeOut();
-    });
-
     $('.show-link').click(function () {
         var $btn = $(this);
         var thoughtId = $btn.data('id');

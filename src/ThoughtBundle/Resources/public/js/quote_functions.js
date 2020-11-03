@@ -45,3 +45,12 @@ $(".send_id_for_related").click(function () {
         }
     });
 });
+
+ $('span.author a').mouseover(function(){
+     $(this).parents('div.quote').find('div.authors_info').fadeIn();
+ }).mouseout(function(){
+     $(this).parents('div.quote').find('div.authors_info').fadeOut();
+ });
+
+
+
