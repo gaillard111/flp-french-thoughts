@@ -135,7 +135,6 @@ class ThoughtModel
 
     /**
      * @param array $request
-     *
      * @return DoctrineQuery|PaginatorAdapterInterface|TransformedPaginatorAdapter
      */
     public function getThoughtsFromElastic($request, $page, $role)
@@ -963,15 +962,13 @@ class ThoughtModel
         $terms['job']       = [];
 
         if (!empty($request['name'])) {
-            $name      = explode(' ', trim($request['name']));
-            $firstname = array_shift($name);
-            $firstname = strtolower($firstname);
+//            $name      = explode(' ', trim($request['name']));
+//            $firstname = array_shift($name);
+            $name = strtolower($request['name']);
 
             $terms['name'] = [
-                'regexp' => [
-                    'name' => [
-                        'value' => $firstname,
-                    ],
+                'match' => [
+                    'name' => $name
                 ],
             ];
         }

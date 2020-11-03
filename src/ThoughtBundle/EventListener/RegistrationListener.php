@@ -60,7 +60,7 @@ class RegistrationListener implements EventSubscriberInterface
 
     public function onRegistrationCompleted(FilterUserResponseEvent $event) {
         $user = $event->getUser();
-        if ($user->getRole() == User::ROLE_TEACHER) {
+        if ($user->getRole() === User::ROLE_TEACHER) {
             $emailService = $this->container->get('thought.service.mail_service');
             $emailService->newTeacherMail($user);
         }
