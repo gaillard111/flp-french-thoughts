@@ -962,13 +962,14 @@ class ThoughtModel
         $terms['job']       = [];
 
         if (!empty($request['name'])) {
-//            $name      = explode(' ', trim($request['name']));
-//            $firstname = array_shift($name);
-            $name = strtolower($request['name']);
-
+            $name      = explode(' ', trim($request['name']));
+            $firstname = array_shift($name);
+            $firstname = strtolower($firstname);
             $terms['name'] = [
-                'match' => [
-                    'name' => $name
+                'regexp' => [
+                    'name' => [
+                        'value' => $firstname,
+                    ],
                 ],
             ];
         }
