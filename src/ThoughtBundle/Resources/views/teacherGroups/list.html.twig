@@ -61,7 +61,7 @@
                     {% if group.students is not empty %}
                         {% for student in group.students %}
                             <div class="student-item">
-                                <a href="{{ path('student_profile', {'user_id': student.id}) }}">{{ student.firstname }}</a>
+                                <a href="{{ path('student_profile', {'user_id': student.id}) }}">{{ student.fullName }}</a>
                                 &nbsp;
                                 <a href="{{ path('new_dialog', { 'userId': student.id }) }}" class="message-button" data-toggle="tooltip" title="Start a dialogue">
                                     <span class="glyphicon glyphicon-envelope text-info small" aria-hidden="true"></span>
