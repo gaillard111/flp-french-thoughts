@@ -1,0 +1,63 @@
+
+/*------ Students list ------*/
+
+.student-list-table {
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 600px;
+}
+
+.student-list-table thead {
+    background-color: #52a4da;
+    color: white;
+}
+
+.student-list-table__name-col {
+    font-weight: bold;
+    width: 60%;
+    padding: 10px !important;
+}
+
+
+.student-list-table__date-col{
+    padding: 10px !important;
+}
+
+/*------ Teachers list ------*/
+
+.teacher-list-table {
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 800px;
+}
+
+.teacher-list-table thead {
+    background-color: #52a4da;
+    color: white;
+}
+
+.teacher-list-table__email-head {
+    text-align: center;
+}
+
+.teacher-list-table__email-col {
+    text-align: center;
+}
+
+.teacher-list-table__name-col {
+    font-weight: bold;
+    width: 30%;
+    padding: 10px !important;
+}
+
+.teacher-list-table__reg-head {
+    text-align: center;
+}
+
+.teacher-list-table__reg-col {
+    text-align: center;
+}
+
+.teacher-list-table__date-col{
+    padding: 10px !important;
+}

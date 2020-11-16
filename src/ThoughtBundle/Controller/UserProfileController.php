@@ -26,9 +26,6 @@ class UserProfileController extends Controller
         $userRepository = $this->getDoctrine()->getRepository(User::class);
         $role = $this->getUser()->getRole();
 
-        $emailService = $this->container->get('thought.service.mail_service');
-        $emailService->newTeacherMail($this->getUser());
-
         if ($role == User::ROLE_STUDENT or $role == User::ROLE_TEACHER) {
             $usersQuery = $userRepository->getStudentAndTeacherQuery();
         } else {

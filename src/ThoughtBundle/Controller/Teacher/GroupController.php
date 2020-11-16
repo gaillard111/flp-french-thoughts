@@ -137,6 +137,7 @@ class GroupController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
+        $emailService = $this->container->get('thought.service.mail_service');
         $searchForm = $this->createForm(new StudentSearchForm());
         $searchForm->handleRequest($request);
         $user = $searchForm->getData()['searchField'];
@@ -148,6 +149,8 @@ class GroupController extends Controller
             $group->addStudent($user);
             $em->persist($group);
             $em->flush();
+              //  Temporarily disabled
+//            $emailService->studentAddToGroup($user, $group);
         }
 
         return $this->redirectToRoute('teacher_group_edit', ['id' => $group->getId()]);

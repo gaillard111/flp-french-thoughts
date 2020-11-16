@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ChainComment;
 use ThoughtBundle\Entity\Comment;
+use ThoughtBundle\Entity\TeacherGroup;
 use ThoughtBundle\Entity\Thought;
 
 /**
@@ -33,6 +34,31 @@ class Mail
     {
         $this->container = $container;
         $this->translator = $container->get('translator');
+    }
+
+    /**
+     * @param User $student
+     * @param TeacherGroup $group
+     */
+    public function studentAddToGroup(User $student, TeacherGroup $group) {
+        $subject = 'French thought:  You\'ve been added to group.';
+        $email = [$student->getEmail()];
+
+        $teacherProfileLink = $this->container->get('router')
+            ->generate('user_profile',
+                ['userId' => $group->getOwner()->getId()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            );
+
+        $body = $this->container->get('templating')
+            ->render(
+                '@Thought/emails/studentAddToGroup.html.twig', [
+                    'student' => $student,
+                    'teacherProfileLink' => $teacherProfileLink,
+                    'group' => $group,
+                ]
+            );
+        $this->sendMail($subject, $email, $body);
     }
 
     /**

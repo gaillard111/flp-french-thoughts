@@ -362,6 +362,9 @@ teacher:
         title: Mes groupes
         add_groups: Ajouter groupe
 
+    student_list:
+        title: Student list
+
     create_group:
         title: Ajouter groupe
         create_button: Ajouter

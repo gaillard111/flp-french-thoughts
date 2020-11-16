@@ -1,0 +1,43 @@
+{% extends '@Thought/Profile/layout.html.twig' %}
+
+{% block sonata_profile_title %}
+    Students List
+{% endblock %}
+
+{% block my_custom_menu %}
+{% endblock %}
+
+
+{% block sonata_profile_content %}
+    <div class="student-list-page">
+        <table class="student-list-table table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Registration date</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td class="student-list-table__name-col">
+                            <a href="{{ path('user_profile', {'userId': student.id}) }}">
+                                {{ student.firstname }} {{ student.lastname }}
+                            </a>
+                        </td>
+
+                        <td class="student-list-table__date-col">{{ student.createdAt|date }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="navigation text-center">
+                {{ knp_pagination_render(students) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

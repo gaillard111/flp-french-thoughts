@@ -38,4 +38,22 @@ class UserRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getAllStudentsQuery() {
+        $qb = $this->createQueryBuilder('u');
+        $qb->andWhere('u.roles LIKE :role');
+        $qb->setParameters([
+            'role' => '%'. User::ROLE_STUDENT. '%',
+        ]);
+        return $qb->getQuery();
+    }
+
+    public function getAllTeachersQuery() {
+        $qb = $this->createQueryBuilder('u');
+        $qb->andWhere('u.roles LIKE :role');
+        $qb->setParameters([
+            'role' => '%'. User::ROLE_TEACHER. '%',
+        ]);
+        return $qb->getQuery();
+    }
 }

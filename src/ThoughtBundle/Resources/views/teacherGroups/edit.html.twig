@@ -40,7 +40,7 @@
                                 <span class="label label-danger" style="float: right">
                                     <a href="{{ path('remove_student_from_group', {'group_id': group.id, 'student_id': student.id}) }}" style="color:#ebebeb;">Delete</a>
                                 </span>
-                            {{ student.firstname }}
+                            {{ student.fullname }}
                         </li>
                     {% endfor %}
                 </ul>
