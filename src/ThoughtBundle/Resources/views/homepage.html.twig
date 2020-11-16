@@ -118,6 +118,8 @@
                         {{ include('@Thought/include/newThoughtModal.html.twig') }}
                     {% endif %}
                 {% endif %}
+
+{#                {{ include('ThoughtBundle:quote:layout.html.twig', {'thought': thoughts[0]}) }}#}
                 {% for thought in thoughts %}
                     {{ include('@Thought/quoteLayout.html.twig', {'thought': thought, 'colChains': colChains }) }}
                 {% endfor %}
