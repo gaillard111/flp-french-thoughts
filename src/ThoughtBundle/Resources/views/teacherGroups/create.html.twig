@@ -18,6 +18,7 @@
                     {{ form_widget(form.title) }}
                     <div class="col-lg-offset-4 col-sm-4 margin-top-20">
                         {{ form_row(form.submit, {'attr': {'class': 'btn-info'}}) }}
+                        {{ form_widget(form.topicNewLesson, {'attr': {'style': 'display: none'}}) }}
                     </div>
                 {{ form_end(form) }}
             </div>

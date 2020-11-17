@@ -1,7 +1,7 @@
 {% extends '@Thought/Profile/layout.html.twig' %}
 
 {% block sonata_profile_title %}
-    My Group
+    {{ 'student.group.title'|trans }}
 {% endblock %}
 
 {% block sonata_profile_content %}
@@ -13,7 +13,6 @@
             </div>
         {% else %}
 
-            <div class="group-list-page__title">Groups you are a member of</div>
             <ul class="group-list-page__list">
                 {% for group in groups %}
                     <li class="group-list-page__item">
