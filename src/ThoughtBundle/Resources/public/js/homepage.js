@@ -128,7 +128,6 @@ $(document).ready(function() {
             url:        "{{ path('ajax_counter') }}",
             method:     "POST",
             success:    function (data) {
-                console.log(data);
                 $("#messages-counter").html('(+' + data['count'][1] + ')');
             }
         });
@@ -143,5 +142,12 @@ $(document).ready(function() {
             $birthDateField.removeAttr('disabled');
         }
     });
+
+    // demo quote layout
+    // $(".linked-quotes__button").click(function (e) {
+    //     e.preventDefault()
+    //     $blokInfo = $(this).siblings(".linked-quotes__info")
+    //     $blokInfo.toggle( "fast" );
+    // })
 
 });

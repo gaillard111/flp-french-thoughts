@@ -18,6 +18,7 @@ class GroupForm extends AbstractType
                 ]
             ])
             ->add('topicNewLesson', 'textarea', [
+                'required' => false,
                 'attr' => [
                     'rows'=>'5',
                     'cols' => '60',
