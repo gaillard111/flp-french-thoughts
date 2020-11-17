@@ -219,14 +219,12 @@ class ChainController extends Controller
      */
     public function createAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $chain = new Chain();
         $em    = $this->getDoctrine()->getManager();
 
-        $role = User::ROLE_USER;
-
-        if ($this->isGranted(User::ROLE_STUDENT)) {
-            $role = User::ROLE_STUDENT;
-        }
+        $role = $this->getUser()->getRole();
 
         $form = $this->createForm(new ChainType(), $chain, [
             'role' => $role,
