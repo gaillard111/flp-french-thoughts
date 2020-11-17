@@ -61,3 +61,82 @@
 .teacher-list-table__date-col{
     padding: 10px !important;
 }
+
+/*------ Group list ------*/
+
+.group-list-page {
+    margin-left: 10px;
+}
+
+.group-list-page__list {
+    list-style: none;
+    padding: 10px 0px 0px 10px;
+}
+
+.group-list-page__empty-list {
+    font-weight: bolder;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.group-list-page__title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #494a54;
+}
+
+.group-list-page__item {
+    font-size: 17px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+/*------ Group page ------*/
+
+.group-page {
+    position: relative;
+    margin: 20px 0px 0px 30px;
+}
+
+.group-page__chat-btn {
+    position: absolute;
+    top: 2px;
+    right: 0px;
+}
+
+.topic-lesson {
+    margin-bottom: 40px;
+}
+
+.topic-lesson__title {
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+
+.topic-lesson__content {
+    max-width: 500px;
+    margin-left: 10px;
+    word-wrap: break-word;
+}
+
+.topic-lesson__empty-content {
+    margin-left: 10px;
+}
+
+.students-block__list {
+    list-style: none;
+    padding: 10px 0px 0px 10px;
+}
+
+.students-block__title {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.students-block__item {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 0px 5px 0px;
+}

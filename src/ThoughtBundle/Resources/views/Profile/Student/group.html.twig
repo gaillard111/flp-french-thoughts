@@ -1,0 +1,42 @@
+{% extends '@Thought/Profile/layout.html.twig' %}
+
+{% block sonata_profile_title %}
+    {{ group.title }}
+{% endblock %}
+
+{% block sonata_profile_content %}
+
+    <div class="group-page">
+
+        <button class="group-page__chat-btn btn btn-info">Group chat</button>
+
+        <div class="topic-lesson">
+            <div class="topic-lesson__title">
+                Topic of new lesson
+            </div>
+            <div class="topic-lesson__content">
+                {% if group.topicNewLesson is null %}
+                    <span class="topic-lesson__empty-content"> While empty</span>
+                {% else %}
+                    {{ group.topicNewLesson }}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="students-block">
+            <div class="students-block__title">
+                Group students
+            </div>
+            <ul class="students-block__list">
+                {% for student in group.students %}
+                    <li class="students-block__item">
+                        <a href="{{ path('user_profile', {'userId': student.id}) }}">
+                            {{ student.fullName }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+{% endblock %}

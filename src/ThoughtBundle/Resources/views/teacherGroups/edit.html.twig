@@ -16,6 +16,14 @@
                 {{ form_widget(form.title, {'attr': {'id': 'inputGroupName'}}) }}
             </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="form-group margin-top-20">
+            <div class="col-sm-8">
+                <label for="inputGroupLesson">Topic of new lesson</label>
+                {{ form_widget(form.topicNewLesson, {'attr': {'style': 'resize: none;'}}) }}
+            </div>
+        </div>
         {{ form_end(form) }}
     </div>
 

@@ -1,0 +1,29 @@
+{% extends '@Thought/Profile/layout.html.twig' %}
+
+{% block sonata_profile_title %}
+    My Group
+{% endblock %}
+
+{% block sonata_profile_content %}
+    <div class="group-list-page">
+
+        {% if groups is empty %}
+            <div class="group-list-page__empty-list">
+                You have not added to any group yet
+            </div>
+        {% else %}
+
+            <div class="group-list-page__title">Groups you are a member of</div>
+            <ul class="group-list-page__list">
+                {% for group in groups %}
+                    <li class="group-list-page__item">
+                        <a href="{{ path('my_group', {'groupId': group.id}) }}">{{ group.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+
+        {% endif %}
+
+    </div>
+
+{% endblock %}

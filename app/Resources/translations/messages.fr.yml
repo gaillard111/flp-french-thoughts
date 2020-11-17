@@ -376,6 +376,10 @@ teacher:
             topics: Sujets
             chaines: Chaines
 
+student:
+    group:
+        title: Mes groupes
+
 sandbox:
     teacher_mode: mode enseignant
     student_mode: mode étudiant

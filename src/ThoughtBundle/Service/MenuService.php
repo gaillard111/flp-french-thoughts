@@ -44,6 +44,13 @@ class MenuService
             ];
         }
 
+        if (in_array('ROLE_STUDENT', $user->getRoles())) {
+            $menu[] = [
+                'label' => $this->translator->trans('student.group.title'),
+                'route' => 'my_groups',
+            ];
+        }
+
         $menu[] = [
             'label' => $this->translator->trans('user.friendship.title'),
             'route' => 'friends',

@@ -17,7 +17,14 @@ class GroupForm extends AbstractType
                     'oninvalid' => "setCustomValidity('Enter name for group')"
                 ]
             ])
-
+            ->add('topicNewLesson', 'textarea', [
+                'attr' => [
+                    'rows'=>'5',
+                    'cols' => '60',
+                    'maxlength' => '1000',
+                    'placeholder' => 'Topic of new lesson',
+                ]
+            ])
         ;
     }
 

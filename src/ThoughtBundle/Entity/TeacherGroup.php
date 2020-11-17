@@ -27,6 +27,11 @@ class TeacherGroup
     private $title;
 
     /**
+     * @ORM\Column(name="topic_new_lesson", type="text", nullable=true)
+     */
+    private $topicNewLesson;
+
+    /**
      * @ORM\ManyToMany(
      *     targetEntity="Application\Sonata\UserBundle\Entity\User",
      *     inversedBy="teacherGroup",
@@ -37,14 +42,21 @@ class TeacherGroup
     private $students;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User", inversedBy="studentsGroup")
+     * @ORM\ManyToOne(
+     *     targetEntity="Application\Sonata\UserBundle\Entity\User",
+     *     inversedBy="studentsGroup"
+     * )
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $owner;
 
+
+
     public function __construct() {
         $this->students = new ArrayCollection();
     }
+
+
 
     /**
      * @return int|null
@@ -63,13 +75,11 @@ class TeacherGroup
     }
 
     /**
-     * @param string $title
-     * @return TeacherGroup
+     * @return string|null
      */
-    public function setTitle($title): self
+    public function getTopicNewLesson()
     {
-        $this->title = $title;
-        return $this;
+        return $this->topicNewLesson;
     }
 
     /**
@@ -81,6 +91,36 @@ class TeacherGroup
     }
 
     /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+//  Setters
+
+    /**
+     * @param string $title
+     * @return TeacherGroup
+     */
+    public function setTitle($title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @param string $topicNewLesson
+     * @return TeacherGroup
+     */
+    public function setTopicNewLesson($topicNewLesson): self
+    {
+        $this->topicNewLesson = $topicNewLesson;
+        return $this;
+    }
+
+    /**
      * @param ArrayCollection $students
      * @return TeacherGroup
      */
@@ -89,6 +129,16 @@ class TeacherGroup
         $this->students = $students;
         return $this;
     }
+
+    /**
+     * @param User
+     */
+    public function setOwner($owner): void
+    {
+        $this->owner = $owner;
+    }
+
+
 
     /**
      * @param User $student
@@ -104,13 +154,4 @@ class TeacherGroup
         $this->students->removeElement($student);
     }
 
-    public function getOwner()
-    {
-        return $this->owner;
-    }
-
-    public function setOwner($owner): void
-    {
-        $this->owner = $owner;
-    }
 }
