@@ -20,8 +20,8 @@
             {% if item.route == 'friend_requests' %}
                 ({{ requestsCount }})
             {% endif %}
-            {% if item.route == 'dialog_list' and newMessagesCount[1] != 0 %}
-                <span id="messages-counter">(+{{ newMessagesCount[1] }})</span>
+            {% if item.route == 'chat_list' and newMessagesCount != 0 %}
+                <span id="messages-counter">(+{{ newMessagesCount }})</span>
             {% endif %}
             {% if item.route == 'profile_topics_list' %}
                 ({{ countTopics[1] }})

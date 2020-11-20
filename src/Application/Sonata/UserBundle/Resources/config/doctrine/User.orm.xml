@@ -42,12 +42,6 @@
                 mapped-by="user"
         />
 
-        <many-to-many
-                field="dialogs"
-                mappedBy="users"
-                target-entity="Application\Sonata\UserBundle\Entity\Dialog"
-        />
-
         <one-to-many
                 field="topics"
                 target-entity="ThoughtBundle\Entity\Topic"

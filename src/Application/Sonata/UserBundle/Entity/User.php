@@ -14,10 +14,12 @@ namespace Application\Sonata\UserBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 use ThoughtBundle\Entity\Chain;
 use ThoughtBundle\Entity\ChainComment;
+use ThoughtBundle\Entity\Chat;
 use ThoughtBundle\Entity\Like;
 use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\ThoughtRelated;
@@ -111,9 +113,9 @@ class User extends BaseUser
     protected $friends;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Application\Sonata\UserBundle\Entity\Dialog", mappedBy="users")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ChatParticipant", mappedBy="user")
      */
-    protected $dialogs;
+    protected $chatsParticipant;
 
     /**
      * @ORM\Column(name="confirm", type="boolean",)
@@ -165,10 +167,57 @@ class User extends BaseUser
 
     public function __construct()
     {
-        $this->dialogs = new ArrayCollection();
         $this->teacherGroup = new ArrayCollection();
         $this->studentsGroup = new ArrayCollection();
         parent::__construct();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChatsParticipant()
+    {
+        return $this->chatsParticipant;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMyDialogs(): Collection
+    {
+        $chatCollection = $this->chatsParticipant->map(function ($value) {
+            return $value->getChat();
+        });
+
+        return $chatCollection;
+    }
+
+    /**
+     * @param User $user
+     * @return Chat|null
+     */
+    public function findPrivateDialogWithUser(User $user) {
+        foreach ($this->getMyDialogs() as $chat) {
+            if ($chat->getUsers()->contains($user) AND $chat->getChatType() === Chat::PRIVATE) {
+                return $chat;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNewMessageCount() {
+        $count = 0;
+
+        foreach ($this->getMyDialogs() as $chat) {
+            if ($chat->isNotReadMessages($this)) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 
     /**
@@ -237,35 +286,6 @@ class User extends BaseUser
 
         return false;
     }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getDialogs()
-    {
-        return $this->dialogs;
-    }
-
-    /**
-     * @param ArrayCollection $dialogs
-     */
-    public function setDialogs($dialogs)
-    {
-        $this->dialogs = $dialogs;
-    }
-
-    /**
-     * @param Dialog $dialog
-     * @return User
-     */
-    public function addDialog($dialog)
-    {
-        $dialog->addUser($this);
-        $this->dialogs[] = $dialog;
-
-        return $this;
-    }
-
 
     public function getRoles()
     {

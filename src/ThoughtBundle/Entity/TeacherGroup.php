@@ -50,12 +50,15 @@ class TeacherGroup
      */
     private $owner;
 
-
+    /**
+     * @ORM\OneToOne(targetEntity="Chat", mappedBy="customer")
+     * @ORM\JoinColumn(name="chat_id", referencedColumnName="id", nullable=true)
+     */
+    private $chat;
 
     public function __construct() {
         $this->students = new ArrayCollection();
     }
-
 
 
     /**
@@ -98,6 +101,14 @@ class TeacherGroup
         return $this->owner;
     }
 
+    /**
+     * @return Chat
+     */
+    public function getChat()
+    {
+        return $this->chat;
+    }
+
 //  Setters
 
     /**
@@ -138,13 +149,22 @@ class TeacherGroup
         $this->owner = $owner;
     }
 
-
+    /**
+     * @param Chat $chat
+     */
+    public function setChat(Chat $chat): void
+    {
+        $this->chat = $chat;
+    }
 
     /**
      * @param User $student
      */
     public function addStudent(User $student) {
         $this->students->add($student);
+        if (!is_null($this->chat)) {
+            $this->chat->addUser($student);
+        }
     }
 
     /**

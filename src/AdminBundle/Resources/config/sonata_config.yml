@@ -7,7 +7,7 @@ sonata_admin:
     information:
       ALL: ALL
   templates:
-    layout:  ThoughtBundle::Sonata/Admin/layout.html.twig
+    layout:  AdminBundle::layout.html.twig
 
 sonata_block:
   default_contexts: [cms]

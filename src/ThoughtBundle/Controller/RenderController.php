@@ -45,14 +45,14 @@ class RenderController extends Controller
         /** @var RequestStack $requestStack */
         $requestStack = $this->get('request_stack');
 
-        $count       = $this->getDoctrine()->getRepository(Message::class)->getCountNewMessages($user);
+        $newMessageCount       = $user->getNewMessageCount();
         $countTopics = $this->getDoctrine()->getRepository(Topic::class)->getCountUserTopics($user);
         if (!$mobile) {
             return $this->render('@Thought/Profile/menu.html.twig', [
                 'menu'             => $menu,
                 'routeName'        => $routeName,
                 'thoughts'         => $thoughts,
-                'newMessagesCount' => $count,
+                'newMessagesCount' => $newMessageCount,
                 'countTopics'      => $countTopics,
                 'userProfileId'    => $requestStack->getMasterRequest()->get('userId'),
             ]);
@@ -61,7 +61,7 @@ class RenderController extends Controller
                 'menu'             => $menu,
                 'routeName'        => $routeName,
                 'thoughts'         => $thoughts,
-                'newMessagesCount' => $count,
+                'newMessagesCount' => $newMessageCount,
                 'countTopics'      => $countTopics,
                 'userProfileId'    => $requestStack->getMasterRequest()->get('userId'),
             ]);

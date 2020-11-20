@@ -8,7 +8,11 @@
 
     <div class="group-page">
 
-        <button class="group-page__chat-btn btn btn-info">Group chat</button>
+        {% if group.chat is null %}
+            <a class="group-page__chat-btn btn btn-info" href="{{ path('new_group_chat', {'groupId': group.id}) }}">Group chat</a>
+        {% else %}
+            <a class="group-page__chat-btn btn btn-info" href="{{ path('group_chat', {'groupId': group.id}) }}">Group chat</a>
+        {% endif %}
 
         <div class="topic-lesson">
             <div class="topic-lesson__title">

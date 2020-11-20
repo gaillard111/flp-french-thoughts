@@ -1,0 +1,58 @@
+{% extends "@Thought/Profile/layout.html.twig" %}
+
+{% form_theme form 'bootstrap_3_layout.html.twig' %}
+
+{% block sonata_profile_title %}
+    {% if chat.chatType == constant('PRIVATE', chat) %}
+        {% for user in chat.users %}
+            {% if user != app.user %}
+                Chat with {{ user.firstname }}
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {{ group.title }}
+    {% endif %}
+{% endblock %}
+
+{% block sonata_profile_content %}
+    <div class="chat col-md-11 col-md-offset-1 col-xs-12">
+        <div class="chat__wrapper">
+            {% if not chat.messages.empty %}
+                <ul class="chat__list-messages">
+                    {% for message in chat.messages %}
+                        <li class="chat_row">
+                            <div class="chat-message {% if message.sender == app.user %} chat_message--right {% endif %} panel panel-info">
+                                <div class="chat-message__heading panel-heading">
+                                    <div class="chat-message__sender">{{ message.sender.fullName }}</div>
+                                    <div class="chat-message__date">{{ message.createdAt|date('Y-m-d H:i') }}</div>
+                                </div>
+                                <div class="panel-body">{{ message.content }}</div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="chat__message-not-found">No messages yet, start a conversation</div>
+            {% endif %}
+        </div>
+        <div class="chat__input-form">
+            {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_widget(form.message) }}
+            </div>
+            <div class="chat__send-btn">
+                {{ form_widget(form.send, {'attr': {'class': 'btn btn-info'}}) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $().ready(function () {
+            $('.chat__list-messages').scrollTop($('.chat__list-messages')[0].scrollHeight);
+        });
+    </script>
+{% endblock %}

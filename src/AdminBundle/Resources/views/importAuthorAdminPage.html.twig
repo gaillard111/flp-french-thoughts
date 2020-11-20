@@ -1,4 +1,4 @@
-{% extends 'ThoughtBundle:Sonata/Admin:layout.html.twig' %}
+{% extends '@Admin/layout.html.twig' %}
 
 {% block breadcrumb %}
     <li>
@@ -6,7 +6,7 @@
             {% trans %}Dashboard{% endtrans %}
         </a>
     </li>
-    <li class="active">{{ 'sonata.admin.importPage.title'|trans }}</li>
+    <li class="active">{{ 'sonata.admin.importAuthorPage.title'|trans }}</li>
 {% endblock %}
 
 {% block content %}
@@ -15,11 +15,11 @@
             <div class="col-xs-12 col-md-12">
                 <div class="box box-primary" style="margin-bottom: 100px;">
                     <div class="box-body">
-                        <h1>{{ 'sonata.admin.importPage.title'|trans }}</h1>
+                        <h1>{{ 'sonata.admin.importAuthorPage.title'|trans }}</h1>
                         <form class="form-horizontal" enctype="multipart/form-data" method="post">
                             <div class="form-group">
                                 <label class="control-label col-sm-2">
-                                    {{ 'sonata.admin.importPage.title'|trans }}
+                                    {{ 'sonata.admin.importAuthorPage.title'|trans }}
                                 </label>
                                 <div class="col-sm-5">
                                     <input type="file" name="export_file" class="form-control">

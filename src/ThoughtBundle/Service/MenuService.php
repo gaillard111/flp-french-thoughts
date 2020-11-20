@@ -58,7 +58,7 @@ class MenuService
 
         $menu[] = [
             'label' => $this->translator->trans('user.dialogs.title'),
-            'route' => 'dialog_list',
+            'route' => 'chat_list',
         ];
 
         $menu[] = [

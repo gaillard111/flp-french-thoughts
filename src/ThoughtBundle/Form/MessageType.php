@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Sonata\UserBundle\Form\Type;
+namespace ThoughtBundle\Form;
 
 use Application\Sonata\UserBundle\Entity\Message;
 use Symfony\Component\Form\AbstractType;
@@ -14,27 +14,16 @@ class MessageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('messageText', TextareaType::class, [
+            ->add('message', TextareaType::class, [
                 'attr' => [
-                    'class' => 'form-control',
-                ],
-                'label'    => 'user.dialogs.message_text',
-                'required' => false,
+                    'placeholder' => 'Type a message'
+                ]
             ])
-            ->add('submit', SubmitType::class, [
-                'attr' => [
-                    'class' => 'btn btn-info pull-right',
-                ],
+            ->add('send', SubmitType::class, [
                 'label' => 'user.dialogs.message_submit',
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => Message::class,
-        ]);
-    }
 
     public function getBlockPrefix()
     {

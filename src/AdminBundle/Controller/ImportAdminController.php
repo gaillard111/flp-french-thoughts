@@ -1,6 +1,6 @@
 <?php
 
-namespace ThoughtBundle\Controller;
+namespace AdminBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CoreController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -41,7 +41,7 @@ class ImportAdminController extends CoreController
             }
         }
 
-        return $this->render('@Thought/Sonata/Admin/importAdminPage.html.twig', [
+        return $this->render('@Admin/importAdminPage.html.twig', [
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool'),
             'blocks'        => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),
@@ -70,7 +70,7 @@ class ImportAdminController extends CoreController
             }
         }
 
-        return $this->render('@Thought/Sonata/Admin/importAuthorAdminPage.html.twig', [
+        return $this->render('@Admin/importAuthorAdminPage.html.twig', [
             'base_template' => $this->getBaseTemplate(),
             'admin_pool'    => $this->container->get('sonata.admin.pool'),
             'blocks'        => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks'),

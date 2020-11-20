@@ -9,6 +9,7 @@ user:
         title:          Mes messages
         message_text:   Un message
         message_submit: Envoyer un message
+        create_dialog:  Create dialog
         send_message:   Send message
         reply:          Répondre
 

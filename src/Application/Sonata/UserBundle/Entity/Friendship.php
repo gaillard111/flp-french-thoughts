@@ -40,6 +40,16 @@ class Friendship
      */
     private $accepted = false;
 
+
+    /**
+     * Get id
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
     /**
      * @return bool
      */
@@ -86,16 +96,6 @@ class Friendship
     public function setUser($user)
     {
         $this->user = $user;
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

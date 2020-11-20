@@ -1,5 +1,7 @@
 /*@import 'quote.css';*/
 @import "profile.css";
+@import "chat.css";
+
 
 body {
     display: flex;
@@ -649,6 +651,11 @@ p.quote_title a {
     padding: 5px;
     border-bottom: 1px solid #ddd;
 }
+
+.message_preview--new-message {
+    background-color: #edf3ff;
+}
+
 div.panel-heading {
     margin: 0;
 }

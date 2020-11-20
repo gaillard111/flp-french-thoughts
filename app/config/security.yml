@@ -43,5 +43,7 @@ security:
         - { path: ^/admin/, role: [ROLE_MODERATOR] }
         - { path: ^/profile/, role: [ROLE_USER, ROLE_STUDENT] }
         - { path: ^//teacher/, role: [ROLE_TEACHER] }
+        - { path: ^/chat/, role: [IS_AUTHENTICATED_FULLY] }
+        - { path: ^/group/, role: [IS_AUTHENTICATED_FULLY] }
         - { path: ^/topics, role: [ROLE_USER, ROLE_STUDENT] }
         - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }

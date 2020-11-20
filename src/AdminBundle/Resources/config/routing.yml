@@ -21,8 +21,8 @@ sonata:
 #admin import
 sonata_admin_custompage:
   pattern:  /admin/thought/import-thought
-  defaults: { _controller: 'ThoughtBundle:ImportAdmin:importAdminPage' }
+  defaults: { _controller: 'AdminBundle:ImportAdmin:importAdminPage' }
 
 sonata_admin_author_import:
   pattern:  /admin/thought/import-author
-  defaults: { _controller: 'ThoughtBundle:ImportAdmin:importAdminPageAuthor' }
+  defaults: { _controller: 'AdminBundle:ImportAdmin:importAdminPageAuthor' }
