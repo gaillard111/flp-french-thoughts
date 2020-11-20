@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "96776ac087828776222fcb84b28fe683",
+    "content-hash": "8aa947425caaf3583056a7cfcd719bd3",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -2267,16 +2267,16 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "3.40.0",
+            "version": "3.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "4b69967503c35dea1eb70d4cc8d42d5132839cfa"
+                "reference": "4124620fd655629be6d60c384b0b058c871c60fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/4b69967503c35dea1eb70d4cc8d42d5132839cfa",
-                "reference": "4b69967503c35dea1eb70d4cc8d42d5132839cfa",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/4124620fd655629be6d60c384b0b058c871c60fd",
+                "reference": "4124620fd655629be6d60c384b0b058c871c60fd",
                 "shasum": ""
             },
             "require": {
@@ -2368,7 +2368,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2018-10-06T20:52:53+00:00"
+            "time": "2018-11-23T18:51:42+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
