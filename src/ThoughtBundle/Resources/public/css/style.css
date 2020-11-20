@@ -558,6 +558,11 @@ label.required:after{
     cursor: pointer;
 }
 
+.chain-link__topic-title {
+    margin: 0px 10px 0px 20px;
+    color: #0a303a;
+}
+
 .chain-edit {
     display: inline;
     margin-left: 10px;

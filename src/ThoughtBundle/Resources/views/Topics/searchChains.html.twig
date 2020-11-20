@@ -16,6 +16,9 @@
                 {% for chain in chains %}
                     <div class="chain-link" data-chain="{{ chain.id }}">
                         <a>{{ chain.name }}</a>
+                        {% if chain.topic is not null %}
+                            <span class="chain-link__topic-title"> ( {{ chain.topic.name }} ) </span>
+                        {% endif %}
                         <div class="chain-edit">
                             <a href="{{ path('chain_page', {'chainId': chain.id }) }}" class="open-chain glyphicon glyphicon-link" aria-hidden="true"></a>
                             {% if chain.user == app.user %}
