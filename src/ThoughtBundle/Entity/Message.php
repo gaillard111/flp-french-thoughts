@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Message
  *
  * @ORM\Table(name="chat_messages")
- * @ORM\Entity(repositoryClass="Application\Sonata\UserBundle\Repository\MessageRepository")
+ * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks()
  */
 class Message
@@ -53,12 +53,6 @@ class Message
      * @param $sender
      * @param string $content
      */
-
-    /**
-     * @var string
-     * @ORM\Column(name="isViewed", type="integer")
-     */
-    private $isViewed;
 
     public function __construct(User $sender, string $content, Chat $chat)
     {
