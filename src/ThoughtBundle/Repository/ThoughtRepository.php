@@ -59,7 +59,6 @@ class ThoughtRepository extends EntityRepository
      */
     public function getLastThoughts($limit, $sortField, $sortDirection, $role)
     {
-
         $qb = $this->createQueryBuilder('t')
             ->select('t')
             ->leftJoin('t.owner', 'u')
@@ -68,10 +67,10 @@ class ThoughtRepository extends EntityRepository
         ;
 
         if ($role !== User::ROLE_STUDENT and $role !== User::ROLE_TEACHER){
-            $qb->andWhere('u.roles NOT LIKE :role1 AND u.roles NOT LIKE :role2 OR t.owner is null');
+            $qb->andWhere('u.roles NOT IN (:role1, :role2) OR t.owner is null');
             $qb->setParameters([
-                'role1' => '%'. User::ROLE_STUDENT. '%',
-                'role2' => '%'. User::ROLE_TEACHER. '%'
+                'role1' => serialize([User::ROLE_STUDENT]),
+                'role2' => serialize([User::ROLE_TEACHER])
             ]);
         }
 
