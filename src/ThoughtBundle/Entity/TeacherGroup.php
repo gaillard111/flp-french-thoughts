@@ -51,7 +51,7 @@ class TeacherGroup
     private $owner;
 
     /**
-     * @ORM\OneToOne(targetEntity="Chat", mappedBy="customer")
+     * @ORM\OneToOne(targetEntity="Chat", mappedBy="group")
      * @ORM\JoinColumn(name="chat_id", referencedColumnName="id", nullable=true)
      */
     private $chat;

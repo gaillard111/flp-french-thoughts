@@ -23,7 +23,7 @@ class ChatParticipant
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ThoughtBundle\Entity\Chat", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="ThoughtBundle\Entity\Chat", inversedBy="participants")
      * @ORM\JoinColumn(name="chat_id", referencedColumnName="id", nullable=false)
      */
     private $chat;
