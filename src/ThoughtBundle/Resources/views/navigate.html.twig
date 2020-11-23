@@ -24,8 +24,10 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">Utilisateurs<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ path('user_list') }}">Users list</a></li>
-                        {% if app.user.role == 'ROLE_ADMIN' or app.user.role == 'ROLE_TEACHER' or app.user.role == 'ROLE_SUPER_ADMIN' %}
+                        {% if app.user.role == 'ROLE_ADMIN' or app.user.role == 'ROLE_SUPER_ADMIN' or app.user.role == 'ROLE_TEACHER' %}
                             <li><a href="{{ path('students_list') }}">Etudiants</a></li>
+                        {% endif %}
+                        {% if  app.user.role == 'ROLE_ADMIN' or app.user.role == 'ROLE_SUPER_ADMIN' %}
                             <li><a href="{{ path('teachers_list') }}">Enseignants</a></li>
                         {% endif %}
                     </ul>

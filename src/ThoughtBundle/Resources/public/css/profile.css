@@ -7,6 +7,10 @@
     width: 600px;
 }
 
+.student-list-table > tbody tr:nth-of-type(2n) {
+    background-color: #f7f7f7;
+}
+
 .student-list-table thead {
     background-color: #52a4da;
     color: white;
@@ -34,6 +38,10 @@
 .teacher-list-table thead {
     background-color: #52a4da;
     color: white;
+}
+
+.teacher-list-table > tbody tr:nth-of-type(2n) {
+    background-color: #f7f7f7;
 }
 
 .teacher-list-table__email-head {
