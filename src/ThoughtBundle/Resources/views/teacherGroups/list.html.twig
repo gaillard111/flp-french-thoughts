@@ -38,7 +38,7 @@
                            href="{{ path('teacher_group_edit', {'id':  group.id}) }}"
                            data-toggle="tooltip"
                            data-placement="bottom"
-                           title="Edit Group"
+                           title="{{ 'teacher.group.edit_group'|trans }}"
                         >
                             <span class="glyphicon glyphicon-pencil info" aria-hidden="true"></span>
                         </a>
@@ -53,7 +53,7 @@
 
                            data-toggle="tooltip"
                            data-placement="bottom"
-                           title="Group chat"
+                           title="{{ 'teacher.group.chat'|trans }}"
                            style="margin-left: 20px"
                         >
                             <span class="glyphicon glyphicon-envelope info" aria-hidden="true"></span>
@@ -63,7 +63,7 @@
                            href="{{ path('teacher_group_delete', {'id':  group.id}) }}"
                            data-toggle="tooltip"
                            data-placement="bottom"
-                           title="Delete Group"
+                           title="Delete Groupe"
                            style="margin-left: 40px"
                         >
                             <span class="glyphicon glyphicon-remove text-danger" aria-hidden="true"></span>

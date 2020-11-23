@@ -13,6 +13,14 @@ user:
         send_message:   Send message
         reply:          Répondre
 
+    student:
+        list:
+            title: Liste des étudiants
+
+    teacher:
+        list:
+            title: Liste des enseignants
+
     list:
         title:          Users list
 
@@ -26,9 +34,11 @@ user:
                 placeholder: Email
             firstname:
                 label:       Nom
+                label2:      Prénom
                 placeholder: Nom
             lastname:
                 label:       Prénom ou pseudo
+                label2:      Nom de famille
                 placeholder: Prénom ou pseudo
             password:
                 label:       Mot de passe
@@ -362,12 +372,16 @@ teacher:
     group:
         title: Mes groupes
         add_groups: Ajouter groupe
+        edit_group: éditer le groupe
+        chat:   chat/discussion du groupe
 
     student_list:
-        title: Student list
+        title: liste des élèves
 
     create_group:
         title: Ajouter groupe
+        group_name: Nom de la classe/groupe
+        topic_new_lesson: Sujet du cours
         create_button: Ajouter
 
     student:
@@ -382,5 +396,5 @@ student:
         title: Mes groupes
 
 sandbox:
-    teacher_mode: mode enseignant
-    student_mode: mode étudiant
+    teacher_mode: Mode enseignant
+    student_mode: Mode étudiant

@@ -3,11 +3,15 @@
 namespace ThoughtBundle\Controller\Profile;
 
 use Application\Sonata\UserBundle\Entity\Dialog;
+use Application\Sonata\UserBundle\Entity\Friendship;
 use Application\Sonata\UserBundle\Entity\Message;
+use Application\Sonata\UserBundle\Entity\User;
 use Application\Sonata\UserBundle\Form\Type\MessageType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig_Error;
 
 /**
  * @Route("/profile")
@@ -59,6 +63,61 @@ class FriendController extends Controller
         return $this->render('@Thought/Profile/Friends/friendrequests.html.twig', [
             'friendships' => $friendRequests,
         ]);
+    }
+
+
+    /**
+     * @Route("/friendrequest/{userId}", name="friend_request")
+     * @param int $userId
+     * @return RedirectResponse
+     * @throws Twig_Error
+     */
+    public function friendRequestAction($userId)
+    {
+        $entityManager = $this->container->get('doctrine.orm.entity_manager');
+        /** @var User $user */
+        $user = $this->getUser();
+        /** @var User $friend */
+        $friend = $entityManager->getRepository(User::class)->find($userId);
+
+        if ($user && $friend) {
+            $friendship = $entityManager->getRepository(Friendship::class)->isFriend($user, $friend);
+
+            if (!$friendship) {
+                $friendship = new Friendship();
+                $friendship->setUser($user);
+                $friendship->setFriend($friend);
+
+                $entityManager->persist($friendship);
+                $entityManager->flush();
+
+                $mail = $this->get('thought.service.mail_service');
+                $mail->friendNotificationMail($user, $friend, $friendship->getId());
+            }
+        }
+
+        return $this->redirectToRoute('friends');
+    }
+
+    /**
+     * @Route("/friendrequest/accept/{requestId}", name="accept_friend_request")
+     * @param int $requestId
+     * @return RedirectResponse
+     */
+    public function acceptRequestAction($requestId)
+    {
+        $entityManager = $this->container->get('doctrine.orm.entity_manager');
+        /** @var Friendship $friendship */
+        $friendship = $entityManager->getRepository(Friendship::class)->find($requestId);
+
+        if ($this->getUser() != $friendship->getUser() && $friendship) {
+            $friendship->setAccepted(true);
+
+            $entityManager->persist($friendship);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('friends');
     }
 
     /**

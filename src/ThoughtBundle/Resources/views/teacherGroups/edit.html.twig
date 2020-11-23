@@ -12,7 +12,7 @@
         {{ form_start(form, {'attr': {'id': 'group-form'}}) }}
         <div class="form-group">
             <div class="col-sm-6">
-                <label for="inputGroupName">Group Name</label>
+                <label for="inputGroupName">{{ 'teacher.create_group.group_name'|trans }}</label>
                 {{ form_widget(form.title, {'attr': {'id': 'inputGroupName'}}) }}
             </div>
         </div>
@@ -20,7 +20,7 @@
     <div class="row">
         <div class="form-group margin-top-20">
             <div class="col-sm-8">
-                <label for="inputGroupLesson">Topic of new lesson</label>
+                <label for="inputGroupLesson">{{ 'teacher.create_group.topic_new_lesson'|trans }}</label>
                 {{ form_widget(form.topicNewLesson, {'attr': {'style': 'resize: none;'}}) }}
             </div>
         </div>
@@ -30,7 +30,7 @@
     <div class="row margin-top-20">
         <div class="col-sm-7">
             <div class="panel panel-info">
-                <div class="panel-heading">Students list</div>
+                <div class="panel-heading">{{ 'teacher.student_list.title'|trans }}</div>
                 <div class="panel-body">
                         {{ form_start(searchForm, {'attr': {'class': 'form-inline'}}) }}
                             {{ form_row(searchForm.searchField) }}

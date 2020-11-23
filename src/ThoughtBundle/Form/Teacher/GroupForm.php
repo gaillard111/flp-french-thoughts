@@ -23,7 +23,7 @@ class GroupForm extends AbstractType
                     'rows'=>'5',
                     'cols' => '60',
                     'maxlength' => '1000',
-                    'placeholder' => 'Topic of new lesson',
+                    'placeholder' => 'teacher.create_group.topic_new_lesson',
                 ]
             ])
         ;

@@ -18,13 +18,13 @@ class ProfileForm extends AbstractType
 
             ])
             ->add('username', EmailType::class, [
-
+                'label' => 'user.form.registration.username.label'
             ])
             ->add('firstname', TextType::class, [
-
+                'label' => 'user.form.registration.firstname.label2'
             ])
             ->add('lastname', TextType::class, [
-
+                'label' => 'user.form.registration.lastname.label2'
             ])
             ->add('Save', SubmitType::class, [
                 'attr' => [
