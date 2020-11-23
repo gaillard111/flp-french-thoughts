@@ -376,7 +376,7 @@ teacher:
         chat:   chat/discussion du groupe
 
     student_list:
-        title: liste des élèves
+        title: Liste des élèves
 
     create_group:
         title: Ajouter groupe
