@@ -265,6 +265,14 @@ th {
     margin-top: auto;
 }
 
+.footer > .container-fluid {
+    padding-left: 0px;
+}
+
+.footer .fork-me-button {
+    width: 100px;
+}
+
 a.underline{
     text-decoration: underline;
 }
