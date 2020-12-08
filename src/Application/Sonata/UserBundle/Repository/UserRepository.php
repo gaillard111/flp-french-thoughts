@@ -27,12 +27,12 @@ class UserRepository extends EntityRepository
         return $qb->getQuery();
     }
 
-    public function getStudentsLike($firstName) {
+    public function getStudentsLike($userName) {
         return $this->createQueryBuilder('u')
-            ->where('u.firstname LIKE :name')
+            ->where('u.firstname LIKE :name OR u.lastname LIKE :name')
             ->andWhere('u.roles LIKE :roles')
             ->setParameters([
-                'name' => '%' . $firstName . '%',
+                'name' => '%' . $userName . '%',
                 'roles' => '%' . User::ROLE_STUDENT . '%',
             ])
             ->getQuery()

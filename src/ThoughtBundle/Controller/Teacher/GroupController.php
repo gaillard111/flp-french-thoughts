@@ -182,7 +182,7 @@ class GroupController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function searchAuthor(Request $request): Response
+    public function searchStudent(Request $request): Response
     {
         $q = $request->query->get('q');
         $results = $this->getDoctrine()->getRepository(User::class)->getStudentsLike($q);

@@ -1,21 +1,12 @@
-{% set check1 = false %}
-{% set check2 = false %}
-
-{% if is_granted('ROLE_STUDENT') or is_granted('ROLE_TEACHER') %}
-    {% set check1 = true %}
+{% set teacherCheck = false %}
+{% if thought.owner.roles is defined and
+    ('ROLE_STUDENT' in thought.owner.roles or 'ROLE_TEACHER' in thought.owner.roles) %}
+    {% set teacherCheck = true %}
 {% endif %}
 
-{% if thought.owner.roles is defined and ('ROLE_STUDENT' in thought.owner.roles or 'ROLE_TEACHER' in thought.owner.roles) %}
-    {% set check2 = true %}
-{% endif %}
-
-{% if check1 == check2 %}
-    {% set check = true %}
-{% else %}
-    {% set check = false %}
-{% endif %}
-
-{% if app.user and check %}
+{% if app.user and (app.user.getRole != 'ROLE_TEACHER' or
+    (app.user.getRole == 'ROLE_TEACHER' and teacherCheck))
+%}
     <div class="chain-selector">
         <div class="quote_chain" id="thought-{{ thought.id }}">
             <div class="btn-group">

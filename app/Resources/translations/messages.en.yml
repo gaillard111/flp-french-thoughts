@@ -166,3 +166,8 @@ chain:
         created: Created
         private: Is private
         quantity_quotes: Quantity Quotes
+
+student:
+    group:
+        title: My groups
+        empty_list: You have not added to any group yet

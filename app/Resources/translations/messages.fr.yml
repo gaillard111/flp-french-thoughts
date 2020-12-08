@@ -394,6 +394,7 @@ teacher:
 student:
     group:
         title: Mes groupes
+        empty_list: Vous n'êtes dans aucun groupe
 
 sandbox:
     teacher_mode: Mode enseignant
