@@ -82,11 +82,10 @@ class Chat
      */
     public function addUser(User $user)
     {
-        if ($this->getUsers()->contains($user)) {
-            throw new \LogicException('The user is already in this chat');
+        if (!$this->getUsers()->contains($user)) {
+            $participant = new ChatParticipant($this, $user, new \DateTime("now"));
+            $this->participants->add($participant);
         }
-        $participant = new ChatParticipant($this, $user, new \DateTime("now"));
-        $this->participants->add($participant);
     }
 
     /**
