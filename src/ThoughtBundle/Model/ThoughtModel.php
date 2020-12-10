@@ -1068,7 +1068,7 @@ class ThoughtModel
             ],
         ]);
 
-        $authors = $this->authorsFinder->find($query, 5000);
+        $authors = $this->authorsFinder->find($query);
 
         $names = [];
 
