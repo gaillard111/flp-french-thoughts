@@ -60,15 +60,13 @@ class HomepageController extends Controller
 
         $search = $serviceSearch->preSearch($request->get('search'));
 
-        $default = $request->query->get('default');
-
         $role = User::ROLE_USER;
 
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $role = $this->getUser()->getRole();
         }
 
-        $thoughts = $modelThought->getThoughts($search, $default, $role, $page);
+        $thoughts = $modelThought->getThoughts($search, $role, $page);
 
         /** @var PaginationInterface|Thought[] $pagination */
         $pagination = $paginator->paginate(

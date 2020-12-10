@@ -121,9 +121,9 @@ class ThoughtModel
      *
      * @return PaginatorAdapterInterface|Thought[]
      */
-    public function getThoughts($search, $default, $role, $page = 1)
+    public function getThoughts($search, $role, $page = 1)
     {
-        if ($search || $default) {
+        if ($search) {
             /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $this->getThoughtsFromElastic($search, $page, $role);
         } else {
@@ -140,10 +140,10 @@ class ThoughtModel
     public function getThoughtsFromElastic($request, $page, $role)
     {
         $fields = [
-            'tags',
-            'author',
             'content',
             'category',
+            'tags',
+            'author',
             'thoughtInfo',
         ];
 
@@ -168,7 +168,6 @@ class ThoughtModel
                 ];
             }
         }
-
         $terms = [];
         if (isset($request['term']) && in_array(!null, $request['term'])) {
             $terms = $this->getTerms($request['term']);
@@ -250,11 +249,11 @@ class ThoughtModel
             }
 
             $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors);
+
             return $this->finder->createPaginatorAdapter($query);
         }
 
         $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors);
-//        dump($this->finder->find($query));die;
 
         return $this->finder->createPaginatorAdapter($query);
     }
@@ -464,11 +463,6 @@ class ThoughtModel
                         'multi_match' => [
                             'query'                => $words,
                             'fields'               => $fields,
-                            'minimum_should_match' => '100%',
-                            'type'                 => 'cross_fields',
-                            'operator'             => 'and',
-                            'tie_breaker'          => '1.0',
-                            'analyzer'             => 'standard',
                         ],
                     ],
                     'filter' => [
@@ -482,7 +476,6 @@ class ThoughtModel
             ],
             'sort' => $sort,
         ]);
-
         return $query;
     }
 
@@ -533,8 +526,6 @@ class ThoughtModel
                         'multi_match' => [
                             'query'                => $words,
                             'fields'               => $fields,
-                            'operator'             => 'and',
-                            'minimum_should_match' => '100%',
                         ],
                     ],
                     'filter' => [
