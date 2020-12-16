@@ -121,9 +121,9 @@ class ThoughtModel
      *
      * @return PaginatorAdapterInterface|Thought[]
      */
-    public function getThoughts($search, $default, $role, $page = 1)
+    public function getThoughts($search, $role, $page = 1)
     {
-        if ($search || $default) {
+        if ($search) {
             /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $this->getThoughtsFromElastic($search, $page, $role);
         } else {
