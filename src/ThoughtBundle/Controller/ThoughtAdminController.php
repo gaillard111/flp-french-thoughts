@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminBundle\Controller;
+namespace ThoughtBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
