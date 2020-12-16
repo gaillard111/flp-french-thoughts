@@ -146,7 +146,7 @@ fos_elastica:
                 content:
                   type:     "string"
                   index:    "analyzed"
-                  analyzer: new_analyzer
+                  analyzer: app_analyzer
                 content_exact:
                   type:     "string"
                   index:    "not_analyzed"
@@ -167,7 +167,7 @@ fos_elastica:
                 author:
                   type:     "string"
                   index:    "analyzed"
-                  analyzer: new_analyzer
+                  analyzer: app_analyzer
                 author_exact:
                   type:     "string"
                   index:    "not_analyzed"
@@ -185,7 +185,7 @@ fos_elastica:
                 tags:
                   type:     "string"
                   index:    "analyzed"
-                  analyzer: new_analyzer
+                  analyzer: app_analyzer
                 tags_exact:
                   type:     "string"
                   index:    "not_analyzed"
@@ -201,7 +201,7 @@ fos_elastica:
               type: "multi_field"
               fields:
                 thoughtInfo:
-                  analyzer: new_analyzer
+                  analyzer: app_analyzer
                   type:  "string"
                   index: "analyzed"
                 thoughtInfo_exact:
@@ -219,7 +219,7 @@ fos_elastica:
                 category:
                   type:  "string"
                   index: "analyzed"
-                  analyzer: new_analyzer
+                  analyzer: app_analyzer
                 category_exact:
                   type:     "string"
                   index:    "not_analyzed"
@@ -234,7 +234,7 @@ fos_elastica:
             amount:
               type: "integer"
             likesCount:
-                type: "integer"
+              type: "integer"
             createdAt:
               type: "date"
             ownerStudent:
@@ -252,11 +252,6 @@ fos_elastica:
         index:
           analysis:
             analyzer:
-              new_analyzer:
-                type: custom
-                char_filter:  [html_strip]
-                tokenizer: standard
-                filter: [lowercase, stop, snowball]
               app_analyzer:
                 type: custom
                 tokenizer: whitespace
@@ -282,7 +277,7 @@ fos_elastica:
                 max_gram: 20
               stopwords:
                 type:      stop
-#                stopwords: [_french_]
+                #                stopwords: [_french_]
                 ignore_case : true
               my_word_delimiter:
                 catenate_words: true

@@ -17,7 +17,7 @@
 
     <p class="quote_title">
         <span>
-            <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[sorting]': 'category'}) }}">
+            <a href="{{ path('thought_homepage_index', {'search[words]': thought.category, 'search[field][category]': 'on', 'search[strict]': 'on'}) }}">
                 {{ thought.category }}
             </a>
         </span>
@@ -31,13 +31,13 @@
             {% endif %}
 
             {% if is_granted('ROLE_MODERATOR') %}
-                    <span class="quote_edit">
+                <span class="quote_edit">
                         <a href="{{ path('admin_thought_thought_edit', {'id': thought.id}) }}">
                             {{ 'user.thought.list_page.link.edit'|trans }}
                         </a>
                     </span>
             {% elseif editThought%}
-                    <span class="quote_edit">
+                <span class="quote_edit">
                         <a href="{{ path('sonata_user_thought_edit', {'id': thought.id}) }}">
                             {{ 'user.thought.list_page.link.edit'|trans }}
                         </a>
@@ -53,7 +53,7 @@
     <p>
         <strong>{{ 'thought.property.author'|trans|capitalize }}:</strong>
         <span class="author">
-            <a href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on', 'search[sorting]': 'author'}) }}">
+            <a href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">
                 {{ thought.author }}
             </a>
         </span>
@@ -147,7 +147,7 @@
                                     {{ relatedThought.relatedThought.category }} ({{ userFriends[relatedThought.owner.id] }})
                                 </a>
                                 {% if relatedThought.owner == app.user  %}
-                                     &ensp;
+                                    &ensp;
                                     <a href="{{ path('unlink-quotes', {'thoughtRelatedId': relatedThought.id}) }}"
                                        class="message-button"
                                        data-toggle="tooltip"

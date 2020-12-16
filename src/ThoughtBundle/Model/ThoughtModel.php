@@ -121,9 +121,9 @@ class ThoughtModel
      *
      * @return PaginatorAdapterInterface|Thought[]
      */
-    public function getThoughts($search, $role, $page = 1)
+    public function getThoughts($search, $default, $role, $page = 1)
     {
-        if ($search) {
+        if ($search || $default) {
             /** @var PaginatorAdapterInterface $thoughts */
             $thoughts = $this->getThoughtsFromElastic($search, $page, $role);
         } else {
@@ -140,10 +140,10 @@ class ThoughtModel
     public function getThoughtsFromElastic($request, $page, $role)
     {
         $fields = [
-            'content',
-            'category',
             'tags',
             'author',
+            'content',
+            'category',
             'thoughtInfo',
         ];
 
@@ -168,6 +168,7 @@ class ThoughtModel
                 ];
             }
         }
+
         $terms = [];
         if (isset($request['term']) && in_array(!null, $request['term'])) {
             $terms = $this->getTerms($request['term']);
@@ -249,11 +250,11 @@ class ThoughtModel
             }
 
             $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors);
-
             return $this->finder->createPaginatorAdapter($query);
         }
 
         $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors);
+//        dump($this->finder->find($query));die;
 
         return $this->finder->createPaginatorAdapter($query);
     }
@@ -442,14 +443,14 @@ class ThoughtModel
         $query = new Query();
 
         $must = [
-             [
-                 'range' => [
-                     'amount' => [
-                         'gte' => $minWords,
-                         'lte' => $maxWords,
-                     ],
-                 ],
-             ],
+            [
+                'range' => [
+                    'amount' => [
+                        'gte' => $minWords,
+                        'lte' => $maxWords,
+                    ],
+                ],
+            ],
         ];
 
         if (!empty($terms)) {
@@ -463,6 +464,11 @@ class ThoughtModel
                         'multi_match' => [
                             'query'                => $words,
                             'fields'               => $fields,
+                            'minimum_should_match' => '100%',
+                            'type'                 => 'cross_fields',
+                            'operator'             => 'and',
+                            'tie_breaker'          => '1.0',
+                            'analyzer'             => 'standard',
                         ],
                     ],
                     'filter' => [
@@ -476,6 +482,7 @@ class ThoughtModel
             ],
             'sort' => $sort,
         ]);
+
         return $query;
     }
 
@@ -496,10 +503,10 @@ class ThoughtModel
 
         if ($role == User::ROLE_USER) {
             $boolSearchArray[] = [
-                    'term' => [
-                        'ownerStudent' => true,
-                    ],
-                ];
+                'term' => [
+                    'ownerStudent' => true,
+                ],
+            ];
         }
 
         $query = new Query();
@@ -526,6 +533,8 @@ class ThoughtModel
                         'multi_match' => [
                             'query'                => $words,
                             'fields'               => $fields,
+                            'operator'             => 'and',
+                            'minimum_should_match' => '100%',
                         ],
                     ],
                     'filter' => [
@@ -850,7 +859,7 @@ class ThoughtModel
     private function filterWord($word)
     {
         $word = preg_replace('/\'/', '', $word);
-//        $word = preg_replace('/\-/', '', $word);
+        $word = preg_replace('/\-/', '', $word);
 
         return $word;
     }
@@ -1068,7 +1077,7 @@ class ThoughtModel
             ],
         ]);
 
-        $authors = $this->authorsFinder->find($query);
+        $authors = $this->authorsFinder->find($query, 5000);
 
         $names = [];
 
