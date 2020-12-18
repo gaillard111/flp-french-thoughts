@@ -1,3 +1,24 @@
+var HasTooltip = $('.hastooltip');
+HasTooltip.on('click', function(e) {
+    e.preventDefault();
+    var isShowing = $(this).data('isShowing');
+    HasTooltip.removeData('isShowing');
+    if (isShowing !== 'true')
+    {
+        HasTooltip.not(this).tooltip('hide');
+        $(this).data('isShowing', "true");
+        $(this).tooltip('show');
+    }
+    else
+    {
+        $(this).tooltip('hide');
+    }
+
+}).tooltip({
+    animation: true,
+    trigger: 'manual'
+});
+
  $(".chains-selector .chain").click(function () {
      var $this = $(this);
     if (!$this.hasClass('disabled')) {
