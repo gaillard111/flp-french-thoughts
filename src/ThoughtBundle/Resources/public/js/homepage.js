@@ -102,16 +102,6 @@ $(document).ready(function() {
 
     });
 
-    setInterval(function () {
-        $.ajax({
-            url:        "{{ path('ajax_counter') }}",
-            method:     "POST",
-            success:    function (data) {
-                $("#messages-counter").html('(+' + data['count'][1] + ')');
-            }
-        });
-    }, 30000);
-
     $("input[name='search[author][avjc]']").click(function () {
         let $birthDateField = $("input[name='search[author][birthDate]']");
 
