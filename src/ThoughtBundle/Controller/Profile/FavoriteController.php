@@ -4,8 +4,10 @@ namespace ThoughtBundle\Controller\Profile;
 
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\ORM\OptimisticLockException;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use ThoughtBundle\Entity\Thought;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,12 +20,23 @@ class FavoriteController extends Controller
     /**
      * @Route("/favorite", name="favorite-list")
      */
-    public function favoriteQuotesAction()
+    public function favoriteQuotesAction(Request $request)
     {
-        $likedThoughts = $this->getDoctrine()->getRepository(Thought::class)->getLikedThoughts($this->getUser());
+        /** @var PaginationInterface $paginator */
+        $paginator = $this->get('knp_paginator');
+
+        $likedThoughts = $this->getDoctrine()
+            ->getRepository(Thought::class)
+            ->getLikedThoughts($this->getUser());
+
+        $pagination = $paginator->paginate(
+            $likedThoughts,
+            $request->query->getInt('page', 1),
+            20
+        );
 
         return $this->render('@Thought/Profile/favorite_list.html.twig', [
-            'thoughts' => $likedThoughts,
+            'thoughts_pagination' => $pagination,
         ]);
     }
 
@@ -89,7 +102,7 @@ class FavoriteController extends Controller
      */
     public function exportFavoriteToCsvAction()
     {
-        $likedThoughts = $this->getDoctrine()->getRepository(Thought::class)->getLikedThoughts($this->getUser());
+        $likedThoughts = $this->getDoctrine()->getRepository(Thought::class)->getLikedThoughts($this->getUser())->getResult();
         $response      = new StreamedResponse();
 
         $response->setCallback(function () use ($likedThoughts) {

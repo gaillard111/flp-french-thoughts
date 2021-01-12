@@ -21,7 +21,7 @@ class ThoughtRepository extends EntityRepository
             ->where('l.user = :user')
             ->setParameter('user', $user);
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery();
     }
 
     /**

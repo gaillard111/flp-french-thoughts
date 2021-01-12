@@ -25,3 +25,8 @@ sonata_user:
   admin:
     user:
       class: AdminBundle\Controller\UserAdmin
+
+sonata_exporter:
+  exporter:
+    default_writers:
+      - csv

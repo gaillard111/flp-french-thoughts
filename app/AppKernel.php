@@ -34,6 +34,7 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Tetranz\Select2EntityBundle\TetranzSelect2EntityBundle(),
+            new Sonata\Exporter\Bridge\Symfony\Bundle\SonataExporterBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {

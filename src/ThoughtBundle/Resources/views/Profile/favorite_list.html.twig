@@ -18,7 +18,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for thought in thoughts %}
+                {% for thought in thoughts_pagination %}
                     <tr>
                         <td>
                             <span data-toggle="tooltip" data-html="true" data-placement="bottom" title="{{ include('@Thought/also_liked_tooltip.html.twig') }}">
@@ -33,6 +33,9 @@
                 {% endfor %}
                 </tbody>
             </table>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(thoughts_pagination) }}
+            </div>
         </div>
     </div>
 </div>

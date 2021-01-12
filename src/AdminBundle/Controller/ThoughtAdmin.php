@@ -108,25 +108,27 @@ class ThoughtAdmin extends AbstractAdmin
      */
     public function getExportFormats()
     {
-        return [
-            'txt',
-            //'csv',
-        ];
+        return ['csv'];
     }
 
-    /**
-     * @return array
-     */
-    public function getExportFields()
+//    /**
+//     * @return array
+//     */
+//    public function getExportFields()
+//    {
+//        return [
+//            'id',
+//            'content',
+//            'tags',
+//            'author',
+//            'thoughtInfo',
+//            '',
+//        ];
+//    }
+
+    protected function configureExportFields(): array
     {
-        return [
-            'id',
-            'content',
-            'tags',
-            'author',
-            'thoughtInfo',
-            'category',
-        ];
+        return ['id', 'content', 'tags', 'author', 'thoughtInfo', 'category', ''];
     }
 
     public function toString($object)
