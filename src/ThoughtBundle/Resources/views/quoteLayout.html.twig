@@ -53,7 +53,7 @@
     <p>
         <strong>{{ 'thought.property.author'|trans|capitalize }}:</strong>
         <span class="author">
-            <a href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">
+            <a href="{{ path('thought_homepage_index', {'search[words]': thought.author, 'search[filter_open]': '', 'search[field][author]': 'on', 'search[sorting]': ''}) }}">
                 {{ thought.author }}
             </a>
         </span>

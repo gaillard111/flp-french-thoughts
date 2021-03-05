@@ -115,7 +115,7 @@ class AppExtension extends \Twig_Extension
             $lastSimbol -= $countItem;
         }
 
-        if (mb_strlen($resultString) > $length && $link) {
+        if (mb_strlen($string) > $length && $link) {
             $resultString .= '... ' .
                 '<a href="' . $link . '">' .
                 $this->container->get('translator')->trans('content.link_more') .

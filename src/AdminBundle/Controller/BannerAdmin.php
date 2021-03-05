@@ -13,7 +13,6 @@ namespace AdminBundle\Controller;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use ThoughtBundle\Entity\Author;
 use ThoughtBundle\Entity\Banner;
 use ThoughtBundle\Entity\DynamicPage;
 

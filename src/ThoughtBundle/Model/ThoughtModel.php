@@ -858,8 +858,8 @@ class ThoughtModel
      */
     private function filterWord($word)
     {
-        $word = preg_replace('/\'/', '', $word);
-        $word = preg_replace('/\-/', '', $word);
+        $word = preg_replace('/\'/', ' ', $word);
+        $word = preg_replace('/\-/', ' ', $word);
 
         return $word;
     }

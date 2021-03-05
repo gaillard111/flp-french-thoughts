@@ -11,7 +11,7 @@
         <p><strong>{{ 'author.filter.fields.job.label'|trans }}:</strong> <span>{{ author.job }}</span></p>
         <p><strong>{{ 'author.filter.fields.continent.label'|trans }}:</strong> <span>{{ author.continent }}</span></p>
 
-        <a href="{{ path('thought_homepage_index', {'search[words]': author.name, 'search[field][author]': 'on', 'search[strict]': 'on'}) }}">
+        <a href="{{ path('thought_homepage_index', {'search[words]': author.name, 'search[filter_open]': '', 'search[field][author]': 'on', 'search[sorting]': ''}) }}">
             {{ 'Author thoughts'|trans }}
         </a>
     </div>
