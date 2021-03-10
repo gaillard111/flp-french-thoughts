@@ -223,7 +223,7 @@ class ThoughtModel
                 continue;
             }
             if ($valueArrWords[0] == '-') {
-                $wordExceptions[] = strtolower($this->filterWord($valueArrWords));
+                $wordExceptions[] = strtolower(preg_replace('/\-/', '', $valueArrWords));
                 unset($arrWords[$keyArrWords]);
             }
         }
@@ -498,7 +498,6 @@ class ThoughtModel
      */
     public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors)
     {
-
         $boolSearchArray = $filterException;
 
         if ($role == User::ROLE_USER) {
@@ -879,14 +878,12 @@ class ThoughtModel
                 $arrWords = [];
 
                 foreach ($words as $word) {
-                    $arrWords[] = [
+                    $result[] = [
                         'term' => [
                             $field => $word,
                         ],
                     ];
                 }
-
-                $result[] = $arrWords;
             }
         }
 
