@@ -61,17 +61,12 @@ class ProfileVoter extends Voter
             return true;
         }
 
-        if ((
-                $security->isGranted('ROLE_STUDENT') ||
-                $security->isGranted('ROLE_TEACHER')
-            )
+        if (( $security->isGranted('ROLE_STUDENT') || $security->isGranted('ROLE_TEACHER')  || $security->isGranted('ROLE_ADMIN'))
             ===
-            (
-                in_array('ROLE_STUDENT', $requestedUser->getRoles()) ||
-                in_array('ROLE_TEACHER', $requestedUser->getRoles())
-            )){
-                return true;
-                }
+            (in_array('ROLE_STUDENT', $requestedUser->getRoles()) || in_array('ROLE_TEACHER', $requestedUser->getRoles())))
+        {
+            return true;
+        }
 
 
         return false;
