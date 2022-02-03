@@ -242,8 +242,6 @@ class ThoughtModel
             return $this->finder->createPaginatorAdapter($query);
         }
 
-        $words = $this->filterWord($words);
-
         if (count(explode(' ', $words)) > 1) {
             if ($request['sorting'] == '') {
                 $sort = ['amount' => 'asc'];
@@ -805,7 +803,7 @@ class ThoughtModel
                     $terms[] = [
                         'query' => [
                             'match_phrase' => [
-                                $key . '_phrase' => $val,
+                                $key . '_phrase' => preg_replace('/\-/', ' ', $val),
                             ],
                         ],
                     ];
@@ -813,7 +811,7 @@ class ThoughtModel
                     $terms[] = [
                         'query' => [
                             'match' => [
-                                $key . '_phrase' => $val,
+                                $key . '_phrase' => preg_replace('/\-/', ' ', $val),
                             ],
                         ],
                     ];
@@ -848,19 +846,6 @@ class ThoughtModel
         $weight = ceil((self::CLOUD_MIN_FONT_WEIGHT * sqrt($val) / 100)) * 100;
 
         return $weight > 900 ? 900 : $weight;
-    }
-
-    /**
-     * @param string $word
-     *
-     * @return string
-     */
-    private function filterWord($word)
-    {
-        $word = preg_replace('/\'/', ' ', $word);
-        $word = preg_replace('/\-/', ' ', $word);
-
-        return $word;
     }
 
     /**
