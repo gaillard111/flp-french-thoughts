@@ -151,6 +151,10 @@ class ThoughtModel
             $fields = array_keys($request['field']);
         }
 
+        foreach ($fields as $field) {
+            $fields[] = $field . '_dop';
+        }
+
         $authors = [];
         if (isset($request['author']) && in_array(!null, $request['author'])) {
 
@@ -246,13 +250,9 @@ class ThoughtModel
             if ($request['sorting'] == '') {
                 $sort = ['amount' => 'asc'];
             }
-
-            $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors);
-            return $this->finder->createPaginatorAdapter($query);
         }
 
-        $query = $this->searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors);
-//        dump($this->finder->find($query));die;
+        $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors);
 
         return $this->finder->createPaginatorAdapter($query);
     }
@@ -438,8 +438,6 @@ class ThoughtModel
             ];
         }
 
-        $query = new Query();
-
         $must = [
             [
                 'range' => [
@@ -455,6 +453,9 @@ class ThoughtModel
             $must[] = $terms;
         }
 
+        $words = strtolower($words);
+
+        $query = new Query();
         $query->setParams([
             'query' => [
                 'filtered' => [
@@ -466,7 +467,7 @@ class ThoughtModel
                             'type'                 => 'cross_fields',
                             'operator'             => 'and',
                             'tie_breaker'          => '1.0',
-                            'analyzer'             => 'standard',
+                            'analyzer'             => 'whitespace',
                         ],
                     ],
                     'filter' => [
@@ -476,71 +477,6 @@ class ThoughtModel
                             'must'     => $must,
                         ],
                     ],
-                ],
-            ],
-            'sort' => $sort,
-        ]);
-
-        return $query;
-    }
-
-    /**
-     * @param string $words
-     * @param array  $fields
-     * @param int    $minWords
-     * @param int    $maxWords
-     * @param array  $sort
-     * @param array  $filterException
-     *
-     * @return Query
-     */
-    public function searchWord($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors)
-    {
-        $boolSearchArray = $filterException;
-
-        if ($role == User::ROLE_USER) {
-            $boolSearchArray[] = [
-                'term' => [
-                    'ownerStudent' => true,
-                ],
-            ];
-        }
-
-        $query = new Query();
-
-        $must = [
-            [
-                'range' => [
-                    'amount' => [
-                        'gte' => $minWords,
-                        'lte' => $maxWords,
-                    ],
-                ],
-            ],
-        ];
-
-        if (!empty($terms)) {
-            $must[] = $terms;
-        }
-
-        $query->setParams([
-            'query' => [
-                'filtered' => [
-                    'query' => [
-                        'multi_match' => [
-                            'query'                => $words,
-                            'fields'               => $fields,
-                            'operator'             => 'and',
-                            'minimum_should_match' => '100%',
-                        ],
-                    ],
-                    'filter' => [
-                        'bool' => [
-                            'must_not' => $boolSearchArray,
-                            'should'     => $authors,
-                            'must'     => $must,
-                        ]
-                    ]
                 ],
             ],
             'sort' => $sort,

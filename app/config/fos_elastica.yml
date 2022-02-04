@@ -146,7 +146,11 @@ fos_elastica:
                 content:
                   type:     "string"
                   index:    "analyzed"
-                  analyzer: app_analyzer
+                  analyzer: main_analyzer
+                content_dop:
+                  type: "string"
+                  index: "analyzed"
+                  analyzer: without_preposition_analyzer
                 content_exact:
                   type:     "string"
                   index:    "not_analyzed"
@@ -167,7 +171,11 @@ fos_elastica:
                 author:
                   type:     "string"
                   index:    "analyzed"
-                  analyzer: app_analyzer
+                  analyzer: main_analyzer
+                author_dop:
+                  type: "string"
+                  index: "analyzed"
+                  analyzer: without_preposition_analyzer
                 author_exact:
                   type:     "string"
                   index:    "not_analyzed"
@@ -185,7 +193,11 @@ fos_elastica:
                 tags:
                   type:     "string"
                   index:    "analyzed"
-                  analyzer: app_analyzer
+                  analyzer: main_analyzer
+                tags_dop:
+                  type: "string"
+                  index: "analyzed"
+                  analyzer: without_preposition_analyzer
                 tags_exact:
                   type:     "string"
                   index:    "not_analyzed"
@@ -201,9 +213,13 @@ fos_elastica:
               type: "multi_field"
               fields:
                 thoughtInfo:
-                  analyzer: app_analyzer
                   type:  "string"
                   index: "analyzed"
+                  analyzer: main_analyzer
+                thoughtInfo_dop:
+                  type: "string"
+                  index: "analyzed"
+                  analyzer: without_preposition_analyzer
                 thoughtInfo_exact:
                   type:  "string"
                   index: "not_analyzed"
@@ -219,7 +235,11 @@ fos_elastica:
                 category:
                   type:  "string"
                   index: "analyzed"
-                  analyzer: app_analyzer
+                  analyzer: main_analyzer
+                category_dop:
+                  type: "string"
+                  index: "analyzed"
+                  analyzer: without_preposition_analyzer
                 category_exact:
                   type:     "string"
                   index:    "not_analyzed"
@@ -252,10 +272,20 @@ fos_elastica:
         index:
           analysis:
             analyzer:
+              main_analyzer:
+                type: custom
+                char_filter:  [html_strip]
+                tokenizer: whitespace
+                filter   : [app_ngram, lowercase]
+              without_preposition_analyzer:
+                type: custom
+                char_filter: [ html_strip ]
+                tokenizer: whitespace
+                filter: [ app_ngram, lowercase, remove_preposition]
               app_analyzer:
                 type: custom
-                tokenizer: whitespace
                 char_filter:  [html_strip]
+                tokenizer: whitespace
                 filter   : [app_ngram, my_asciifolding, lowercase, my_word_delimiter]
               app_sort_analizer:
                 type: custom
@@ -270,14 +300,19 @@ fos_elastica:
                 tokenizer: whitespace
                 filter   : [my_asciifolding, lowercase, my_word_delimiter]
             tokenizer:
+              my_edge_ngram_tokenizer:
+                type: edgeNGram
+                min_gram: 2
+                max_gram: 20
+                token_chars: [letter, digit, punctuation, symbol]
             filter:
               app_ngram:
-                type: "nGram"
+                type: "edgeNGram"
                 min_gram: 1
                 max_gram: 20
               stopwords:
                 type:      stop
-                #                stopwords: [_french_]
+                stopwords: [_french_]
                 ignore_case : true
               my_word_delimiter:
                 catenate_words: true
@@ -285,6 +320,7 @@ fos_elastica:
               my_asciifolding:
                 type: asciifolding
                 preserve_original: true
-#              french:
-#                type:     "icu_collation"
-#                language: "fr"
+              remove_preposition:
+                type: pattern_replace
+                pattern: "^.{1,3}'"
+                replacement: ""
