@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('bundles/thought/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
     <link rel="stylesheet" href="{{ asset('bundles/thought/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/thought/bvi/css/bvi.min.css') }}" >
     {% block stylesheets %}{% endblock %}
     <script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -40,6 +41,7 @@
     <script src="https://cdn.ckeditor.com/4.11.1/standard/ckeditor.js"></script>
 </head>
 <body>
+<a href="#" class="className">Button visually impaired</a>
     {% if is_granted('ROLE_STUDENT') %}
         <div class="top-alert orange"> {{ 'sandbox.student_mode'|trans }} </div>
     {% elseif is_granted('ROLE_TEACHER')%}
@@ -81,6 +83,7 @@
     <script src="{{ asset('bundles/thought/js/notice_script.js') }}"></script>
     <script src="{{ asset('bundles/thought/js/popup_script.js') }}"></script>
     <script src="{{ asset('bundles/thought/js/script.js') }}"></script>
+    <script src="{{ asset('bundles/thought/bvi/bvi.min.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
@@ -96,6 +99,13 @@
                 });
             });
         })(jQuery);
+        new isvek.Bvi({
+            target: '.className',
+            fontSize: 18,
+            theme: 'green',
+            lang: 'en-US'
+            //...etc
+        });
     </script>
 {% block javascripts %}{% endblock %}
 
