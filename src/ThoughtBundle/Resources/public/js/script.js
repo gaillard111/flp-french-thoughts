@@ -9,7 +9,7 @@ $(function() {
             quoteId = button.data('quote');
 
         $.ajax({
-            url : Routing.generate('thought-like', {'thoughtId': quoteId}),
+            url : Routing.generate('thought-like') + '/' + quoteId,
             dataType: "json",
             success: function(data) {
                 badge.text(data.count);
@@ -20,17 +20,13 @@ $(function() {
                     badge.hide();
                 }
 
-                if (data.result == 'add') {
+                if (data.count == 'added') {
                     badgeText.text('Aimé');
                 } else {
                     badgeText.text("J'aime");
                 }
             }
         });
-    });
-
-    $(".like-popup").click(function () {
-        $("#likeModal").modal('show');
     });
 
     $('.jumbotron .add_chain').on('click', function(e){

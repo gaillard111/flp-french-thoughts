@@ -75,21 +75,18 @@ class Thought
      */
     protected $owner;
 
-
-    public function getOwnerStudent()
-    {
-        if ($this->getOwner() !== null) {
-            return in_array('ROLE_STUDENT', $this->getOwner()->getRoles());
-        }
-        return false;
-    }
-
     /**
      * @var ArrayCollection|Like[]
      *
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Like", mappedBy="thought", cascade={"persist"})
      */
     protected $likes;
+
+    /**
+     * @var Integer
+     * @ORM\Column(type="integer")
+     */
+    protected $likesCount = 0;
 
     /**
      * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Comment", mappedBy="thought", orphanRemoval=true)
@@ -120,11 +117,6 @@ class Thought
      */
     protected $inverseRelatedThoughts;
 
-    public function likesCount()
-    {
-        return $this->likes->count();
-    }
-
 
     public function __construct()
     {
@@ -144,6 +136,48 @@ class Thought
     {
         return $this->id;
     }
+
+    public function getOwnerStudent()
+    {
+        if ($this->getOwner() !== null) {
+            return in_array('ROLE_STUDENT', $this->getOwner()->getRoles());
+        }
+        return false;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLikesCount(): int
+    {
+        return $this->likesCount;
+    }
+
+    public function getTotalLikes()
+    {
+        return $this->likesCount + count($this->likes);
+    }
+
+    /**
+     * @param int $likesCount
+     */
+    public function setLikesCount(int $likesCount): void
+    {
+        $this->likesCount = $likesCount;
+    }
+
+    public function incrementLikeCount(): void
+    {
+        $this->likesCount++;
+    }
+
+    public function reduceLikeCount(): void
+    {
+        if ($this->likesCount > 0) {
+            $this->likesCount--;
+        }
+    }
+
 
     /**
      * Set content

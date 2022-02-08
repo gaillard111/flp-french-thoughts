@@ -66,12 +66,12 @@
                 {% if cloud|length > 0  %}
                     <div class="row">
                         <div class="form-group col-sm-12">
-                            <a id="cloud_button" style="cursor: pointer; border-bottom: 1px dashed #337ab7; text-decoration: none;">
-                                {{ 'thought.filter.cloud_tags'|trans }}
-                            </a>
+                            <span style="border-bottom: 1px dashed #337ab7; text-decoration: none;">
+                                {{ 'thought.filter.cloud_tags'|trans }}:
+                            </span>
                         </div>
                     </div>
-                    <div id="cloud_block" class="col-sm-12 margin-bottom-17 hidden">
+                    <div id="cloud_block" class="col-sm-12 margin-bottom-17">
                         {% for word, size in cloud %}
                             <a
                                 href="{{ path('thought_homepage_index', {

@@ -22,6 +22,7 @@ use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\ThoughtRelated;
 use ThoughtBundle\Model\ThoughtModel;
 use ThoughtBundle\Model\TopicChainModel;
+use ThoughtBundle\Repository\ThoughtRepository;
 use ThoughtBundle\Service\Search;
 
 /**
@@ -223,53 +224,50 @@ class HomepageController extends Controller
     }
 
     /**
-     * @param int     $thoughtId
-     * @param Request $request
-     *
-     * @return JsonResponse
-     *
-     * @throws OptimisticLockException
-     * @Route("/thought-likes/{thoughtId}", name="thought-like", requirements={"offerId" = "\d+"}, options={"expose"=true})
+     * @Route("/thought/like/{id}", name="thought-like", requirements={"id" = "\d+"}, options={"expose"=true})
+     * @ParamConverter("thought", options={"mapping"={"id"="id"}})
      */
-    public function likeAction($thoughtId, Request $request)
+    public function likeAction(Request $request, Thought $thought)
     {
-        $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+        $modelThought = $this->container->get('thought.model.thought_model');
 
-        $modelThought              = $this->container->get('thought.model.thought_model');
-        $recommendedThoughtService = $this->container->get('thought.recommended_thought');
-        /** @var Thought $thought */
-        $thought = $em->getRepository('ThoughtBundle:Thought')->find($thoughtId);
 
-        $result = 'add';
+        $user = $this->getUser();
 
-        if (!$thought) {
-            return new JsonResponse([
-                'success' => false,
-                'message' => 'Quote not found',
-            ]);
-        }
-        /** @var Like[] $likes */
-        $likes = $thought->getLikes();
+        $result = 'added';
 
-        if (isset($likes)) {
-            foreach ($likes as $like) {
-                if ($like->getUser() === $this->getUser()) {
-                    $ourLike = $like;
-                }
+        if ($user)
+        {
+            if ($modelThought->isLiked($thought, $user)) {
+                $modelThought->removeLike($thought, $user);
+                $result = 'removed';
+            } else {
+                $modelThought->addLike($thought, $user);
             }
-        }
-
-        if (isset($ourLike)) {
-            $thought = $modelThought->removeLike($thought, $this->getUser());
-            $result  = 'remove';
         } else {
-            $thought = $modelThought->addLike($thought, $this->getUser());
-            $recommendedThoughtService->addWatchedThought($this->getUser(), $thought);
+
+            if (!$session->has('likes')) {
+                $session->set('likes', []);
+            }
+
+            $sessionLikesArray = $session->get('likes');
+
+            if (($key = array_search($thought->getId(), $sessionLikesArray)) !== false) {
+                unset($sessionLikesArray[$key]);
+                $modelThought->removeSessionLike($thought);
+                $result = 'removed';
+            } else {
+                $sessionLikesArray[] = $thought->getId();
+                $modelThought->addSessionLike($thought);
+            }
+
+            $session->set('likes', $sessionLikesArray);
         }
 
         return new JsonResponse([
             'result' => $result,
-            'count'  => count($thought->getLikes()),
+            'count'  => $thought->getTotalLikes(),
         ]);
     }
 }

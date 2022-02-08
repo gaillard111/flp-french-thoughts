@@ -47,17 +47,6 @@ if (document.getElementById('filters_button')) {
     }());
 }
 
-$(document).on('click', "#cloud_button", function () {
-    var $cloudBlock = $("#cloud_block");
-
-    if ($cloudBlock.hasClass("hidden")) {
-        $cloudBlock.removeClass("hidden");
-    } else {
-        $cloudBlock.addClass("hidden");
-    }
-});
-
-
 $(document).ready(function() {
 
     $(this).scroll(function () {

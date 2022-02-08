@@ -23,6 +23,8 @@ use ThoughtBundle\Entity\Thought;
  */
 class ThoughtModel
 {
+    use LikeModelTrait;
+
     const CLOUD_MIN_FONT_SIZE = 15;
 
     const CLOUD_MIN_FONT_WEIGHT = 200;
@@ -289,47 +291,6 @@ class ThoughtModel
         }
 
         return $countAdded;
-    }
-
-    /**
-     * @param Thought $thought
-     *
-     * @return Thought
-     *
-     * @throws OptimisticLockException
-     */
-    public function addLike(Thought $thought, User $user)
-    {
-        $like = new Like();
-        $like
-            ->setUser($user)
-            ->setThought($thought);
-        $thought->addLike($like);
-        $this->em->persist($thought);
-        $this->em->flush();
-        return $thought;
-    }
-
-    /**
-     * @param Thought $thought
-     *
-     * @return Thought
-     *
-     * @throws OptimisticLockException
-     */
-    public function removeLike(Thought $thought, User $user)
-    {
-        /** @var Like[] $likes */
-        $likes = $thought->getLikes();
-
-        foreach ($likes as $like) {
-            if ($like->getUser() === $user) {
-                $this->em->remove($like);
-                $this->em->flush();
-            }
-        }
-
-        return $thought;
     }
 
     /**
