@@ -598,7 +598,7 @@ class ThoughtModel
             'certains', 'c’est', 'court', 'cours', 'devrions', 'd\'une, n’est',
             'place', 'point', 'plutôt', 'pourrez', 'peuvent', 'propre', 'propres', 'peut-être',
             'quelle', 'quelques', 'qu’elle', 'qu’il', 's’est', 'selon', 'seulement', 'seules', 'serez',
-            'semble', 'souvent', 'tellement', 'vient', 'vraiment', '&lt',  '&gt', 'qu’on'
+            'semble', 'souvent', 'tellement', 'vient', 'vraiment', '&lt',  '&gt', 'qu’on', 'n\'est'
         ];
 
         if (!is_array($thoughts) && method_exists($thoughts, 'getTotalHits') && $words) {
