@@ -59,16 +59,8 @@ trait LikeModelTrait
 
     public function isLiked(Thought $thought, User $user)
     {
-        $likedThoughts = $this->em->getRepository(Thought::class)->getLikedThoughts($user)->getResult();
-
-        if (count($likedThoughts) == 0) {
-            return false;
-        }
-
-        foreach ($likedThoughts as $likedThought) {
-            if ($likedThought === $thought) {
-                return true;
-            }
+        if ( $this->em->getRepository(Like::class)->isUserLikeThought($user, $thought) ) {
+            return true;
         }
 
         return false;

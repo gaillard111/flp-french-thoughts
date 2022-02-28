@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @package ThoughtBundle\Entity
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="ThoughtBundle\Repository\LikeRepository")
  * @ORM\Table(name="likes")
  */
 class Like
