@@ -32,7 +32,7 @@ class Message
 
     /**
      * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="sender_id")
+     * @ORM\JoinColumn(name="sender_id", onDelete="SET NULL")
      */
     private $sender;
 

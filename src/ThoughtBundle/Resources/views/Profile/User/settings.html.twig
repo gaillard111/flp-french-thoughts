@@ -18,7 +18,26 @@
     <div class="panel panel-info">
         <div class="panel-heading">Profil utilisateur</div>
         <div class="panel-body">
-            {{ form(form_settings) }}
+            {{ form_start(form_settings) }}
+                {{ form_row(form_settings.email) }}
+                {{ form_row(form_settings.username) }}
+                {{ form_row(form_settings.firstname) }}
+                {{ form_row(form_settings.lastname) }}
+
+                <div class="form-group">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-6">
+                        {{ form_widget(form_settings.Save) }}
+                    </div>
+                    <div class="col-sm-4 text-right">
+                        {% if not student %}
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#remove-user-dialog-modal">
+                                Supprimer mon compte
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            {{ form_end(form_settings) }}
         </div>
     </div>
 
@@ -29,4 +48,5 @@
         </div>
     </div>
 
+    {{ include('@Thought/Profile/User/removeUserDialogModal.twig') }}
 {% endblock %}

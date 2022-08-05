@@ -12,12 +12,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use ThoughtBundle\Form\User\ProfileForm;
 use ThoughtBundle\Form\User\UserInfoForm;
+use ThoughtBundle\Model\ProfileModel;
 
 /**
  * @Route("/profile")
  */
 class SettingsController extends Controller
 {
+
     /**
      * @Route("/settings", name="my_settings")
      * @Route("/student/{user_id}", name="student_profile")
@@ -90,5 +92,18 @@ class SettingsController extends Controller
             'user'       => $user,
             'friendship' => $friendship,
         ]);
+    }
+
+    /**
+     * @Route("/remove", name="remove_profile")
+     */
+    public function removeAccount()
+    {
+        /** @var ProfileModel $profileModel */
+        $profileModel = $this->container->get('thought.model.profile_model');
+        $user = $this->getUser();
+
+        $profileModel->removeAccount($user);
+        return $this->redirectToRoute('fos_user_security_login');
     }
 }

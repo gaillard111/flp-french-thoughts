@@ -1,0 +1,16 @@
+{% extends '@Thought/include/tutorialModal.html.twig' %}
+{% block modal_id %}remove-user-dialog-modal{% endblock %}
+{% block modal_header %}
+    <div class="modal-header">
+        <h4 class="modal-title">Supprimer mon compte</h4>
+    </div>
+{% endblock %}
+{% block modal_body %}
+    <div class="modal-body margin-bottom-17">
+        Etes-vous sûr de vouloir supprimer définitivement votre compte ?
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Annuler</button>
+        <a href="{{ path('remove_profile') }}" class="btn btn-danger">Supprimer</a>
+    </div>
+{% endblock %}

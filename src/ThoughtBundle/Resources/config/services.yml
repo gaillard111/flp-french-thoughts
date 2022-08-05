@@ -20,6 +20,10 @@ services:
         class: ThoughtBundle\Model\ThoughtChainModel
         arguments: ["@doctrine.orm.entity_manager", "@service_container"]
 
+    thought.model.profile_model:
+        class: ThoughtBundle\Model\ProfileModel
+        arguments: [ "@doctrine.orm.entity_manager", "@service_container" ]
+
     thought.service.KnpMatcher:
         class: ThoughtBundle\Service\KnpMatcher
         arguments:

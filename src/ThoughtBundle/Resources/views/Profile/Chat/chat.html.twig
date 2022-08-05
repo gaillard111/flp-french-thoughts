@@ -23,7 +23,7 @@
                         <li class="chat_row">
                             <div class="chat-message {% if message.sender == app.user %} chat_message--right {% endif %} panel panel-info">
                                 <div class="chat-message__heading panel-heading">
-                                    <div class="chat-message__sender">{{ message.sender.fullName }}</div>
+                                    <div class="chat-message__sender">{{ message.sender.fullName ?? 'Utilisateur supprimé' }}</div>
                                     <div class="chat-message__date">{{ message.createdAt|date('Y-m-d H:i') }}</div>
                                 </div>
                                 <div class="panel-body">{{ message.content }}</div>

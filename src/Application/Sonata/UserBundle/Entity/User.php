@@ -48,7 +48,7 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Thought", mappedBy="owner", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\Thought", mappedBy="owner")
      */
     protected $thoughts;
 
@@ -108,17 +108,17 @@ class User extends BaseUser
     protected $friendship;
 
     /**
-     * @ORM\OneToMany(targetEntity="Application\Sonata\UserBundle\Entity\Friendship", mappedBy="friend")
+     * @ORM\OneToMany(targetEntity="Application\Sonata\UserBundle\Entity\Friendship", mappedBy="friend", orphanRemoval=true)
      */
     protected $friends;
 
     /**
-     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ChatParticipant", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ThoughtBundle\Entity\ChatParticipant", mappedBy="user", orphanRemoval=true)
      */
     protected $chatsParticipant;
 
     /**
-     * @ORM\Column(name="confirm", type="boolean",)
+     * @ORM\Column(name="confirm", type="boolean")
      */
     protected $registrationConfirm = false;
 
