@@ -165,6 +165,11 @@ class User extends BaseUser
      */
     protected $studentsGroup;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $receiveEmails;
+
     public function __construct()
     {
         $this->teacherGroup = new ArrayCollection();
@@ -562,6 +567,24 @@ class User extends BaseUser
     public function deleteThoughtFromMostFavorites(Thought $thought)
     {
         $this->mostFavoriteThoughts->removeElement($thought);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isReceiveEmails()
+    {
+        return $this->receiveEmails;
+    }
+
+    /**
+     * @param boolean $receiveEmails
+     * @return User
+     */
+    public function setReceiveEmails(bool $receiveEmails)
+    {
+        $this->receiveEmails = $receiveEmails;
+        return $this;
     }
 
     public function getRole() {

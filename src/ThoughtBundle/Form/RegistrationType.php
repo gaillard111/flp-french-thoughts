@@ -3,6 +3,7 @@
 namespace ThoughtBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class RegistrationType extends AbstractType
@@ -46,7 +47,15 @@ class RegistrationType extends AbstractType
                     ],
                 ],
                 'invalid_message' => 'user.form.registration.password.mismatch',
-
+            ])
+            ->add('termsOfService', CheckboxType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => "J'accepte les mention légales",
+            ])
+            ->add('receiveEmails', CheckboxType::class, [
+                'required' => false,
+                'label' => "J'accepte de recevoir des e-mails"
             ])
             ->add('roles', 'choice', [
                 'label'      => 'Account Type',

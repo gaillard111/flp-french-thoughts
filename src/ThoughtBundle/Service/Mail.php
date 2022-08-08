@@ -227,6 +227,14 @@ class Mail
      */
     public function sendMail($subject, $emailUser, $body, $cc = null)
     {
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        $userRepository = $em->getRepository(User::class);
+        $user = $userRepository->findOneBy(['email' => $emailUser]);
+
+        if ($user != null and !$user->isReceiveEmails()) {
+            return;
+        }
+
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setFrom($this->container->getParameter('mailer_user'))
