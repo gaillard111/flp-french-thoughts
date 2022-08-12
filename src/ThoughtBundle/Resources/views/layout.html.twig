@@ -41,7 +41,7 @@
     <script src="https://cdn.ckeditor.com/4.11.1/standard/ckeditor.js"></script>
 </head>
 <body>
-<a href="#" class="className">Button visually impaired</a>
+    {#<a href="#" class="className">Button visually impaired</a>#}
     {% if is_granted('ROLE_STUDENT') %}
         <div class="top-alert orange"> {{ 'sandbox.student_mode'|trans }} </div>
     {% elseif is_granted('ROLE_TEACHER')%}
