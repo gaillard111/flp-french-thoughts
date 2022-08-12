@@ -1,0 +1,20 @@
+{% extends '@Thought/include/tutorialModal.html.twig' %}
+{% block modal_id %}request-personal-data-modal{% endblock %}
+{% block modal_header %}
+    <div class="modal-header">
+        <h4 class="modal-title">Export de mes données</h4>
+    </div>
+{% endblock %}
+{% block modal_body %}
+    <div class="modal-body margin-bottom-17 text-center">
+        <div class="success-message d-none">
+            Votre demande a été soumise avec succès. L'administrateur vous répondra sous peu.
+        </div>
+        <div class="error-message d-none">
+            Vous avez déjà envoyé la demande. L'administrateur vous répondra sous peu.
+        </div>
+    </div>
+    <div class="modal-footer" style="text-align: center">
+        <button type="button" class="btn btn-info" data-dismiss="modal">Excellent</button>
+    </div>
+{% endblock %}

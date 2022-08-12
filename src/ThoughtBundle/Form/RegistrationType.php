@@ -52,16 +52,23 @@ class RegistrationType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'label' => "J'accepte les mention légales",
+                'attr' => [
+                    'class' => 'registration-checkbox',
+                ],
             ])
             ->add('receiveEmails', CheckboxType::class, [
                 'required' => false,
-                'label' => "J'accepte de recevoir des e-mails"
+                'label' => "J'accepte de recevoir des e-mails",
+                'attr' => [
+                    'class' => 'registration-checkbox',
+                ],
+
             ])
             ->add('roles', 'choice', [
                 'label'      => 'Account Type',
                 'data' => 'user',
                 'label_attr' => [
-                    'class' => 'col-sm-2',
+                    'class' => 'label-role',
                 ],
                 'choices' => [
                     'student' => 'S\'enregistrer comme étudiant',

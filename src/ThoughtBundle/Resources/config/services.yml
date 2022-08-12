@@ -22,7 +22,7 @@ services:
 
     thought.model.profile_model:
         class: ThoughtBundle\Model\ProfileModel
-        arguments: [ "@doctrine.orm.entity_manager", "@service_container" ]
+        arguments: [ "@doctrine.orm.entity_manager", "@thought.service.mail_service" ]
 
     thought.service.KnpMatcher:
         class: ThoughtBundle\Service\KnpMatcher

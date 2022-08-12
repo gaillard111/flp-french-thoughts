@@ -117,12 +117,20 @@ class Mail
         $this->sendMail($subject, $emailUsers, $body);
     }
 
-    /**
-     * Send email - Add new comment
-     *
-     * @param Comment $comment
-     * @throws \Exception
-     */
+    public function requestPersonalMail(User $user)
+    {
+        $subject = 'French thought: User requested personal data';
+
+        $body = $this->container->get('templating')
+            ->render('@Thought/emails/requestPersonalEmail.html.twig', [
+                'user' => $user
+            ]);
+
+        $emailUsers = $this->container->getParameter('admin_email');
+
+        $this->sendMail($subject, $emailUsers, $body);
+    }
+
     public function mailAddNewComment(Comment $comment)
     {
         $subject = 'French thought: add new comment';
@@ -229,9 +237,11 @@ class Mail
     {
         $em = $this->container->get('doctrine.orm.entity_manager');
         $userRepository = $em->getRepository(User::class);
+
+        $adminEmail = $this->container->getParameter('admin_email');
         $user = $userRepository->findOneBy(['email' => $emailUser]);
 
-        if ($user != null and !$user->isReceiveEmails()) {
+        if ($user != null and !$user->isReceiveEmails() and $user->getEmail() !== $adminEmail) {
             return;
         }
 

@@ -2,6 +2,9 @@
 @import "profile.css";
 @import "chat.css";
 
+.d-none {
+    display: none;
+}
 
 body {
     display: flex;
@@ -745,22 +748,17 @@ div.panel-heading {
     font-size: 16px;
 }
 
-.role-select {
-    display: flex;
-    flex-direction: column;
-}
-
-.role-select input {
-    margin: 10px 5px;
-    cursor: pointer;
-}
-
 .label-role {
     cursor: pointer;
+    font-weight: bold !important;
 }
 
-.role-item {
-    display: flex;
+.label-role input {
+    top: 4px;
+}
+
+.registration-checkbox {
+    top: 4px;
 }
 
 .avjc {

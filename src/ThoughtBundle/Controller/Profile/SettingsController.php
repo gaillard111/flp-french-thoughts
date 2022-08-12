@@ -4,8 +4,10 @@ namespace ThoughtBundle\Controller\Profile;
 
 use Application\Sonata\UserBundle\Entity\Friendship;
 use Application\Sonata\UserBundle\Entity\User;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -91,6 +93,30 @@ class SettingsController extends Controller
         return $this->render('@Thought/Profile/User/info.html.twig', [
             'user'       => $user,
             'friendship' => $friendship,
+        ]);
+    }
+
+    /**
+     * @Route("/request_personal_data", name="request_personal_data", methods={"POST"})
+     */
+    public function requestPersonalData()
+    {
+        /** @var ProfileModel $profileModel */
+        $profileModel = $this->container->get('thought.model.profile_model');
+
+        $user = $this->getUser();
+
+        try {
+            $profileModel->requestPersonalData($user);
+        } catch (Exception $exception) {
+            return new JsonResponse([
+                'success' => false,
+                'message' => $exception->getMessage()
+            ]);
+        }
+
+        return new JsonResponse([
+            'success' => true,
         ]);
     }
 
