@@ -1,0 +1,11 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block formactions %}
+    <div class="sonata-ba-form-actions well well-small form-actions">
+        {% block sonata_form_actions %}
+            {{ parent() }}
+        {% endblock %}
+        <a href="{{ admin.generateObjectUrl('user_export', object) }}" class="btn btn-info" style="float: right">
+            <i class="fa fa-database margin-r-5" aria-hidden="true"></i>Export</a>
+    </div>
+{% endblock %}

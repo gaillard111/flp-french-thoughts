@@ -4,11 +4,20 @@ namespace AdminBundle\Controller;
 
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\UserBundle\Admin\Model\UserAdmin as BaseUserAdmin;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
 
 class UserAdmin extends BaseUserAdmin
 {
+
+    public function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('user_export', $this->getRouterIdParameter().'/csv_export');
+    }
+
     /**
      * @inheritdoc
      */
@@ -60,6 +69,7 @@ class UserAdmin extends BaseUserAdmin
                 'required' => (!$this->getSubject() || is_null($this->getSubject()->getId())),
             ])
             ->add('enabled')
+            ->add('receiveEmails')
             ->end()
             ->with('Profile')
             ->add('firstname', null, ['required' => false])
@@ -79,6 +89,11 @@ class UserAdmin extends BaseUserAdmin
             ->end()
             ->end()
         ;
+    }
+
+    public function userExportAction()
+    {
+        return new RedirectResponse($this->generateUrl('list'));
     }
 
 }
