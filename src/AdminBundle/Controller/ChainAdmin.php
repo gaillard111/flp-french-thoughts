@@ -6,10 +6,17 @@ namespace AdminBundle\Controller;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use ThoughtBundle\Entity\Chain;
 
 class ChainAdmin extends AbstractAdmin
 {
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $formMapper
+            ->add('name');
+    }
+
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
