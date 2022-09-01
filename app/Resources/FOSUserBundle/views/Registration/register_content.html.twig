@@ -18,9 +18,9 @@
                     <div class="col-sm-2"></div>
                     <div class="col-sm-10">
                         <div class="checkbox">
-                            <label for="fos_user_registration_form_termsOfService">
-                                <input type="checkbox" id="fos_user_registration_form_termsOfService" name="fos_user_registration_form[termsOfService]" class="registration-checkbox" value="1" data-com.bitwarden.browser.user-edited="yes">
-                                {{  'user.form.registration.terms.url'|trans({'%url%': 'page/mentionslegales' }, 'messages')|raw }}
+                            <label for="terms">
+                                <input type="checkbox" id="terms" name="registration_form[terms]" class="registration-checkbox" data-com.bitwarden.browser.user-edited="yes">
+                                {{  'user.form.registration.terms.url'|trans({'%url%': '/page/mentionslegales' }, 'messages')|raw }}
                             </label>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
     $(document).ready(function () {
         let $form = $('form[name="fos_user_registration_form"]');
         $form.submit(function(event) {
-            let $tosCheckbox = $form.find('input[name="fos_user_registration_form[termsOfService]"]')
+            let $tosCheckbox = $form.find('input[name="registration_form[terms]"]')
             if (!$tosCheckbox.is(":checked")) {
                 event.preventDefault();
                 alert('Svp acceptez les mentions légales pour continuer')
