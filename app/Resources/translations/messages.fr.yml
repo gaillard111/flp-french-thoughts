@@ -44,6 +44,8 @@ user:
                 label:       Mot de passe
                 placeholder: Mot de passe
                 mismatch:    The entered passwords don't match
+            terms:
+                url:  J'accepte les <a href="%url%">Mentions Légales</a>
             verification:
                 label:       Répéter le mot de passe
                 placeholder: Répéter le mot de passe

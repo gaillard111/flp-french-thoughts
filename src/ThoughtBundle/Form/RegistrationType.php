@@ -48,14 +48,6 @@ class RegistrationType extends AbstractType
                 ],
                 'invalid_message' => 'user.form.registration.password.mismatch',
             ])
-            ->add('termsOfService', CheckboxType::class, [
-                'mapped' => false,
-                'required' => false,
-                'label' => "J'accepte les mention légales",
-                'attr' => [
-                    'class' => 'registration-checkbox',
-                ],
-            ])
             ->add('receiveEmails', CheckboxType::class, [
                 'required' => false,
                 'label' => "J'accepte de recevoir des e-mails",
