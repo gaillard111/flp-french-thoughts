@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.css" />
     <style>
         .checkbox label,
         .radio label {
@@ -13,7 +14,14 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://cdn.ckeditor.com/4.11.1/standard/ckeditor.js"></script>
+    <script type="importmap">
+        {
+            "imports": {
+                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.js",
+                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.3.1/"
+            }
+        }
+    </script>
     <script type="text/javascript">
         window.ckeditorImgUploadPath = '{{ path('ckeditor_image_upload') }}';
     </script>
