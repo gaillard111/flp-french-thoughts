@@ -414,7 +414,7 @@ class ThoughtModel
             $must[] = $terms;
         }
 
-        $words = strtolower($words);
+        $words = mb_strtolower($words, 'UTF-8');
 
         $query = new Query();
         $query->setParams([
@@ -843,7 +843,7 @@ class ThoughtModel
         if (!empty($request['name'])) {
             $name      = explode(' ', trim($request['name']));
             $firstname = array_shift($name);
-            $firstname = strtolower($firstname);
+            $firstname = mb_strtolower($firstname, 'UTF-8');
             $terms['name'] = [
                 'regexp' => [
                     'name' => [
@@ -888,7 +888,7 @@ class ThoughtModel
             $terms['country'] = [
                 'regexp' => [
                     'country' => [
-                        'value' => $request['country'] . '.*|.*' . $request['country'],
+                        'value' => mb_strtolower($request['country'], 'UTF-8') . '.*|.*' . mb_strtolower($request['country'], 'UTF-8'),
                     ],
                 ],
             ];
@@ -898,7 +898,7 @@ class ThoughtModel
             $terms['continent'] = [
                 'regexp' => [
                     'continent' => [
-                        'value' => $request['continent'] . '.*|.*' . $request['continent'],
+                        'value' => mb_strtolower($request['continent'], 'UTF-8') . '.*|.*' . mb_strtolower($request['continent'], 'UTF-8'),
                     ],
                 ],
             ];
@@ -908,7 +908,7 @@ class ThoughtModel
             $terms['job'] = [
                 'regexp' => [
                     'job' => [
-                        'value' => $request['job'],
+                        'value' => mb_strtolower($request['job'], 'UTF-8'),
                     ],
                 ],
             ];
