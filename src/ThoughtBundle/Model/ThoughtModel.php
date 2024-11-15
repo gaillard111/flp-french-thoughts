@@ -898,7 +898,8 @@ class ThoughtModel
             $terms['continent'] = [
                 'regexp' => [
                     'continent' => [
-                        'value' => mb_strtolower($request['continent'], 'UTF-8') . '.*|.*' . mb_strtolower($request['continent'], 'UTF-8'),
+                        'value' => mb_strtolower($request['continent'], 'UTF-8') . '.*|.*' . mb_strtolower($request['continent'], 'UTF-8') . '|'
+                        .ucfirst(mb_strtolower($request['continent'], 'UTF-8')) . '.*|.*' . ucfirst(mb_strtolower($request['continent'], 'UTF-8')),
                     ],
                 ],
             ];
