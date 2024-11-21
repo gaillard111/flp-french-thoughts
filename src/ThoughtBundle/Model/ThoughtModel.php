@@ -204,39 +204,30 @@ class ThoughtModel
 
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
-        if ($words) {
+        $arrWords = explode(' ', $words);
+        $complex = false;
+
+        foreach ($arrWords as $word) {
+            $signs = ['"', '-', '+'];
+            if ($words && (in_array($word[0], $signs) || in_array(mb_substr($word, -1), $signs))) {
+                $complex = true;
+                break;
+            }
+        }
+
+        if ($words && $complex) {
             $lastChar  = $words[mb_strlen($words) - 1];
             $firstChar = $words[0];
 
             $words = ($lastChar == ',' || $lastChar == '.' || $lastChar == '!') ? mb_substr($words, 0, -1) : $words;
             $words = ($firstChar == ',' || $firstChar == '.' || $firstChar == '!') ? mb_substr($words, 1) : $words;
 
-            $countQuote = explode('"', $words);
+            $query = $this->searchQuoteString($words, $fields, $minWords, $maxWords, $sort, $terms);
 
-            if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
-                $query = $this->searchQuoteString($countQuote[1], $fields, $minWords, $maxWords, $sort, $terms);
-
-                return $this->finder->createPaginatorAdapter($query);
-            }
+            return $this->finder->createPaginatorAdapter($query);
         }
 
-        $arrWords = explode(' ', $words);
-
-        $wordExceptions = [];
-
-        foreach ($arrWords as $keyArrWords => $valueArrWords) {
-            if (empty($valueArrWords)) {
-                continue;
-            }
-            if ($valueArrWords[0] == '-') {
-                $wordExceptions[] = strtolower(preg_replace('/\-/', '', $valueArrWords));
-                unset($arrWords[$keyArrWords]);
-            }
-        }
-
-        $words = implode(' ', $arrWords);
-
-        $filterException = $this->compileExceptions($fields, $wordExceptions);
+        $filterException = [];
 
         if (!$words) {
             $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms, $authors);
@@ -516,55 +507,29 @@ class ThoughtModel
             $must[] = $terms;
         }
 
-        if (count(explode(' ', $string)) > 1) {
-            $phraseFields = [];
-
-            foreach ($fields as $field) {
-                $phraseFields[] = $field . '_phrase';
-            }
-
-            $query->setParams([
-                'query' => [
-                    'multi_match' => [
-                        'query'                => $string,
-                        'fields'               => $phraseFields,
-                        'operator'             => 'and',
-                        'minimum_should_match' => '100%',
-                        'type'                 => 'phrase',
-                    ],
-                ],
-                'filter' => [
-                    'bool' => [
-                        'must' => $must,
-                    ],
-                ],
-                'sort' => $sort,
-            ]);
-
-            return $query;
-        }
-
-        $arrFields = [];
+        $phraseFields = [];
 
         foreach ($fields as $field) {
-            $arrFields[] = [
-                'prefix' => [
-                    ($field . '_phrase') => $string,
-                ],
-            ];
+            $phraseFields[] = $field . '_phrase';
         }
 
-        $arr = [
+        $query->setParams([
+            'query' => [
+                'simple_query_string' => [
+                    'query'                => $string,
+                    'fields'               => $phraseFields,
+                    'default_operator'     => 'and',
+                ],
+            ],
             'filter' => [
                 'bool' => [
-                    'should' => $arrFields,
-                    'must'   => $must,
+                    'must' => $must,
                 ],
             ],
             'sort' => $sort,
-        ];
+        ]);
 
-        return $query->setParams($arr);
+        return $query;
     }
 
     /**
