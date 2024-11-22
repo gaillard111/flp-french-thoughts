@@ -177,6 +177,8 @@ thought:
                 label: Auteur
             thoughtInfo:
                 label: Info
+            strict:
+                label: Recherche stricte
             advancedSearch:
                 label: Recherche  avancée
             search: Paramètres de recherches

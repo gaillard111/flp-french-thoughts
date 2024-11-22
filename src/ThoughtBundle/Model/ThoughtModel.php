@@ -196,7 +196,7 @@ class ThoughtModel
             ];
         }
 
-        $strict = isset($request['strict']) && $request['strict'];
+        $strict = isset($request['field']['strict']) && $request['field']['strict'];
 
         $maxWords = (isset($request['max_words']) && $request['max_words'] > 0) ? intval($request['max_words']) : 10000;
 
@@ -205,13 +205,32 @@ class ThoughtModel
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
         $arrWords = explode(' ', $words);
+
         $complex = false;
 
-        foreach ($arrWords as $word) {
-            $signs = ['"', '-', '+'];
-            if ($words && (in_array($word[0], $signs) || in_array(mb_substr($word, -1), $signs))) {
-                $complex = true;
-                break;
+        if ($strict && $words) {
+            $strictWords = [];
+            $filterWords = [];
+            $complex = true;
+
+            foreach ($arrWords as $word) {
+                if ($word[0] != '-' && $word[0] != '+') {
+                    $strictWords[] = $word;
+                } else {
+                    $filterWords[] = $word;
+                }
+            }
+
+            $words = '"' . implode(' ', $strictWords) . '" ' . implode(' ', $filterWords);
+        }
+
+        if (!$complex && $words) {
+            foreach ($arrWords as $word) {
+                $signs = ['"', '-', '+', '|'];
+                if (in_array($word[0], $signs) || in_array(mb_substr($word, -1), $signs)) {
+                    $complex = true;
+                    break;
+                }
             }
         }
 
