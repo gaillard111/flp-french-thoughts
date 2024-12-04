@@ -147,6 +147,10 @@ fos_elastica:
                   type:     "string"
                   index:    "analyzed"
                   analyzer: main_analyzer
+                content_ngram:
+                  type: "string"
+                  index: "analyzed"
+                  analyzer: ngram_analyzer
                 content_dop:
                   type: "string"
                   index: "analyzed"
@@ -172,6 +176,10 @@ fos_elastica:
                   type:     "string"
                   index:    "analyzed"
                   analyzer: main_analyzer
+                author_ngram:
+                  type: "string"
+                  index: "analyzed"
+                  analyzer: ngram_analyzer
                 author_dop:
                   type: "string"
                   index: "analyzed"
@@ -194,6 +202,10 @@ fos_elastica:
                   type:     "string"
                   index:    "analyzed"
                   analyzer: main_analyzer
+                tags_ngram:
+                  type: "string"
+                  index: "analyzed"
+                  analyzer: ngram_analyzer
                 tags_dop:
                   type: "string"
                   index: "analyzed"
@@ -216,6 +228,10 @@ fos_elastica:
                   type:  "string"
                   index: "analyzed"
                   analyzer: main_analyzer
+                thoughtInfo_ngram:
+                  type: "string"
+                  index: "analyzed"
+                  analyzer: ngram_analyzer
                 thoughtInfo_dop:
                   type: "string"
                   index: "analyzed"
@@ -236,6 +252,10 @@ fos_elastica:
                   type:  "string"
                   index: "analyzed"
                   analyzer: main_analyzer
+                category_ngram:
+                  type: "string"
+                  index: "analyzed"
+                  analyzer: ngram_analyzer
                 category_dop:
                   type: "string"
                   index: "analyzed"
@@ -277,6 +297,11 @@ fos_elastica:
                 char_filter:  [html_strip]
                 tokenizer: whitespace
                 filter   : [app_ngram, lowercase]
+              ngram_analyzer:
+                type: custom
+                char_filter: [ html_strip ]
+                tokenizer: keyword
+                filter: [ full_word_ngram, lowercase ]
               without_preposition_analyzer:
                 type: custom
                 char_filter: [ html_strip ]
@@ -297,7 +322,7 @@ fos_elastica:
                 filter   : [lowercase, my_asciifolding]
               app_phrase_analyzer:
                 type: custom
-                tokenizer: whitespace
+                tokenizer: keyword
                 filter   : [my_asciifolding, lowercase, my_word_delimiter]
             tokenizer:
               my_edge_ngram_tokenizer:
@@ -310,6 +335,10 @@ fos_elastica:
                 type: "edgeNGram"
                 min_gram: 1
                 max_gram: 40
+              full_word_ngram:
+                type: "nGram"
+                min_gram: 2
+                max_gram: 20
               stopwords:
                 type:      stop
                 stopwords: [_french_]

@@ -93,8 +93,8 @@ thought:
                 label: Author
             thoughtInfo:
                 label: Info
-            strict:
-                label: Strict search
+            any_letter:
+                label: Search from any letter
         max_words:
             label: max words
             options:

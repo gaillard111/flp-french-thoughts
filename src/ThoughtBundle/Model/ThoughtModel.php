@@ -153,8 +153,14 @@ class ThoughtModel
             $fields = array_keys($request['field']);
         }
 
+        $ngram = isset($request['field']['ngram']) && $request['field']['ngram'];
+        $ngramFields = [];
+
         foreach ($fields as $field) {
             $fields[] = $field . '_dop';
+            if ($ngram) {
+                $ngramFields[] = $field . '_ngram';
+            }
         }
 
         $authors = [];
@@ -208,25 +214,9 @@ class ThoughtModel
 
         $complex = false;
 
-        if ($strict && $words) {
-            $strictWords = [];
-            $filterWords = [];
-            $complex = true;
-
+        if ($words) {
             foreach ($arrWords as $word) {
-                if ($word[0] != '-' && $word[0] != '+') {
-                    $strictWords[] = $word;
-                } else {
-                    $filterWords[] = $word;
-                }
-            }
-
-            $words = '"' . implode(' ', $strictWords) . '" ' . implode(' ', $filterWords);
-        }
-
-        if (!$complex && $words) {
-            foreach ($arrWords as $word) {
-                $signs = ['"', '-', '+', '|'];
+                $signs = ['"', '-', '+',];
                 if (in_array($word[0], $signs) || in_array(mb_substr($word, -1), $signs)) {
                     $complex = true;
                     break;
@@ -241,7 +231,7 @@ class ThoughtModel
             $words = ($lastChar == ',' || $lastChar == '.' || $lastChar == '!') ? mb_substr($words, 0, -1) : $words;
             $words = ($firstChar == ',' || $firstChar == '.' || $firstChar == '!') ? mb_substr($words, 1) : $words;
 
-            $query = $this->searchQuoteString($words, $fields, $minWords, $maxWords, $sort, $terms);
+            $query = $this->searchQuoteString($words, $fields, $minWords, $maxWords, $sort, $terms, $ngram);
 
             return $this->finder->createPaginatorAdapter($query);
         }
@@ -263,6 +253,8 @@ class ThoughtModel
                 $sort = ['amount' => 'asc'];
             }
         }
+
+        $fields = array_merge($fields, $ngramFields);
 
         $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors);
 
@@ -507,11 +499,11 @@ class ThoughtModel
      *
      * @return $this|Query
      */
-    public function searchQuoteString($string, $fields, $minWords, $maxWords, $sort, $terms)
+    public function searchQuoteString($string, $fields, $minWords, $maxWords, $sort, $terms, $ngram)
     {
         $query = new Query();
 
-        $must = [
+        $mustFilter = [
             [
                 'range' => [
                     'amount' => [
@@ -523,26 +515,100 @@ class ThoughtModel
         ];
 
         if (!empty($terms)) {
-            $must[] = $terms;
+            $mustFilter[] = $terms;
         }
 
         $phraseFields = [];
+        $ngramFields = [];
 
         foreach ($fields as $field) {
-            $phraseFields[] = $field . '_phrase';
+            $phraseFields[] = $field . '_phrase^3';
+            if ($ngram) {
+                $ngramFields[] = $field . '_ngram^0.5';
+            }
+        }
+
+        $must = [];
+        $mustNot = [];
+
+        if($ngram) {
+            $stringQuotes = '';
+            $stringPlus = '';
+            $stringMinus = '';
+
+            if (preg_match_all('/"([^"]+)"/', $string, $m)) {
+                $stringQuotes = implode(' ', $m[0]);
+            }
+            foreach ($m[0] as $str) {
+                $string = str_replace($str, '', $string);
+            }
+            $string = trim($string);
+
+            foreach(explode(' ', $string) as $word) {
+                if (!isset($word[0])) {
+                    continue;
+                }
+
+                if ($word[0] == '-') {
+                    $stringMinus .= substr($word, 1) . ' ';
+                } else {
+                    $stringPlus .= $word[0] == '+' ? substr($word, 1) . ' ' : $word . ' ';
+                }
+            }
+
+            if ($stringQuotes) {
+                $must[] = [
+                    'simple_query_string' => [
+                        'query' => $stringQuotes,
+                        'fields' => $phraseFields,
+                        'default_operator' => 'and',
+                    ],
+                ];
+            }
+
+            if ($stringPlus) {
+                $must[] = [
+                    'multi_match' => [
+                        'query' => $stringPlus,
+                        'fields' => $ngramFields,
+                        'type' => 'cross_fields',
+                        'operator' => 'and',
+                        'analyzer' => 'whitespace',
+                    ],
+                ];
+            }
+
+            $mustNot = [
+                [
+                    'multi_match' => [
+                        'query' => $stringMinus,
+                        'fields' => $ngramFields,
+                        'type' => 'cross_fields',
+                        'operator' => 'and',
+                        'analyzer' => 'whitespace',
+                    ],
+                ],
+            ];
+        } else {
+            $must = [
+                'simple_query_string' => [
+                    'query' => $string,
+                    'fields' => $phraseFields,
+                    'default_operator' => 'and',
+                ],
+            ];
         }
 
         $query->setParams([
             'query' => [
-                'simple_query_string' => [
-                    'query'                => $string,
-                    'fields'               => $phraseFields,
-                    'default_operator'     => 'and',
+                'bool' => [
+                    'must' => $must,
+                    'must_not' => $mustNot,
                 ],
             ],
             'filter' => [
                 'bool' => [
-                    'must' => $must,
+                    'must' => $mustFilter,
                 ],
             ],
             'sort' => $sort,

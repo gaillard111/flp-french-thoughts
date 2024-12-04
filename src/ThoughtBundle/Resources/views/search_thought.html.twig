@@ -47,7 +47,7 @@
                                         <input type="checkbox" {{ (is_fields and 'thoughtInfo' in search.field|keys) or is_fields == false ? 'checked' : '' }} name="search[field][thoughtInfo]"> {{ 'thought.filter.fields.thoughtInfo.label'|trans }}
                                     </div>
                                     <div>
-                                        <input type="checkbox" {{ (is_fields and 'strict' in search.field|keys) ? 'checked' : '' }} name="search[field][strict]"> {{ 'thought.filter.fields.strict.label'|trans }}
+                                        <input type="checkbox" {{ (is_fields and 'ngram' in search.field|keys) ? 'checked' : '' }} name="search[field][ngram]"> {{ 'thought.filter.fields.any_letter.label'|trans }}
                                     </div>
                                 </div>
                             </div>
