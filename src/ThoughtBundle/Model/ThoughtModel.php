@@ -210,6 +210,12 @@ class ThoughtModel
 
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
+        if (strpos($words, '[a http') !== false) {
+            $query = $this->searchHyperlinkString($words, $minWords, $maxWords, $sort, $terms);
+
+            return $this->finder->createPaginatorAdapter($query);
+        }
+
         $arrWords = explode(' ', $words);
 
         $complex = false;
@@ -497,7 +503,7 @@ class ThoughtModel
      * @param int    $maxWords
      * @param array  $sort
      *
-     * @return $this|Query
+     * @return Query
      */
     public function searchQuoteString($string, $fields, $minWords, $maxWords, $sort, $terms, $ngram)
     {
@@ -605,6 +611,52 @@ class ThoughtModel
                     'must' => $must,
                     'must_not' => $mustNot,
                 ],
+            ],
+            'filter' => [
+                'bool' => [
+                    'must' => $mustFilter,
+                ],
+            ],
+            'sort' => $sort,
+        ]);
+
+        return $query;
+    }
+
+    /**
+     * @param string $string
+     * @param int    $minWords
+     * @param int    $maxWords
+     * @param array  $sort
+     *
+     * @return Query
+     */
+    public function searchHyperlinkString($string, $minWords, $maxWords, $sort, $terms)
+    {
+        $query = new Query();
+
+        $mustFilter = [
+            [
+                'range' => [
+                    'amount' => [
+                        'gte' => $minWords,
+                        'lte' => $maxWords,
+                    ],
+                ],
+            ],
+        ];
+
+        if (!empty($terms)) {
+            $mustFilter[] = $terms;
+        }
+
+        $string = str_replace(['[a', 'a]', 'http'], ['*[a', 'a]*', 'http*'], $string);
+
+        $query->setParams([
+            'query' => [
+                'wildcard' => [
+                    'content_exact' => $string,
+                ]
             ],
             'filter' => [
                 'bool' => [
