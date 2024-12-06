@@ -210,8 +210,8 @@ class ThoughtModel
 
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
-        if (strpos($words, '[a http') !== false) {
-            $query = $this->searchHyperlinkString($words, $minWords, $maxWords, $sort, $terms);
+        if (strpos($words, '[a]') !== false) {
+            $query = $this->searchHyperlinkString($words, $minWords, $maxWords, $sort, $terms, $ngram);
 
             return $this->finder->createPaginatorAdapter($query);
         }
@@ -631,7 +631,7 @@ class ThoughtModel
      *
      * @return Query
      */
-    public function searchHyperlinkString($string, $minWords, $maxWords, $sort, $terms)
+    public function searchHyperlinkString($string, $minWords, $maxWords, $sort, $terms, $ngram)
     {
         $query = new Query();
 
@@ -650,12 +650,19 @@ class ThoughtModel
             $mustFilter[] = $terms;
         }
 
-        $string = str_replace(['[a', 'a]', 'http'], ['*[a', 'a]*', 'http*'], $string);
+        $string = mb_strtolower($string);
+        preg_match_all('/\[a[^\]]*\](.*?)\[\/a\]/', $string, $matches);
+
+        if ($ngram) {
+            $string = '.*\\[a [^\\]]*\\]([^\\[]*' . $matches[1][0] . '[^\\[]*)\\[/a\\].*';
+        } else {
+            $string = '.*\\[a [^\\]]*([^\\[]*[ \\]]' . $matches[1][0] .'[^\\[]*)\\[/a\\].*';
+        }
 
         $query->setParams([
             'query' => [
-                'wildcard' => [
-                    'content_exact' => $string,
+                'regexp' => [
+                    'content_sort' => $string,
                 ]
             ],
             'filter' => [
