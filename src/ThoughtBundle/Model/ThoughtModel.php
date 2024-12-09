@@ -210,15 +210,11 @@ class ThoughtModel
 
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
-        if (strpos($words, '[a]') !== false) {
-            $query = $this->searchHyperlinkString($words, $minWords, $maxWords, $sort, $terms, $ngram);
-
-            return $this->finder->createPaginatorAdapter($query);
-        }
-
         $arrWords = explode(' ', $words);
 
         $complex = false;
+
+        $haveLink = false;
 
         if ($words) {
             foreach ($arrWords as $word) {
@@ -230,14 +226,18 @@ class ThoughtModel
             }
         }
 
-        if ($words && $complex) {
+        if (strpos($words, '[a]') !== false) {
+            $haveLink = true;
+        }
+
+        if ($words && ($complex || $haveLink)) {
             $lastChar  = $words[mb_strlen($words) - 1];
             $firstChar = $words[0];
 
             $words = ($lastChar == ',' || $lastChar == '.' || $lastChar == '!') ? mb_substr($words, 0, -1) : $words;
             $words = ($firstChar == ',' || $firstChar == '.' || $firstChar == '!') ? mb_substr($words, 1) : $words;
 
-            $query = $this->searchQuoteString($words, $fields, $minWords, $maxWords, $sort, $terms, $ngram);
+            $query = $this->searchQuoteString($words, $fields, $minWords, $maxWords, $sort, $terms, $authors, $ngram, $haveLink);
 
             return $this->finder->createPaginatorAdapter($query);
         }
@@ -505,7 +505,7 @@ class ThoughtModel
      *
      * @return Query
      */
-    public function searchQuoteString($string, $fields, $minWords, $maxWords, $sort, $terms, $ngram)
+    public function searchQuoteString($string, $fields, $minWords, $maxWords, $sort, $terms, $authors, $ngram, $haveLink)
     {
         $query = new Query();
 
@@ -532,6 +532,24 @@ class ThoughtModel
             if ($ngram) {
                 $ngramFields[] = $field . '_ngram^0.5';
             }
+        }
+        $string = mb_strtolower($string);
+
+        if ($haveLink) {
+            preg_match_all('/\[a[^\]]*\](.*?)\[\/a\]/', $string, $matches);
+
+            $linkPatterns = [];
+            foreach ($matches[1] as $match) {
+                if ($ngram) {
+                    $linkPatterns[] = '\\[a [^\\]]*\\]([^\\[]*' . $match . '[^\\[]*)\\[/a\\]';
+                } else {
+                    $linkPatterns[] = '\\[a [^\\]]*([^\\[]*[ \\]]' . $match .'[^\\[]*)\\[/a\\]';
+                }
+            }
+
+            $linkRegexpStr = '.*(' . implode('|', $linkPatterns) . ').*';
+
+            $string = trim(preg_replace('/\[a[^\]]*\](.*?)\[\/a\]/', '', $string));
         }
 
         $must = [];
@@ -596,12 +614,20 @@ class ThoughtModel
                 ],
             ];
         } else {
-            $must = [
+            $must[] = [
                 'simple_query_string' => [
                     'query' => $string,
                     'fields' => $phraseFields,
                     'default_operator' => 'and',
                 ],
+            ];
+        }
+
+        if ($haveLink) {
+            $must[] = [
+                'regexp' => [
+                    'content_sort' => $linkRegexpStr,
+                ]
             ];
         }
 
@@ -615,59 +641,7 @@ class ThoughtModel
             'filter' => [
                 'bool' => [
                     'must' => $mustFilter,
-                ],
-            ],
-            'sort' => $sort,
-        ]);
-
-        return $query;
-    }
-
-    /**
-     * @param string $string
-     * @param int    $minWords
-     * @param int    $maxWords
-     * @param array  $sort
-     *
-     * @return Query
-     */
-    public function searchHyperlinkString($string, $minWords, $maxWords, $sort, $terms, $ngram)
-    {
-        $query = new Query();
-
-        $mustFilter = [
-            [
-                'range' => [
-                    'amount' => [
-                        'gte' => $minWords,
-                        'lte' => $maxWords,
-                    ],
-                ],
-            ],
-        ];
-
-        if (!empty($terms)) {
-            $mustFilter[] = $terms;
-        }
-
-        $string = mb_strtolower($string);
-        preg_match_all('/\[a[^\]]*\](.*?)\[\/a\]/', $string, $matches);
-
-        if ($ngram) {
-            $string = '.*\\[a [^\\]]*\\]([^\\[]*' . $matches[1][0] . '[^\\[]*)\\[/a\\].*';
-        } else {
-            $string = '.*\\[a [^\\]]*([^\\[]*[ \\]]' . $matches[1][0] .'[^\\[]*)\\[/a\\].*';
-        }
-
-        $query->setParams([
-            'query' => [
-                'regexp' => [
-                    'content_sort' => $string,
-                ]
-            ],
-            'filter' => [
-                'bool' => [
-                    'must' => $mustFilter,
+                    'should' => $authors
                 ],
             ],
             'sort' => $sort,
