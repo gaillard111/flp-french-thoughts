@@ -557,7 +557,7 @@ class ThoughtModel
 
         if($ngram) {
             $stringQuotes = '';
-            $stringPlus = '';
+            $stringSpace = '';
             $stringMinus = '';
 
             if (preg_match_all('/"([^"]+)"/', $string, $m)) {
@@ -575,8 +575,10 @@ class ThoughtModel
 
                 if ($word[0] == '-') {
                     $stringMinus .= substr($word, 1) . ' ';
+                } else if ($word[0] == '+') {
+                    $stringQuotes .= ' ' . $word;
                 } else {
-                    $stringPlus .= $word[0] == '+' ? substr($word, 1) . ' ' : $word . ' ';
+                    $stringSpace .= $word . ' ';
                 }
             }
 
@@ -590,10 +592,10 @@ class ThoughtModel
                 ];
             }
 
-            if ($stringPlus) {
+            if ($stringSpace) {
                 $must[] = [
                     'multi_match' => [
-                        'query' => $stringPlus,
+                        'query' => $stringSpace,
                         'fields' => $ngramFields,
                         'type' => 'cross_fields',
                         'operator' => 'and',
@@ -614,11 +616,35 @@ class ThoughtModel
                 ],
             ];
         } else {
+            $stringMinus = '';
+            foreach(explode(' ', $string) as $word) {
+                if (!isset($word[0])) {
+                    continue;
+                }
+
+                if ($word[0] == '-') {
+                    $stringMinus .= substr($word, 1) . ' ';
+                    $string = str_replace($word, '', $string);
+                }
+            }
+
             $must[] = [
                 'simple_query_string' => [
                     'query' => $string,
                     'fields' => $phraseFields,
                     'default_operator' => 'and',
+                ],
+            ];
+
+            $mustNot = [
+                [
+                    'multi_match' => [
+                        'query' => $stringMinus,
+                        'fields' => $fields,
+                        'type' => 'cross_fields',
+                        'operator' => 'and',
+                        'analyzer' => 'whitespace',
+                    ],
                 ],
             ];
         }
