@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -9,7 +10,9 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use ThoughtBundle\Entity\Author;
 use ThoughtBundle\Entity\Thought;
+use ThoughtBundle\Repository\AuthorRepository;
 
 class ThoughtAdmin extends AbstractAdmin
 {
@@ -78,6 +81,13 @@ class ThoughtAdmin extends AbstractAdmin
             ->getUser();
 
         $thought->setOwner($user);
+
+        $this->createAuthor($thought);
+    }
+
+    public function preUpdate($thought)
+    {
+        $this->createAuthor($thought);
     }
 
 
@@ -136,5 +146,20 @@ class ThoughtAdmin extends AbstractAdmin
         return $object instanceof Thought
             ? $object->getId()
             : 'Thought';
+    }
+
+    private function createAuthor($thought)
+    {
+        /** @var AuthorRepository $authorRepo */
+        $authorRepo = $this->getConfigurationPool()->getContainer()->get('doctrine')->getRepository(Author::class);
+        $author = $authorRepo->findOneBy(['name' => $thought->getAuthor()]);
+
+        if (!$author) {
+            $author = new Author();
+            $author->setName($thought->getAuthor());
+            /** @var EntityManagerInterface $em */
+            $em = $this->getConfigurationPool()->getContainer()->get('doctrine.orm.entity_manager');
+            $em->persist($author);
+        }
     }
 }

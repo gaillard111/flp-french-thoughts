@@ -555,99 +555,65 @@ class ThoughtModel
         $must = [];
         $mustNot = [];
 
-        if($ngram) {
-            $stringQuotes = '';
-            $stringSpace = '';
-            $stringMinus = '';
+        $stringQuotes = '';
+        $stringSpace = '';
+        $stringMinus = '';
 
-            if (preg_match_all('/"([^"]+)"/', $string, $m)) {
-                $stringQuotes = implode(' ', $m[0]);
-            }
-            foreach ($m[0] as $str) {
-                $string = str_replace($str, '', $string);
-            }
-            $string = trim($string);
+        if (preg_match_all('/"([^"]+)"/', $string, $m)) {
+            $stringQuotes = implode(' ', $m[0]);
+        }
+        foreach ($m[0] as $str) {
+            $string = str_replace($str, '', $string);
+        }
+        $string = trim($string);
 
-            foreach(explode(' ', $string) as $word) {
-                if (!isset($word[0])) {
-                    continue;
-                }
-
-                if ($word[0] == '-') {
-                    $stringMinus .= substr($word, 1) . ' ';
-                } else if ($word[0] == '+') {
-                    $stringQuotes .= ' ' . $word;
-                } else {
-                    $stringSpace .= $word . ' ';
-                }
+        foreach(explode(' ', $string) as $word) {
+            if (!isset($word[0])) {
+                continue;
             }
 
-            if ($stringQuotes) {
-                $must[] = [
-                    'simple_query_string' => [
-                        'query' => $stringQuotes,
-                        'fields' => $phraseFields,
-                        'default_operator' => 'and',
-                    ],
-                ];
+            if ($word[0] == '-') {
+                $stringMinus .= substr($word, 1) . ' ';
+            } else if ($word[0] == '+') {
+                $stringQuotes .= ' ' . $word;
+            } else {
+                $stringSpace .= $word . ' ';
             }
+        }
 
-            if ($stringSpace) {
-                $must[] = [
-                    'multi_match' => [
-                        'query' => $stringSpace,
-                        'fields' => $ngramFields,
-                        'type' => 'cross_fields',
-                        'operator' => 'and',
-                        'analyzer' => 'whitespace',
-                    ],
-                ];
-            }
-
-            $mustNot = [
-                [
-                    'multi_match' => [
-                        'query' => $stringMinus,
-                        'fields' => $ngramFields,
-                        'type' => 'cross_fields',
-                        'operator' => 'and',
-                        'analyzer' => 'whitespace',
-                    ],
-                ],
-            ];
-        } else {
-            $stringMinus = '';
-            foreach(explode(' ', $string) as $word) {
-                if (!isset($word[0])) {
-                    continue;
-                }
-
-                if ($word[0] == '-') {
-                    $stringMinus .= substr($word, 1) . ' ';
-                    $string = str_replace($word, '', $string);
-                }
-            }
-
+        if ($stringQuotes) {
             $must[] = [
                 'simple_query_string' => [
-                    'query' => $string,
+                    'query' => $stringQuotes,
                     'fields' => $phraseFields,
                     'default_operator' => 'and',
                 ],
             ];
+        }
 
-            $mustNot = [
-                [
-                    'multi_match' => [
-                        'query' => $stringMinus,
-                        'fields' => $fields,
-                        'type' => 'cross_fields',
-                        'operator' => 'and',
-                        'analyzer' => 'whitespace',
-                    ],
+        if ($stringSpace) {
+            $must[] = [
+                'multi_match' => [
+                    'query' => $stringSpace,
+                    'fields' => $ngram ? $ngramFields : $fields,
+                    'type' => 'cross_fields',
+                    'operator' => 'and',
+                    'analyzer' => 'whitespace',
                 ],
             ];
         }
+
+        $mustNot = [
+            [
+                'multi_match' => [
+                    'query' => $stringMinus,
+                    'fields' => $ngram ? $ngramFields : $fields,
+                    'type' => 'cross_fields',
+                    'operator' => 'and',
+                    'analyzer' => 'whitespace',
+                ],
+            ],
+        ];
 
         if ($haveLink) {
             $must[] = [
