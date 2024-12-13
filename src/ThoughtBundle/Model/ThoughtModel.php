@@ -237,7 +237,7 @@ class ThoughtModel
             $words = ($lastChar == ',' || $lastChar == '.' || $lastChar == '!') ? mb_substr($words, 0, -1) : $words;
             $words = ($firstChar == ',' || $firstChar == '.' || $firstChar == '!') ? mb_substr($words, 1) : $words;
 
-            $query = $this->searchQuoteString($words, $fields, $minWords, $maxWords, $sort, $terms, $authors, $ngram, $haveLink);
+            $query = $this->complexSearch($words, $fields, $minWords, $maxWords, $sort, $terms, $authors, $ngram, $haveLink);
 
             return $this->finder->createPaginatorAdapter($query);
         }
@@ -505,7 +505,7 @@ class ThoughtModel
      *
      * @return Query
      */
-    public function searchQuoteString($string, $fields, $minWords, $maxWords, $sort, $terms, $authors, $ngram, $haveLink)
+    public function complexSearch($string, $fields, $minWords, $maxWords, $sort, $terms, $authors, $ngram, $haveLink)
     {
         $query = new Query();
 

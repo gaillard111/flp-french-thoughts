@@ -323,7 +323,7 @@ fos_elastica:
               app_phrase_analyzer:
                 type: custom
                 tokenizer: keyword
-                filter   : [my_asciifolding, lowercase, my_word_delimiter]
+                filter   : [lowercase, my_word_delimiter, limit_max_token]
             tokenizer:
               my_edge_ngram_tokenizer:
                 type: edgeNGram
@@ -346,6 +346,7 @@ fos_elastica:
               my_word_delimiter:
                 catenate_words: true
                 type: word_delimiter
+                preserve_original: true
               my_asciifolding:
                 type: asciifolding
                 preserve_original: true
@@ -353,3 +354,7 @@ fos_elastica:
                 type: pattern_replace
                 pattern: "^[^\\w]*.{1,3}[\\'’]"
                 replacement: ""
+              limit_max_token:
+                type: length
+                min: 1
+                max: 255
