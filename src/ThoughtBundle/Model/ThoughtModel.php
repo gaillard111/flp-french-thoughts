@@ -153,8 +153,14 @@ class ThoughtModel
             $fields = array_keys($request['field']);
         }
 
+        $ngram = isset($request['field']['ngram']) && $request['field']['ngram'];
+        $ngramFields = [];
+
         foreach ($fields as $field) {
             $fields[] = $field . '_dop';
+            if ($ngram) {
+                $ngramFields[] = $field . '_ngram';
+            }
         }
 
         $authors = [];
@@ -196,7 +202,7 @@ class ThoughtModel
             ];
         }
 
-        $strict = isset($request['strict']) && $request['strict'];
+        $strict = isset($request['field']['strict']) && $request['field']['strict'];
 
         $maxWords = (isset($request['max_words']) && $request['max_words'] > 0) ? intval($request['max_words']) : 10000;
 
@@ -204,39 +210,39 @@ class ThoughtModel
 
         $words = (isset($request['words']) && mb_strlen($request['words']) > 0) ? trim($request['words']) : null;
 
+        $arrWords = explode(' ', $words);
+
+        $complex = false;
+
+        $haveLink = false;
+
         if ($words) {
+            foreach ($arrWords as $word) {
+                $signs = ['"', '-', '+',];
+                if (in_array($word[0], $signs) || in_array(mb_substr($word, -1), $signs)) {
+                    $complex = true;
+                    break;
+                }
+            }
+        }
+
+        if (strpos($words, '[a]') !== false) {
+            $haveLink = true;
+        }
+
+        if ($words && ($complex || $haveLink)) {
             $lastChar  = $words[mb_strlen($words) - 1];
             $firstChar = $words[0];
 
             $words = ($lastChar == ',' || $lastChar == '.' || $lastChar == '!') ? mb_substr($words, 0, -1) : $words;
             $words = ($firstChar == ',' || $firstChar == '.' || $firstChar == '!') ? mb_substr($words, 1) : $words;
 
-            $countQuote = explode('"', $words);
+            $query = $this->complexSearch($words, $fields, $minWords, $maxWords, $sort, $terms, $authors, $ngram, $haveLink);
 
-            if (count($countQuote) == 3 && empty($countQuote[0]) && empty($countQuote[2])) {
-                $query = $this->searchQuoteString($countQuote[1], $fields, $minWords, $maxWords, $sort, $terms);
-
-                return $this->finder->createPaginatorAdapter($query);
-            }
+            return $this->finder->createPaginatorAdapter($query);
         }
 
-        $arrWords = explode(' ', $words);
-
-        $wordExceptions = [];
-
-        foreach ($arrWords as $keyArrWords => $valueArrWords) {
-            if (empty($valueArrWords)) {
-                continue;
-            }
-            if ($valueArrWords[0] == '-') {
-                $wordExceptions[] = strtolower(preg_replace('/\-/', '', $valueArrWords));
-                unset($arrWords[$keyArrWords]);
-            }
-        }
-
-        $words = implode(' ', $arrWords);
-
-        $filterException = $this->compileExceptions($fields, $wordExceptions);
+        $filterException = [];
 
         if (!$words) {
             $query = $this->searchDefault($minWords, $maxWords, $sort, $filterException, $terms, $authors);
@@ -253,6 +259,8 @@ class ThoughtModel
                 $sort = ['amount' => 'asc'];
             }
         }
+
+        $fields = array_merge($fields, $ngramFields);
 
         $query = $this->searchFullText($words, $fields, $minWords, $maxWords, $sort, $filterException, $terms, $role, $authors);
 
@@ -414,7 +422,7 @@ class ThoughtModel
             $must[] = $terms;
         }
 
-        $words = strtolower($words);
+        $words = mb_strtolower($words, 'UTF-8');
 
         $query = new Query();
         $query->setParams([
@@ -495,13 +503,13 @@ class ThoughtModel
      * @param int    $maxWords
      * @param array  $sort
      *
-     * @return $this|Query
+     * @return Query
      */
-    public function searchQuoteString($string, $fields, $minWords, $maxWords, $sort, $terms)
+    public function complexSearch($string, $fields, $minWords, $maxWords, $sort, $terms, $authors, $ngram, $haveLink)
     {
         $query = new Query();
 
-        $must = [
+        $mustFilter = [
             [
                 'range' => [
                     'amount' => [
@@ -513,58 +521,125 @@ class ThoughtModel
         ];
 
         if (!empty($terms)) {
-            $must[] = $terms;
+            $mustFilter[] = $terms;
         }
 
-        if (count(explode(' ', $string)) > 1) {
-            $phraseFields = [];
-
-            foreach ($fields as $field) {
-                $phraseFields[] = $field . '_phrase';
-            }
-
-            $query->setParams([
-                'query' => [
-                    'multi_match' => [
-                        'query'                => $string,
-                        'fields'               => $phraseFields,
-                        'operator'             => 'and',
-                        'minimum_should_match' => '100%',
-                        'type'                 => 'phrase',
-                    ],
-                ],
-                'filter' => [
-                    'bool' => [
-                        'must' => $must,
-                    ],
-                ],
-                'sort' => $sort,
-            ]);
-
-            return $query;
-        }
-
-        $arrFields = [];
+        $phraseFields = [];
+        $ngramFields = [];
 
         foreach ($fields as $field) {
-            $arrFields[] = [
-                'prefix' => [
-                    ($field . '_phrase') => $string,
+            $phraseFields[] = $field . '_phrase^3';
+            if ($ngram) {
+                $ngramFields[] = $field . '_ngram^0.5';
+            }
+        }
+        $string = mb_strtolower($string);
+
+        if ($haveLink) {
+            preg_match_all('/\[a[^\]]*\](.*?)\[\/a\]/', $string, $matches);
+
+            $linkPatterns = [];
+            foreach ($matches[1] as $match) {
+                if ($ngram) {
+                    $linkPatterns[] = '\\[a [^\\]]*\\]([^\\[]*' . $match . '[^\\[]*)\\[/a\\]';
+                } else {
+                    $linkPatterns[] = '\\[a [^\\]]*([^\\[]*[ \\]]' . $match .'[^\\[]*)\\[/a\\]';
+                }
+            }
+
+            $linkRegexpStr = '.*(' . implode('|', $linkPatterns) . ').*';
+
+            $string = trim(preg_replace('/\[a[^\]]*\](.*?)\[\/a\]/', '', $string));
+        }
+
+        $must = [];
+        $mustNot = [];
+
+        $stringQuotes = '';
+        $stringSpace = '';
+        $stringMinus = '';
+
+        if (preg_match_all('/"([^"]+)"/', $string, $m)) {
+            $stringQuotes = implode(' ', $m[0]);
+        }
+        foreach ($m[0] as $str) {
+            $string = str_replace($str, '', $string);
+        }
+        $string = trim($string);
+
+        foreach(explode(' ', $string) as $word) {
+            if (!isset($word[0])) {
+                continue;
+            }
+
+            if ($word[0] == '-') {
+                $stringMinus .= substr($word, 1) . ' ';
+            } else if ($word[0] == '+') {
+                $stringQuotes .= ' ' . $word;
+            } else {
+                $stringSpace .= $word . ' ';
+            }
+        }
+
+        if ($stringQuotes) {
+            $must[] = [
+                'simple_query_string' => [
+                    'query' => $stringQuotes,
+                    'fields' => $phraseFields,
+                    'default_operator' => 'and',
                 ],
             ];
         }
 
-        $arr = [
+        if ($stringSpace) {
+            $must[] = [
+                'multi_match' => [
+                    'query' => $stringSpace,
+                    'fields' => $ngram ? $ngramFields : $fields,
+                    'type' => 'cross_fields',
+                    'operator' => 'and',
+                    'analyzer' => 'whitespace',
+                ],
+            ];
+        }
+
+        $mustNot = [
+            [
+                'multi_match' => [
+                    'query' => $stringMinus,
+                    'fields' => $ngram ? $ngramFields : $fields,
+                    'type' => 'cross_fields',
+                    'operator' => 'and',
+                    'analyzer' => 'whitespace',
+                ],
+            ],
+        ];
+
+        if ($haveLink) {
+            $must[] = [
+                'regexp' => [
+                    'content_sort' => $linkRegexpStr,
+                ]
+            ];
+        }
+
+        $query->setParams([
+            'query' => [
+                'bool' => [
+                    'must' => $must,
+                    'must_not' => $mustNot,
+                ],
+            ],
             'filter' => [
                 'bool' => [
-                    'should' => $arrFields,
-                    'must'   => $must,
+                    'must' => $mustFilter,
+                    'should' => $authors
                 ],
             ],
             'sort' => $sort,
-        ];
+        ]);
 
-        return $query->setParams($arr);
+        return $query;
     }
 
     /**
@@ -843,7 +918,7 @@ class ThoughtModel
         if (!empty($request['name'])) {
             $name      = explode(' ', trim($request['name']));
             $firstname = array_shift($name);
-            $firstname = strtolower($firstname);
+            $firstname = mb_strtolower($firstname, 'UTF-8');
             $terms['name'] = [
                 'regexp' => [
                     'name' => [
@@ -888,7 +963,7 @@ class ThoughtModel
             $terms['country'] = [
                 'regexp' => [
                     'country' => [
-                        'value' => $request['country'] . '.*|.*' . $request['country'],
+                        'value' => mb_strtolower($request['country'], 'UTF-8') . '.*|.*' . mb_strtolower($request['country'], 'UTF-8'),
                     ],
                 ],
             ];
@@ -898,7 +973,8 @@ class ThoughtModel
             $terms['continent'] = [
                 'regexp' => [
                     'continent' => [
-                        'value' => $request['continent'] . '.*|.*' . $request['continent'],
+                        'value' => mb_strtolower($request['continent'], 'UTF-8') . '.*|.*' . mb_strtolower($request['continent'], 'UTF-8') . '|'
+                        .ucfirst(mb_strtolower($request['continent'], 'UTF-8')) . '.*|.*' . ucfirst(mb_strtolower($request['continent'], 'UTF-8')),
                     ],
                 ],
             ];
@@ -908,7 +984,7 @@ class ThoughtModel
             $terms['job'] = [
                 'regexp' => [
                     'job' => [
-                        'value' => $request['job'],
+                        'value' => mb_strtolower($request['job'], 'UTF-8'),
                     ],
                 ],
             ];

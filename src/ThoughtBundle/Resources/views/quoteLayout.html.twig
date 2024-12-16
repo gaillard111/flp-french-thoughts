@@ -63,7 +63,7 @@
         {% set author = thought.author|authorsInfo %}
     </p>
 
-    {% if author %}
+    {% if author and (author.birthDate or author.country or author.sex or author.job or author.continent) %}
         <div class="authors_info" style="display: none;">
 
             <p><strong>{{ 'author.filter.fields.birthDate.label'|trans }}:</strong> <span>{{ author.birthDate }}</span></p>

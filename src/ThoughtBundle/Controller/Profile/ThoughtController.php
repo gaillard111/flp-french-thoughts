@@ -69,21 +69,6 @@ class ThoughtController extends Controller
     }
 
     /**
-     * @Route("/ajax-counter", name="ajax_counter")
-     *
-     * @return JsonResponse
-     *
-     * @throws NonUniqueResultException
-     */
-    public function ajaxCounter()
-    {
-        $messages = $this->getDoctrine()->getRepository(Message::class)->getCountNewMessages($this->getUser());
-        return new JsonResponse([
-            'count' => $messages,
-        ]);
-    }
-
-    /**
      * @Route("/thought/create", name="sonata_user_thought_create")
      * @param Request $request
      * @return RedirectResponse|Response

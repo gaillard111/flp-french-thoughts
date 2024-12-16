@@ -177,6 +177,8 @@ thought:
                 label: Auteur
             thoughtInfo:
                 label: Info
+            any_letter:
+                label: Rechercher par n'importe quelle lettre
             advancedSearch:
                 label: Recherche  avancée
             search: Paramètres de recherches
