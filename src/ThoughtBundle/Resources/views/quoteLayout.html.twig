@@ -47,9 +47,11 @@
 
     </p>
 
-    <p class="quote_content">
-        <span>{{ thought.content|customTag|raw|nl2br }}</span>
-    </p>
+    <div class="cke_no_bootstrap">
+        <p class="quote_content">
+            <span>{{ thought.content|customTag|raw|nl2br }}</span>
+        </p>
+    </div>
     <p>
         <strong>{{ 'thought.property.author'|trans|capitalize }}:</strong>
         <span class="author">

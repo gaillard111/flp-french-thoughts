@@ -299,6 +299,14 @@ a.underline:hover{
     padding: 0;
 }
 
+.cke_no_bootstrap code{
+    all: unset;
+}
+
+.cke_no_bootstrap kbd{
+    all: unset;
+}
+
 .padding-vertical-0 {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
