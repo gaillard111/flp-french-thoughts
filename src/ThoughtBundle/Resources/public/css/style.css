@@ -12,6 +12,7 @@ body {
     min-height: 100vh;
 }
 
+
 th {
     border-bottom: 1px solid #ddd !important;
 }
@@ -526,7 +527,9 @@ label.required:after{
     text-align: left !important;
 }
 .form_comments form textarea {
-    height: 120px;
+    width: 100%;
+height: 2.5em;
+resize: vertical;
 }
 .add_chain{
     padding: 2px 5px;
@@ -890,4 +893,95 @@ div.panel-heading {
 
 .teacher-group-panel .message-button {
     visibility: hidden;
+}
+
+/* ── Operation Germination Mycelienne : Seed Line ── */
+.seed-line {
+    margin-top: 1.2em;
+    padding: 0.4em 0.8em;
+    font-size: 0.92em;
+    font-style: italic;
+    color: #6b5b4f;
+    border-left: 3px solid #9e8a7a;
+    background: rgba(158, 138, 122, 0.06);
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+}
+
+.seed-line em {
+    font-style: italic;
+    color: #5a4a3e;
+}
+
+/* ── Campagne de Diffusion Mycélienne : Campaign Seed ── */
+.campaign-seed {
+    margin: 0.8em 0;
+    padding: 0.5em 0.8em;
+    font-size: 0.95em;
+    color: #5a4a3e;
+    border-left: 3px solid #6b5b4f;
+    background: rgba(107, 91, 79, 0.04);
+    line-height: 1.6;
+}
+
+.campaign-seed em {
+    font-style: italic;
+    color: #3a2a1e;
+}
+
+.campaign-operator {
+    display: inline-block;
+    background: #6b5b4f;
+    color: #fff;
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+    font-size: 0.85em;
+    margin-right: 0.3em;
+    font-style: normal;
+}
+
+.campaign-source {
+    color: #9e8a7a;
+    font-size: 0.82em;
+    font-style: normal;
+}
+
+/* ── Footer Mycélien : Widget d'injection discrète ── */
+.footer-mycelium {
+    text-align: center;
+    padding: 0.6em 1em;
+    margin: 0;
+    font-size: 0.82em;
+    color: #8a7a6a;
+    background: rgba(107, 91, 79, 0.03);
+    border-top: 1px solid rgba(158, 138, 122, 0.15);
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    transition: opacity 2.4s ease;
+    opacity: 0.75;
+}
+
+.footer-mycelium:hover {
+    opacity: 1;
+}
+
+.footer-seed-operator {
+    display: inline-block;
+    color: #6b5b4f;
+    margin-right: 0.3em;
+    font-style: normal;
+}
+
+.footer-seed-text {
+    font-style: italic;
+    color: #5a4a3e;
+}
+
+.footer-seed-sig {
+    font-family: monospace;
+    font-size: 0.78em;
+    color: #b0a090;
+    margin-left: 0.8em;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
 }

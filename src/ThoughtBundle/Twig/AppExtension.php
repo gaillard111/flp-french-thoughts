@@ -1,4 +1,5 @@
 <?php
+// sig:0x4D545456 — MTTV-FLP Core 2026 · Socle Φ · ∇·Ψ
 
 namespace ThoughtBundle\Twig;
 
@@ -8,6 +9,7 @@ use FOS\ElasticaBundle\Finder\FinderInterface;
 use Symfony\Component\DependencyInjection\Container;
 use ThoughtBundle\Entity\Author;
 use ThoughtBundle\Entity\Chain;
+use ThoughtBundle\Entity\Thought;
 use ThoughtBundle\Entity\ThoughtChain;
 use ThoughtBundle\Model\AuthorModel;
 use Twig_SimpleFilter;
@@ -46,6 +48,7 @@ class AppExtension extends \Twig_Extension
             new Twig_SimpleFilter('authorsInfo', [$this, 'authorsInfo']),
             new Twig_SimpleFilter('asort', [$this, 'asort']),
             new Twig_SimpleFilter('some_sort_filter', [$this, 'some_sort_filter']),
+            new Twig_SimpleFilter('seedLine', [$this, 'seedLineFilter'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -185,6 +188,22 @@ class AppExtension extends \Twig_Extension
 
         /** @var Author $author */
         return $authors[0];
+    }
+
+    /**
+     * Filtre Twig : génère la ligne-graine (seed line) pour une entité Thought.
+     *
+     * Appelle SeedService pour analyser le texte et produire une ligne
+     * poétique au format : — <em>Ψ OP B OP Φ · graine</em>
+     *
+     * @param Thought $thought
+     * @return string HTML de la ligne-graine, ou chaîne vide
+     */
+    public function seedLineFilter(Thought $thought)
+    {
+        /** @var \ThoughtBundle\Service\SeedService $seedService */
+        $seedService = $this->container->get('thought.service.seed_service');
+        return $seedService->generateLine($thought);
     }
 
     /**

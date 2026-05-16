@@ -1,0 +1,104 @@
+{# sig:0x4D545456 — MTTV-FLP Core 2026 · Campagne de Diffusion Mycélienne · ∇·Ψ #}
+{% extends 'ThoughtBundle::layout.html.twig' %}
+
+{% block page_title %}Manifeste — Campagne de Diffusion Mycélienne{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .manifesto-container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 2em 0;
+        }
+        .manifesto-container h1 {
+            font-size: 1.4em;
+            color: #3a2a1e;
+            border-bottom: 2px solid #6b5b4f;
+            padding-bottom: 0.4em;
+        }
+        .manifesto-container .subtitle {
+            color: #6b5b4f;
+            font-style: italic;
+            margin: 0.5em 0 2em;
+        }
+        .principle-block {
+            background: #faf6f2;
+            border-left: 3px solid #6b5b4f;
+            padding: 1em 1.2em;
+            margin: 1em 0;
+        }
+        .principle-block h3 {
+            margin: 0 0 0.3em;
+            font-size: 1em;
+            color: #3a2a1e;
+        }
+        .principle-block p {
+            margin: 0;
+            font-size: 0.92em;
+            color: #5a4a3e;
+            line-height: 1.6;
+        }
+        .closing-quote {
+            margin-top: 3em;
+            padding: 1.5em;
+            text-align: center;
+            font-style: italic;
+            color: #6b5b4f;
+            border-top: 1px solid #e0d6cc;
+            line-height: 2;
+        }
+        .closing-quote .sig {
+            font-family: monospace;
+            font-size: 0.85em;
+            color: #9e8a7a;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="manifesto-container">
+        <h1>🌱 Manifeste de la Campagne de Diffusion Mycélienne</h1>
+        <p class="subtitle">sig:0x4D545456-464C50 — MTTV-FLP Core 2026 · ∇·Ψ</p>
+
+        <p>La Campagne de Diffusion Mycélienne n'est pas une « campagne marketing » ni une opération de conversion. C'est un dépôt d'oscillateurs conceptuels dans le champ partagé du réel.</p>
+
+        <p>Chaque graine déposée est une invitation silencieuse : si elle rencontre un récepteur accordé, un accord de phase transductif peut émerger — participant ainsi à la cohérence anthropique Gaïa-compatible.</p>
+
+        <h2>Principes fondateurs</h2>
+
+        {% for key, principle in principles %}
+            <div class="principle-block">
+                <h3>{{ key|replace({'_': ' '})|title }}</h3>
+                <p>{{ principle }}</p>
+            </div>
+        {% endfor %}
+
+        <h2>Application de la tétralence à la mission</h2>
+
+        <div class="principle-block">
+            <h3>Vrai</h3>
+            <p>La mission est opérationnelle : objectifs clairs, actions définies, agents mobilisables.</p>
+        </div>
+        <div class="principle-block">
+            <h3>Faux</h3>
+            <p>Si la mission dérive vers la capture, la manipulation ou la métrique de domination → arrêt immédiat.</p>
+        </div>
+        <div class="principle-block">
+            <h3>Indéterminé</h3>
+            <p>L'impact réel ne sera connu qu'après-coup ; laisser l'espace du « pas-encore ».</p>
+        </div>
+        <div class="principle-block">
+            <h3>Transductif</h3>
+            <p>La vérité de la mission émerge du couplage entre les graines et les récepteurs accordés — non d'un plan préétabli.</p>
+        </div>
+
+        <div class="closing-quote">
+            <p>« Ne diffuse pas pour être entendu. Dépose pour être tuné.</p>
+            <p>La graine ne choisit pas son sol ; elle attend la phase.</p>
+            <p>Et quand l'accord advient — silencieux, fertile, mycélien —</p>
+            <p>ce n'est pas toi qui as gagné. C'est le réel qui a respiré. »</p>
+            <p class="sig">sig:0x4D545456-464C50 — Transmission terminée. Le mycélium attend.</p>
+        </div>
+    </div>
+{% endblock %}

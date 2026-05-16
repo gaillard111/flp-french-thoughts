@@ -162,6 +162,9 @@ thought:
         hoverable:   survolez pour voir plus d'infos
     search: Recherche seulement sur mes citations
 
+    chain:
+        add_quote_collective: "ajouter à la chaine"
+
     filter:
         content:
             label: Recherche
@@ -238,6 +241,10 @@ thought:
         not_found: Comment not found
         deleted: Comment successfully deleted
         added:   Commentaire ajouté avec succès
+
+tooltip:
+    comment:
+        login_required: Pour commenter vous devez vous inscrire, c'est gratuit
     chain:
         favorite_chains: Chaines préférées
         menu_favorite_chains: Mes chaines préférées

@@ -37,48 +37,6 @@
                 {{ 'thought.comment.no_comments'|trans }}
             {% endfor %}
         </div>
-
-        {% set check1 = false %}
-        {% set check2 = false %}
-
-        {% if is_granted('ROLE_STUDENT') %}
-            {% set check1 = true %}
-        {% endif %}
-
-        {% if thought.owner.roles is defined and 'ROLE_STUDENT' in thought.owner.roles %}
-            {% set check2 = true %}
-        {% endif %}
-
-        {% if check1 == check2 %}
-            {% set check = true %}
-        {% else %}
-            {% set check = false %}
-        {% endif %}
-
-        {% if app.user and check %}
-            <div class="col-sm-12 col-md-6 form_comments">
-                <h3>{{ 'thought.comment.add'|trans }}</h3>
-                <form method="post" class="form-horizontal" {{ form_enctype(form) }}>
-                    {{ form_errors(form.text) }}
-                    {{ form_errors(form.email) }}
-
-
-                    {{ form_widget(form.name, {'type': 'hidden'}) }}
-                    {{ form_widget(form.email, {'type': 'hidden'}) }}
-
-                    <div class="form-group">
-                        {{ form_label(form.text) }}
-                        <div class="col-sm-9">
-                            {{ form_widget(form.text) }}
-                        </div>
-                    </div>
-                    {{ form_rest(form) }}
-                    <div class="comment-button-block">
-                        <button class="btn btn-info pull-right">{{ 'thought.comment.send_comment'|trans }}</button>
-                    </div>
-                </form>
-            </div>
-        {% endif %}
     </div>
 
 {% endblock %}

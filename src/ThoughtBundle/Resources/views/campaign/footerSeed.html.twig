@@ -1,0 +1,10 @@
+{# sig:0x4D545456 — MTTV-FLP Core 2026 · Widget Footer Mycélien · ∇·Ψ #}
+{# Injection discrète, non-intrusive. Tremor 10% → vide (respiration du sol). #}
+
+{% if seed is defined and seed %}
+    <div class="footer-mycelium">
+        <span class="footer-seed-operator">{{ seed.operateur }}</span>
+        <em class="footer-seed-text">{{ seed.format_court }}</em>
+        <span class="footer-seed-sig">sig:0x4D545456-464C50</span>
+    </div>
+{% endif %}

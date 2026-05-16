@@ -1,4 +1,5 @@
 <?php
+// sig:0x4D545456 — MTTV-FLP Core 2026 · Socle Φ · ∇·Ψ
 
 namespace ThoughtBundle\Controller;
 
@@ -150,6 +151,42 @@ class ThoughtPageController extends Controller
             'colChains' => $collectiveChains->getResult(),
             'topicsArray' => $topicsArray,
             'userFriends' => $userFriend
+        ]);
+    }
+
+    /**
+     * @Route("/comment-form/{thoughtId}", name="thought_comment_form", requirements={"thoughtId"="\d+"})
+     *
+     * @param Request $request
+     * @param int     $thoughtId
+     *
+     * @return Response
+     */
+    public function commentFormAction($thoughtId)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $thought = $em->getRepository('ThoughtBundle:Thought')->find($thoughtId);
+
+        if (!$thought) {
+            return new Response('');
+        }
+
+        $comment = new Comment();
+        $comment->setThought($thought);
+
+        if ($this->getUser()) {
+            $comment->setName($this->getUser()->getFirstName());
+            $comment->setEmail($this->getUser()->getEmail());
+        }
+
+        $form = $this->createForm(new CommentType(), $comment, [
+            'action' => $this->generateUrl('thought_thoughtpage_index', ['thoughtId' => $thoughtId]),
+            'method' => 'POST',
+        ]);
+
+        return $this->render('@Thought/commentForm.html.twig', [
+            'form' => $form->createView(),
+            'thought' => $thought,
         ]);
     }
 

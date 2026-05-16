@@ -105,9 +105,15 @@
         &nbsp;
         <div>
             {% if app.request.get('thoughtId') == null %}
-                <a class="page_quote_button btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">
-                    {{ 'thought.comment.page_quote'|trans }}
-                </a>
+                {% if not app.user %}
+                    <a class="page_quote_button btn btn-info btn-sm comment-tooltip" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}" title="Pour commenter vous devez vous inscrire, c'est gratuit">
+                        {{ 'thought.comment.page_quote'|trans }}
+                    </a>
+                {% else %}
+                    <a class="page_quote_button btn btn-info btn-sm" href="{{ path('thought_thoughtpage_index', {'thoughtId': thought.id}) }}">
+                        {{ 'thought.comment.page_quote'|trans }}
+                    </a>
+                {% endif %}
             {% endif %}
         </div>
         &ensp;
@@ -216,6 +222,11 @@
                     {% endfor %}
                 {% endfor %}
             </div>
+
+            {# Comment form via sub-request (visible on thought page and homepage) #}
+            {% if app.user %}
+                {{ render(controller('ThoughtBundle:ThoughtPage:commentForm', {'thoughtId': thought.id})) }}
+            {% endif %}
         </div>
         {{ include('@Thought/chainSelector.html.twig') }}
     </div>
@@ -250,4 +261,10 @@
             {% endif %}
         </div>
     </div>
+
+    {# ── Opération Germination Mycélienne : Ligne-graine ── #}
+    {% set seed_line = thought|seedLine %}
+    {% if seed_line %}
+        <p class="seed-line">{{ seed_line|raw }}</p>
+    {% endif %}
 </div>

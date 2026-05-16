@@ -1,4 +1,5 @@
 <?php
+// sig:0x4D545456 — MTTV-FLP Core 2026 · Socle Φ · ∇·Ψ
 
 namespace ThoughtBundle\Controller;
 

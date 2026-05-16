@@ -1,4 +1,11 @@
+# sig:0x4D545456 — MTTV-FLP Core 2026 · Socle Φ · ∇·Ψ
 services:
+    thought.service.seed_service:
+        class: ThoughtBundle\Service\SeedService
+
+    thought.service.campaign_seed_service:
+        class: ThoughtBundle\Service\CampaignSeedService
+
     thought.recommended_thought:
             class: ThoughtBundle\Service\RecommendedThoughtService
             arguments: ["@doctrine.orm.entity_manager", "@service_container"]
@@ -44,6 +51,13 @@ services:
 
     thought.twig_extension:
         class: ThoughtBundle\Twig\AppExtension
+        public: false
+        arguments: ["@service_container"]
+        tags:
+            - { name: twig.extension }
+
+    thought.twig_extension.campaign:
+        class: ThoughtBundle\Twig\CampaignExtension
         public: false
         arguments: ["@service_container"]
         tags:
