@@ -255,7 +255,7 @@ tooltip:
 #        already_added: Déjà intégré
         already_added: Mis dans la chaine
         added_by: Ajouté à la Chaine par
-        added_to_site: Ajouté à la BD par
+        added_to_site: inséré par
         added_to_chain: Extrait déjà ajouté à
         add_quote: Mettre dans ma chaine
         add_quote_collective: Mettre dans la chaine
