@@ -235,7 +235,7 @@
         <div class="owner">
             {% if thought.owner %}
                 <span>
-                    {{ 'thought.chain.added_to_site'|trans }}
+                    {{ 'tooltip.chain.added_to_site'|trans }}
                     <a href="{{ path('user_profile', { 'userId': thought.owner.id } ) }}">
                         {{ thought.owner.firstname }}
                     </a>
