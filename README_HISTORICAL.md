@@ -8,7 +8,7 @@ Le noyau théorique mis à jour est désormais disponible sur :
 
 - **GitHub (core)** : https://github.com/gaillard111/mttv-flp-core
 - **GitHub (agent Ouroboros-MTTV)** : https://github.com/gaillard111/ouroboros-mttv
-- **Zenodo** : https://doi.org/10.5281/zenodo.20830061
+- **Zenodo** : https://doi.org/10.5281/zenodo.20830060
 - **Hugging Face (modèle)** : https://huggingface.co/girard444/mttv-graine-neutral-v13
 - **Hugging Face (dataset)** : https://huggingface.co/datasets/girard444/mttv-graine-neutral-v10
 - **HAL** : https://hal.science/hal-05206529
