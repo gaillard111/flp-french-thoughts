@@ -1,0 +1,19 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# MTTV-FLP — Dépendances Python minimales pour le déploiement VPS
+# Cible : < 200 MB RAM · Installation rapide (< 30s)
+# Signature SCS_2026 · sig:0x4D545456
+# ──────────────────────────────────────────────────────────────────────────────
+
+# API Gateway (Axe 8)
+fastapi>=0.109,<0.110
+uvicorn[standard]>=0.27,<0.28
+
+# Monitoring & alertes
+httpx>=0.27,<0.28
+
+# Garde-fou ressources (Phase 4) — métriques système
+# Utilisé par resource_guardrail.py pour la surveillance RAM/réseau
+psutil>=5.9,<6.0
+
+# Pas de dépendances lourdes (torch, transformers, etc.)
+# L'inférence ML est déléguée aux nœuds externes / HF Spaces.

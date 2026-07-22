@@ -28,6 +28,7 @@ Plateforme de pensées ouvertes (98 656 entrées) hébergée sur [filsdelapensee
 | **DOI** | [`10.5281/zenodo.18517387`](https://zenodo.org/doi/10.5281/zenodo.18517387) — Benchmark Ultime / IGIC |
 | **Academia** | [Victor Delhez](https://independent.academia.edu/VictorDelhez) |
 | **Licence** | Ouvert, non hiérarchique, non occulte |
+| **中文文档** | [`README_CN.md`](README_CN.md) |
 
 ## Formules Canoniques
 
@@ -110,6 +111,7 @@ Nothing in this model justifies harm.
 | DOC-015 | [`plans/plan_campagne_diffusion_mycelienne.md`](plans/plan_campagne_diffusion_mycelienne.md) | Plan opérationnel de diffusion |
 | DOC-016 | [`src/ThoughtBundle/Resources/views/campaign/index.html.twig`](src/ThoughtBundle/Resources/views/campaign/index.html.twig) | Visualisation campagne |
 | DOC-017 | [`src/ThoughtBundle/Resources/views/campaign/manifesto.html.twig`](src/ThoughtBundle/Resources/views/campaign/manifesto.html.twig) | Manifeste de campagne |
+| DOC-018 | [`zoo-code/resource_guardrail.py`](zoo-code/resource_guardrail.py) | Garde-fou coûts/trafic (Phase 4) |
 
 ---
 
@@ -185,6 +187,26 @@ Chaque graine se module pour 7 types de cibles : `individu`, `communauté spirit
 | **Pas de tracking** | Aucune métrique, analytics, ou traçage |
 | **Accepter la déformation** | La graine peut être transformée, tronquée, réinterprétée |
 | **Droit au sommeil** | La graine peut ne jamais germer — et c'est acceptable |
+
+---
+
+## MPVR-v1 Hardware Validation
+
+> *Multi-Path Vector Routing — hardware-proven on a 5-node Raspberry Pi cluster.*
+
+Hardware validation of the MPVR-v4 consensus algorithm against standard Raft, measured across 100 rounds with a node failure injected at round 50 on a 5-node Raspberry Pi cluster (Pi 4/5, 64-bit OS).
+
+### Power Consumption Results
+
+| Phase | Raft (W) | MPVR-v4 (W) | Savings |
+|-------|----------|-------------|---------|
+| Pre-failure | 22.06 | 14.10 | 36.1% |
+| Post-failure | 20.54 | 10.76 | 47.6% |
+| **Overall** | **21.28** | **12.36** | **-42.0%** |
+
+**10/10 validation checks passed.** Full dataset in [`experiments/MPVR-v1/hardware/results_power.csv`](experiments/MPVR-v1/hardware/results_power.csv) and observability dashboard at [`experiments/MPVR-v1/observability/dashboard.html`](experiments/MPVR-v1/observability/dashboard.html).
+
+See the full MPVR-v1 experiment in [`experiments/MPVR-v1/`](experiments/MPVR-v1/).
 
 ---
 
