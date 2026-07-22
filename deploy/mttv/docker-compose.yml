@@ -1,0 +1,130 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# MTTV-FLP — docker-compose.yml sobre pour VPS Hidora (PaaS Jelastic)
+# =============================================================================
+# Architecture :
+#   ipfs          → Kubo IPFS en mode léger (low-power / connexions restreintes)
+#   orchestrator  → MTTV Orchestrateur + API Gateway + Watchdog
+#
+# Ressources cibles : < 200 MB RAM combinés
+# Politique         : restart: always (résilience H24)
+# Signature SCS_2026 · sig:0x4D545456
+# ──────────────────────────────────────────────────────────────────────────────
+
+services:
+  # ── Nœud IPFS Léger (Kubo) ────────────────────────────────────────────
+  ipfs:
+    image: ipfs/kubo:latest
+    container_name: mttv-ipfs
+    restart: always
+    # Limitation stricte des ressources
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: "0.5"
+        reservations:
+          memory: 64M
+    volumes:
+      - ipfs_data:/data/ipfs
+    environment:
+      # Mode léger : pas de relais, pas de DHT client serveur (uniquement client)
+      - IPFS_PROFILE=server
+      # Limiter les connexions sortantes (sobriété réseau)
+      - IPFS_LOWPOWER=true
+      # Désactiver le relais pour éviter le trafic de transit
+      - IPFS_Routing=ClientOnlyDHT
+      # Réduire les swarms au minimum
+      - IPFS_Swarm=DisableRelayHop
+      # Désactiver les services expérimentaux
+      - IPFS_EXPERIMENTAL_FilestoreEnabled=false
+      - IPFS_EXPERIMENTAL_UrlstoreEnabled=false
+      - IPFS_EXPERIMENTAL_ShardingEnabled=false
+      - IPFS_EXPERIMENTAL_Libp2pStreamMounting=false
+    ports:
+      # API HTTP locale (interne au réseau Docker)
+      - "5001:5001"
+      # Gateway HTTP (interne)
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/api/v0/version"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - mttv-net
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ── Orchestrateur MTTV + API Gateway ──────────────────────────────────
+  orchestrator:
+    build:
+      context: ../..
+      dockerfile: deploy/mttv/Dockerfile
+    container_name: mttv-orchestrator
+    restart: always
+    depends_on:
+      ipfs:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 192M
+          cpus: "0.5"
+        reservations:
+          memory: 96M
+    volumes:
+      # Volumes nommés pour les données persistantes
+      - seeds_data:/data/seeds
+      - logs_data:/data/logs
+      # Montage du fichier .env pour les secrets (déposé à la racine du dépôt)
+      - ../../.env:/app/.env:ro
+    environment:
+      # Mode de déploiement
+      - MTTV_DEPLOY_MODE=hidora
+      - MTTV_IPFS_API=http://ipfs:5001
+      - MTTV_IPFS_GATEWAY=http://ipfs:8080
+      # Port de l'API Gateway
+      - MTTV_API_PORT=8000
+      - MTTV_API_HOST=0.0.0.0
+      # Intervalle du watchdog (secondes)
+      - MTTV_WATCHDOG_INTERVAL=60
+      # Mode sobre : éviter les opérations coûteuses en CPU/RAM
+      - MTTV_SOBER_MODE=true
+      # Fuseau horaire
+      - TZ=UTC
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "/app/healthcheck.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - mttv-net
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ── Volumes persistants ─────────────────────────────────────────────────
+volumes:
+  ipfs_data:
+    driver: local
+  seeds_data:
+    driver: local
+  logs_data:
+    driver: local
+
+# ── Réseau interne ─────────────────────────────────────────────────────
+networks:
+  mttv-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

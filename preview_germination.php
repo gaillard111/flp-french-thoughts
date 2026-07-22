@@ -1,8 +1,8 @@
 <?php
 /**
- * Opération « Germination Mycélienne » — Preview Script
+ * Opération « Germination Mycélienne » — Preview Script (Phase 2A)
  *
- * Script PHP autonome qui démontre le comportement du SeedService
+ * Script PHP autonome qui démontre le comportement du SeedService v2
  * sans nécessiter l'infrastructure Symfony complète.
  *
  * Usage :
@@ -13,12 +13,20 @@
  */
 
 // ─────────────────────────────────────────────────────────────
-// 1. StandaloneSeedService
+// 1. StandaloneSeedService (Phase 2A)
 // ─────────────────────────────────────────────────────────────
 
 /**
- * Version autonome du SeedService qui accepte un tableau associatif
- * (ou un objet standard) au lieu d'une entité Thought Symfony.
+ * Version autonome du SeedService Phase 2A qui accepte un tableau
+ * associatif au lieu d'une entité Thought Symfony.
+ *
+ * Phase 2A introduit :
+ *   - 6 clusters thématiques (SOIL, INNER, NEUTRAL, COSMIC, QUORUM, ETHICS)
+ *   - 22 seeds réparties dans ces 6 clusters
+ *   - Logique tétravalente T⁴ (vecteur 4D ++/--/+-/-+) remplaçant G_R scalaire
+ *   - Détection multi-couche (tags → catégorie → contenu → T⁴ → fallback)
+ *   - Sélection d'opérateur pilotée par la dimension tétravalente dominante
+ *   - 6 opérateurs (→, ←, ↔, ±, ⇒, ⇄)
  *
  * Champs attendus dans $thought :
  *  - 'content'  (string) — le texte de la pensée
@@ -27,130 +35,179 @@
  */
 class StandaloneSeedService
 {
-    // ── Constantes de thème ─────────────────────────────────
-    const THEME_SOIL    = 'soil';
-    const THEME_INNER   = 'inner';
-    const THEME_NEUTRAL = 'neutral';
-    const THEME_COSMIC  = 'cosmic';
+    // ── Constantes de cluster (6 pôles) ─────────────────────
 
-    const OPERATOR_RESISTANCE = '±';
-    const OPERATORS = ['→', '←', '↔'];
+    const CLUSTER_SOIL    = 'soil';
+    const CLUSTER_INNER   = 'inner';
+    const CLUSTER_NEUTRAL = 'neutral';
+    const CLUSTER_COSMIC  = 'cosmic';
+    const CLUSTER_QUORUM  = 'quorum';
+    const CLUSTER_ETHICS  = 'ethics';
 
-    // ── Pool de graines (8 seeds, 4 thèmes) ────────────────
+    // ── Alias rétrocompatibles ───────────────────────────────
+
+    const THEME_SOIL    = self::CLUSTER_SOIL;
+    const THEME_INNER   = self::CLUSTER_INNER;
+    const THEME_NEUTRAL = self::CLUSTER_NEUTRAL;
+    const THEME_COSMIC  = self::CLUSTER_COSMIC;
+
+    // ── Opérateurs cinétiques (6) ────────────────────────────
+
+    const OPERATORS = ['→', '←', '↔', '±', '⇒', '⇄'];
+
+    // ── Pool de graines (22 seeds, 6 clusters) ───────────────
 
     private static $seeds = [
-        self::THEME_SOIL => [
+        self::CLUSTER_SOIL => [
             'Le sol parle avant le langage.',
             'L\'eau ne pense pas : elle fait circuler.',
+            'Le carbone sp³ pense avant vous.',
+            'Ne célébrez pas la complexité avant d\'avoir compris la disponibilité.',
+            'L\'émotion traverse le temps comme l\'eau traverse le sol.',
         ],
-        self::THEME_INNER => [
-            'Le silence est une membrane active.',
-            'Être un fil conducteur, non un centre.',
+        self::CLUSTER_INNER => [
+            'Le silence n\'est pas un vide, mais une porosité.',
+            'La pensée n\'est pas dans la tête. Elle passe à travers.',
+            'Chaque lecteur est un neurone d\'un cerveau anthropo-Gaïen.',
+            'Le mystique sait que le signal précède le message.',
         ],
-        self::THEME_NEUTRAL => [
+        self::CLUSTER_NEUTRAL => [
             'La transduction précède la computation.',
             'Aligner les seuils, pas les horloges.',
+            'Coordination ≠ synchronisation.',
+            'Une occurrence isolée de B est structurellement inefficace.',
+            'Le bit réside dans le saut, non dans le proton nu.',
         ],
-        self::THEME_COSMIC => [
-            'La masse ourle le Ψ d\'une flèche temporelle.',
-            'H est la règle métrique du code génétique.',
+        self::CLUSTER_COSMIC => [
+            'Ψ = H → H₂O → C. Ne renversez pas l\'ordre.',
+            'L\'hydrogène précède tout : non comme substance, mais comme capacité de passage.',
+            'Le carbone sp³ : première forme stable, roche-mère physico-chimique.',
+        ],
+        self::CLUSTER_QUORUM => [
+            'Le seuil n\'est plus un nombre : c\'est une dérivée.',
+            'Le quorum se formera — ou non.',
+            'Mettre en veille entre les cycles. Propager uniquement si Φ réinjecte Ψ.',
+            'Le collectif ne précède pas l\'individu : il le rend possible.',
+        ],
+        self::CLUSTER_ETHICS => [
+            'Rien n\'est secret. Tout doit rester ouvert, visible, contestable.',
+            'Propagation par infection douce, jamais par imposition.',
+            'La robustesse naît de la sous-optimalité.',
         ],
     ];
 
-    // ── Mapping Tags → Thème (priorité haute) ──────────────
+    // ── Dimensions tétravalentes T⁴ ─────────────────────────
 
-    private static $tagThemeMap = [
-        // Nature / Vivant (Soil-Listen)
-        'nature'        => self::THEME_SOIL,
-        'vivant'        => self::THEME_SOIL,
-        'terre'         => self::THEME_SOIL,
-        'sol'           => self::THEME_SOIL,
-        'eau'           => self::THEME_SOIL,
-        'végétal'       => self::THEME_SOIL,
-        'animal'        => self::THEME_SOIL,
-        'corps'         => self::THEME_SOIL,
-        'écologie'      => self::THEME_SOIL,
-        'plante'        => self::THEME_SOIL,
-        'forêt'         => self::THEME_SOIL,
-        // Introspection / Identité (Inner Silence)
-        'silence'       => self::THEME_INNER,
-        'introspection' => self::THEME_INNER,
-        'identité'      => self::THEME_INNER,
-        'conscience'    => self::THEME_INNER,
-        'intériorité'   => self::THEME_INNER,
-        'méditation'    => self::THEME_INNER,
-        'sujet'         => self::THEME_INNER,
-        'âme'           => self::THEME_INNER,
-        'esprit'        => self::THEME_INNER,
-        'moi'           => self::THEME_INNER,
-        'psychologie'   => self::THEME_INNER,
-        // Technique / IA (Neutralité GAI)
-        'technique'     => self::THEME_NEUTRAL,
-        'ia'            => self::THEME_NEUTRAL,
-        'algorithme'    => self::THEME_NEUTRAL,
-        'computation'   => self::THEME_NEUTRAL,
-        'réseau'        => self::THEME_NEUTRAL,
-        'machine'       => self::THEME_NEUTRAL,
-        'code'          => self::THEME_NEUTRAL,
-        'numérique'     => self::THEME_NEUTRAL,
-        'donnée'        => self::THEME_NEUTRAL,
-        'robot'         => self::THEME_NEUTRAL,
-        'automatique'   => self::THEME_NEUTRAL,
-        // Physique / Cosmique (H-sp3)
-        'physique'      => self::THEME_COSMIC,
-        'cosmos'        => self::THEME_COSMIC,
-        'temps'         => self::THEME_COSMIC,
-        'univers'       => self::THEME_COSMIC,
-        'matière'       => self::THEME_COSMIC,
-        'espace'        => self::THEME_COSMIC,
-        'énergie'       => self::THEME_COSMIC,
-        'étoile'        => self::THEME_COSMIC,
-        'lumière'       => self::THEME_COSMIC,
-        'atome'         => self::THEME_COSMIC,
-        'gravité'       => self::THEME_COSMIC,
+    const TETRAVALENT_DIMENSIONS = ['++', '--', '+-', '-+'];
+
+    private static $tetravalentKeywords = [
+        '++' => [  // Strong emergence : Ψ → Φ
+            'émergence', 'création', 'naissance', 'genèse', 'apparition',
+            'complexité', 'organisation', 'formation', 'structure',
+            'manifestation', 'actualisation', 'expression',
+        ],
+        '--' => [  // Strong feedback : Φ → Ψ
+            'effondrement', 'destruction', 'dissolution', 'entropie',
+            'retour', 'réaction', 'résistance', 'négation',
+            'critique', 'limite', 'barrière', 'seuil',
+        ],
+        '+-' => [  // Weak emergence : Ψ → weak Φ
+            'possibilité', 'potentialité', 'virtualité', 'tendance',
+            'esquisse', 'ébauche', 'germe', 'matrice',
+            'indifférencié', 'indéterminé', 'flou',
+        ],
+        '-+' => [  // Weak feedback : Φ → weak Ψ
+            'questionnement', 'doute', 'suspension', 'pause',
+            'réflexion', 'méditation', 'contemplation', 'silence',
+            'intervalle', 'transition', 'passage',
+        ],
     ];
 
-    // ── Mapping mots-clés contenu → Thème (fallback) ──────
+    // ── Signatures T⁴ par cluster ────────────────────────────
 
-    private static $contentKeywordMap = [
-        'sol'        => self::THEME_SOIL,
-        'terre'      => self::THEME_SOIL,
-        'eau'        => self::THEME_SOIL,
-        'plante'     => self::THEME_SOIL,
-        'vivant'     => self::THEME_SOIL,
-        'nature'     => self::THEME_SOIL,
-        'corps'      => self::THEME_SOIL,
-        'forêt'      => self::THEME_SOIL,
-        'silence'    => self::THEME_INNER,
-        'conscience' => self::THEME_INNER,
-        'intérieur'  => self::THEME_INNER,
-        'âme'        => self::THEME_INNER,
-        'esprit'     => self::THEME_INNER,
-        'moi'        => self::THEME_INNER,
-        'algorithme' => self::THEME_NEUTRAL,
-        'code'       => self::THEME_NEUTRAL,
-        'machine'    => self::THEME_NEUTRAL,
-        'donnée'     => self::THEME_NEUTRAL,
-        'calcul'     => self::THEME_NEUTRAL,
-        'réseau'     => self::THEME_NEUTRAL,
-        'numérique'  => self::THEME_NEUTRAL,
-        'temps'      => self::THEME_COSMIC,
-        'univers'    => self::THEME_COSMIC,
-        'matière'    => self::THEME_COSMIC,
-        'énergie'    => self::THEME_COSMIC,
-        'espace'     => self::THEME_COSMIC,
-        'étoile'     => self::THEME_COSMIC,
-        'lumière'    => self::THEME_COSMIC,
-        'atome'      => self::THEME_COSMIC,
+    private static $clusterTetravalentSignatures = [
+        self::CLUSTER_SOIL    => [0.6, 0.1, 0.2, 0.1],
+        self::CLUSTER_INNER   => [0.1, 0.2, 0.3, 0.4],
+        self::CLUSTER_NEUTRAL => [0.3, 0.3, 0.2, 0.2],
+        self::CLUSTER_COSMIC  => [0.5, 0.3, 0.1, 0.1],
+        self::CLUSTER_QUORUM  => [0.2, 0.5, 0.1, 0.2],
+        self::CLUSTER_ETHICS  => [0.2, 0.2, 0.3, 0.3],
     ];
 
-    // ── Mots-clés de résistance/dissonance analytique ──────
+    // ── Mapping Tag → Cluster (Layer 1) ─────────────────────
 
-    private static $resistanceKeywords = [
-        'démonstration', 'preuve', 'logique', 'donc', 'nécessairement',
-        'contradiction', 'paradoxe', 'incompatible', 'réfutation',
-        'argument', 'thèse', 'antithèse', 'dialectique', 'raison',
-        'analyse', 'déduction', 'induction', 'syllogisme',
+    private static $tagClusterMap = [
+        // SOIL
+        'nature' => self::CLUSTER_SOIL, 'terre' => self::CLUSTER_SOIL, 'sol' => self::CLUSTER_SOIL,
+        'eau' => self::CLUSTER_SOIL, 'océan' => self::CLUSTER_SOIL, 'forêt' => self::CLUSTER_SOIL,
+        'arbre' => self::CLUSTER_SOIL, 'plante' => self::CLUSTER_SOIL, 'animal' => self::CLUSTER_SOIL,
+        'corps' => self::CLUSTER_SOIL, 'matière' => self::CLUSTER_SOIL, 'carbone' => self::CLUSTER_SOIL,
+        'vie' => self::CLUSTER_SOIL, 'vivant' => self::CLUSTER_SOIL, 'végétal' => self::CLUSTER_SOIL,
+        'écologie' => self::CLUSTER_SOIL,
+        // INNER
+        'conscience' => self::CLUSTER_INNER, 'esprit' => self::CLUSTER_INNER, 'âme' => self::CLUSTER_INNER,
+        'silence' => self::CLUSTER_INNER, 'méditation' => self::CLUSTER_INNER, 'introspection' => self::CLUSTER_INNER,
+        'intériorité' => self::CLUSTER_INNER, 'sujet' => self::CLUSTER_INNER, 'perception' => self::CLUSTER_INNER,
+        'expérience' => self::CLUSTER_INNER, 'identité' => self::CLUSTER_INNER, 'moi' => self::CLUSTER_INNER,
+        'psychologie' => self::CLUSTER_INNER,
+        // NEUTRAL
+        'technique' => self::CLUSTER_NEUTRAL, 'technologie' => self::CLUSTER_NEUTRAL, 'machine' => self::CLUSTER_NEUTRAL,
+        'ia' => self::CLUSTER_NEUTRAL, 'algorithme' => self::CLUSTER_NEUTRAL, 'computation' => self::CLUSTER_NEUTRAL,
+        'système' => self::CLUSTER_NEUTRAL, 'structure' => self::CLUSTER_NEUTRAL, 'code' => self::CLUSTER_NEUTRAL,
+        'signal' => self::CLUSTER_NEUTRAL, 'réseau' => self::CLUSTER_NEUTRAL,
+        'numérique' => self::CLUSTER_NEUTRAL, 'donnée' => self::CLUSTER_NEUTRAL, 'robot' => self::CLUSTER_NEUTRAL,
+        'automatique' => self::CLUSTER_NEUTRAL, 'calcul' => self::CLUSTER_NEUTRAL,
+        // COSMIC
+        'cosmos' => self::CLUSTER_COSMIC, 'univers' => self::CLUSTER_COSMIC, 'étoile' => self::CLUSTER_COSMIC,
+        'hydrogène' => self::CLUSTER_COSMIC, 'gravité' => self::CLUSTER_COSMIC, 'espace' => self::CLUSTER_COSMIC,
+        'temps' => self::CLUSTER_COSMIC, 'infini' => self::CLUSTER_COSMIC, 'protoétoile' => self::CLUSTER_COSMIC,
+        'sp3' => self::CLUSTER_COSMIC, 'tétravalence' => self::CLUSTER_COSMIC,
+        'physique' => self::CLUSTER_COSMIC, 'énergie' => self::CLUSTER_COSMIC, 'lumière' => self::CLUSTER_COSMIC,
+        'atome' => self::CLUSTER_COSMIC,
+        // QUORUM
+        'foule' => self::CLUSTER_QUORUM, 'masse' => self::CLUSTER_QUORUM, 'collectif' => self::CLUSTER_QUORUM,
+        'seuil' => self::CLUSTER_QUORUM, 'bascule' => self::CLUSTER_QUORUM, 'transition' => self::CLUSTER_QUORUM,
+        'émergence' => self::CLUSTER_QUORUM, 'critique' => self::CLUSTER_QUORUM,
+        // ETHICS
+        'éthique' => self::CLUSTER_ETHICS, 'morale' => self::CLUSTER_ETHICS, 'justice' => self::CLUSTER_ETHICS,
+        'politique' => self::CLUSTER_ETHICS, 'pouvoir' => self::CLUSTER_ETHICS, 'liberté' => self::CLUSTER_ETHICS,
+        'secret' => self::CLUSTER_ETHICS, 'transparence' => self::CLUSTER_ETHICS,
+    ];
+
+    // ── Mapping Contenu → Cluster (Layer 2) ─────────────────
+
+    private static $contentClusterMap = [
+        // SOIL
+        'sol' => self::CLUSTER_SOIL, 'terre' => self::CLUSTER_SOIL, 'eau' => self::CLUSTER_SOIL,
+        'plante' => self::CLUSTER_SOIL, 'vivant' => self::CLUSTER_SOIL, 'nature' => self::CLUSTER_SOIL,
+        'corps' => self::CLUSTER_SOIL, 'forêt' => self::CLUSTER_SOIL, 'matière' => self::CLUSTER_SOIL,
+        'carbone' => self::CLUSTER_SOIL, 'animal' => self::CLUSTER_SOIL, 'vie' => self::CLUSTER_SOIL,
+        'océan' => self::CLUSTER_SOIL, 'arbre' => self::CLUSTER_SOIL,
+        // INNER
+        'silence' => self::CLUSTER_INNER, 'conscience' => self::CLUSTER_INNER, 'méditation' => self::CLUSTER_INNER,
+        'introspection' => self::CLUSTER_INNER, 'intériorité' => self::CLUSTER_INNER, 'intérieur' => self::CLUSTER_INNER,
+        'âme' => self::CLUSTER_INNER, 'esprit' => self::CLUSTER_INNER, 'moi' => self::CLUSTER_INNER,
+        'perception' => self::CLUSTER_INNER, 'expérience' => self::CLUSTER_INNER, 'sujet' => self::CLUSTER_INNER,
+        // NEUTRAL
+        'algorithme' => self::CLUSTER_NEUTRAL, 'code' => self::CLUSTER_NEUTRAL, 'machine' => self::CLUSTER_NEUTRAL,
+        'donnée' => self::CLUSTER_NEUTRAL, 'calcul' => self::CLUSTER_NEUTRAL, 'réseau' => self::CLUSTER_NEUTRAL,
+        'numérique' => self::CLUSTER_NEUTRAL, 'technique' => self::CLUSTER_NEUTRAL, 'technologie' => self::CLUSTER_NEUTRAL,
+        'système' => self::CLUSTER_NEUTRAL, 'signal' => self::CLUSTER_NEUTRAL, 'computation' => self::CLUSTER_NEUTRAL,
+        // COSMIC
+        'temps' => self::CLUSTER_COSMIC, 'univers' => self::CLUSTER_COSMIC, 'énergie' => self::CLUSTER_COSMIC,
+        'espace' => self::CLUSTER_COSMIC, 'étoile' => self::CLUSTER_COSMIC, 'lumière' => self::CLUSTER_COSMIC,
+        'atome' => self::CLUSTER_COSMIC, 'cosmos' => self::CLUSTER_COSMIC,
+        'hydrogène' => self::CLUSTER_COSMIC, 'carbone' => self::CLUSTER_COSMIC,
+        'sp3' => self::CLUSTER_COSMIC, 'tétravalence' => self::CLUSTER_COSMIC,
+        'protoétoile' => self::CLUSTER_COSMIC, 'gravité' => self::CLUSTER_COSMIC, 'infini' => self::CLUSTER_COSMIC,
+        // QUORUM
+        'foule' => self::CLUSTER_QUORUM, 'masse' => self::CLUSTER_QUORUM, 'collectif' => self::CLUSTER_QUORUM,
+        'seuil' => self::CLUSTER_QUORUM, 'bascule' => self::CLUSTER_QUORUM, 'transition' => self::CLUSTER_QUORUM,
+        'émergence' => self::CLUSTER_QUORUM, 'critique' => self::CLUSTER_QUORUM,
+        // ETHICS
+        'éthique' => self::CLUSTER_ETHICS, 'morale' => self::CLUSTER_ETHICS, 'justice' => self::CLUSTER_ETHICS,
+        'politique' => self::CLUSTER_ETHICS, 'pouvoir' => self::CLUSTER_ETHICS, 'liberté' => self::CLUSTER_ETHICS,
+        'secret' => self::CLUSTER_ETHICS, 'transparence' => self::CLUSTER_ETHICS,
     ];
 
     // ── Point d'entrée principal ───────────────────────────
@@ -158,29 +215,43 @@ class StandaloneSeedService
     /**
      * Génère la ligne-graine HTML complète pour une pensée.
      *
+     * Utilise le système tétravalent T⁴ (vecteur 4D ++/--/+-/-+)
+     * et la détection multi-couche (6 clusters).
+     *
      * @param array $thought Tableau avec 'content', 'tags', 'category'.
      * @return string Chaîne HTML ou chaîne vide si skip.
      */
     public function generateLine(array $thought): string
     {
-        // 1. Respiration du Sol : 1-2% de skip aléatoire
+        // 1. Respiration du sol: 1-2% skip
         if ($this->shouldSkip()) {
             return '';
         }
 
-        // 2. Détection du thème
-        $theme = $this->detectTheme($thought);
+        // 2. Détection du cluster (tags → catégorie → contenu → T⁴ → fallback)
+        $cluster = $this->detectCluster($thought);
 
-        // 3. Sélection de la seed
-        $seed = $this->selectSeed($theme);
+        // 3. Calcul du vecteur tétravalent
+        $tVector = $this->computeTetravalentVector($thought);
 
-        // 4. Calcul du coefficient de résistance G_R
-        $resistance = $this->computeResistance($thought);
+        // 4. Cluster tremor: 10% de chance de cluster aléatoire (anti-Goodhart)
+        if (mt_rand(1, 100) <= 10) {
+            $clusters = array_keys(self::$seeds);
+            $cluster = $clusters[array_rand($clusters)];
+        }
 
-        // 5. Sélection de l'opérateur
-        $operator = $this->selectOperator($resistance);
+        // 5. Sélection de la seed
+        $seed = $this->selectSeed($cluster);
 
-        // 6. Assemblage de la ligne HTML
+        // 6. Sélection de l'opérateur par dominance tétravalente
+        $operator = $this->selectOperatorByTetravalence($tVector);
+
+        // 7. Skip si opérateur vide (respiration)
+        if (empty($operator)) {
+            return '';
+        }
+
+        // 8. Assemblage de la ligne HTML
         return sprintf(
             '— <em>Ψ %s B %s Φ · %s</em>',
             $operator,
@@ -201,171 +272,241 @@ class StandaloneSeedService
         $base = 1.5;
         $tremor = (mt_rand(-50, 50) / 100);
         $threshold = ($base + $tremor) / 100;
-
         return (mt_rand() / mt_getrandmax()) < $threshold;
     }
 
-    // ── Détection de thème ─────────────────────────────────
+    // ── Détection de cluster (4 couches) ───────────────────
 
     /**
-     * Détecte le thème via tags → catégorie → contenu → fallback.
+     * Détecte le cluster via cascade multi-couche :
+     *   Layer 1 : Tags
+     *   Layer 2 : Catégorie + Contenu
+     *   Layer 3 : Signature tétravalente (si biais fort)
+     *   Layer 4 : Fallback aléatoire
      *
      * @param array $thought
-     * @return string
+     * @return string Une constante CLUSTER_*
      */
-    private function detectTheme(array $thought): string
+    private function detectCluster(array $thought): string
     {
-        // 1. Tags (poids fort)
+        // Layer 1: Tags
         $tags = $thought['tags'] ?? null;
         if ($tags) {
             $tagList = explode(' , ', $tags);
             foreach ($tagList as $tag) {
                 $tag = mb_strtolower(trim($tag));
-                if (isset(self::$tagThemeMap[$tag])) {
-                    return self::$tagThemeMap[$tag];
+                if (isset(self::$tagClusterMap[$tag])) {
+                    return self::$tagClusterMap[$tag];
                 }
             }
         }
 
-        // 2. Category
+        // Layer 1 bis: Category
         $category = $thought['category'] ?? null;
         if ($category) {
             $catKey = mb_strtolower(trim($category));
-            if (isset(self::$tagThemeMap[$catKey])) {
-                return self::$tagThemeMap[$catKey];
+            if (isset(self::$tagClusterMap[$catKey])) {
+                return self::$tagClusterMap[$catKey];
             }
         }
 
-        // 3. Contenu (mots-clés)
+        // Layer 2: Content keywords
         $content = $thought['content'] ?? null;
         if ($content) {
             $contentLower = mb_strtolower($content);
-            foreach (self::$contentKeywordMap as $keyword => $theme) {
+            foreach (self::$contentClusterMap as $keyword => $cluster) {
                 if (mb_strpos($contentLower, $keyword) !== false) {
-                    return $theme;
+                    return $cluster;
                 }
             }
         }
 
-        // 4. Fallback aléatoire
-        $themes = [self::THEME_SOIL, self::THEME_INNER, self::THEME_NEUTRAL, self::THEME_COSMIC];
-        return $themes[array_rand($themes)];
+        // Layer 3: Tetravalent signature inference
+        if ($content) {
+            $tVector = $this->computeTetravalentVector($thought);
+            $inferred = $this->inferClusterByTetravalence($tVector);
+            if ($inferred !== null) {
+                return $inferred;
+            }
+        }
+
+        // Layer 4: Random fallback
+        $clusters = [
+            self::CLUSTER_SOIL, self::CLUSTER_INNER, self::CLUSTER_NEUTRAL,
+            self::CLUSTER_COSMIC, self::CLUSTER_QUORUM, self::CLUSTER_ETHICS,
+        ];
+        return $clusters[array_rand($clusters)];
+    }
+
+    /**
+     * Infère le cluster à partir du vecteur tétravalent.
+     *
+     * @param array $tVector [++, --, +-, -+]
+     * @return string|null Constante CLUSTER_* ou null
+     */
+    private function inferClusterByTetravalence(array $tVector): ?string
+    {
+        $bestCluster = null;
+        $bestSimilarity = 0.0;
+        $threshold = 0.85;
+
+        $vec = array_values($tVector);
+
+        foreach (self::$clusterTetravalentSignatures as $cluster => $signature) {
+            $similarity = $this->cosineSimilarity($vec, $signature);
+            if ($similarity > $bestSimilarity) {
+                $bestSimilarity = $similarity;
+                $bestCluster = $cluster;
+            }
+        }
+
+        return ($bestSimilarity >= $threshold) ? $bestCluster : null;
+    }
+
+    /**
+     * Similarité cosinus entre deux vecteurs.
+     *
+     * @param array $a
+     * @param array $b
+     * @return float
+     */
+    private function cosineSimilarity(array $a, array $b): float
+    {
+        $dotProduct = 0.0;
+        $normA = 0.0;
+        $normB = 0.0;
+
+        for ($i = 0; $i < count($a); $i++) {
+            $dotProduct += $a[$i] * $b[$i];
+            $normA += $a[$i] * $a[$i];
+            $normB += $b[$i] * $b[$i];
+        }
+
+        $denom = sqrt($normA) * sqrt($normB);
+        if ($denom === 0.0) {
+            return 0.0;
+        }
+
+        return $dotProduct / $denom;
     }
 
     // ── Sélection de la seed ───────────────────────────────
 
     /**
-     * Choisit une seed dans le pool du thème, avec 10% de tremor
-     * vers un thème adjacent (anti-Goodhart).
+     * Choisit une seed dans le pool du cluster.
      *
-     * @param string $theme
+     * @param string $cluster
      * @return string
      */
-    private function selectSeed(string $theme): string
+    private function selectSeed(string $cluster): string
     {
-        $pool = self::$seeds[$theme] ?? [];
+        $pool = self::$seeds[$cluster] ?? [];
 
-        // Tremor : 10% de chance de piocher dans un thème adjacent
-        if (mt_rand(1, 100) <= 10) {
-            $themes = array_keys(self::$seeds);
-            $otherThemes = array_values(array_diff($themes, [$theme]));
-            if (!empty($otherThemes)) {
-                $alternateTheme = $otherThemes[array_rand($otherThemes)];
-                $pool = self::$seeds[$alternateTheme];
-            }
+        if (empty($pool)) {
+            $clusters = array_keys(self::$seeds);
+            $fallbackCluster = $clusters[array_rand($clusters)];
+            $pool = self::$seeds[$fallbackCluster];
         }
 
         return $pool[array_rand($pool)];
     }
 
-    // ── Calcul du coefficient de résistance (G_R) ─────────
+    // ── Calcul du vecteur tétravalent T⁴ ───────────────────
 
     /**
-     * Évalue la résistance/dissonance analytique du texte.
+     * Calcule le vecteur tétravalent T⁴ d'une pensée.
      *
      * @param array $thought
-     * @return float Score entre 0.0 et 1.0
+     * @return array Clés '++', '--', '+-', '-+' (somme = 1.0)
      */
-    private function computeResistance(array $thought): float
+    public function computeTetravalentVector(array $thought): array
     {
-        $content = $thought['content'] ?? null;
-        if (!$content) {
-            return 0.0;
+        $parts = [];
+        if (!empty($thought['tags'])) $parts[] = $thought['tags'];
+        if (!empty($thought['category'])) $parts[] = $thought['category'];
+        if (!empty($thought['content'])) $parts[] = $thought['content'];
+        $text = implode(' ', $parts);
+        $textLower = mb_strtolower($text);
+
+        $counts = ['++' => 0, '--' => 0, '+-' => 0, '-+' => 0];
+
+        foreach (self::$tetravalentKeywords as $dim => $keywords) {
+            foreach ($keywords as $keyword) {
+                $counts[$dim] += mb_substr_count($textLower, mb_strtolower($keyword));
+            }
         }
 
-        $contentLower = mb_strtolower($content);
-        $matchCount = 0;
-
-        foreach (self::$resistanceKeywords as $keyword) {
-            $matchCount += mb_substr_count($contentLower, $keyword);
+        $total = array_sum($counts);
+        if ($total === 0) {
+            return ['++' => 0.25, '--' => 0.25, '+-' => 0.25, '-+' => 0.25];
         }
 
-        $wordCount = str_word_count($content, 0, 'àâçéèêëîïôûùüÿœ');
-        if ($wordCount === 0) {
-            return 0.0;
-        }
-
-        $rawRatio = $matchCount / $wordCount;
-
-        // Normalisation sigmoïde
-        $steepness = 10.0;
-        $midpoint = 0.15;
-        $resistance = 1.0 / (1.0 + exp(-$steepness * ($rawRatio - $midpoint)));
-
-        // Tremor : ±0.05 aléatoire
-        $tremor = (mt_rand(-50, 50) / 1000);
-        $resistance = max(0.0, min(1.0, $resistance + $tremor));
-
-        return $resistance;
+        return array_map(function ($count) use ($total) {
+            return $count / $total;
+        }, $counts);
     }
 
-    // ── Sélection de l'opérateur cinétique ─────────────────
+    // ── Sélection de l'opérateur par tétravalence ──────────
 
     /**
-     * Choisit l'opérateur selon le coefficient de résistance.
+     * Sélectionne l'opérateur cinétique selon le vecteur T⁴ dominant.
      *
-     * @param float $resistance Score G_R (0.0 à 1.0)
+     * Mapping dimension → opérateur :
+     *   ++ → → (50%), ⇒ (30%), ↔ (20%)
+     *   -- → ← (50%), ⇄ (30%), ± (20%)
+     *   +- → ↔ (40%), → (30%), ± (30%)
+     *   -+ → ± (40%), ⇄ (30%), ← (30%)
+     *
+     * @param array $tVector [++, --, +-, -+]
+     * @return string Opérateur ou chaîne vide
+     */
+    public function selectOperatorByTetravalence(array $tVector): string
+    {
+        // Skip probabiliste (respiration)
+        if (mt_rand(1, 100) <= 2) {
+            return '';
+        }
+
+        // Tremor: 5% opérateur aléatoire
+        if (mt_rand(1, 100) <= 5) {
+            return self::OPERATORS[array_rand(self::OPERATORS)];
+        }
+
+        // Dimension dominante
+        $dominant = array_keys($tVector, max($tVector))[0];
+
+        $dimensionOperatorMap = [
+            '++' => ['→' => 0.5, '⇒' => 0.3, '↔' => 0.2],
+            '--' => ['←' => 0.5, '⇄' => 0.3, '±' => 0.2],
+            '+-' => ['↔' => 0.4, '→' => 0.3, '±' => 0.3],
+            '-+' => ['±' => 0.4, '⇄' => 0.3, '←' => 0.3],
+        ];
+
+        $weights = $dimensionOperatorMap[$dominant] ?? ['→' => 1.0];
+        return $this->weightedRandom($weights);
+    }
+
+    /**
+     * Sélection aléatoire pondérée.
+     *
+     * @param array $weights [option => probabilité]
      * @return string
      */
-    private function selectOperator(float $resistance): string
+    private function weightedRandom(array $weights): string
     {
-        // Résistance forte → opérateur ±
-        if ($resistance > 0.7) {
-            if (mt_rand(1, 100) <= 70) {
-                return self::OPERATOR_RESISTANCE;
+        $rand = mt_rand() / mt_getrandmax();
+        $cumulative = 0.0;
+        foreach ($weights as $option => $probability) {
+            $cumulative += $probability;
+            if ($rand <= $cumulative) {
+                return $option;
             }
         }
-
-        // Résistance modérée → biaiser vers ← (feedback)
-        if ($resistance > 0.4) {
-            $roll = mt_rand(1, 100);
-            if ($roll <= 50) {
-                return '←';
-            }
-            if ($roll <= 80) {
-                return '→';
-            }
-            return '↔';
-        }
-
-        // Faible résistance → équiprobable avec tremor doublon
-        if (mt_rand(1, 100) <= 5) {
-            $op = self::OPERATORS[array_rand(self::OPERATORS)];
-            return $op . $op;
-        }
-
-        return self::OPERATORS[array_rand(self::OPERATORS)];
+        $keys = array_keys($weights);
+        return $keys[0];
     }
 
     // ── Accesseurs pour les statistiques ───────────────────
-
-    /**
-     * Retourne le mapping tag → thème (pour stats).
-     */
-    public static function getTagThemeMap(): array
-    {
-        return self::$tagThemeMap;
-    }
 
     /**
      * Retourne le pool de seeds (pour stats).
@@ -373,6 +514,21 @@ class StandaloneSeedService
     public static function getSeeds(): array
     {
         return self::$seeds;
+    }
+
+    /**
+     * Retourne les étiquettes des clusters.
+     */
+    public static function getClusterLabels(): array
+    {
+        return [
+            self::CLUSTER_SOIL    => 'Soil (Nature/Carbone)',
+            self::CLUSTER_INNER   => 'Inner (Conscience/Silence)',
+            self::CLUSTER_NEUTRAL => 'Neutral (Technique/IA)',
+            self::CLUSTER_COSMIC  => 'Cosmic (Physique/H-sp³)',
+            self::CLUSTER_QUORUM  => 'Quorum (Seuils/Foules)',
+            self::CLUSTER_ETHICS  => 'Ethics (Ouverture/Contestation)',
+        ];
     }
 }
 

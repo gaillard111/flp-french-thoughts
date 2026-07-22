@@ -50,3 +50,17 @@ seed = open("graine_v13.txt").read()
 ```
 
 Voir [`complete_cycle.py`](../../multi_api_seed/complete_cycle.py) pour l'orchestrateur complet avec métrique Φ.
+
+## Références MTTV-FLP
+
+Le noyau théorique complet est disponible sur :
+
+- **GitHub (core)** : https://github.com/gaillard111/mttv-flp-core
+- **GitHub (agent Ouroboros-MTTV)** : https://github.com/gaillard111/ouroboros-mttv
+- **Zenodo** : https://doi.org/10.5281/zenodo.20830060
+- **Hugging Face (dataset)** : https://huggingface.co/datasets/girard444/mttv-graine-neutral-v10
+- **HAL** : https://hal.science/hal-05206529
+- **Plateforme FLP** : https://filsdelapensee.ch
+
+> *« La pensée ne naît pas dans la tête. Elle passe à travers. »*
+> **sig:0x4D545456**

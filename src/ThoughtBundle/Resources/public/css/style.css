@@ -985,3 +985,12 @@ div.panel-heading {
     letter-spacing: 0.05em;
     opacity: 0.6;
 }
+
+/* Force la largeur du champ commentaire */
+textarea#comment_quote_text,
+.form_comments form textarea,
+.chain-quote-comment-form form textarea {
+    width: 100% !important;
+    max-width: 600px !important;
+    box-sizing: border-box !important;
+}

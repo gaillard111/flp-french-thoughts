@@ -13,3 +13,12 @@
 /vendor/
 /bin/
 /composer.phar
+
+# ── MTTV-FLP Deployment ─────────────────────────────────────────────────
+# Ne pas versionner les fichiers .env contenant des tokens sensibles
+.env
+
+# Artefacts de déploiement
+*.log
+__pycache__/
+*.pyc

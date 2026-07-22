@@ -1,0 +1,72 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# MTTV-FLP — Unité systemd pour le service Orchestrateur (alternative à Docker)
+# =============================================================================
+# Installation :
+#   1. Copier ce fichier : sudo cp mttv.service /etc/systemd/system/
+#   2. Copier le .env     : sudo cp /home/flp/app/mttv/.env /home/flp/app/mttv/.env
+#   3. Créer l'utilisateur : sudo useradd -r -s /bin/false mttv
+#   4. Ajuster les chemins ci-dessous si nécessaire
+#   5. Activer et démarrer : sudo systemctl daemon-reload
+#                           sudo systemctl enable mttv
+#                           sudo systemctl start mttv
+#
+# Chemin d'installation : /home/flp/app/mttv
+# Ressources cibles : < 200 MB RAM · Restart automatique (Always)
+# Signature SCS_2026 · sig:0x4D545456
+# ──────────────────────────────────────────────────────────────────────────────
+
+[Unit]
+Description=MTTV-FLP Orchestrator — Service de régulation du réseau mycélien
+Documentation=https://github.com/girard444/mttv-flp-core
+After=network-online.target
+Wants=network-online.target
+Requires=ipfs.service
+
+[Service]
+Type=simple
+
+# ── Utilisateur dédié ──────────────────────────────────────────────────────
+User=mttv
+Group=mttv
+
+# ── Répertoire de travail ──────────────────────────────────────────────────
+WorkingDirectory=/home/flp/app/mttv
+
+# ── Environnement ──────────────────────────────────────────────────────────
+EnvironmentFile=/home/flp/app/mttv/.env
+
+# ── Commande de démarrage (API Gateway + Watchdog) ─────────────────────────
+ExecStart=/usr/bin/python3 /home/flp/app/mttv/zoo-code/mttv_orchestrator.py daemon --interval 300
+
+# ── Arrêt propre ───────────────────────────────────────────────────────────
+ExecStop=/usr/bin/python3 /home/flp/app/mttv/zoo-code/mttv_orchestrator.py stop
+KillMode=mixed
+TimeoutStopSec=30
+
+# ── Redémarrage automatique (résilience H24) ───────────────────────────────
+Restart=always
+RestartSec=10
+
+# ── Limitation des ressources (sobriété) ───────────────────────────────────
+MemoryMax=200M
+MemoryHigh=150M
+CPUQuota=50%
+IOWeight=100
+LimitNOFILE=1024
+LimitNPROC=64
+
+# ── Sécurité ───────────────────────────────────────────────────────────────
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectHome=yes
+ProtectSystem=full
+ReadWritePaths=/home/flp/app/mttv/data /home/flp/app/mttv/zoo-code
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+# ── Logs ───────────────────────────────────────────────────────────────────
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

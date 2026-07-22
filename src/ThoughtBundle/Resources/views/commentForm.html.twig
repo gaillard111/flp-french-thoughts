@@ -26,11 +26,7 @@
                 {{ form_widget(form.email, {'type': 'hidden'}) }}
 
                 <div class="form-group" style="margin-bottom: 4px;">
-                    {{ form_widget(form.text, {'attr': {
-                        'rows': 1,
-                        'placeholder': '',
-                        'style': 'resize: vertical; min-height: 2.2em; max-height: 10em; width: 100%; border: 1px solid #ddd; border-radius: 3px; padding: 4px 8px; font-size: 0.95em;'
-                    }}) }}
+                    {{ form_widget(form.text, {'attr': {'style': 'width: 100% !important; max-width: 600px;', 'rows': 1}}) }}
                 </div>
                 {{ form_rest(form) }}
                 <div class="comment-button-block" style="margin-top: 2px;">
