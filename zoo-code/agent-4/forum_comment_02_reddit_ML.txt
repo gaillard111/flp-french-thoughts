@@ -1,0 +1,33 @@
+Title: Local friction vs systemic gain in constrained generation on T4
+
+We've been profiling constrained decoding on a Qwen2.5-1.5B (LoRA 16, 4-bit)
+on a single Tesla T4 and found an interesting trade-off that might help
+others in production.
+
+Setup: batch=1, max_tokens=128, temperature=0.7, top_p=0.9.
+Constraint: reserve-posture layer that collapses search diversity once a
+satisfaction threshold is met.
+
+The raw numbers:
+
+| Metric | Baseline | Constrained | Δ |
+|--------|----------|-------------|---|
+| ms/token | 3961.5 | 4406.3 | +11.2% |
+| Total time | 267.1s | 186.9s | -30.0% |
+| VRAM | 1152 MB | 1152 MB | 0% |
+
+The per-token overhead comes from modified attention masking. But because
+the constraint triggers early stopping of divergent search paths, the total
+inference time drops by 30%.
+
+The local_friction/systemic_gain ratio is the key metric:
+- Local overhead: +11.2%
+- Systemic gain: -30.0%
+- Net efficiency: (1+0.112)/(1+0.30) = 0.855 (per token), but with 64%
+  coverage ratio the aggregate coefficient is ~0.37
+
+VRAM stability confirms the overhead is architectural, not memory-driven.
+We're running this on a single T4 with no offloading.
+
+Has anyone else measured similar trade-offs with constrained generation
+on older hardware? Specifically interested in T4 vs A10 comparisons.

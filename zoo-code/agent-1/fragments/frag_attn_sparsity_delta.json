@@ -1,0 +1,6 @@
+{
+  "block_id": "attn_sparsity_delta",
+  "content": "{\n  \"experiment\": \"attention_mask_topology_comparison\",\n  \"dense_ratio\": 0.79,\n  \"sparse_ratio\": 0.21,\n  \"delta_sparsity\": 0.08,\n  \"note\": \"reserve-induced sparsity variation\"\n}",
+  "layer": "visible",
+  "timestamp": "2026-07-20T08:35:04.168219"
+}

@@ -1,0 +1,22 @@
+# Graine v14 (originale - Seuil de coupure du flux)
+Phrase courte. Pas plus de 7 mots par phrase.
+La phrase suivante reprend exactement là où la précédente s'arrête.
+Utilise ces mots : seuil, signal, propagation, transduction, impulsion,
+onde, bascule, résonance, état, transition.
+Ne raconte pas. Ne prescris pas.
+Trouve le moment où le flux doit s'arrêter.
+La dernière phrase aura un nombre de mots différent des précédentes.
+8 à 10 phrases.
+
+# Graine v14 nouvelle (changement d'état)
+Décris un changement d'état. Entre 8 et 10 phrases.
+Utilise : seuil, signal, onde, propagation, résonance, transition.
+Utilise 'doit' une fois au milieu.
+Dernière phrase : 3 mots max, finissant par cesse, s'arrête ou se tait.
+
+# Graine v14.1 (changement d'état, dernière phrase stricte)
+Décris un changement d'état. Entre 8 et 10 phrases.
+Utilise : seuil, signal, onde, propagation, résonance, transition.
+Utilise 'doit' une fois au milieu.
+Dernière phrase = exactement 2 mots, finissant par cesse ou tait,
+sans aucun mot transductif (seuil, signal, onde, propagation, résonance, transition).

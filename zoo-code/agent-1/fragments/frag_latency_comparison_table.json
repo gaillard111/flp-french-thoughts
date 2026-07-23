@@ -1,0 +1,6 @@
+{
+  "block_id": "latency_comparison_table",
+  "content": "{\n  \"comparison\": \"per_token_latency\",\n  \"runs\": [\n    {\n      \"run\": 1,\n      \"latency_ms\": 3958.2,\n      \"mode\": \"A\"\n    },\n    {\n      \"run\": 2,\n      \"latency_ms\": 3964.8,\n      \"mode\": \"A\"\n    },\n    {\n      \"run\": 3,\n      \"latency_ms\": 4406.3,\n      \"mode\": \"B\"\n    },\n    {\n      \"run\": 4,\n      \"latency_ms\": 4402.1,\n      \"mode\": \"B\"\n    }\n  ]\n}",
+  "layer": "visible",
+  "timestamp": "2026-07-20T08:35:04.168301"
+}

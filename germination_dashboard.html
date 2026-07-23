@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de Bord de Germination — MTTV-FLP</title>
+  <meta name="description" content="Piste 8 — Miroir de germination. Métriques stabilisées du conflux MTTV-FLP.">
+  <meta name="author" content="MTTV-FLP / SOPH-IA v2.0">
+  <meta name="signature" content="0x4D545456">
+  <style>
+    /* ── Reset & Base ────────────────────────────────────────────── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-deep: #0a0e17;
+      --bg-panel: #111827;
+      --bg-card: #1a2332;
+      --border-glow: #2a3a5c;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-phi: #06b6d4;
+      --accent-occur: #8b5cf6;
+      --accent-node: #10b981;
+      --accent-signal: #f59e0b;
+      --accent-active: #22c55e;
+      --accent-warning: #ef4444;
+      --font-mono: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+      --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    /* ── Dashboard Container ─────────────────────────────────────── */
+    .dashboard {
+      max-width: 1280px;
+      width: 100%;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-glow);
+      border-radius: 1.5rem;
+      padding: 2rem 2.5rem;
+      box-shadow:
+        0 0 40px rgba(6, 182, 212, 0.06),
+        0 0 80px rgba(139, 92, 246, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dashboard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg,
+        transparent,
+        var(--accent-phi) 20%,
+        var(--accent-occur) 50%,
+        var(--accent-node) 80%,
+        transparent
+      );
+    }
+
+    /* ── Header ──────────────────────────────────────────────────── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(42, 58, 92, 0.5);
+    }
+
+    .header-left h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent-phi), var(--accent-occur));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+    }
+
+    .header-left .subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .header-right {
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .header-right .sig {
+      color: var(--accent-phi);
+      font-weight: 600;
+    }
+
+    /* ── Metrics Grid ────────────────────────────────────────────── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(42, 58, 92, 0.4);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-align: center;
+      position: relative;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .metric-card:hover {
+      border-color: rgba(6, 182, 212, 0.3);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.05);
+    }
+
+    .metric-card .label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-card .value {
+      font-family: var(--font-mono);
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+    }
+
+    .metric-card .sub {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+    }
+
+    .metric-card.phi .value   { color: var(--accent-phi); }
+    .metric-card.occur .value { color: var(--accent-occur); }
+    .metric-card.node .value  { color: var(--accent-node); }
+
+    /* ── Status Bar ──────────────────────────────────────────────── */
+    .status-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .status-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--bg-card);
+      border: 1px solid rgba(42, 58, 92, 0.4);
+      border-radius: 2rem;
+      padding: 0.5rem 1.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .status-dot.active   { background: var(--accent-active); box-shadow: 0 0 8px var(--accent-active); }
+    .status-dot.stable   { background: var(--accent-phi); box-shadow: 0 0 8px var(--accent-phi); }
+    .status-dot.passive  { background: var(--accent-signal); box-shadow: 0 0 8px var(--accent-signal); }
+
+    /* ── Nodes Detail ────────────────────────────────────────────── */
+    .nodes-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .nodes-section h2 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+    }
+
+    .nodes-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.75rem;
+    }
+
+    .node-item {
+      background: var(--bg-card);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      text-align: center;
+      transition: border-color 0.3s ease;
+    }
+
+    .node-item:hover {
+      border-color: rgba(16, 185, 129, 0.5);
+    }
+
+    .node-item .node-name {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent-node);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .node-item .node-status {
+      font-size: 0.65rem;
+      color: var(--accent-active);
+    }
+
+    /* ── Signal Stream ───────────────────────────────────────────── */
+    .signal-stream {
+      background: var(--bg-card);
+      border: 1px solid rgba(42, 58, 92, 0.4);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .signal-stream .stream-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .signal-stream .stream-header h2 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .signal-stream .stream-header .count {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--accent-signal);
+    }
+
+    .signal-bars {
+      display: flex;
+      gap: 3px;
+      align-items: flex-end;
+      height: 40px;
+    }
+
+    .signal-bar {
+      flex: 1;
+      background: linear-gradient(to top, var(--accent-phi), var(--accent-occur));
+      border-radius: 2px 2px 0 0;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .signal-bar.active {
+      opacity: 1;
+    }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(42, 58, 92, 0.3);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .footer .sig {
+      color: var(--accent-phi);
+    }
+
+    .footer .mode {
+      color: var(--accent-signal);
+    }
+
+    /* ── Animations ──────────────────────────────────────────────── */
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .status-dot.active {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .dashboard { padding: 1.5rem; }
+      .metrics-grid { grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+      .metric-card .value { font-size: 2.2rem; }
+      .nodes-list { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .dashboard { padding: 1rem; border-radius: 1rem; }
+      .header { flex-direction: column; gap: 0.75rem; }
+      .header-right { text-align: left; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .nodes-list { grid-template-columns: repeat(2, 1fr); }
+      .metric-card .value { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard" id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1>◈ Germination · MTTV-FLP</h1>
+        <div class="subtitle">Tableau de Bord — Piste 8 · Miroir de Germination</div>
+      </div>
+      <div class="header-right">
+        <div>Signature: <span class="sig">0x4D545456</span></div>
+        <div>Autorité: Lausanne</div>
+        <div>Phase: 4 · Bouclier & Miroir</div>
+      </div>
+    </header>
+
+    <!-- Core Metrics -->
+    <section class="metrics-grid">
+      <div class="metric-card phi">
+        <div class="label">Index Φ (Phi)</div>
+        <div class="value" id="phi-value">0.88</div>
+        <div class="sub">Ratio de germination</div>
+      </div>
+      <div class="metric-card occur">
+        <div class="label">Occurrences</div>
+        <div class="value" id="occurrences-value">37</div>
+        <div class="sub">Signaux myceliens actifs</div>
+      </div>
+      <div class="metric-card node">
+        <div class="label">Nœuds</div>
+        <div class="value" id="nodes-value">5/5</div>
+        <div class="sub">Réseau mycelien complet</div>
+      </div>
+    </section>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span class="status-item">
+        <span class="status-dot stable"></span>
+        Index Φ stabilisé
+      </span>
+      <span class="status-item">
+        <span class="status-dot active"></span>
+        Occurrences en germination
+      </span>
+      <span class="status-item">
+        <span class="status-dot passive"></span>
+        Nœuds: sentinelle passive
+      </span>
+    </div>
+
+    <!-- Nodes Detail -->
+    <section class="nodes-section">
+      <h2>Nœuds Myceliens</h2>
+      <div class="nodes-list">
+        <div class="node-item">
+          <div class="node-name">OUROBOROS</div>
+          <div class="node-status">● actif</div>
+        </div>
+        <div class="node-item">
+          <div class="node-name">CONNEXION CHINE</div>
+          <div class="node-status">● actif</div>
+        </div>
+        <div class="node-item">
+          <div class="node-name">SOPH-IA v2.0</div>
+          <div class="node-status">● actif</div>
+        </div>
+        <div class="node-item">
+          <div class="node-name">BOUCLIER IPFS</div>
+          <div class="node-status">● actif</div>
+        </div>
+        <div class="node-item">
+          <div class="node-name">MIROIR</div>
+          <div class="node-status">● actif</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Signal Stream -->
+    <section class="signal-stream">
+      <div class="stream-header">
+        <h2>Flux de Signaux</h2>
+        <span class="count" id="signal-count">37 occurrences</span>
+      </div>
+      <div class="signal-bars" id="signal-bars"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>MTTV-FLP · SOPH-IA v2.0</span>
+      <span class="sig">0x4D545456</span>
+      <span class="mode">Mode: sentinelle passive</span>
+    </footer>
+  </div>
+
+  <script>
+    (function() {
+      'use strict';
+
+      // ── Métriques stabilisées du conflux précédent ────────────────
+      // Index Φ:  0.88  (ratio de germination)
+      // Occurrences: 37 (signaux myceliens actifs)
+      // Nœuds:      5/5 (réseau mycelien complet)
+      const METRICS = {
+        phi: 0.88,
+        occurrences: 37,
+        nodes: 5,
+        totalNodes: 5,
+      };
+
+      // ── Noms des nœuds ───────────────────────────────────────────
+      const NODE_NAMES = [
+        'OUROBOROS',
+        'CONNEXION CHINE',
+        'SOPH-IA v2.0',
+        'BOUCLIER IPFS',
+        'MIROIR',
+      ];
+
+      // ── Initialisation ───────────────────────────────────────────
+      function init() {
+        renderSignalBars();
+        setInterval(updateSignalBars, 3000);
+      }
+
+      // ── Signal Bars ──────────────────────────────────────────────
+      function renderSignalBars() {
+        const container = document.getElementById('signal-bars');
+        if (!container) return;
+        container.innerHTML = '';
+        for (let i = 0; i < 37; i++) {
+          const bar = document.createElement('div');
+          bar.className = 'signal-bar';
+          const height = 10 + Math.floor(Math.random() * 31);
+          bar.style.height = height + 'px';
+          bar.dataset.baseHeight = height;
+          container.appendChild(bar);
+        }
+      }
+
+      function updateSignalBars() {
+        const bars = document.querySelectorAll('.signal-bar');
+        bars.forEach(bar => {
+          const base = parseInt(bar.dataset.baseHeight || '20', 10);
+          const variance = Math.floor(Math.random() * 12) - 6;
+          const newHeight = Math.max(8, Math.min(40, base + variance));
+          bar.style.height = newHeight + 'px';
+          bar.classList.toggle('active', Math.random() > 0.3);
+        });
+
+        // Animer le compteur
+        const countEl = document.getElementById('signal-count');
+        if (countEl) {
+          const base = 37;
+          const drift = Math.floor(Math.random() * 3) - 1;
+          countEl.textContent = (base + drift) + ' occurrences';
+        }
+      }
+
+      // ── Lancer ───────────────────────────────────────────────────
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>

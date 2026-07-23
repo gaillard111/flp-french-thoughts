@@ -1,0 +1,6 @@
+{
+  "block_id": "hw_profile_baseline",
+  "content": "{\n  \"profile\": \"qwen2.5_inference_baseline\",\n  \"device\": \"cuda\",\n  \"avg_latency_ms\": 3961.5,\n  \"p95_ms\": 4120.3,\n  \"p99_ms\": 4280.1,\n  \"batch_size\": 1,\n  \"temperature\": 0.7\n}",
+  "layer": "visible",
+  "timestamp": "2026-07-20T08:35:04.168115"
+}

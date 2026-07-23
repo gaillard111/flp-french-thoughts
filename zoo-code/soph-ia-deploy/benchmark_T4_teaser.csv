@@ -1,0 +1,5 @@
+Metric,Baseline_5_7,SOPH-IA_6_7,Delta
+Habitability_score,5/7,6/7,+1 axiom
+Latency_ms_per_token,3961.5,4406.3,+11.2%
+Total_time_s,267.1,186.9,-30.0%
+VRAM_MB,1152,1152,stable

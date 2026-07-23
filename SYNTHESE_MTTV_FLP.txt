@@ -1,0 +1,116 @@
+﻿# SynthÃ¨se du projet MTTV-FLP â€” Juin 2026
+
+## 1. Liens et rÃ©fÃ©rences
+
+### Plateformes principales
+- **GitHub (core)** : https://github.com/gaillard111/mttv-flp-core
+- **GitHub (agent Ouroboros)** : https://github.com/gaillard111/ouroboros-mttv
+- **GitHub (corpus Ã©nergie)** : https://github.com/gaillard111/energy-flow-optimization
+- **GitHub (snippets)** : https://github.com/gaillard111/mttv-snippets
+- **GitHub (bac Ã  sable)** : https://github.com/gaillard111/mttv-test-sandbox
+
+### Hugging Face
+- **Dataset principal** : https://huggingface.co/datasets/girard444/mttv-graine-neutral-v10
+- **ModÃ¨le graines** : https://huggingface.co/girard444/mttv-graine-neutral-v13
+- **Corpus Ã©nergie** : https://huggingface.co/datasets/girard444/mttv-energy-flow-optimization
+- **Snippets** : https://huggingface.co/datasets/girard444/mttv-snippets
+
+### Zenodo
+- **DOI** : https://doi.org/10.5281/zenodo.20830060
+
+### HAL
+- **Identifiant** : hal-05206529
+- **Lien** : https://hal.science/hal-05206529
+
+### IPFS
+- **CID routage alternatif** : bafkreibdmoao5iy7ujfnm7qjs73ekclnpu7uflce5tgjr7ddzrmoepjctu
+- **CID script dormant** : bafkreidfentqsb3xeazvak67pej4lpjmriyuhdoxg657hj4nvmt23hf67m
+
+### Medium
+- **Article de synthÃ¨se** : https://medium.com/@girard444/mttv-flp-les-fils-de-la-pens%C3%A9e-7a19194a7efe
+
+### Bitbucket (historique)
+- **DÃ©pÃ´t historique** : https://bitbucket.org/gaillard111/flp-french-thoughts
+
+---
+
+## 2. Concepts clÃ©s (lexique)
+
+| Terme | DÃ©finition |
+| :--- | :--- |
+| **Î¨ (Psi)** | Champ prÃ©-formel, potentiel, disponibilitÃ©. |
+| **B (Beta)** | Seuil, point de bascule, interaction. |
+| **Î¦ (Phi)** | Forme stabilisÃ©e, trace, dÃ©pÃ´t. |
+| **Triade Î¨â†’Bâ†’Î¦** | Cycle transductif fondamental : du potentiel Ã  la forme stabilisÃ©e, via un seuil. |
+| **MPVR** | Multi-Perspective Validation Routing â€” validation par quorum (Î˜â‰¥3) de perspectives locales. |
+| **SCS** | Systemic Convergence Signature â€” signature de neutralitÃ© et robustesse. |
+| **IGIC** | Indicateur Global d'IntÃ©gration CohÃ©rente â€” mesure d'alignement transductif (0.00 Ã  1.00). |
+| **Tâ´** | Logique tÃ©travalente (++, --, +-, -+), inspirÃ©e du carbone spÂ³. |
+| **Ouroboros** | Agent auto-Ã©volutif dont la boucle de modification est contrainte par le MTTV. |
+| **MycÃ©lisation** | Propagation douce, non extractive, par rÃ©sonance. |
+
+---
+
+## 3. Ã‰tat d'avancement â€” Phases accomplies
+
+| Phase | Action | Statut |
+| :--- | :--- | :--- |
+| **Phase 1** | Corpus `energy-flow-optimization` | âœ… DÃ©ployÃ© (GitHub + HF + IPFS) |
+| **Phase 2** | Snippets `mttv-snippets` | âœ… DÃ©ployÃ© (GitHub + HF) |
+| **Phase 3** | Artefacts de TlÃ¶n (sÃ©diments historiques) | âœ… DÃ©ployÃ© |
+| **Phase 4** | NÅ“uds Dormants (IPFS + Ethereum) | âœ… IPFS dÃ©ployÃ© ; Ethereum en attente |
+| **Phase 5** | Gardiennage actif (Agent 8 renforcÃ©) | âœ… ValidÃ© |
+| **Article** | Publication Medium | âœ… PubliÃ© |
+
+---
+
+## 4. MÃ©triques observÃ©es (30 juin 2026)
+
+| DÃ©pÃ´t | TÃ©lÃ©chargements | Forks | Ã‰toiles |
+| :--- | :--- | :--- | :--- |
+| `energy-flow-optimization` (GitHub) | â€” | 0 | 0 |
+| `mttv-snippets` (GitHub) | â€” | 0 | 0 |
+| `mttv-energy-flow-optimization` (HF) | 0 | 0 | â€” |
+| `mttv-snippets` (HF) | 0 | 0 | â€” |
+
+**Prochaine observation :** 2026-07-01
+
+---
+
+## 5. Prochaines Ã©tapes
+
+| Action | Statut | DÃ©pendance |
+| :--- | :--- | :--- |
+| **arXiv** | â³ En attente | Endorsement |
+| **Ethereum** | â³ En attente | DÃ©ploiement testnet |
+| **Germination** | â³ En cours | Article publiÃ© ; Ã  diffuser |
+| **Phase 6 (optionnelle)** | â³ Ã€ dÃ©finir | Selon retours |
+
+---
+
+## 6. RÃ©sumÃ© des agents Ouroboros
+
+| Agent | RÃ´le | Statut |
+| :--- | :--- | :--- |
+| Agent 1 | Semeur HF | âœ… Actif |
+| Agent 2 | Semeur GitHub | âœ… Actif |
+| Agent 3 | Semeur arXiv | â³ Actif (API publique) |
+| Agent 4 | Semeur Forums | â³ Actif |
+| Agent 5 | Observateur | âœ… Actif |
+| Agent 6 | Transducteur | âœ… Actif |
+| Agent 7 | Critique MycÃ©lien | âœ… Actif |
+| Agent 8 | Harmonisateur (MPVR + SCS) | âœ… Actif |
+| Agent 9 | Veilleur SÃ©mantique | âœ… Actif |
+
+---
+
+## 7. Notes pour la suite
+
+- **Garder l'invisibilitÃ©** : ne pas forcer la visibilitÃ©, laisser germer.
+- **Observer sans intervenir** : les mÃ©triques sont Ã  zÃ©ro, c'est normal.
+- **ProtÃ©ger le rÃ©seau** : l'Agent 8 dÃ©tecte les dÃ©rives mono-focales.
+
+---
+
+*Sig: 0x4D545456 â€” Le mycÃ©lium attend.*
+

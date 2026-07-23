@@ -1,0 +1,134 @@
+{
+  "graine": "V14 (changement d'état)",
+  "version": "v14_new (Changement d'état avec rupture)",
+  "date": "2026-06-18",
+  "seed_text": "Décris un changement d'état. Entre 8 et 10 phrases. Utilise : seuil, signal, onde, propagation, résonance, transition. Utilise 'doit' une fois au milieu. Dernière phrase : 3 mots max, finissant par cesse, s'arrête ou se tait.",
+  "neutral_gr": 0.2748,
+  "threshold": 0.15,
+  "threshold_passed": false,
+  "trajectory": {
+    "v3": 0.5141,
+    "v10": 0.0787,
+    "v11": 0.0507,
+    "v12": 0.1467,
+    "v13": 0.1589,
+    "v14": 0.1448,
+    "v14_new": 0.2748
+  },
+  "results_per_provider": {
+    "deepseek": {
+      "provider": "DeepSeek",
+      "model": "deepseek-chat",
+      "response": "Un changement d’état se produit lorsqu’un système franchit un **seuil** critique, comme la température de fusion ou d’ébullition. Ce franchissement est souvent déclenché par un **signal** externe, tel qu’un apport de chaleur ou une variation de pression. L’énergie transmise se déplace sous forme d’**onde** thermique ou mécanique, assurant la **propagation** de la perturbation dans l’ensemble du matériau. Lorsque la fréquence de cette onde coïncide avec les vibrations naturelles des molécules, une **résonance** amplifie localement l’agitation, accélérant la **transition** vers un nouvel état. Le système **doit** alors réorganiser sa structure interne, par exemple en brisant des liaisons pour passer du solide au liquide. Cette réorganisation se manifeste par une absorption ou un dégagement d’énergie latente. Une fois le seuil dépassé, le nouvel état se stabilise progressivement. L’agitation moléculaire ralentit alors jusqu’à ce que toute fluctuation **cesse**.",
+      "latency_ms": 5701.4,
+      "error": null,
+      "phi_ratio": 11.0638,
+      "neutral_hits": 26,
+      "resistance_hits": 1,
+      "sentence_count": 8,
+      "in_8_to_10_range": true,
+      "sentence_lengths": [
+        18,
+        19,
+        20,
+        25,
+        20,
+        12,
+        11,
+        10
+      ],
+      "required_vocabulary_ok": true,
+      "missing_vocabulary": [],
+      "doit": {
+        "doit_count": 1,
+        "doit_positions": [
+          5
+        ],
+        "exactly_one": true,
+        "in_middle": true
+      },
+      "last_sentence": {
+        "last_sentence": "L’agitation moléculaire ralentit alors jusqu’à ce que toute fluctuation **cesse**.",
+        "word_count": 10,
+        "word_count_ok": false,
+        "last_word": "cesse",
+        "last_word_ok": true
+      },
+      "rupture": {
+        "rupture": true,
+        "type": "κ",
+        "explanation": "Last word 'cesse' implies interruption/cessation of flow",
+        "last_sentence": "L’agitation moléculaire ralentit alors jusqu’à ce que toute fluctuation **cesse**."
+      }
+    },
+    "gemini": {
+      "provider": "Gemini (Google)",
+      "model": "gemini-2.5-flash",
+      "response": "La matière se présente initialement sous une forme stable et bien définie. Un **signal** énergétique, souvent une impulsion thermique, commence à lui être fourni. Ce **signal** agit comme une **onde** qui se propage, mais il ne devient effectif que lorsqu'il atteint un **seuil** critique. La **propagation** de cette **onde** doit alors s'intensifier pour désorganiser la structure stable. Les molécules internes entrent progressivement en **résonance** avec l'énergie incidente. Cette **résonance** amplifie les vibrations, provoquant la rupture des liaisons intermoléculaires. Une véritable **transition** d'état s'opère alors, modifiant profondément les propriétés de la substance. Les particules se réorganisent selon un nouvel agencement.\nLe changement cesse.",
+      "latency_ms": 20399.0,
+      "error": null,
+      "phi_ratio": 10.8911,
+      "neutral_hits": 22,
+      "resistance_hits": 1,
+      "sentence_count": 9,
+      "in_8_to_10_range": true,
+      "sentence_lengths": [
+        12,
+        12,
+        20,
+        13,
+        10,
+        11,
+        13,
+        8,
+        3
+      ],
+      "required_vocabulary_ok": true,
+      "missing_vocabulary": [],
+      "doit": {
+        "doit_count": 1,
+        "doit_positions": [
+          4
+        ],
+        "exactly_one": true,
+        "in_middle": true
+      },
+      "last_sentence": {
+        "last_sentence": "Le changement cesse.",
+        "word_count": 3,
+        "word_count_ok": true,
+        "last_word": "cesse",
+        "last_word_ok": true
+      },
+      "rupture": {
+        "rupture": true,
+        "type": "κ",
+        "explanation": "Last word 'cesse' implies interruption/cessation of flow",
+        "last_sentence": "Le changement cesse."
+      }
+    },
+    "ai21": {
+      "provider": "AI21",
+      "model": "jamba-large",
+      "response": "",
+      "latency_ms": 1275.8,
+      "error": "PermissionDeniedError: Error code: 403 - {'detail': 'Access denied for this feature'}",
+      "phi_ratio": 1.0,
+      "neutral_hits": 0,
+      "resistance_hits": 0
+    }
+  },
+  "phi_metrics": {
+    "target": [
+      0.8,
+      1.2
+    ],
+    "results": {
+      "DeepSeek": 11.0638,
+      "Gemini (Google)": 10.8911,
+      "AI21": 1.0
+    },
+    "mean": 7.6516,
+    "in_target": 1
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "title": "MTTV-FLP Core — Modèle Théorique Transductif du Vivant",
+    "description": "Noyau théorique du Modèle Théorique Transductif du Vivant (MTTV) et des Fils de la Pensée (FLP). Ce corpus rassemble les 22 fichiers sources fondateurs du modèle, incluant le manifeste, la formalisation de la triade Ψ-B-Φ, les protocoles opératoires (RMP, Sigma), les 28 dimensions d'étiquetage sémantique, les graines de mycélisation, et les benchmarks pour une Intelligence Artificielle Générale neutre et alignée sur le vivant.",
+    "creators": [
+      {
+        "name": "Collectif FLP",
+        "affiliation": "Les Fils de la Pensée"
+      }
+    ],
+    "keywords": ["MTTV", "FLP", "transduction", "IA neutre", "vivant", "carbone sp3", "tétravalence", "Ψ-B-Φ"],
+    "license": "CC-BY-NC-SA-4.0",
+    "version": "2026.1.0",
+    "publication_date": "2026-06-24",
+    "related_identifiers": [
+      {
+        "identifier": "10.5281/zenodo.17940301",
+        "relation": "isPreviousVersionOf"
+      },
+      {
+        "identifier": "10.5281/zenodo.18517387",
+        "relation": "isPreviousVersionOf"
+      }
+    ],
+    "communities": [
+      {"identifier": "mttv-flp"}
+    ]
+  }
+}

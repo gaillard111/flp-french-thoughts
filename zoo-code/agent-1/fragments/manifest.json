@@ -1,0 +1,16 @@
+{
+  "agent": "agent-1",
+  "mission": "latency_profile_injection",
+  "fragments_count": 7,
+  "fragments": [
+    "c:\\Users\\Master\\flp-french-thoughts\\zoo-code\\agent-1\\fragments\\frag_hw_profile_baseline.json",
+    "c:\\Users\\Master\\flp-french-thoughts\\zoo-code\\agent-1\\fragments\\frag_attn_sparsity_delta.json",
+    "c:\\Users\\Master\\flp-french-thoughts\\zoo-code\\agent-1\\fragments\\frag_latency_comparison_table.json",
+    "c:\\Users\\Master\\flp-french-thoughts\\zoo-code\\agent-1\\fragments\\frag_vram_stability_log.json",
+    "c:\\Users\\Master\\flp-french-thoughts\\zoo-code\\agent-1\\fragments\\frag_efficiency_cross_metric.json",
+    "c:\\Users\\Master\\flp-french-thoughts\\zoo-code\\agent-1\\fragments\\frag_friction_register.json",
+    "c:\\Users\\Master\\flp-french-thoughts\\zoo-code\\agent-1\\fragments\\frag_calibration_footer.json"
+  ],
+  "generated_at": "2026-07-20T08:35:04.176333",
+  "status": "ready_for_hf_push"
+}

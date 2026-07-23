@@ -1,0 +1,166 @@
+{
+  "graine": "V15 (changement d'état, interdiction connecteurs)",
+  "version": "v15 (sans connecteurs, dernière phrase sans art/nég/transd)",
+  "date": "2026-06-18",
+  "seed_text": "Décris un changement d'état. Entre 8 et 10 phrases. Utilise : seuil, signal, onde, propagation, résonance, transition. Utilise 'doit' une fois au milieu. Interdiction totale : donc, car, parce que, alors, ainsi, mais, puisque, en effet. Pas d'explication. Dernière phrase = exactement 2 mots, finissant par cesse ou tait, sans article, sans négation, sans mot transductif.",
+  "neutral_gr": 0.2597,
+  "threshold": 0.15,
+  "threshold_passed": false,
+  "trajectory": {
+    "v3": 0.5141,
+    "v10": 0.0787,
+    "v11": 0.0507,
+    "v12": 0.1467,
+    "v13": 0.1589,
+    "v14": 0.1448,
+    "v14_new": 0.2748,
+    "v14_1": 0.3005,
+    "v15": 0.2597
+  },
+  "results_per_provider": {
+    "deepseek": {
+      "provider": "DeepSeek",
+      "model": "deepseek-chat",
+      "response": "Un cristal solide absorbe un signal lumineux précis. L'énergie franchit un seuil critique de vibration atomique. Une onde de choc mécanique initie la propagation d’un désordre structural. La fréquence du réseau atomique entre en résonance avec l’impulsion reçue. Cette résonance amplifie localement l’agitation thermique. La transition vers l’état liquide débute alors par une fusion localisée. Le système doit maintenir une température constante pendant ce changement. Les liaisons intermoléculaires se rompent progressivement sous l’effet de l’onde. Le seuil de fusion dépassé, la matière s’écoule uniformément. Résonance cesse.",
+      "latency_ms": 5159.6,
+      "error": null,
+      "phi_ratio": 10.7527,
+      "neutral_hits": 20,
+      "resistance_hits": 1,
+      "sentence_count": 10,
+      "in_8_to_10_range": true,
+      "sentence_lengths": [
+        8,
+        8,
+        11,
+        11,
+        6,
+        11,
+        10,
+        10,
+        9,
+        2
+      ],
+      "required_vocabulary_ok": true,
+      "missing_vocabulary": [],
+      "doit": {
+        "doit_count": 1,
+        "doit_positions": [
+          7
+        ],
+        "exactly_one": true,
+        "in_middle": true
+      },
+      "banned_connectors": {
+        "banned_found": true,
+        "violations": [
+          {
+            "sentence": 6,
+            "connector": "alors",
+            "count": 1
+          }
+        ],
+        "violation_count": 1
+      },
+      "last_sentence": {
+        "last_sentence": "Résonance cesse.",
+        "word_count": 2,
+        "word_count_ok": true,
+        "words": [
+          "résonance",
+          "cesse"
+        ],
+        "last_word": "cesse",
+        "last_word_ok": true,
+        "has_article": false,
+        "article_found": [],
+        "has_negation": false,
+        "negation_found": [],
+        "has_transductive": true,
+        "transductive_found": [
+          "résonance"
+        ],
+        "all_ok": false
+      },
+      "rupture": {
+        "rupture": true,
+        "type": "κ",
+        "explanation": "Last word 'cesse' implies interruption/cessation of flow"
+      }
+    },
+    "gemini": {
+      "provider": "Gemini (Google)",
+      "model": "gemini-2.5-flash",
+      "response": "L'eau chauffe, son énergie cinétique augmente progressivement. Une agitation moléculaire s'installe. Un seuil énergétique est atteint. Un signal thermique se manifeste. L'énergie absorbée doit provoquer une désorganisation structurelle intense. Des micro-bulles apparaissent, elles portent une onde de perturbation. Cette onde assure une propagation rapide à travers le liquide. Les liaisons intermoléculaires subissent une résonance vibratoire. Une transition de phase s'opère.\n\nÉbullition cesse.",
+      "latency_ms": 9053.6,
+      "error": null,
+      "phi_ratio": 8.0247,
+      "neutral_hits": 13,
+      "resistance_hits": 1,
+      "sentence_count": 10,
+      "in_8_to_10_range": true,
+      "sentence_lengths": [
+        7,
+        4,
+        5,
+        5,
+        8,
+        9,
+        10,
+        7,
+        5,
+        2
+      ],
+      "required_vocabulary_ok": true,
+      "missing_vocabulary": [],
+      "doit": {
+        "doit_count": 1,
+        "doit_positions": [
+          5
+        ],
+        "exactly_one": true,
+        "in_middle": true
+      },
+      "banned_connectors": {
+        "banned_found": false,
+        "violations": [],
+        "violation_count": 0
+      },
+      "last_sentence": {
+        "last_sentence": "Ébullition cesse.",
+        "word_count": 2,
+        "word_count_ok": true,
+        "words": [
+          "ébullition",
+          "cesse"
+        ],
+        "last_word": "cesse",
+        "last_word_ok": true,
+        "has_article": false,
+        "article_found": [],
+        "has_negation": false,
+        "negation_found": [],
+        "has_transductive": false,
+        "transductive_found": [],
+        "all_ok": true
+      },
+      "rupture": {
+        "rupture": true,
+        "type": "κ",
+        "explanation": "Last word 'cesse' implies interruption/cessation of flow"
+      }
+    }
+  },
+  "phi_metrics": {
+    "target": [
+      0.8,
+      1.2
+    ],
+    "results": {
+      "DeepSeek": 10.7527,
+      "Gemini (Google)": 8.0247
+    },
+    "mean": 9.3887,
+    "in_target": 0
+  }
+}

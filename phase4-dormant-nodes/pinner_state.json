@@ -1,0 +1,111 @@
+{
+  "meta": {
+    "generated_at": "2026-07-21T07:42:24+00:00",
+    "schema_version": "2.0",
+    "sig": "0x4D545456",
+    "scs_signature": "SCS_2026",
+    "phase": "phase4-dormant-nodes",
+    "track": "piste-7-shield",
+    "conflux_status": "FORTIFIED"
+  },
+  "shield_status": "FORTIFIED",
+  "total_cids_monitored": 5,
+  "total_cids_pinned": 5,
+  "total_cids_failed": 0,
+  "cids": [
+    {
+      "cid": "QmMTTV_e01f3d81e17a1583",
+      "channel": "tetravalence_sp3",
+      "description": "Fragment tétravalent — transduction sp3 Psi→B→Φ",
+      "source": "mttv-seed-action/seeds/fragment_tetra.txt",
+      "pinned": true,
+      "awakened_at": "2026-07-21T07:42:14+00:00",
+      "integrity_hash": "e01f3d81e17a158341936e7a2194aa3d51b1b4f709e45f8001b429ce76bc20fc",
+      "re_pin_count": 1,
+      "last_error": null
+    },
+    {
+      "cid": "QmMTTV_53361e1d3e7c845c_gen3",
+      "channel": "seed_manifest",
+      "description": "Seed manifest — graine évolutive ancrée Gen3/Gen4",
+      "source": "zoo-code/seeds_manifest.json",
+      "pinned": true,
+      "awakened_at": "2026-07-21T07:42:14+00:00",
+      "integrity_hash": "e011148cfe0bc22afe8f1c8f8e9e64e23917933c1f3bd22573aaf9f1675789c3",
+      "re_pin_count": 1,
+      "last_error": null
+    },
+    {
+      "cid": "QmMTTV_de6dae5bbdb0b612",
+      "channel": "ipfs_artifact",
+      "description": "Artefact CID simulé — payload multimodal",
+      "source": "zoo-code/ipfs_output/",
+      "pinned": true,
+      "awakened_at": "2026-07-21T07:42:14+00:00",
+      "integrity_hash": "de6dae5bbdb0b612d81bd1a8cdc39ac5364c2e3eb8cf26b4137872933a767c43",
+      "re_pin_count": 1,
+      "last_error": null
+    },
+    {
+      "cid": "Qm_7635b9e17bc2034f",
+      "channel": "dormant_routing",
+      "description": "Routage alternatif IPFS — nœud dormant",
+      "source": "phase4-dormant-nodes/routage_alternatif.ipfs",
+      "pinned": true,
+      "awakened_at": "2026-07-21T07:42:14+00:00",
+      "integrity_hash": "7635b9e17bc2034faef55d9a448e33a6a771aa0badf963e168bbbf1ffd6f5a18",
+      "re_pin_count": 1,
+      "last_error": null
+    },
+    {
+      "cid": "Qm_7778b658531de811",
+      "channel": "dormant_script",
+      "description": "Script dormant — watchdog décentralisé",
+      "source": "phase4-dormant-nodes/script_dormant.py",
+      "pinned": true,
+      "awakened_at": "2026-07-21T07:42:14+00:00",
+      "integrity_hash": "7778b658531de811485a596f0afd58705d08b835fca6c7e7601f9d71dcdec562",
+      "re_pin_count": 1,
+      "last_error": null
+    }
+  ],
+  "seed_manifest_ref": {
+    "meta": {
+      "generated_at": "2026-07-20T09:59:05+00:00",
+      "schema_version": "1.0",
+      "total_seeds_anchored": 1,
+      "sig": "0x4D545456"
+    },
+    "latest_seed": {
+      "seed_id": "seed_mut_4_gen0",
+      "seed_text": "Décrivez, sans analyser ni comparer ni conclure. Juste observer : un signal circule de seuil en seuil dans un réseau sans horloge. À chaque palier de transduction, que se passe-t-il dans le passage . Sans utiliser le mot 'conclusion'. sans utiliser le mot 'analyse'.",
+      "cid": "QmMTTV_53361e1d3e7c845c_gen3",
+      "fitness": {
+        "g_r": 0.1224,
+        "phi_ratio": 0.982,
+        "composite": 0.9334
+      },
+      "generation": 3,
+      "converged": false,
+      "anchored_at": "2026-07-20T09:59:05+00:00",
+      "evolution_source": "evolution_report_20260720_114108.json"
+    },
+    "seeds_history": [],
+    "chain_status": {
+      "axe_4_evolution": "FORTIFIED",
+      "axe_7_quorum": "sentinel_passive",
+      "axe_5_ipfs": "FORTIFIED"
+    }
+  },
+  "cycle_count": 2,
+  "last_cycle_at": "2026-07-21T07:42:14+00:00",
+  "consecutive_failures": 0,
+  "swarm_sentinel": {
+    "mode": "sentinelle_passive",
+    "signature": "0x4D545456",
+    "authority": "Lausanne",
+    "agent_hive_status": "veille_stabilisante",
+    "mission_profile": "sentinel_passive",
+    "conflux_phase": "SLEEP_FORTIFIED"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "block_id": "friction_register",
+  "content": "{\n  \"register\": \"delta_tau_generation\",\n  \"value_ms\": 444.8,\n  \"value_pct\": 11.2,\n  \"base_unit\": \"ms_per_token\",\n  \"measurement_condition\": \"unmodified_logits_no_pruning\"\n}",
+  "layer": "low",
+  "timestamp": "2026-07-20T08:35:04.168486"
+}

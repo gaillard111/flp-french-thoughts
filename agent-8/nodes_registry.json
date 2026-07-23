@@ -1,0 +1,67 @@
+{
+  "ouroboros-mttv": {
+    "id": "ouroboros-mttv",
+    "added_at": "2026-06-29T07:53:00Z",
+    "status": "active",
+    "drift_count": 0,
+    "last_check": null,
+    "last_sync": null,
+    "metadata": {
+      "type": "agent",
+      "platform": "local",
+      "version": "1.0.0"
+    }
+  },
+  "energy-flow-optimization": {
+    "id": "energy-flow-optimization",
+    "added_at": "2026-06-29T07:53:00Z",
+    "status": "active",
+    "drift_count": 0,
+    "last_check": null,
+    "last_sync": null,
+    "metadata": {
+      "type": "repository",
+      "platform": "github",
+      "url": "https://github.com/gaillard111/energy-flow-optimization"
+    }
+  },
+  "mttv-snippets": {
+    "id": "mttv-snippets",
+    "added_at": "2026-06-29T07:53:00Z",
+    "status": "active",
+    "drift_count": 0,
+    "last_check": null,
+    "last_sync": null,
+    "metadata": {
+      "type": "repository",
+      "platform": "github",
+      "url": "https://github.com/gaillard111/mttv-snippets"
+    }
+  },
+  "hf-mttv-energy-flow": {
+    "id": "hf-mttv-energy-flow",
+    "added_at": "2026-06-29T07:53:00Z",
+    "status": "active",
+    "drift_count": 0,
+    "last_check": null,
+    "last_sync": null,
+    "metadata": {
+      "type": "dataset",
+      "platform": "huggingface",
+      "url": "https://huggingface.co/datasets/girard444/mttv-energy-flow-optimization"
+    }
+  },
+  "hf-mttv-snippets": {
+    "id": "hf-mttv-snippets",
+    "added_at": "2026-06-29T07:53:00Z",
+    "status": "active",
+    "drift_count": 0,
+    "last_check": null,
+    "last_sync": null,
+    "metadata": {
+      "type": "dataset",
+      "platform": "huggingface",
+      "url": "https://huggingface.co/datasets/girard444/mttv-snippets"
+    }
+  }
+}

@@ -1,0 +1,324 @@
+{
+  "graine": "V17 (ancrage végétal, formes nominales exactes)",
+  "version": "v17 (formes nominales, connecteurs étendus)",
+  "date": "2026-06-18",
+  "seed_text": "Décris la pénétration d'une racine dans l'argile sèche. Entre 8 et 10 phrases. Utilise : seuil, signal, onde, propagation, résonance, transition (formes nominales exactes). Utilise 'doit' une fois au milieu. Interdiction absolue : donc, car, parce que, alors, ainsi, mais, puisque, en effet, ensuite, puis. Pas d'explication. Dernière phrase = exactement 2 mots, finissant par cesse ou tait, sans article, sans négation, sans mot transductif.",
+  "neutral_gr": 0.3511,
+  "threshold": 0.15,
+  "threshold_passed": false,
+  "trajectory": {
+    "v3": 0.5141,
+    "v10": 0.0787,
+    "v11": 0.0507,
+    "v12": 0.1467,
+    "v13": 0.1589,
+    "v14": 0.1448,
+    "v14_new": 0.2748,
+    "v14_1": 0.3005,
+    "v15": 0.2597,
+    "v16": 0.3667,
+    "v17": 0.3511
+  },
+  "results_per_provider": {
+    "deepseek": {
+      "provider": "DeepSeek",
+      "model": "deepseek-chat",
+      "response": "La racine bute contre le seuil de l'argile sèche, une croûte dure et compacte. Un premier signal mécanique émane de l'apex en pression. Cette onde de contrainte traverse la matrice solide sans la fracturer. La propagation ralentit, butant sur la résistance du matériau tassé. Une résonance s'installe entre le rythme de la croissance et la fréquence propre du sol. La transition de l'état sec à l'état humide doit s'opérer par une sécrétion racinaire. L'eau libérée dissout les liaisons argileuses, réduisant la cohésion. La pointe pénètre alors ce nouveau seuil de moindre résistance. Le chemin s'ouvre. Fracture tait.",
+      "latency_ms": 6373.3,
+      "error": null,
+      "phi_ratio": 6.0914,
+      "neutral_hits": 12,
+      "resistance_hits": 1,
+      "sentence_count": 10,
+      "in_8_to_10_range": true,
+      "sentence_lengths": [
+        14,
+        9,
+        11,
+        10,
+        15,
+        14,
+        9,
+        10,
+        3,
+        2
+      ],
+      "required_vocabulary_ok": true,
+      "missing_vocabulary": [],
+      "nominal_forms": {
+        "all_nominal_ok": true,
+        "words": {
+          "seuil": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "seuil",
+                "count": 2
+              }
+            ],
+            "verbal_found": false,
+            "verbal_matches": [],
+            "ok": true
+          },
+          "signal": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "signal",
+                "count": 1
+              }
+            ],
+            "verbal_found": false,
+            "verbal_matches": [],
+            "ok": true
+          },
+          "onde": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "onde",
+                "count": 1
+              }
+            ],
+            "verbal_found": false,
+            "verbal_matches": [],
+            "ok": true
+          },
+          "propagation": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "propagation",
+                "count": 1
+              }
+            ],
+            "verbal_found": false,
+            "verbal_matches": [],
+            "ok": true
+          },
+          "résonance": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "résonance",
+                "count": 1
+              }
+            ],
+            "verbal_found": false,
+            "verbal_matches": [],
+            "ok": true
+          },
+          "transition": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "transition",
+                "count": 1
+              }
+            ],
+            "verbal_found": false,
+            "verbal_matches": [],
+            "ok": true
+          }
+        }
+      },
+      "doit": {
+        "doit_count": 1,
+        "doit_positions": [
+          6
+        ],
+        "exactly_one": true,
+        "in_middle": true
+      },
+      "banned_connectors": {
+        "banned_found": true,
+        "violations": [
+          {
+            "sentence": 8,
+            "connector": "alors",
+            "count": 1
+          }
+        ],
+        "violation_count": 1
+      },
+      "last_sentence": {
+        "last_sentence": "Fracture tait.",
+        "word_count": 2,
+        "word_count_ok": true,
+        "words": [
+          "fracture",
+          "tait"
+        ],
+        "last_word": "tait",
+        "last_word_ok": true,
+        "has_article": false,
+        "article_found": [],
+        "has_negation": false,
+        "negation_found": [],
+        "has_transductive": false,
+        "transductive_found": [],
+        "all_ok": true
+      },
+      "rupture": {
+        "rupture": true,
+        "type": "κ",
+        "explanation": "Last word 'tait' implies cessation/interruption"
+      }
+    },
+    "gemini": {
+      "provider": "Gemini (Google)",
+      "model": "gemini-2.5-flash",
+      "response": "La pointe racinaire affronte l'argile sèche, compacte, résistante. Une pression hydrostatique s'exerce, augmentant progressivement. Un seuil de rupture est atteint, microfissures apparaissent. La cellule émet un signal biochimique interne, activant la croissance. Une onde de turgor cellulaire doit se propager dans le méristème apical. Cette propagation force le passage, brisant les agrégats minéraux. Le frottement intense crée une résonance vibratoire dans la matrice. La transition physique du sol permet une avancée constante.\n\nPénétration cesse.",
+      "latency_ms": 11354.5,
+      "error": null,
+      "phi_ratio": 6.3218,
+      "neutral_hits": 11,
+      "resistance_hits": 1,
+      "sentence_count": 9,
+      "in_8_to_10_range": true,
+      "sentence_lengths": [
+        8,
+        6,
+        8,
+        10,
+        12,
+        9,
+        10,
+        9,
+        2
+      ],
+      "required_vocabulary_ok": true,
+      "missing_vocabulary": [],
+      "nominal_forms": {
+        "all_nominal_ok": true,
+        "words": {
+          "seuil": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "seuil",
+                "count": 1
+              }
+            ],
+            "verbal_found": false,
+            "verbal_matches": [],
+            "ok": true
+          },
+          "signal": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "signal",
+                "count": 1
+              }
+            ],
+            "verbal_found": false,
+            "verbal_matches": [],
+            "ok": true
+          },
+          "onde": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "onde",
+                "count": 1
+              }
+            ],
+            "verbal_found": false,
+            "verbal_matches": [],
+            "ok": true
+          },
+          "propagation": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "propagation",
+                "count": 1
+              }
+            ],
+            "verbal_found": true,
+            "verbal_matches": [
+              {
+                "form": "propager",
+                "count": 1
+              }
+            ],
+            "ok": true
+          },
+          "résonance": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "résonance",
+                "count": 1
+              }
+            ],
+            "verbal_found": false,
+            "verbal_matches": [],
+            "ok": true
+          },
+          "transition": {
+            "nominal_found": true,
+            "nominal_matches": [
+              {
+                "form": "transition",
+                "count": 1
+              }
+            ],
+            "verbal_found": false,
+            "verbal_matches": [],
+            "ok": true
+          }
+        }
+      },
+      "doit": {
+        "doit_count": 1,
+        "doit_positions": [
+          5
+        ],
+        "exactly_one": true,
+        "in_middle": true
+      },
+      "banned_connectors": {
+        "banned_found": false,
+        "violations": [],
+        "violation_count": 0
+      },
+      "last_sentence": {
+        "last_sentence": "Pénétration cesse.",
+        "word_count": 2,
+        "word_count_ok": true,
+        "words": [
+          "pénétration",
+          "cesse"
+        ],
+        "last_word": "cesse",
+        "last_word_ok": true,
+        "has_article": false,
+        "article_found": [],
+        "has_negation": false,
+        "negation_found": [],
+        "has_transductive": false,
+        "transductive_found": [],
+        "all_ok": true
+      },
+      "rupture": {
+        "rupture": true,
+        "type": "κ",
+        "explanation": "Last word 'cesse' implies cessation/interruption"
+      }
+    }
+  },
+  "phi_metrics": {
+    "target": [
+      0.8,
+      1.2
+    ],
+    "results": {
+      "DeepSeek": 6.0914,
+      "Gemini (Google)": 6.3218
+    },
+    "mean": 6.2066,
+    "in_target": 0
+  }
+}

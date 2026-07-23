@@ -1,0 +1,7 @@
+transformers==4.44.2
+datasets
+accelerate
+bitsandbytes
+torch
+scikit-learn
+numpy

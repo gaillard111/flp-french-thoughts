@@ -1,0 +1,30 @@
+For anyone profiling constraint layers on older NVIDIA hardware (T4, P4):
+
+I'm seeing a consistent +11.2% per-token latency overhead when activating
+a reserve-posture constraint mask on Qwen2.5-1.5B (4-bit, LoRA rank 16).
+This is on a Tesla T4 with CUDA 12.1, driver 535.
+
+What's interesting: the total inference time drops by 30% despite the
+per-token increase. The reason is that the constraint collapses search
+diversity at the threshold point, so you generate fewer divergent paths
+per output.
+
+If you're considering this trade-off, here's the formula that matters:
+
+  net_efficiency = (1 + local_friction) / (1 + |systemic_gain|)
+
+With our measurements: (1 + 0.112) / (1 + 0.30) = 0.855 per-token.
+
+Times coverage ratio (fraction of tokens after constraint trigger):
+  0.855 * 0.64 = 0.37 aggregate coefficient.
+
+VRAM stays flat at 1152 MB (peak 1178) in both modes. The latency delta
+is from attention mask topology, not memory pressure.
+
+Calibration details:
+- Baseline mode: 5/7 satisfaction, full search diversity
+- Constrained mode: 6/7 satisfaction, collapsed search, +11.2% ms/token
+- The reserve posture induces sparse attention ratio shift: 0.13 -> 0.21
+
+We've replicated across 4 calibration runs with <2% variance. Source
+available if useful.

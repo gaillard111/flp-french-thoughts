@@ -22,3 +22,44 @@
 *.log
 __pycache__/
 *.pyc
+
+# ── Dépôts Git imbriqués (déjà sauvegardés séparément sur GitHub) ──────
+/mttv-flp-core/
+/mttv-flp-mpvr-glocal/
+
+# ── Environnement Python complet / conda (1.12 Go — pas pour Git) ──────
+/ouroboros-swarm/
+
+# ── Poids de modèles / checkpoints (volumineux, regénérables) ──────────
+/checkpoints/
+/mttv_lora_final/
+/mttv_out/
+/hf_v10_temp/
+
+# ── Archives ────────────────────────────────────────────────────────────
+/depot-v10.zip
+/mttv_flp_core_2026.zip
+/mttv_missing_files.tar.gz
+
+# ── Dossiers de sortie générés (regénérables) ──────────────────────────
+/zoo-code/evolution_output/
+/zoo-code/ipfs_output/
+/zoo-code/mycelium_output/
+/zoo-code/pulse_output/
+/zoo-code/quorum_output/
+/zoo-code/resonance_output/
+/zoo-code/sealed_archive/
+/zoo-code/validation/
+/zoo-code/seed_cards/
+
+# ── Autres dépôts Git imbriqués ───────────────────────────────────────
+/bitbucket_temp/
+/depot-v10/
+/energy-flow-optimization/
+/experiments/MPVR-v1/
+/mttv-snippets/
+/ouroboros-mttv/
+/sandbox-mttv-test/
+
+# ── Artefacts divers ────────────────────────────────────────────────────
+/$null

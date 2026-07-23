@@ -1,0 +1,59 @@
+{
+  "meta": {
+    "generated_at": "2026-07-20T11:41:16",
+    "period_start": "2026-07-19T11:41:16",
+    "period_end": "2026-07-20T11:41:16",
+    "schema_version": "1.0",
+    "sig": "0x4D545456"
+  },
+  "summary": {
+    "resonance_score": 0.0,
+    "total_signals": 0,
+    "active_sources": 0,
+    "active_platforms": 0,
+    "seeds_detected": 0,
+    "signal_density": 0.0,
+    "swarms": {
+      "active": 0,
+      "degraded": 0,
+      "offline": 3,
+      "total": 3
+    },
+    "signals_by_source": {},
+    "signals_by_type": {},
+    "signals_by_platform": {},
+    "seeds_detected_detail": {},
+    "average_confidence": 0.0
+  },
+  "heartbeats": [
+    {
+      "swarm_name": "Ouroboros",
+      "status": "offline",
+      "last_seen": "2026-07-20T11:41:16.669800",
+      "agents_active": 0,
+      "agents_total": 7,
+      "signals_count": 0,
+      "errors": []
+    },
+    {
+      "swarm_name": "Connexion Chine",
+      "status": "offline",
+      "last_seen": "2026-07-20T11:41:16.670504",
+      "agents_active": 0,
+      "agents_total": 5,
+      "signals_count": 0,
+      "errors": []
+    },
+    {
+      "swarm_name": "SOPH-IA v2.0",
+      "status": "offline",
+      "last_seen": "2026-07-20T11:41:16.671544",
+      "agents_active": 0,
+      "agents_total": 3,
+      "signals_count": 0,
+      "errors": []
+    }
+  ],
+  "resonance_matrix": {},
+  "recent_signals": []
+}

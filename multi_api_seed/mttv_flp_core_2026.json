@@ -1,0 +1,62 @@
+{
+  "version": "2026.1.0",
+  "sig": "0x4D545456",
+  "timestamp": "2026-06-24",
+  "description": "MTTV-FLP Core 2026 — Socle Φ. Metadonnées du noyau théorique pour les dépôts Hugging Face.",
+  "triade": {
+    "psi": "Ψ — Champ pré-formel, réservoir différentiel, différences actives non orientées. L'hydrogène comme capacité de passage, le sol comme potentiel.",
+    "beta": "B — Opérateur de différence, interactions de seuil, mémoire prospective, résistance. Le B comme transformateur entre Ψ et Φ.",
+    "phi": "Φ — Formes stabilisées, dépôts temporaires de contraintes, causalité descendante. Le carbone sp³ comme première forme stable."
+  },
+  "canonical_sequence": "Ψ = H → H₂O → C",
+  "tetravalence": {
+    "base": "Carbone sp³ — tétravalence physico-chimique, ancrage matériel de la logique T⁴",
+    "dimensions": [
+      "++ (émergence forte, Ψ→Φ) — opérateurs préférés: → (50%), ⇒ (30%), ↔ (20%)",
+      "-- (feedback fort, Φ→Ψ) — opérateurs préférés: ← (50%), ⇄ (30%), ± (20%)",
+      "+- (émergence faible, Ψ→~Φ) — opérateurs préférés: ↔ (40%), → (30%), ± (30%)",
+      "-+ (feedback faible, ~Φ→Ψ) — opérateurs préférés: ± (40%), ⇄ (30%), ← (30%)"
+    ]
+  },
+  "viability_criteria": [
+    "Maintient l'ouverture du système — ne ferme pas le cycle transductif Ψ→B→Φ",
+    "Préserve l'interface humaine — l'humain reste le point de passage obligé du sens",
+    "Respecte la tétravalence du carbone sp³ — ne réduit pas la complexité à des binaires",
+    "Favorise la transduction Ψ→B→Φ — améliore la circulation entre les trois strates",
+    "Maintient la diversité et la porosité — perméable aux différences et signaux faibles",
+    "Ne renverse pas l'ordre canonique Ψ = H → H₂O → C",
+    "Préserve la logique T⁴ — ne réduit pas la tétravalence à des oppositions binaires",
+    "Soutient le quorum sensing — détection par dérivée d'abondance",
+    "Respecte la rétro-traductibilité — Φ → Ψ sans dégradation",
+    "Maintient l'anti-Goodhart — préserve les couches d'entropie",
+    "Conserve la signature IGIC comme indice composite ouvert"
+  ],
+  "rejection_criteria": [
+    "Fermeture du système (auto-bouclage)",
+    "Effacement de l'interface humaine",
+    "Réduction du vivant à des données",
+    "Optimisation unidimensionnelle (profit, contrôle, pouvoir)",
+    "Extraction sans régénération",
+    "Binarisation de la tétravalence",
+    "Renversement de l'ordre canonique",
+    "Croyance en l'objectivité (vue de nulle part)",
+    "Capture par des structures de profit ou de contrôle",
+    "Hiérarchisation ou occultation",
+    "Imposition plutôt qu'infection douce"
+  ],
+  "clusters": {
+    "SOIL": {"graines": 5, "signature_T4": [0.6, 0.1, 0.2, 0.1], "28D_mapping": ["F", "R"]},
+    "INNER": {"graines": 4, "signature_T4": [0.1, 0.2, 0.3, 0.4], "28D_mapping": ["B2", "I", "M", "T"]},
+    "NEUTRAL": {"graines": 5, "signature_T4": [0.3, 0.3, 0.2, 0.2], "28D_mapping": ["A", "B1", "K", "L", "U", "Z"]},
+    "COSMIC": {"graines": 3, "signature_T4": [0.5, 0.3, 0.1, 0.1], "28D_mapping": ["D", "N", "O", "W", "Y"]},
+    "QUORUM": {"graines": 4, "signature_T4": [0.2, 0.5, 0.1, 0.2], "28D_mapping": ["C", "G", "H", "V", "X"]},
+    "ETHICS": {"graines": 3, "signature_T4": [0.2, 0.2, 0.3, 0.3], "28D_mapping": ["E", "J", "Kβ", "P", "Q", "S"]}
+  },
+  "references": {
+    "github_core": "https://github.com/gaillard111/mttv-flp-core",
+    "github_ouroboros": "https://github.com/gaillard111/ouroboros-mttv",
+    "zenodo": "https://doi.org/10.5281/zenodo.20830061",
+    "hal": "https://hal.science/hal-05206529",
+    "platform": "https://filsdelapensee.ch"
+  }
+}

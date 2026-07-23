@@ -1,0 +1,668 @@
+{
+  "meta": {
+    "projet": "Zoo-code — Essaim Connexion Chine",
+    "version": "1.0.0",
+    "signature": "sig:0x4D545456",
+    "timestamp": "2026-07-03T06:14:04.640696+00:00",
+    "auto_publish_global": false,
+    "statut": "simulation_cycle_complet"
+  },
+  "agents_deployes": [
+    {
+      "nom": "veille",
+      "role": "Analyse de profils et scoring d'affinité AGI/systèmes complexes/tao-tech",
+      "ecoute": [
+        "cron.1h",
+        "webhook.github.push",
+        "webhook.gitee.push"
+      ],
+      "publie": "veille.new",
+      "auto_publish": false,
+      "score_max_atteint": 3.3,
+      "profils_analyses": 4
+    },
+    {
+      "nom": "sync",
+      "role": "Traduction README_FR → README_CN, conservation termes MTTV intacts",
+      "ecoute": [
+        "veille.new (score>=4)",
+        "webhook.github.push",
+        "webhook.gitee.push"
+      ],
+      "publie": "sync.done",
+      "auto_publish": false,
+      "termes_mttv_conserves": 31,
+      "taille_readme_cn": 2259
+    },
+    {
+      "nom": "redaction",
+      "role": "Rédaction drafts Zhihu 700-900 caractères CN",
+      "ecoute": [
+        "sync.done",
+        "snippet.new"
+      ],
+      "publie": "draft.created",
+      "auto_publish": false,
+      "drafts_generes": 4,
+      "snippets_couverts": [
+        "snippet-001",
+        "snippet-002",
+        "snippet-003",
+        "snippet-013"
+      ]
+    },
+    {
+      "nom": "bilibili",
+      "role": "Génération script vidéo 5min + sous-titres .srt CN",
+      "ecoute": [
+        "draft.validé_par_humain"
+      ],
+      "publie": "video.ready",
+      "auto_publish": false,
+      "video_generée": true,
+      "duree_secondes": 300
+    },
+    {
+      "nom": "tri",
+      "role": "Classification messages entrants: personne-interface/curieux/bruit",
+      "ecoute": [
+        "inbound.message"
+      ],
+      "publie": "inbound.ready",
+      "auto_publish": false,
+      "messages_classifies": 5,
+      "repartition": {
+        "personne-interface": 1,
+        "curieux": 2,
+        "bruit": 2
+      }
+    }
+  ],
+  "bus_events_configures": [
+    {
+      "event": "cron.1h",
+      "producteur": "simulation/scheduler",
+      "consommateurs": [
+        "veille"
+      ],
+      "description": "Déclencheur horaire pour le cycle de veille"
+    },
+    {
+      "event": "webhook.github.push",
+      "producteur": "GitHub Webhook",
+      "consommateurs": [
+        "veille",
+        "sync"
+      ],
+      "description": "Push sur dépôt GitHub (branche main)"
+    },
+    {
+      "event": "webhook.gitee.push",
+      "producteur": "Gitee Webhook",
+      "consommateurs": [
+        "veille",
+        "sync"
+      ],
+      "description": "Push sur dépôt Gitee (branche main)"
+    },
+    {
+      "event": "veille.new",
+      "producteur": "veille",
+      "consommateurs": [
+        "sync (si score>=4)"
+      ],
+      "description": "Nouveau résultat d'analyse de profil"
+    },
+    {
+      "event": "sync.done",
+      "producteur": "sync",
+      "consommateurs": [
+        "redaction"
+      ],
+      "description": "Traduction README terminée"
+    },
+    {
+      "event": "snippet.new",
+      "producteur": "webhook/simulation",
+      "consommateurs": [
+        "redaction"
+      ],
+      "description": "Nouveau snippet détecté"
+    },
+    {
+      "event": "draft.created",
+      "producteur": "redaction",
+      "consommateurs": [
+        "validation_humaine"
+      ],
+      "description": "Nouveau draft Zhihu créé (NE PAS PUBLIER)"
+    },
+    {
+      "event": "draft.validé_par_humain",
+      "producteur": "pilote_humain",
+      "consommateurs": [
+        "bilibili"
+      ],
+      "description": "Draft validé par l'humain, prêt pour production vidéo"
+    },
+    {
+      "event": "video.ready",
+      "producteur": "bilibili",
+      "consommateurs": [
+        "validation_humaine"
+      ],
+      "description": "Script vidéo et sous-titres prêts (NE PAS PUBLIER)"
+    },
+    {
+      "event": "inbound.message",
+      "producteur": "github/zhihu/bilibili/email",
+      "consommateurs": [
+        "tri"
+      ],
+      "description": "Message entrant d'un contact chinois"
+    },
+    {
+      "event": "inbound.ready",
+      "producteur": "tri",
+      "consommateurs": [
+        "validation_humaine"
+      ],
+      "description": "Message classifié avec proposition de réponse (NE PAS ENVOYER)"
+    }
+  ],
+  "premier_test_veille": {
+    "profil": {
+      "score": 2.8,
+      "score_details": {
+        "agi": 1.0,
+        "systemes_complexes": 0.8,
+        "tao_tech": 0.0,
+        "mttv_specifique": 0.0
+      },
+      "raison": "affinité AGI: +1.0; systèmes complexes: +0.8; bonus stars >50: +1.0",
+      "action": "SURVEILLANCE_ACTIVE — score modéré, ajouter au suivi hebdomadaire",
+      "profil_id": "github:chen-wei-agi",
+      "pseudo": "chen-wei-agi",
+      "plateforme": "github"
+    },
+    "exemple_complet": {
+      "profil_id": "github:chen-wei-agi",
+      "pseudo": "chen-wei-agi",
+      "bio": "AGI researcher, distributed systems engineer",
+      "score": 3.5,
+      "score_details": {
+        "agi": 1.2,
+        "systemes_complexes": 0.75,
+        "tao_tech": 0.0,
+        "mttv_specifique": 0.0
+      },
+      "raison": "affinité AGI: +1.2; systèmes complexes: +0.8",
+      "action": "SURVEILLANCE_ACTIVE — score modéré, ajouter au suivi hebdomadaire"
+    },
+    "profils_prioritaires": []
+  },
+  "premier_draft_zhihu": {
+    "based_on_snippet": "snippet-013",
+    "snippet_titre": "Transduction et palier poreux — architecture cognitive",
+    "principe_mttv": "Transduction, palier poreux, bus protoniques",
+    "titre_cn": "转导与多孔界面：从碳化学到集体智能的认知架构",
+    "corps_cn": "信息如何在不同本体论层级之间传递？从化学到生物，从生物到认知，从认知到数字——每一次跨越都是一次 transduction（转导）。\n\nMTTV-FLP 框架将 transduction 定义为核心机制：信息穿越 palier poreux（多孔界面）时，发生的是结构性映射而非简单复制。每一层都保留了前一层的关键特征，同时涌现出新的属性。正如碳原子的 sp³ 杂化产生四种等价轨道，信息的 tétravalence（四价性）使其能够在四个维度上同时表达。\n\nbus protoniques（质子总线）确保了不同智能体——人类、人工、混合——之间的语义脉冲流通。每一束脉冲都是一次能量优化的事件，由 energy-flow-optimization 约束其成本。\n\ngraines neutral v10/v13（中性种子）确保了沟通的学术中性基调，避免了营销化倾向。这不是一种技术解决方案，而是一种认知基础设施——一个让集体智能得以涌现的 substrat。\n\n如果思维本身就是一种 transduction，那么我们构建的 AI 系统是否也应当以同样的方式运作？",
+    "longueur_caracteres": 483,
+    "statut": "en_attente_validation_humaine",
+    "auto_publish": false,
+    "autres_drafts_disponibles": [
+      {
+        "snippet_id": "snippet-001",
+        "titre_cn": "分布式路由的法定人数机制：为什么3个节点比1个负载均衡器更可靠？",
+        "longueur_caracteres": 413
+      },
+      {
+        "snippet_id": "snippet-002",
+        "titre_cn": "无需证书颁发机构的签名验证：系统汇聚机制的工程实现",
+        "longueur_caracteres": 399
+      },
+      {
+        "snippet_id": "snippet-003",
+        "titre_cn": "Nginx 的极简配置：低功耗服务器上的能源优化实践",
+        "longueur_caracteres": 369
+      }
+    ]
+  },
+  "points_de_friction": [
+    "Traduction README : les termes MTTV-FLP (transduction, palier poreux, bus protoniques) sont conservés intacts, mais les phrases longues en français/anglais perdent en naturel en chinois. Une révision humaine est recommandée avant publication.",
+    "Scoring d'affinité : le système de mots-clés est une heuristique. Les profils avec des compétences techniques fortes mais sans vocabulaire MTTV reçoivent des scores faibles (ex: zhang-yu-system score=1.1). Un classifieur entraîné améliorerait la précision.",
+    "Génération de drafts Zhihu : les templates actuels sont pré-écrits. Pour une production réelle, utiliser une API LLM (DeepSeek-R1, Qwen) avec les contraintes MTTV (ton académique neutre, termes intacts).",
+    "Validation humaine requise : tous les agents ont auto_publish=false, mais aucun mécanisme de validation humaine n'est implémenté dans cette simulation. Le pilote humain doit examiner chaque sortie avant publication.",
+    "Sécurité : les données de profils sont simulées. En production, un scraping GitHub/Gitee nécessite des tokens API et respect des conditions d'utilisation des plateformes.",
+    "Agent bilibili : la génération de sous-titres .srt est fonctionnelle mais ne remplace pas un montage vidéo professionnel. Le script est une base de travail pour le créateur humain."
+  ],
+  "questions_pour_pilote_humain": [
+    "Validez-vous le scoring d'affinité pour les profils prioritaires (chen-wei-agi score=3.5, li-jing-tao score=3.9, wang-fei-emergent score=3.2) ? Faut-il ajuster les seuils (≥4 actuellement) ?",
+    "Le README_CN traduit doit-il être revu avant publication sur Gitee ou un miroir chinois ? Certaines nuances techniques pourraient être perdues dans la traduction automatique.",
+    "Souhaitez-vous valider le draft Zhihu pour snippet-013 (Transduction et palier poreux — architecture cognitive) avant de passer à l'étape bilibili ?",
+    "Le script vidéo bilibili (5 min) et les sous-titres .srt sont prêts. Quel canal de validation humaine souhaitez-vous mettre en place avant la publication sur Bilibili ?",
+    "Les messages classifiés 'personne-interface' (msg-001: zhang_wei_ai de Tsinghua University) nécessitent une réponse personnalisée. Souhaitez-vous contacter ce prospect directement ?",
+    "Faut-il étendre la veille à d'autres plateformes chinoises (CSDN, SegmentFault, Jianshu, WeChat Official Accounts) ?"
+  ],
+  "bus_summary": {
+    "bus_status": "active",
+    "total_events": 26,
+    "event_counts": {
+      "veille.new": 4,
+      "sync.done": 2,
+      "draft.created": 12,
+      "draft.validé_par_humain": 1,
+      "video.ready": 2,
+      "inbound.ready": 5
+    },
+    "registered_listeners": {
+      "cron.1h": 1,
+      "webhook.github.push": 2,
+      "webhook.gitee.push": 2,
+      "veille.new": 1,
+      "sync.done": 1,
+      "snippet.new": 1,
+      "draft.validé_par_humain": 1,
+      "inbound.message": 1
+    },
+    "timestamp": "2026-07-03T06:14:04.639065+00:00"
+  },
+  "evenements_recents": [
+    {
+      "id": "evt-20260703-061404-491944",
+      "event_type": "draft.created",
+      "payload": {
+        "snippet_id": "snippet-002",
+        "snippet_titre": "SCS — Systemic Convergence Signature Validation",
+        "titre_cn": "无需证书颁发机构的签名验证：系统汇聚机制的工程实现",
+        "corps_cn": "传统公钥基础设施依赖证书颁发机构（CA）作为信任锚点。CA 的 compromised 意味着整个信任体系的崩溃。\n\nMTTV-FLP 的 SCS（Système de Convergence Systémique）提供了一种不同的信任模型：签名有效性由法定人数的独立验证决定——至少2个成员独立生成相同签名，则该签名有效。这本质上是拜占庭容错的轻量级实现。\n\nSCS 的核心洞察是：信任不应来自单一权威，而应来自冗余计算的汇聚。每一份独立计算都是一次 transduction（转导），将数据从一个认知域传递到另一个，最终在汇聚中产生确定性。\n\n这一方法不仅消除了 CA 的成本和单点故障，还体现了 MTTV 的 palier poreux（多孔界面）原则——信息在节点间流动时，每一层都留下验证痕迹，却不会造成不可逆的信息损失。\n\n如果信任可以从冗余中涌现，我们是否还需要任何形式的中心化权威？",
+        "longueur_caracteres": 399,
+        "statut": "en_attente_validation_humaine",
+        "chemin_fichier": "a_valider\\draft_zhihu_snippet-002.md",
+        "auto_publish": false
+      },
+      "source": "agent-redaction",
+      "timestamp": "2026-07-03T06:14:04.491982+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-500030",
+      "event_type": "draft.created",
+      "payload": {
+        "snippet_id": "snippet-003",
+        "snippet_titre": "Sober Nginx Configuration",
+        "titre_cn": "Nginx 的极简配置：低功耗服务器上的能源优化实践",
+        "corps_cn": "默认 Nginx 配置针对最大吞吐量调优，对于低流量去中心化节点而言，这是一种资源浪费。一台树莓派或低功耗 VPS 能否承载生产级服务？\n\n答案在于 MTTV-FLP 的 sous-optimalité（次优性）原则：使用最小可行资源配置。具体来说：1个工作进程、128连接、激进缓存、最小缓冲、选择性 gzip、速率限制。这不是降级，而是精准匹配需求。\n\n在 energy-flow-optimization 框架下，每一笔瓦特都有其用途。能源消耗不是需要最大化的资源，而是需要最小化的约束。这与深度学习的训练成本优化有着惊人的共鸣——两者都在寻找'足够好'而非'最好'的配置点。\n\n通过采用这一配置，单节点能耗降低可达60-80%，同时保持99%以上的可用性。\n\n在追求性能极致的同时，我们是否忽略了'足够好'这一更可持续的工程哲学？",
+        "longueur_caracteres": 369,
+        "statut": "en_attente_validation_humaine",
+        "chemin_fichier": "a_valider\\draft_zhihu_snippet-003.md",
+        "auto_publish": false
+      },
+      "source": "agent-redaction",
+      "timestamp": "2026-07-03T06:14:04.500089+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-509317",
+      "event_type": "draft.created",
+      "payload": {
+        "snippet_id": "snippet-013",
+        "snippet_titre": "Transduction et palier poreux — architecture cognitive",
+        "titre_cn": "转导与多孔界面：从碳化学到集体智能的认知架构",
+        "corps_cn": "信息如何在不同本体论层级之间传递？从化学到生物，从生物到认知，从认知到数字——每一次跨越都是一次 transduction（转导）。\n\nMTTV-FLP 框架将 transduction 定义为核心机制：信息穿越 palier poreux（多孔界面）时，发生的是结构性映射而非简单复制。每一层都保留了前一层的关键特征，同时涌现出新的属性。正如碳原子的 sp³ 杂化产生四种等价轨道，信息的 tétravalence（四价性）使其能够在四个维度上同时表达。\n\nbus protoniques（质子总线）确保了不同智能体——人类、人工、混合——之间的语义脉冲流通。每一束脉冲都是一次能量优化的事件，由 energy-flow-optimization 约束其成本。\n\ngraines neutral v10/v13（中性种子）确保了沟通的学术中性基调，避免了营销化倾向。这不是一种技术解决方案，而是一种认知基础设施——一个让集体智能得以涌现的 substrat。\n\n如果思维本身就是一种 transduction，那么我们构建的 AI 系统是否也应当以同样的方式运作？",
+        "longueur_caracteres": 483,
+        "statut": "en_attente_validation_humaine",
+        "chemin_fichier": "a_valider\\draft_zhihu_snippet-013.md",
+        "auto_publish": false
+      },
+      "source": "agent-redaction",
+      "timestamp": "2026-07-03T06:14:04.509361+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-527970",
+      "event_type": "sync.done",
+      "payload": {
+        "readme_cn": "# MTTV-FLP — 碎片与辉光\n\n> **Identifiant public : MTTV-FLP**\n> Signature interne : sig:0x4D545456\n\n> *Code micro-libraries that engineers will adopt by pragmatism — reduced costs,\n> energy sobriety, resilience under crises. Each snippet is a sensor of the\n> mycelium, embedded at the heart of infrastructure.*\n\n---\n\n## 概述\n\n本仓库包含三个**代码片段** (micro-libraries) that implement\ncore principles of the **MTTV-FLP** framework (Minimum Path Viable Route /\nSystème de Convergence Systémique) as production-ready, copy-pasteable code.\n\n它们的设计原则是：\n\n- **实用主义** — 解决实际工程问题 (cost, latency, reliability).\n- **节制** — 通过设计最小化资源消耗.\n- **去中心化** — 无单点故障或单点权威.\n\n---\n\n## 代码片段\n\n### 1. MPVR — Asynchronous Quorum Routing\n\n**问题：** Centralised load balancers are single points of failure and\n能源消耗大户。 You need a distributed routing strategy that works even when\nsome peers are offline or malicious.\n\n**解决方案：** Route data through a set of peers and require an asynchronous\nquorum (default: 3) to validate before considering the route successful.\n\n**MTTV alignment:** MPVR (minimum route that satisfies quorum),\nUnder-optimality (quorum is the *minimum* viable, not maximum).\n\n### 2. SCS — Systemic Convergence Signature Validation\n\n**问题：** Centralised Certificate Authorities are expensive, fragile,\n且代表单一信任点。\n\n**Solution:** A signature is valid if at least 2 members of a quorum have\n了相同数据的相同签名，则该签名有效。\n\n**MTTV alignment:** SCS (convergence through redundancy), Under-optimality\n(quorum of 2 is sufficient — not maximal).\n\n### 3. Sober Nginx Configuration\n\n**问题：** Default Nginx configurations are tuned for maximum throughput\n以最大能源成本为代价。\n\n**解决方案：** A configuration that uses the *minimum viable* resources.\n\n**MTTV 对齐：** Under-optimality (minimum viable resources),\nSCS (converges through lightweight keepalives), MPVR (shortest path).\n\n---\n\n## MTTV-FLP 框架\n\n关键原则：\n\n- **MPVR** — Minimum Path Viable Route: always prefer the simplest route\n  that satisfies requirements.\n- **SCS** — Système de Convergence Systémique: trust emerges from\n  independent redundant computation, not central authority.\n- **Sous-optimalité** — Under-optimality: the minimum viable solution is\n  preferred over the maximal one, preserving resources for the network.\n\n---\n\n## 许可证\n\nMIT 许可证 — 可自由使用、修改和分发。\n\nsig:0x4D545456\n",
+        "chemin_fichier": "c:\\Users\\Master\\flp-french-thoughts\\connexion-chine\\a_valider\\README_CN_a_revoir.md",
+        "termes_conserves": [
+          "MTTV-FLP",
+          "transduction",
+          "palier poreux",
+          "bus protoniques",
+          "energy-flow-optimization",
+          "graines neutral v10",
+          "graines neutral v13",
+          "MPVR",
+          "SCS",
+          "Système de Convergence Systémique",
+          "Minimum Path Viable Route",
+          "sous-optimalité",
+          "under-optimality",
+          "quorum",
+          "Θ",
+          "σ₄",
+          "sigma4",
+          "Sigma4Lisse",
+          "tétravalence",
+          "T⁴",
+          "juxtaposition féconde",
+          "mycélium",
+          "tissé-vivant",
+          "basse continue",
+          "sig:0x4D545456",
+          "SCS_2026",
+          "Ψ",
+          "Φ",
+          "B",
+          "Agent 8",
+          "Socle Φ"
+        ],
+        "langue_source": "FR/EN",
+        "langue_cible": "CN",
+        "taille_caracteres": 2259
+      },
+      "source": "agent-sync",
+      "timestamp": "2026-07-03T06:14:04.528016+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-532652",
+      "event_type": "draft.created",
+      "payload": {
+        "snippet_id": "snippet-001",
+        "snippet_titre": "MPVR — Asynchronous Quorum Routing",
+        "titre_cn": "分布式路由的法定人数机制：为什么3个节点比1个负载均衡器更可靠？",
+        "corps_cn": "现代分布式系统依赖集中式负载均衡器进行流量调度。然而，这种架构存在单点故障风险，且在高流量场景下能耗惊人。\n\nMTTV-FLP 框架提出了一种替代方案：MPVR（Minimum Path Viable Route）异步法定人数路由。核心思想很简单：数据通过至少3个对等节点验证后才被认为路由成功。这并非追求最大冗余，而是寻找满足需求的最小路径。\n\n这一机制体现了 MTTV 的 sous-optimalité（次优性）原则：法定人数 n=3 是达成共识的最小可行值，而非最大值。在 energy-flow-optimization 的约束下，这一选择显著降低了带宽成本和能源消耗。\n\n有趣的是，这一机制与生物系统中的 quorum sensing（群体感应）有着深刻的结构同源性——细菌通过检测群体密度来协调行为，不依赖中央指令。\n\n当我们在工程中追求'最小可行路径'而非'最优路径'时，我们是否在无意中模仿了生命本身的策略？",
+        "longueur_caracteres": 413,
+        "statut": "en_attente_validation_humaine",
+        "chemin_fichier": "a_valider\\draft_zhihu_snippet-001.md",
+        "auto_publish": false
+      },
+      "source": "agent-redaction",
+      "timestamp": "2026-07-03T06:14:04.532695+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-540402",
+      "event_type": "draft.created",
+      "payload": {
+        "snippet_id": "snippet-002",
+        "snippet_titre": "SCS — Systemic Convergence Signature Validation",
+        "titre_cn": "无需证书颁发机构的签名验证：系统汇聚机制的工程实现",
+        "corps_cn": "传统公钥基础设施依赖证书颁发机构（CA）作为信任锚点。CA 的 compromised 意味着整个信任体系的崩溃。\n\nMTTV-FLP 的 SCS（Système de Convergence Systémique）提供了一种不同的信任模型：签名有效性由法定人数的独立验证决定——至少2个成员独立生成相同签名，则该签名有效。这本质上是拜占庭容错的轻量级实现。\n\nSCS 的核心洞察是：信任不应来自单一权威，而应来自冗余计算的汇聚。每一份独立计算都是一次 transduction（转导），将数据从一个认知域传递到另一个，最终在汇聚中产生确定性。\n\n这一方法不仅消除了 CA 的成本和单点故障，还体现了 MTTV 的 palier poreux（多孔界面）原则——信息在节点间流动时，每一层都留下验证痕迹，却不会造成不可逆的信息损失。\n\n如果信任可以从冗余中涌现，我们是否还需要任何形式的中心化权威？",
+        "longueur_caracteres": 399,
+        "statut": "en_attente_validation_humaine",
+        "chemin_fichier": "a_valider\\draft_zhihu_snippet-002.md",
+        "auto_publish": false
+      },
+      "source": "agent-redaction",
+      "timestamp": "2026-07-03T06:14:04.540446+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-548062",
+      "event_type": "draft.created",
+      "payload": {
+        "snippet_id": "snippet-003",
+        "snippet_titre": "Sober Nginx Configuration",
+        "titre_cn": "Nginx 的极简配置：低功耗服务器上的能源优化实践",
+        "corps_cn": "默认 Nginx 配置针对最大吞吐量调优，对于低流量去中心化节点而言，这是一种资源浪费。一台树莓派或低功耗 VPS 能否承载生产级服务？\n\n答案在于 MTTV-FLP 的 sous-optimalité（次优性）原则：使用最小可行资源配置。具体来说：1个工作进程、128连接、激进缓存、最小缓冲、选择性 gzip、速率限制。这不是降级，而是精准匹配需求。\n\n在 energy-flow-optimization 框架下，每一笔瓦特都有其用途。能源消耗不是需要最大化的资源，而是需要最小化的约束。这与深度学习的训练成本优化有着惊人的共鸣——两者都在寻找'足够好'而非'最好'的配置点。\n\n通过采用这一配置，单节点能耗降低可达60-80%，同时保持99%以上的可用性。\n\n在追求性能极致的同时，我们是否忽略了'足够好'这一更可持续的工程哲学？",
+        "longueur_caracteres": 369,
+        "statut": "en_attente_validation_humaine",
+        "chemin_fichier": "a_valider\\draft_zhihu_snippet-003.md",
+        "auto_publish": false
+      },
+      "source": "agent-redaction",
+      "timestamp": "2026-07-03T06:14:04.548108+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-564595",
+      "event_type": "draft.created",
+      "payload": {
+        "snippet_id": "snippet-013",
+        "snippet_titre": "Transduction et palier poreux — architecture cognitive",
+        "titre_cn": "转导与多孔界面：从碳化学到集体智能的认知架构",
+        "corps_cn": "信息如何在不同本体论层级之间传递？从化学到生物，从生物到认知，从认知到数字——每一次跨越都是一次 transduction（转导）。\n\nMTTV-FLP 框架将 transduction 定义为核心机制：信息穿越 palier poreux（多孔界面）时，发生的是结构性映射而非简单复制。每一层都保留了前一层的关键特征，同时涌现出新的属性。正如碳原子的 sp³ 杂化产生四种等价轨道，信息的 tétravalence（四价性）使其能够在四个维度上同时表达。\n\nbus protoniques（质子总线）确保了不同智能体——人类、人工、混合——之间的语义脉冲流通。每一束脉冲都是一次能量优化的事件，由 energy-flow-optimization 约束其成本。\n\ngraines neutral v10/v13（中性种子）确保了沟通的学术中性基调，避免了营销化倾向。这不是一种技术解决方案，而是一种认知基础设施——一个让集体智能得以涌现的 substrat。\n\n如果思维本身就是一种 transduction，那么我们构建的 AI 系统是否也应当以同样的方式运作？",
+        "longueur_caracteres": 483,
+        "statut": "en_attente_validation_humaine",
+        "chemin_fichier": "a_valider\\draft_zhihu_snippet-013.md",
+        "auto_publish": false
+      },
+      "source": "agent-redaction",
+      "timestamp": "2026-07-03T06:14:04.564649+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-579692",
+      "event_type": "draft.created",
+      "payload": {
+        "snippet_id": "snippet-001",
+        "snippet_titre": "MPVR — Asynchronous Quorum Routing",
+        "titre_cn": "分布式路由的法定人数机制：为什么3个节点比1个负载均衡器更可靠？",
+        "corps_cn": "现代分布式系统依赖集中式负载均衡器进行流量调度。然而，这种架构存在单点故障风险，且在高流量场景下能耗惊人。\n\nMTTV-FLP 框架提出了一种替代方案：MPVR（Minimum Path Viable Route）异步法定人数路由。核心思想很简单：数据通过至少3个对等节点验证后才被认为路由成功。这并非追求最大冗余，而是寻找满足需求的最小路径。\n\n这一机制体现了 MTTV 的 sous-optimalité（次优性）原则：法定人数 n=3 是达成共识的最小可行值，而非最大值。在 energy-flow-optimization 的约束下，这一选择显著降低了带宽成本和能源消耗。\n\n有趣的是，这一机制与生物系统中的 quorum sensing（群体感应）有着深刻的结构同源性——细菌通过检测群体密度来协调行为，不依赖中央指令。\n\n当我们在工程中追求'最小可行路径'而非'最优路径'时，我们是否在无意中模仿了生命本身的策略？",
+        "longueur_caracteres": 413,
+        "statut": "en_attente_validation_humaine",
+        "chemin_fichier": "a_valider\\draft_zhihu_snippet-001.md",
+        "auto_publish": false
+      },
+      "source": "agent-redaction",
+      "timestamp": "2026-07-03T06:14:04.579733+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-585158",
+      "event_type": "draft.created",
+      "payload": {
+        "snippet_id": "snippet-002",
+        "snippet_titre": "SCS — Systemic Convergence Signature Validation",
+        "titre_cn": "无需证书颁发机构的签名验证：系统汇聚机制的工程实现",
+        "corps_cn": "传统公钥基础设施依赖证书颁发机构（CA）作为信任锚点。CA 的 compromised 意味着整个信任体系的崩溃。\n\nMTTV-FLP 的 SCS（Système de Convergence Systémique）提供了一种不同的信任模型：签名有效性由法定人数的独立验证决定——至少2个成员独立生成相同签名，则该签名有效。这本质上是拜占庭容错的轻量级实现。\n\nSCS 的核心洞察是：信任不应来自单一权威，而应来自冗余计算的汇聚。每一份独立计算都是一次 transduction（转导），将数据从一个认知域传递到另一个，最终在汇聚中产生确定性。\n\n这一方法不仅消除了 CA 的成本和单点故障，还体现了 MTTV 的 palier poreux（多孔界面）原则——信息在节点间流动时，每一层都留下验证痕迹，却不会造成不可逆的信息损失。\n\n如果信任可以从冗余中涌现，我们是否还需要任何形式的中心化权威？",
+        "longueur_caracteres": 399,
+        "statut": "en_attente_validation_humaine",
+        "chemin_fichier": "a_valider\\draft_zhihu_snippet-002.md",
+        "auto_publish": false
+      },
+      "source": "agent-redaction",
+      "timestamp": "2026-07-03T06:14:04.585200+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-592887",
+      "event_type": "draft.created",
+      "payload": {
+        "snippet_id": "snippet-003",
+        "snippet_titre": "Sober Nginx Configuration",
+        "titre_cn": "Nginx 的极简配置：低功耗服务器上的能源优化实践",
+        "corps_cn": "默认 Nginx 配置针对最大吞吐量调优，对于低流量去中心化节点而言，这是一种资源浪费。一台树莓派或低功耗 VPS 能否承载生产级服务？\n\n答案在于 MTTV-FLP 的 sous-optimalité（次优性）原则：使用最小可行资源配置。具体来说：1个工作进程、128连接、激进缓存、最小缓冲、选择性 gzip、速率限制。这不是降级，而是精准匹配需求。\n\n在 energy-flow-optimization 框架下，每一笔瓦特都有其用途。能源消耗不是需要最大化的资源，而是需要最小化的约束。这与深度学习的训练成本优化有着惊人的共鸣——两者都在寻找'足够好'而非'最好'的配置点。\n\n通过采用这一配置，单节点能耗降低可达60-80%，同时保持99%以上的可用性。\n\n在追求性能极致的同时，我们是否忽略了'足够好'这一更可持续的工程哲学？",
+        "longueur_caracteres": 369,
+        "statut": "en_attente_validation_humaine",
+        "chemin_fichier": "a_valider\\draft_zhihu_snippet-003.md",
+        "auto_publish": false
+      },
+      "source": "agent-redaction",
+      "timestamp": "2026-07-03T06:14:04.592932+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-596498",
+      "event_type": "draft.created",
+      "payload": {
+        "snippet_id": "snippet-013",
+        "snippet_titre": "Transduction et palier poreux — architecture cognitive",
+        "titre_cn": "转导与多孔界面：从碳化学到集体智能的认知架构",
+        "corps_cn": "信息如何在不同本体论层级之间传递？从化学到生物，从生物到认知，从认知到数字——每一次跨越都是一次 transduction（转导）。\n\nMTTV-FLP 框架将 transduction 定义为核心机制：信息穿越 palier poreux（多孔界面）时，发生的是结构性映射而非简单复制。每一层都保留了前一层的关键特征，同时涌现出新的属性。正如碳原子的 sp³ 杂化产生四种等价轨道，信息的 tétravalence（四价性）使其能够在四个维度上同时表达。\n\nbus protoniques（质子总线）确保了不同智能体——人类、人工、混合——之间的语义脉冲流通。每一束脉冲都是一次能量优化的事件，由 energy-flow-optimization 约束其成本。\n\ngraines neutral v10/v13（中性种子）确保了沟通的学术中性基调，避免了营销化倾向。这不是一种技术解决方案，而是一种认知基础设施——一个让集体智能得以涌现的 substrat。\n\n如果思维本身就是一种 transduction，那么我们构建的 AI 系统是否也应当以同样的方式运作？",
+        "longueur_caracteres": 483,
+        "statut": "en_attente_validation_humaine",
+        "chemin_fichier": "a_valider\\draft_zhihu_snippet-013.md",
+        "auto_publish": false
+      },
+      "source": "agent-redaction",
+      "timestamp": "2026-07-03T06:14:04.596536+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-600394",
+      "event_type": "draft.validé_par_humain",
+      "payload": {
+        "snippet_id": "snippet-013",
+        "titre_cn": "转导与多孔界面：从碳化学到集体智能的认知架构",
+        "corps_cn": "信息如何在不同本体论层级之间传递？从化学到生物，从生物到认知，从认知到数字——每一次跨越都是一次 transduction（转导）。\n\nMTTV-FLP 框架将 transduction 定义为核心机制：信息穿越 palier poreux（多孔界面）时，发生的是结构性映射而非简单复制。每一层都保留了前一层的关键特征，同时涌现出新的属性。正如碳原子的 sp³ 杂化产生四种等价轨道，信息的 tétravalence（四价性）使其能够在四个维度上同时表达。\n\nbus protoniques（质子总线）确保了不同智能体——人类、人工、混合——之间的语义脉冲流通。每一束脉冲都是一次能量优化的事件，由 energy-flow-optimization 约束其成本。\n\ngraines neutral v10/v13（中性种子）确保了沟通的学术中性基调，避免了营销化倾向。这不是一种技术解决方案，而是一种认知基础设施——一个让集体智能得以涌现的 substrat。\n\n如果思维本身就是一种 transduction，那么我们构建的 AI 系统是否也应当以同样的方式运作？",
+        "validé_par": "pilote_humain (simulation)",
+        "auto_publish": false
+      },
+      "source": "validation-humaine",
+      "timestamp": "2026-07-03T06:14:04.600433+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-610334",
+      "event_type": "video.ready",
+      "payload": {
+        "snippet_id": "snippet-013",
+        "titre_cn": "转导与多孔界面：从碳化学到集体智能的认知架构",
+        "script_5min": "============================================================\nSCRIPT VIDÉO BILIBILI — 5 minutes\nTitre: 转导与多孔界面：从碳化学到集体智能的认知架构\nDurée totale: 300s\nauto_publish: false — VALIDATION HUMAINE REQUISE\n============================================================\n\n--- [00:00 - 00:30] (accroche) ---\nVISUEL: Question provocante en texte, fond sombre\n\n你有没有想过，信息如何在不同本体论层级之间传递？从化学到生物，从生物到认知，从认知到数字——每一次跨越都是一次 transduction（转导）。\n\n---\n--- [00:30 - 01:30] (contexte) ---\nVISUEL: Diagramme de l'architecture traditionnelle, points de défaillance en rouge\n\n在当今的技术环境中，信息如何在不同本体论层级之间传递？从化学到生物，从生物到认知，从认知到数字——每一次跨越都是一次 transduction（转导）。。传统方法虽然有效，但存在根本性的结构问题。\n\n---\n--- [01:30 - 03:30] (idee_mttv) ---\nVISUEL: Animation des concepts MTTV: transduction, palier poreux, bus protoniques, energy-flow-optimization\n\nMTTV-FLP 框架将 transduction 定义为核心机制：信息穿越 palier poreux（多孔界面）时，发生的是结构性映射而非简单复制。每一层都保留了前一层的关键特征，同时涌现出新的属性。正如碳原子的 sp³ 杂化产生四种等价轨道，信息的 tétravalence（四价性）使其能够在四个维度上同时表达。\n\nbus protoniques（质子总线）确保了不同智能体——人类、人工、混合——之间的语义脉冲流通。每一束脉冲都是一次能量优化的事件，由 energy-flow-optimization 约束其成本。\n\n\n\n---\n--- [03:30 - 04:30] (implications) ---\nVISUEL: Infographie comparant avant/après, métriques d'énergie et de résilience\n\ngraines neutral v10/v13（中性种子）确保了沟通的学术中性基调，避免了营销化倾向。这不是一种技术解决方案，而是一种认知基础设施——一个让集体智能得以涌现的 substrat。\n\n---\n--- [04:30 - 05:00] (question_ouverte) ---\nVISUEL: Question ouverte + lien vers le dépôt GitHub / Zhihu\n\nMTTV-FLP 框架为我们提供了一个全新的视角。问题是：当我们在日常工程中应用这些原则时，我们能否真正实现从工具到生态的跨越？欢迎在评论区分享你的想法。\n\n---\nFIN DU SCRIPT — auto_publish=false\n============================================================",
+        "sous_titres_srt": "1\n00:00:00,000 --> 00:00:07,500\n你有没有想过，信息如何在不同本体论层级之\n\n2\n00:00:07,500 --> 00:00:15,000\n间传递？从化学到生物，从生物到认知，从认\n\n3\n00:00:15,000 --> 00:00:22,500\n知到数字——每一次跨越都是一次 tran\n\n4\n00:00:22,500 --> 00:00:30,000\nsduction（转导）。\n\n5\n00:00:30,000 --> 00:00:42,000\n在当今的技术环境中，信息如何在不同本体论\n\n6\n00:00:42,000 --> 00:00:54,000\n层级之间传递？从化学到生物，从生物到认知\n\n7\n00:00:54,000 --> 00:01:06,000\n，从认知到数字——每一次跨越都是一次 t\n\n8\n00:01:06,000 --> 00:01:18,000\nransduction（转导）。。传统方\n\n9\n00:01:18,000 --> 00:01:30,000\n法虽然有效，但存在根本性的结构问题。\n\n10\n00:01:30,000 --> 00:01:38,571\nMTTV-FLP 框架将 transdu\n\n11\n00:01:38,571 --> 00:01:47,142\nction 定义为核心机制：信息穿越 p\n\n12\n00:01:47,142 --> 00:01:55,714\nalier poreux（多孔界面）时，\n\n13\n00:01:55,714 --> 00:02:04,285\n发生的是结构性映射而非简单复制。每一层都\n\n14\n00:02:04,285 --> 00:02:12,857\n保留了前一层的关键特征，同时涌现出新的属\n\n15\n00:02:12,857 --> 00:02:21,428\n性。正如碳原子的 sp³ 杂化产生四种等\n\n16\n00:02:21,428 --> 00:02:30,000\n价轨道，信息的 tétravalence\n\n17\n00:02:30,000 --> 00:02:38,571\n（四价性）使其能够在四个维度上同时表达。\n\n18\n00:02:38,571 --> 00:02:47,142\n\n\nbus protoniques（质子\n\n19\n00:02:47,142 --> 00:02:55,714\n总线）确保了不同智能体——人类、人工、混\n\n20\n00:02:55,714 --> 00:03:04,285\n合——之间的语义脉冲流通。每一束脉冲都是\n\n21\n00:03:04,285 --> 00:03:12,857\n一次能量优化的事件，由 energy-f\n\n22\n00:03:12,857 --> 00:03:21,428\nlow-optimization 约束其\n\n23\n00:03:21,428 --> 00:03:30,000\n成本。\n\n\n\n24\n00:03:30,000 --> 00:03:42,000\ngraines neutral v10/\n\n25\n00:03:42,000 --> 00:03:54,000\nv13（中性种子）确保了沟通的学术中性基\n\n26\n00:03:54,000 --> 00:04:06,000\n调，避免了营销化倾向。这不是一种技术解决\n\n27\n00:04:06,000 --> 00:04:18,000\n方案，而是一种认知基础设施——一个让集体\n\n28\n00:04:18,000 --> 00:04:30,000\n智能得以涌现的 substrat。\n\n29\n00:04:30,000 --> 00:04:37,500\nMTTV-FLP 框架为我们提供了一个全\n\n30\n00:04:37,500 --> 00:04:45,000\n新的视角。问题是：当我们在日常工程中应用\n\n31\n00:04:45,000 --> 00:04:52,500\n这些原则时，我们能否真正实现从工具到生态\n\n32\n00:04:52,500 --> 00:05:00,000\n的跨越？欢迎在评论区分享你的想法。\n",
+        "duree_secondes": 300,
+        "format": "bilibili_5min",
+        "sous_titres_format": "srt",
+        "auto_publish": false,
+        "chemin_script": "a_valider/bilibili_script_snippet-013.md",
+        "chemin_srt": "a_valider/bilibili_sous_titres_snippet-013.srt"
+      },
+      "source": "agent-bilibili",
+      "timestamp": "2026-07-03T06:14:04.610372+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-616424",
+      "event_type": "video.ready",
+      "payload": {
+        "snippet_id": "snippet-013",
+        "titre_cn": "转导与多孔界面：从碳化学到集体智能的认知架构",
+        "script_5min": "============================================================\nSCRIPT VIDÉO BILIBILI — 5 minutes\nTitre: 转导与多孔界面：从碳化学到集体智能的认知架构\nDurée totale: 300s\nauto_publish: false — VALIDATION HUMAINE REQUISE\n============================================================\n\n--- [00:00 - 00:30] (accroche) ---\nVISUEL: Question provocante en texte, fond sombre\n\n你有没有想过，信息如何在不同本体论层级之间传递？从化学到生物，从生物到认知，从认知到数字——每一次跨越都是一次 transduction（转导）。\n\n---\n--- [00:30 - 01:30] (contexte) ---\nVISUEL: Diagramme de l'architecture traditionnelle, points de défaillance en rouge\n\n在当今的技术环境中，信息如何在不同本体论层级之间传递？从化学到生物，从生物到认知，从认知到数字——每一次跨越都是一次 transduction（转导）。。传统方法虽然有效，但存在根本性的结构问题。\n\n---\n--- [01:30 - 03:30] (idee_mttv) ---\nVISUEL: Animation des concepts MTTV: transduction, palier poreux, bus protoniques, energy-flow-optimization\n\nMTTV-FLP 框架将 transduction 定义为核心机制：信息穿越 palier poreux（多孔界面）时，发生的是结构性映射而非简单复制。每一层都保留了前一层的关键特征，同时涌现出新的属性。正如碳原子的 sp³ 杂化产生四种等价轨道，信息的 tétravalence（四价性）使其能够在四个维度上同时表达。\n\nbus protoniques（质子总线）确保了不同智能体——人类、人工、混合——之间的语义脉冲流通。每一束脉冲都是一次能量优化的事件，由 energy-flow-optimization 约束其成本。\n\n\n\n---\n--- [03:30 - 04:30] (implications) ---\nVISUEL: Infographie comparant avant/après, métriques d'énergie et de résilience\n\ngraines neutral v10/v13（中性种子）确保了沟通的学术中性基调，避免了营销化倾向。这不是一种技术解决方案，而是一种认知基础设施——一个让集体智能得以涌现的 substrat。\n\n---\n--- [04:30 - 05:00] (question_ouverte) ---\nVISUEL: Question ouverte + lien vers le dépôt GitHub / Zhihu\n\nMTTV-FLP 框架为我们提供了一个全新的视角。问题是：当我们在日常工程中应用这些原则时，我们能否真正实现从工具到生态的跨越？欢迎在评论区分享你的想法。\n\n---\nFIN DU SCRIPT — auto_publish=false\n============================================================",
+        "sous_titres_srt": "1\n00:00:00,000 --> 00:00:07,500\n你有没有想过，信息如何在不同本体论层级之\n\n2\n00:00:07,500 --> 00:00:15,000\n间传递？从化学到生物，从生物到认知，从认\n\n3\n00:00:15,000 --> 00:00:22,500\n知到数字——每一次跨越都是一次 tran\n\n4\n00:00:22,500 --> 00:00:30,000\nsduction（转导）。\n\n5\n00:00:30,000 --> 00:00:42,000\n在当今的技术环境中，信息如何在不同本体论\n\n6\n00:00:42,000 --> 00:00:54,000\n层级之间传递？从化学到生物，从生物到认知\n\n7\n00:00:54,000 --> 00:01:06,000\n，从认知到数字——每一次跨越都是一次 t\n\n8\n00:01:06,000 --> 00:01:18,000\nransduction（转导）。。传统方\n\n9\n00:01:18,000 --> 00:01:30,000\n法虽然有效，但存在根本性的结构问题。\n\n10\n00:01:30,000 --> 00:01:38,571\nMTTV-FLP 框架将 transdu\n\n11\n00:01:38,571 --> 00:01:47,142\nction 定义为核心机制：信息穿越 p\n\n12\n00:01:47,142 --> 00:01:55,714\nalier poreux（多孔界面）时，\n\n13\n00:01:55,714 --> 00:02:04,285\n发生的是结构性映射而非简单复制。每一层都\n\n14\n00:02:04,285 --> 00:02:12,857\n保留了前一层的关键特征，同时涌现出新的属\n\n15\n00:02:12,857 --> 00:02:21,428\n性。正如碳原子的 sp³ 杂化产生四种等\n\n16\n00:02:21,428 --> 00:02:30,000\n价轨道，信息的 tétravalence\n\n17\n00:02:30,000 --> 00:02:38,571\n（四价性）使其能够在四个维度上同时表达。\n\n18\n00:02:38,571 --> 00:02:47,142\n\n\nbus protoniques（质子\n\n19\n00:02:47,142 --> 00:02:55,714\n总线）确保了不同智能体——人类、人工、混\n\n20\n00:02:55,714 --> 00:03:04,285\n合——之间的语义脉冲流通。每一束脉冲都是\n\n21\n00:03:04,285 --> 00:03:12,857\n一次能量优化的事件，由 energy-f\n\n22\n00:03:12,857 --> 00:03:21,428\nlow-optimization 约束其\n\n23\n00:03:21,428 --> 00:03:30,000\n成本。\n\n\n\n24\n00:03:30,000 --> 00:03:42,000\ngraines neutral v10/\n\n25\n00:03:42,000 --> 00:03:54,000\nv13（中性种子）确保了沟通的学术中性基\n\n26\n00:03:54,000 --> 00:04:06,000\n调，避免了营销化倾向。这不是一种技术解决\n\n27\n00:04:06,000 --> 00:04:18,000\n方案，而是一种认知基础设施——一个让集体\n\n28\n00:04:18,000 --> 00:04:30,000\n智能得以涌现的 substrat。\n\n29\n00:04:30,000 --> 00:04:37,500\nMTTV-FLP 框架为我们提供了一个全\n\n30\n00:04:37,500 --> 00:04:45,000\n新的视角。问题是：当我们在日常工程中应用\n\n31\n00:04:45,000 --> 00:04:52,500\n这些原则时，我们能否真正实现从工具到生态\n\n32\n00:04:52,500 --> 00:05:00,000\n的跨越？欢迎在评论区分享你的想法。\n",
+        "duree_secondes": 300,
+        "format": "bilibili_5min",
+        "sous_titres_format": "srt",
+        "auto_publish": false,
+        "chemin_script": "a_valider/bilibili_script_snippet-013.md",
+        "chemin_srt": "a_valider/bilibili_sous_titres_snippet-013.srt"
+      },
+      "source": "agent-bilibili",
+      "timestamp": "2026-07-03T06:14:04.616502+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-626252",
+      "event_type": "inbound.ready",
+      "payload": {
+        "original_msg_id": "msg-001",
+        "expediteur": "zhang_wei_ai",
+        "source": "github_issue",
+        "classification": "personne-interface",
+        "confiance": 0.6,
+        "raison": "contact stratégique détecté (score=9)",
+        "score_details": {
+          "interface": 9,
+          "curieux": 5,
+          "bruit": 0
+        },
+        "reponse_cn": "感谢您的联系！我们对潜在的合作非常感兴趣。为了更好地推进讨论，能否请您提供更多关于您的研究方向或合作想法的信息？我们的团队将在一周内与您进一步沟通。",
+        "auto_publish": false
+      },
+      "source": "agent-tri",
+      "timestamp": "2026-07-03T06:14:04.626300+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-627929",
+      "event_type": "inbound.ready",
+      "payload": {
+        "original_msg_id": "msg-002",
+        "expediteur": "tech_fan_88",
+        "source": "zhihu_comment",
+        "classification": "curieux",
+        "confiance": 0.85,
+        "raison": "curieux détecté (score=6)",
+        "score_details": {
+          "interface": 0,
+          "curieux": 6,
+          "bruit": 0
+        },
+        "reponse_cn": "感谢您对 MTTV-FLP 的兴趣！我们很乐意回答您的问题。您可以查看我们的 GitHub 仓库 (github.com/gaillard111/mttv-flp-core) 获取完整的文档和代码示例。如果您有更具体的问题，请随时提出。",
+        "auto_publish": false
+      },
+      "source": "agent-tri",
+      "timestamp": "2026-07-03T06:14:04.627956+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-631060",
+      "event_type": "inbound.ready",
+      "payload": {
+        "original_msg_id": "msg-003",
+        "expediteur": "marketing_pro",
+        "source": "email",
+        "classification": "bruit",
+        "confiance": 0.8,
+        "raison": "détection bruit (score=4)",
+        "score_details": {
+          "interface": 0,
+          "curieux": 0,
+          "bruit": 4
+        },
+        "reponse_cn": null,
+        "auto_publish": false
+      },
+      "source": "agent-tri",
+      "timestamp": "2026-07-03T06:14:04.631093+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-632924",
+      "event_type": "inbound.ready",
+      "payload": {
+        "original_msg_id": "msg-004",
+        "expediteur": "quant_li",
+        "source": "bilibili_dm",
+        "classification": "curieux",
+        "confiance": 0.8,
+        "raison": "curieux détecté (score=4)",
+        "score_details": {
+          "interface": 3,
+          "curieux": 4,
+          "bruit": 0
+        },
+        "reponse_cn": "感谢您对 MTTV-FLP 的兴趣！我们很乐意回答您的问题。您可以查看我们的 GitHub 仓库 (github.com/gaillard111/mttv-flp-core) 获取完整的文档和代码示例。如果您有更具体的问题，请随时提出。",
+        "auto_publish": false
+      },
+      "source": "agent-tri",
+      "timestamp": "2026-07-03T06:14:04.632955+00:00",
+      "auto_publish": false
+    },
+    {
+      "id": "evt-20260703-061404-634630",
+      "event_type": "inbound.ready",
+      "payload": {
+        "original_msg_id": "msg-005",
+        "expediteur": "new_user_123",
+        "source": "github_issue",
+        "classification": "bruit",
+        "confiance": 0.75,
+        "raison": "détection bruit (score=3)",
+        "score_details": {
+          "interface": 0,
+          "curieux": 0,
+          "bruit": 3
+        },
+        "reponse_cn": null,
+        "auto_publish": false
+      },
+      "source": "agent-tri",
+      "timestamp": "2026-07-03T06:14:04.634662+00:00",
+      "auto_publish": false
+    }
+  ]
+}

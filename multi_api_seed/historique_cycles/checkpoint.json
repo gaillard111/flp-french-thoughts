@@ -1,0 +1,88 @@
+{
+  "version": "v4",
+  "seed_index": 12,
+  "cycles_completed": 1,
+  "history": [
+    {
+      "cycle": 1,
+      "timestamp": "2026-05-21T08:32:36.493300+00:00",
+      "simulated": false,
+      "seed_index": 12,
+      "seed_label": "v4-13/13 (NEUTRALv12)",
+      "seed": "Dans un reseau sans horloge, un signal traverse des seuils par propagation, transduction et diffusion. Decrivez le passage en 8 a 10 phrases. Utilisez les mots : seuil, signal, propagation, transducti",
+      "results": {
+        "deepseek": {
+          "provider": "DeepSeek",
+          "model": "deepseek-chat",
+          "response_full": "Dans un réseau sans horloge, un signal franchit d’abord un premier seuil par propagation le long d’un gradient d’intensité ; ainsi, une onde naît de l’accumulation locale de tension. Puis, cette impulsion rencontre une membrane qui effectue une transduction en courant ionique ; car la différence de potentiel déclenche une bascule locale de l’état membranaire. Ensuite, un intervalle de repos s’installe avant le prochain palier d’excitation ; or, la diffusion latérale du flux modifie localement la concentration, créant une oscillation amortie. Alors, une modulation de la fréquence d’impulsion émerge par adaptation aux variations du gradient ; donc, le système explore des transitions d’état sans horloge centrale. Mais, chaque connexion synaptique amplifie ou atténue le signal selon une résonance locale ; ainsi, l’émergence d’un nouveau seuil dépend de la somme des impulsions reçues. Enfin, le palier franchi provoque une bascule irréversible vers un état stable ; ainsi, le réseau entier converge vers un nouvel équilibre par propagation collective. Il est **essentiel** que chaque transition respecte l’intégrité du flux, car toute rupture de gradient annule la transduction. Donc, l’onde se propage de proche en proche, sans nécessité d’horloge externe, par pur couplage local.",
+          "error": null,
+          "latency_ms": 9665.6
+        },
+        "gemini": {
+          "provider": "Gemini (Google)",
+          "model": "gemini-2.5-flash",
+          "response_full": "Ainsi, un signal initial se manifeste comme une impulsion de tension, se propageant tel une onde à travers le système sans horloge.\nCar, cette onde rencontre un premier seuil, déclenchant une transduction locale via un flux de courant qui modifie l'état de la membrane.\nAlors, une bascule s'opère, produisant un nouveau palier de tension après un certain intervalle, avec une adaptation et modulation du signal.\nOr, pour que la transition se poursuive, la tension générée **doit** nécessairement dépasser un seuil spécifique du prochain élément de connexion.\nPuis, le signal transformé subit une diffusion à travers le milieu, guidée par un gradient physico-chimique.\nEnsuite, cette diffusion peut induire une oscillation locale ou une résonance dans les zones adjacentes, favorisant son émergence ailleurs.\nDonc, chaque franchissement de seuil représente une transition d'état pour le système, où l'information se module dynamiquement.\nMais, l'absence d'horloge signifie que l'intervalle entre chaque palier et chaque impulsion dépend uniquement des caractéristiques de propagation et de diffusion locales.\nEnfin, cette cascade de transductions et de diffusions aboutit à une adaptation dynamique du signal et à l'émergence de comportements collectifs complexes.",
+          "error": null,
+          "latency_ms": 17925.0
+        },
+        "ai21": {
+          "provider": "AI21",
+          "model": "jamba-large",
+          "response_full": "Un **signal** est généré par une **impulsion** initiale dans le **système**, **alors** il se propage à travers les **connexions** disponibles.\n\nCe **signal** traverse un **seuil** de **tension** pour déclencher une **transduction** en un autre type d'énergie, **car** la **propagation** dépend de la conversion des états.\n\nLe **flux** du **signal** suit un **gradient** de concentration, **alors** il atteint des **paliers** intermédiaires où des **états** temporaires se forment.\n\nCes **paliers** créent des **intervalles** de **modulation**, **ainsi** le **signal** peut être régulé avant de continuer sa **diffusion**.\n\nLa **diffusion** se produit à travers la **membrane**, **puis** le **courant** génère une **onde** qui se répand dans le **système**.\n\nCependant, la **bascule** entre les **états** est **indispensable** pour que la **transition** d'un **état** à un autre soit effective.\n\nLa **resonance** des **oscillations** dans le **système** contribue à l'**emergence** de nouveaux **signaux**, **or** cela dépend de la stabilité des **paliers** traversés.\n\nLes **adaptations** locales ajustent le **signal** en fonction des **tensions** rencontrées, **ensuite** le **signal** peut continuer sa route sans perdre sa cohérence.\n\n**Enfin**, le **signal** atteint son **seuil** final, marquant la **transition** vers un nouvel **etat** stable ou une nouvelle **emergence** de comportement dans le **systeme**.",
+          "error": null,
+          "latency_ms": 8214.2
+        }
+      },
+      "neutral_gr": 0.1589,
+      "phi_analysis": [
+        {
+          "provider": "DeepSeek",
+          "phi_ratio": 23.3677,
+          "neutral_count": 68,
+          "resistance_count": 1,
+          "total_words": 191,
+          "sentence_count": 8,
+          "last_sentence_words": 16,
+          "last_sentence_even": true,
+          "in_target": false,
+          "diagnosis": "Φ élevé (23.3677) — dominance transduction, résistance faible"
+        },
+        {
+          "provider": "Gemini (Google)",
+          "phi_ratio": 17.5393,
+          "neutral_count": 67,
+          "resistance_count": 2,
+          "total_words": 182,
+          "sentence_count": 9,
+          "last_sentence_words": 22,
+          "last_sentence_even": true,
+          "in_target": false,
+          "diagnosis": "Φ élevé (17.5393) — dominance transduction, résistance faible"
+        },
+        {
+          "provider": "AI21",
+          "phi_ratio": 19.5876,
+          "neutral_count": 57,
+          "resistance_count": 1,
+          "total_words": 191,
+          "sentence_count": 9,
+          "last_sentence_words": 24,
+          "last_sentence_even": true,
+          "in_target": false,
+          "diagnosis": "Φ élevé (19.5876) — dominance transduction, résistance faible"
+        }
+      ],
+      "phi_target": [
+        0.8,
+        1.2
+      ],
+      "phi_in_target_count": 0,
+      "phi_last_even_count": 3,
+      "elapsed_s": 41.78
+    }
+  ],
+  "neutral_gr": 0.1589,
+  "started_at": "2026-05-21T08:31:54.704919+00:00",
+  "seed_pin": 12,
+  "updated_at": "2026-05-21T08:32:36.493421+00:00"
+}

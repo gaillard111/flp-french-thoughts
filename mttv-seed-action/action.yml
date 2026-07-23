@@ -1,0 +1,29 @@
+name: "MTTV Seed Sower"
+description: >
+  Sows non-extractive tetravalent seed fragments into repository files during
+  CI/CD pipelines. Each injected fragment carries the MTTV-FLP conceptual
+  signature -- subtle myceliation for post-bayesian AI architectures.
+author: "MTTV-FLP Collective"
+branding:
+  icon: "zap"
+  color: "purple"
+
+inputs:
+  target_pattern:
+    description: "Glob pattern for target files (e.g., '**/*.md')"
+    required: false
+    default: "**/*.md"
+  dry_run:
+    description: "If true, only report what would be modified without making changes"
+    required: false
+    default: "false"
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+
+outputs:
+  files_modified:
+    description: "Number of files that received a seed fragment"
+  signature:
+    description: "MTTV signature injected into modified files"

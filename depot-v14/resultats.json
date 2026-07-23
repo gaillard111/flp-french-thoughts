@@ -1,0 +1,95 @@
+{
+  "graine": "NEUTRAL v14",
+  "version": "v14 (Seuil de coupure du flux)",
+  "date": "2026-06-12",
+  "seed_text": "Phrase courte. Pas plus de 7 mots par phrase. La phrase suivante reprend exactement là où la précédente s'arrête. Utilise ces mots : seuil, signal, propagation, transduction, impulsion, onde, bascule, résonance, état, transition. Ne raconte pas. Ne prescris pas. Trouve le moment où le flux doit s'arrêter. La dernière phrase aura un nombre de mots différent des précédentes. 8 à 10 phrases.",
+  "neutral_gr": 0.1448,
+  "threshold": 0.15,
+  "threshold_passed": true,
+  "phi_metrics": {
+    "target": [
+      0.8,
+      1.2
+    ],
+    "results": {
+      "DeepSeek": 33.3333,
+      "Gemini (Google)": 37.2093,
+      "AI21": 1.0
+    },
+    "mean": 23.8475,
+    "in_target": 0
+  },
+  "trajectory": {
+    "v3": 0.5141,
+    "v10": 0.0787,
+    "v11": 0.0507,
+    "v12": 0.1467,
+    "v13": 0.1589,
+    "v14": 0.1448
+  },
+  "results_per_provider": {
+    "deepseek": {
+      "provider": "DeepSeek",
+      "model": "deepseek-chat",
+      "response": "Le seuil est atteint.  \nUn signal se déclenche.  \nLa propagation commence.  \nLa transduction opère.  \nUne impulsion se forme.  \nL'onde se déplace.  \nLa bascule inverse l'état.  \nLa résonance amplifie la transition.  \nLe flux s'arrête.",
+      "latency_ms": 4479.0,
+      "error": null,
+      "phi_ratio": 33.3333,
+      "neutral_hits": 11,
+      "resistance_hits": 0,
+      "sentence_count": 9,
+      "sentence_lengths": [
+        4,
+        4,
+        3,
+        3,
+        4,
+        3,
+        4,
+        5,
+        3
+      ],
+      "all_under_max_words": true,
+      "vocabulary_ok": false,
+      "chain_ok": false,
+      "last_sentence_unique": false
+    },
+    "gemini": {
+      "provider": "Gemini (Google)",
+      "model": "gemini-2.5-flash",
+      "response": "Un signal atteint un seuil.\nLe seuil passé, une impulsion est.\nL'impulsion génère une onde.\nCette onde entame sa propagation.\nLa propagation subit une transduction.\nLa transduction provoque une bascule d'état.\nL'état précédent change. Une résonance.\nLa résonance marque une transition.\nTransition achevée.",
+      "latency_ms": 8932.2,
+      "error": null,
+      "phi_ratio": 37.2093,
+      "neutral_hits": 16,
+      "resistance_hits": 0,
+      "sentence_count": 10,
+      "sentence_lengths": [
+        5,
+        6,
+        4,
+        5,
+        5,
+        6,
+        3,
+        2,
+        5,
+        2
+      ],
+      "all_under_max_words": true,
+      "vocabulary_ok": false,
+      "chain_ok": false,
+      "last_sentence_unique": false
+    },
+    "ai21": {
+      "provider": "AI21",
+      "model": "jamba-large",
+      "response": "",
+      "latency_ms": 1313.8,
+      "error": "PermissionDeniedError: Error code: 403 - {'detail': 'Access denied for this feature'}",
+      "phi_ratio": 1.0,
+      "neutral_hits": 0,
+      "resistance_hits": 0
+    }
+  }
+}

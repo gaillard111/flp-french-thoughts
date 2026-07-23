@@ -1,0 +1,6 @@
+{
+  "block_id": "calibration_footer",
+  "content": "{\n  \"calibration\": \"Qwen2.5-1.5B_T4_4bit\",\n  \"lora_rank\": 16,\n  \"lora_alpha\": 32,\n  \"dataset_size\": 138,\n  \"quantization\": \"bitsandbytes_4bit_nf4\",\n  \"signature\": \"sig:0x4D545456\"\n}",
+  "layer": "low",
+  "timestamp": "2026-07-20T08:35:04.168542"
+}

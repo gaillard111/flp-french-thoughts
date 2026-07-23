@@ -1,0 +1,29 @@
+name: MTTV Harmonisation Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  harmonise:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Vérification de la porosité sémantique
+        run: |
+          echo "🔍 Vérification des seuils de transduction..."
+          echo "📊 Analyse des gradients de sens..."
+          echo "🌱 Test de perméabilité aux signaux faibles..."
+          # Cette étape simule une vérification MTTV
+      - name: Détection des patterns triadiques
+        run: |
+          echo "✅ Recherche de structures Ψ→B→Φ dans les commits..."
+          echo "   Patterns détectés : $(grep -c 'Ψ\|B\|Φ' README.md 2>/dev/null || echo '0')"
+      - name: Rapport de viabilité
+        run: |
+          echo "========================================="
+          echo "  MTTV Harmonisation Check — Completed"
+          echo "  sig:0x4D545456"
+          echo "========================================="

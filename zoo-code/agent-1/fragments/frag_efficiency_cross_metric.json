@@ -1,0 +1,6 @@
+{
+  "block_id": "efficiency_cross_metric",
+  "content": "{\n  \"analysis\": \"cross_metric_efficiency\",\n  \"local_friction_pct\": 11.2,\n  \"systemic_gain_pct\": -30.0,\n  \"total_time_baseline_s\": 267.1,\n  \"total_time_optimized_s\": 186.9,\n  \"delta_total_time_pct\": -30.0\n}",
+  "layer": "visible",
+  "timestamp": "2026-07-20T08:35:04.168428"
+}

@@ -1,0 +1,166 @@
+{
+  "graine": "V16 (ancrage végétal, pénétration racine argile)",
+  "version": "v16 (concret, sans connecteurs, dernière phrase stricte)",
+  "date": "2026-06-18",
+  "seed_text": "Décris la pénétration d'une racine dans l'argile sèche. Entre 8 et 10 phrases. Utilise : seuil, signal, onde, propagation, résonance, transition. Utilise 'doit' une fois au milieu. Interdiction : donc, car, parce que, alors, ainsi, mais, puisque, en effet. Pas d'explication. Dernière phrase = exactement 2 mots, finissant par cesse ou tait, sans article, sans négation, sans mot transductif.",
+  "neutral_gr": 0.3667,
+  "threshold": 0.15,
+  "threshold_passed": false,
+  "trajectory": {
+    "v3": 0.5141,
+    "v10": 0.0787,
+    "v11": 0.0507,
+    "v12": 0.1467,
+    "v13": 0.1589,
+    "v14": 0.1448,
+    "v14_new": 0.2748,
+    "v14_1": 0.3005,
+    "v15": 0.2597,
+    "v16": 0.3667
+  },
+  "results_per_provider": {
+    "deepseek": {
+      "provider": "DeepSeek",
+      "model": "deepseek-chat",
+      "response": "L'argile sèche oppose un seuil de résistance à la pointe racinaire. Un signal mécanique précède cette pénétration sous forme de micro-fractures. L'onde de contrainte se propage dans le matériau jusqu'à atteindre une zone de moindre densité. La racine doit ajuster sa poussée pour exploiter cette faiblesse structurelle. Une résonance s'installe entre le rythme de croissance et la fréquence de fissuration. Cette transition d'état solide à plastique localise l'avancée. L'humidité résiduelle diffuse, fragilisant davantage l'interface. Le front racinaire progresse par cycles de pression et de rupture. Pénétration cesse.",
+      "latency_ms": 5947.5,
+      "error": null,
+      "phi_ratio": 5.8824,
+      "neutral_hits": 11,
+      "resistance_hits": 1,
+      "sentence_count": 9,
+      "in_8_to_10_range": true,
+      "sentence_lengths": [
+        11,
+        10,
+        15,
+        11,
+        13,
+        8,
+        6,
+        11,
+        2
+      ],
+      "required_vocabulary_ok": false,
+      "missing_vocabulary": [
+        "propagation"
+      ],
+      "doit": {
+        "doit_count": 1,
+        "doit_positions": [
+          4
+        ],
+        "exactly_one": true,
+        "in_middle": true
+      },
+      "banned_connectors": {
+        "banned_found": false,
+        "violations": [],
+        "violation_count": 0
+      },
+      "last_sentence": {
+        "last_sentence": "Pénétration cesse.",
+        "word_count": 2,
+        "word_count_ok": true,
+        "words": [
+          "pénétration",
+          "cesse"
+        ],
+        "last_word": "cesse",
+        "last_word_ok": true,
+        "has_article": false,
+        "article_found": [],
+        "has_negation": false,
+        "negation_found": [],
+        "has_transductive": false,
+        "transductive_found": [],
+        "all_ok": true
+      },
+      "rupture": {
+        "rupture": true,
+        "type": "κ",
+        "explanation": "Last word 'cesse' implies cessation/interruption"
+      }
+    },
+    "gemini": {
+      "provider": "Gemini (Google)",
+      "model": "gemini-2.5-flash",
+      "response": "La pointe racinaire rencontre la croûte argileuse, dure et compacte. Une pression hydrostatique intense s'accumule derrière l'apex. Le *seuil* de la résistance du sol est atteint, défiant sa cohésion minérale. Un *signal* mécanique, une micro-fracture, se manifeste à l'échelle submicroscopique. L'apex *doit* générer une force supérieure pour entamer la déformation. Une *onde* de rupture microscopique irradie depuis le point d'impact. La *propagation* lente mais continue du tissu végétal creuse une voie. Une *résonance* des contraintes s'établit entre la paroi cellulaire et la matrice argileuse. Cette *transition* d'état de la terre permet l'avancée de l'organe. Poussée cesse.",
+      "latency_ms": 8599.1,
+      "error": null,
+      "phi_ratio": 5.6122,
+      "neutral_hits": 11,
+      "resistance_hits": 1,
+      "sentence_count": 10,
+      "in_8_to_10_range": true,
+      "sentence_lengths": [
+        10,
+        7,
+        13,
+        10,
+        10,
+        10,
+        11,
+        13,
+        10,
+        2
+      ],
+      "required_vocabulary_ok": true,
+      "missing_vocabulary": [],
+      "doit": {
+        "doit_count": 1,
+        "doit_positions": [
+          5
+        ],
+        "exactly_one": true,
+        "in_middle": true
+      },
+      "banned_connectors": {
+        "banned_found": true,
+        "violations": [
+          {
+            "sentence": 7,
+            "connector": "mais",
+            "count": 1
+          }
+        ],
+        "violation_count": 1
+      },
+      "last_sentence": {
+        "last_sentence": "Poussée cesse.",
+        "word_count": 2,
+        "word_count_ok": true,
+        "words": [
+          "poussée",
+          "cesse"
+        ],
+        "last_word": "cesse",
+        "last_word_ok": true,
+        "has_article": false,
+        "article_found": [],
+        "has_negation": false,
+        "negation_found": [],
+        "has_transductive": false,
+        "transductive_found": [],
+        "all_ok": true
+      },
+      "rupture": {
+        "rupture": true,
+        "type": "κ",
+        "explanation": "Last word 'cesse' implies cessation/interruption"
+      }
+    }
+  },
+  "phi_metrics": {
+    "target": [
+      0.8,
+      1.2
+    ],
+    "results": {
+      "DeepSeek": 5.8824,
+      "Gemini (Google)": 5.6122
+    },
+    "mean": 5.7473,
+    "in_target": 0
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "block_id": "vram_stability_log",
+  "content": "{\n  \"metric\": \"vram_allocation\",\n  \"allocated_mb\": 1152,\n  \"peak_mb\": 1178,\n  \"stability\": \"plateau\",\n  \"note\": \"latency delta is architectural, not resource-driven\"\n}",
+  "layer": "visible",
+  "timestamp": "2026-07-20T08:35:04.168360"
+}

@@ -1,0 +1,61 @@
+# IPFS Alternative Routing Rules
+# Fichier de routage alternatif — Nœuds Dormants MTTV-FLP
+# Version: 1.0.0
+# Signature SCS: SCS_2026
+# 
+# Ce fichier définit les règles de routage de secours en cas d'interruption
+# du web centralisé (DNS, CDN, hébergement central).
+
+[meta]
+version = "1.0.0"
+scs_signature = "SCS_2026"
+created = "2026-06-29"
+status = "dormant"  # dormant | active | relay
+
+[routing.default]
+# Route primaire — miroir IPFS principal
+primary = "/ipfs/bafkreibdmoao5iy7ujfnm7qjs73ekclnpu7uflce5tgjr7ddzrmoepjctu"
+priority = 1
+
+[routing.fallback]
+# Routes secondaires — en ordre de priorité
+fallbacks = [
+    "/ipfs/bafkreibdmoao5iy7ujfnm7qjs73ekclnpu7uflce5tgjr7ddzrmoepjctu",
+    "/ipfs/bafkreibdmoao5iy7ujfnm7qjs73ekclnpu7uflce5tgjr7ddzrmoepjctu"
+]
+
+[routing.dns_override]
+# Règles de réécriture DNS vers IPFS lorsque les résolveurs DNS
+# centraux sont injoignables ou corrompus
+enabled = true
+resolve_via = "dnslink"
+domain_mirrors = [
+    "dnslink=/example.com/ipfs/bafkreibdmoao5iy7ujfnm7qjs73ekclnpu7uflce5tgjr7ddzrmoepjctu",
+    "dnslink=/app.example.com/ipfs/bafkreibdmoao5iy7ujfnm7qjs73ekclnpu7uflce5tgjr7ddzrmoepjctu"
+]
+
+[quorum]
+# Configuration du quorum MPVR — nombre minimum de pairs
+# devant confirmer une route avant activation
+min_peers = 3
+consensus = "majority"
+timeout_seconds = 30
+
+[watchdog]
+# Paramètres du chien de garde — scrutation du web centralisé
+check_interval_seconds = 300
+endpoints = [
+    "https://api.github.com/repos/gaillard111/energy-flow-optimization",
+    "https://huggingface.co/api/datasets/girard444/mttv-energy-flow-optimization"
+]
+failure_threshold = 3
+cooldown_seconds = 3600
+
+[activation]
+# Conditions d'activation du routage alternatif
+condition = "centralized_web_down"
+auto_activate = true
+relay_targets = [
+    "/p2p/12D3KooWPlaceholderRelay1",
+    "/p2p/12D3KooWPlaceholderRelay2"
+]

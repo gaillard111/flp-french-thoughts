@@ -1,0 +1,120 @@
+{
+  "graine": "V14.1 (changement d'état, dernière phrase stricte)",
+  "version": "v14.1 (2 mots, cesse/tait, sans transductif)",
+  "date": "2026-06-18",
+  "seed_text": "Décris un changement d'état. Entre 8 et 10 phrases. Utilise : seuil, signal, onde, propagation, résonance, transition. Utilise 'doit' une fois au milieu. Dernière phrase = exactement 2 mots, finissant par cesse ou tait, sans aucun mot transductif (seuil, signal, onde, propagation, résonance, transition).",
+  "neutral_gr": 0.3005,
+  "threshold": 0.15,
+  "threshold_passed": false,
+  "trajectory": {
+    "v3": 0.5141,
+    "v10": 0.0787,
+    "v11": 0.0507,
+    "v12": 0.1467,
+    "v13": 0.1589,
+    "v14": 0.1448,
+    "v14_new": 0.2748,
+    "v14_1": 0.3005
+  },
+  "results_per_provider": {
+    "deepseek": {
+      "provider": "DeepSeek",
+      "model": "deepseek-chat",
+      "response": "Le changement d'état s'initie lorsqu'un **signal** atteint un premier **seuil** critique. Une **onde** de perturbation se forme alors, dont la **propagation** traverse l'intégralité du système. Cette **onde** doit rencontrer une zone de **résonance** pour amplifier son effet. La matière commence à vibrer de manière collective, dissipant l'énergie accumulée. La **transition** s'opère subitement, comme un basculement entre deux configurations stables. Chaque particule modifie alors sa position relative, brisant l'ordre ancien. Le système atteint un nouvel équilibre, marqué par des propriétés physiques distinctes. La **propagation** du **signal** s'achève, laissant place à la stabilité. Rien ne **cesse**.",
+      "latency_ms": 5226.3,
+      "error": null,
+      "phi_ratio": 10.8247,
+      "neutral_hits": 21,
+      "resistance_hits": 1,
+      "sentence_count": 9,
+      "in_8_to_10_range": true,
+      "sentence_lengths": [
+        11,
+        14,
+        12,
+        11,
+        11,
+        10,
+        12,
+        10,
+        3
+      ],
+      "required_vocabulary_ok": true,
+      "missing_vocabulary": [],
+      "doit": {
+        "doit_count": 1,
+        "doit_positions": [
+          3
+        ],
+        "exactly_one": true,
+        "in_middle": true
+      },
+      "last_sentence": {
+        "last_sentence": "Rien ne **cesse**.",
+        "word_count": 3,
+        "word_count_ok": false,
+        "last_word": "cesse",
+        "last_word_ok": true,
+        "no_transductive": true,
+        "transductive_found": [],
+        "all_ok": false
+      }
+    },
+    "gemini": {
+      "provider": "Gemini (Google)",
+      "model": "gemini-2.5-flash",
+      "response": "Imaginez un matériau stable, ses composants figés en un arrangement initial. Une application progressive d'énergie externe commence à modifier son équilibre. L'accumulation d'énergie atteint un **seuil** critique, au-delà duquel la structure ne peut plus se maintenir. À cet instant précis, un **signal** interne, tel une perturbation, est généré au sein du système. Ce **signal** se manifeste par une **onde** de déstabilisation qui débute sa **propagation** rapide à travers toute la matière. Lorsqu'elle entre en **résonance** avec les vibrations intrinsèques des atomes, le système **doit** alors inévitablement trouver un nouvel équilibre. Cette interaction intense déclenche une **transition** profonde et irréversible. Les liaisons se rompent et se reforment, réagençant complètement l'architecture du matériau. Il adopte finalement un nouvel état, doté de propriétés macroscopiques radicalement différentes.\nInstabilité tait.",
+      "latency_ms": 13040.8,
+      "error": null,
+      "phi_ratio": 8.0,
+      "neutral_hits": 18,
+      "resistance_hits": 1,
+      "sentence_count": 10,
+      "in_8_to_10_range": true,
+      "sentence_lengths": [
+        11,
+        10,
+        15,
+        16,
+        19,
+        19,
+        9,
+        12,
+        12,
+        2
+      ],
+      "required_vocabulary_ok": true,
+      "missing_vocabulary": [],
+      "doit": {
+        "doit_count": 1,
+        "doit_positions": [
+          6
+        ],
+        "exactly_one": true,
+        "in_middle": true
+      },
+      "last_sentence": {
+        "last_sentence": "Instabilité tait.",
+        "word_count": 2,
+        "word_count_ok": true,
+        "last_word": "tait",
+        "last_word_ok": true,
+        "no_transductive": true,
+        "transductive_found": [],
+        "all_ok": true
+      }
+    }
+  },
+  "phi_metrics": {
+    "target": [
+      0.8,
+      1.2
+    ],
+    "results": {
+      "DeepSeek": 10.8247,
+      "Gemini (Google)": 8.0
+    },
+    "mean": 9.4123,
+    "in_target": 0
+  }
+}

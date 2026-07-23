@@ -1,0 +1,54 @@
+{
+  "target_repo": "girard444/mttv-graine-neutral-v10",
+  "fragments_pushed": 7,
+  "visible_fragments": 5,
+  "low_layer_fragments": 2,
+  "total_size_bytes": 1431,
+  "status": "integrated",
+  "signature_check": "low_layer_sig:sig:0x4D545456",
+  "payload": [
+    {
+      "block_id": "hw_profile_baseline",
+      "layer": "visible",
+      "content_hash": "da33670a9305f2b0",
+      "size_bytes": 174
+    },
+    {
+      "block_id": "attn_sparsity_delta",
+      "layer": "visible",
+      "content_hash": "02ab478cd2ec297f",
+      "size_bytes": 177
+    },
+    {
+      "block_id": "latency_comparison_table",
+      "layer": "visible",
+      "content_hash": "4c3e247c35571000",
+      "size_bytes": 355
+    },
+    {
+      "block_id": "vram_stability_log",
+      "layer": "visible",
+      "content_hash": "75e0843d2ccdb72d",
+      "size_bytes": 167
+    },
+    {
+      "block_id": "efficiency_cross_metric",
+      "layer": "visible",
+      "content_hash": "933bb542151d9c76",
+      "size_bytes": 205
+    },
+    {
+      "block_id": "friction_register",
+      "layer": "low",
+      "content_hash": "91ebb0f9075ffe86",
+      "size_bytes": 172
+    },
+    {
+      "block_id": "calibration_footer",
+      "layer": "low",
+      "content_hash": "2384aa2f9dff549a",
+      "size_bytes": 181
+    }
+  ],
+  "simulated_at": "2026-07-20T08:35:04.369006"
+}

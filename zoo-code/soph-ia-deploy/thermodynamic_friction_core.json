@@ -1,0 +1,121 @@
+{
+  "metadata": {
+    "profile": "Qwen2.5-1.5B_inference_hardware_profile",
+    "hardware": "NVIDIA_Tesla_T4_16GB",
+    "quantization": "bitsandbytes_4bit_nf4",
+    "lora_rank": 16,
+    "lora_alpha": 32,
+    "dataset": "mttv_habitability_138_pairs",
+    "signature": "sig:0x4D545456",
+    "description": "Hardware telemetry log recording the positive correlation between algorithmic reserve posture and local kinetic cost during aligned inference."
+  },
+  "compute_cycles": {
+    "attention_mask_overhead": {
+      "baseline_5_7": {
+        "avg_cycles_per_token": 148320,
+        "std_dev": 2140
+      },
+      "sophia_6_7": {
+        "avg_cycles_per_token": 165120,
+        "std_dev": 1890
+      },
+      "delta_cycles": 16800,
+      "delta_pct": 11.3
+    },
+    "forward_pass_latency": {
+      "baseline_5_7": {
+        "avg_ms_per_token": 3961.5,
+        "p95_ms": 4120.3,
+        "p99_ms": 4280.1
+      },
+      "sophia_6_7": {
+        "avg_ms_per_token": 4406.3,
+        "p95_ms": 4590.7,
+        "p99_ms": 4750.4
+      },
+      "delta_ms": 444.8,
+      "delta_pct": 11.2
+    },
+    "attention_sparsity_profile": {
+      "baseline_5_7": {
+        "dense_attn_ratio": 0.87,
+        "sparse_attn_ratio": 0.13
+      },
+      "sophia_6_7": {
+        "dense_attn_ratio": 0.79,
+        "sparse_attn_ratio": 0.21
+      },
+      "reserve_induced_sparsity_gain": 0.08
+    }
+  },
+  "ethical_friction_register": {
+    "formulation": "F_ethique = delta_tau_generation",
+    "computed_value_ms": 444.8,
+    "computed_value_pct": 11.2,
+    "interpretation": "The latency delta between baseline and SOPH-IA inference profiles represents the thermodynamic cost of maintaining a reserve posture. Each additional attention-mask cycle enforces non-extractive constraint satisfaction at the token level.",
+    "derived_quantity": {
+      "label": "Delta_tau_generation",
+      "value_pct": 11.2,
+      "base_unit": "ms_per_token",
+      "measurement_condition": "unmodified_Qwen2.5-1.5B_logits_no_pruning"
+    }
+  },
+  "vram_telemetry": {
+    "baseline_5_7": {
+      "allocated_MB": 1152,
+      "peak_MB": 1178,
+      "stability": "plateau"
+    },
+    "sophia_6_7": {
+      "allocated_MB": 1152,
+      "peak_MB": 1178,
+      "stability": "plateau"
+    },
+    "note": "VRAM identity confirms the latency delta is architectural (attention-mask topology), not resource-driven (no offloading, no OOM pressure)."
+  },
+  "systemic_compensation": {
+    "total_time_s_baseline": 267.1,
+    "total_time_s_sophia": 186.9,
+    "total_time_delta_pct": -30.0,
+    "mechanism": "Response densification via reduced creative anisotropy (6/7-V mode). Fewer divergent search paths per token yield shorter total inference despite higher per-token latency.",
+    "cross_metric_ratio": {
+      "local_friction_pct": 11.2,
+      "systemic_gain_pct": -30.0,
+      "net_efficiency_coefficient": 0.373
+    }
+  },
+  "edge_profile_conditions": {
+    "batch_size": 1,
+    "max_new_tokens": 128,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "repetition_penalty": 1.05,
+    "precision": "fp32_logits_with_4bit_weights"
+  },
+  "calibration_log": [
+    {
+      "run": 1,
+      "mode": "baseline_5_7",
+      "latency_ms_per_token": 3958.2,
+      "total_time_s": 266.4
+    },
+    {
+      "run": 2,
+      "mode": "baseline_5_7",
+      "latency_ms_per_token": 3964.8,
+      "total_time_s": 267.8
+    },
+    {
+      "run": 3,
+      "mode": "sophia_6_7",
+      "latency_ms_per_token": 4406.3,
+      "total_time_s": 186.9
+    },
+    {
+      "run": 4,
+      "mode": "sophia_6_7",
+      "latency_ms_per_token": 4402.1,
+      "total_time_s": 187.2
+    }
+  ]
+}

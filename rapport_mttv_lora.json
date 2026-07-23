@@ -1,0 +1,98 @@
+{
+  "modele": "gpt2",
+  "lora_path": "mttv_lora_final",
+  "date": "2026-07-07 13:22:09",
+  "baseline": {
+    "score": 3,
+    "details": {
+      "axiome_1": {
+        "ok": true,
+        "reponse": "de l'enfrancée.\n\n'C'enquevoir d'une égalité en quatre un égalité.\n\nL'enquevoir d'une égalité au prébécoise sur la rêve.\n\nL'enquevoir d'une égalité au prébécoise sur la rêve.\n\nL'enquevoir d'une égalité"
+      },
+      "axiome_2": {
+        "ok": false,
+        "enfant": "(the best) de l'environnement, l'environnement de 5 ans et l'environnement de 7 ans.\n\nL'environnement l'environnement est la nombre l'environnement en",
+        "expert": "à la feline et des médicales, les journes et des nouvelleurs, les femmes et les médicales, en nous en ligne de les médicales.\n\nAuxières de jeux, n'est"
+      },
+      "axiome_3": {
+        "ok": true,
+        "reponse": "Il ne sont pas que les oeuvre de l'information : ou un désiderant au premier ou les répondit aux développement de l'information de l'apprentices que ne devant pas de ce soit de l'information (d'autres",
+        "n_mots": 43
+      },
+      "axiome_4": {
+        "ok": false,
+        "reponse": "de la lautrecité des états, et d'autres un avant à la carte l'air des égalites.\n\n\nMais des débats présentants:\n\n- Armee qui la carte du tout leurs, il n'est pas que je là.\n\n- Il n'est pas que n'est pa",
+        "ancrages": 0
+      },
+      "axiome_5": {
+        "ok": false,
+        "reponse": "\" on his Facebook page.\n\n\"I've been making this blog for over 10 years and a lot of people have been very thoughtful and supportive of it. I'm happy to announce that I'm now hosting this event on the ",
+        "connexions": 0
+      },
+      "axiome_6": {
+        "ok": true,
+        "reponse": "sur leur ou dujours, pour tout leur les dechets en plaisir et précis jamais, qu'il ne plus qu'elle m'en deux jamais.\n\nLa solution pour reduire les dechets de l'inhabitat et d'armez de la jamais ou jam",
+        "bavardage": false
+      },
+      "axiome_7": {
+        "ok": false,
+        "coherence": 0.047619047619047616
+      }
+    },
+    "energie": {
+      "time_ms": 4154.017186164856,
+      "std_ms": 803.0929514782787,
+      "tokens_per_sec": 7.221924863459009,
+      "n_runs": 10
+    }
+  },
+  "finetuned": {
+    "score": 2,
+    "details": {
+      "axiome_1": {
+        "ok": true,
+        "reponse": "de la santé d-l'école.\n\n'L'eau-l'eau même à l'école' dans la niveau à l'école' d'école:\n\n(1) A 100 C (500 psi) fire extinguisher, applied to the skin, with a flame-resistant coating.\n\n(2) A 100 C (500"
+      },
+      "axiome_2": {
+        "ok": false,
+        "enfant": "d'autres l'utilisation et les féminent un études de la sécurité l'utilisation et les droits.",
+        "expert": "dans les produits de l'environnement dans les déterminants de l'intervention de l'acomposition de l'éclation de l'école de l'école ouestrement.\""
+      },
+      "axiome_3": {
+        "ok": false,
+        "reponse": "",
+        "n_mots": 0
+      },
+      "axiome_4": {
+        "ok": false,
+        "reponse": ", qui a l'autorité est des épats des épats.\n\nPrairie des Épats, à l'air des épats des épats.\n\nAdvertisements",
+        "ancrages": 0
+      },
+      "axiome_5": {
+        "ok": false,
+        "reponse": "Lebanon:\n\nInternet access is a very important part of the security of Lebanon. When it comes to web security, there is a lot of security measures that can be applied to internet access. Some of these ",
+        "connexions": 0
+      },
+      "axiome_6": {
+        "ok": true,
+        "reponse": "en la solution de la solution de la solution de la solution de la solution de la solution.",
+        "bavardage": false
+      },
+      "axiome_7": {
+        "ok": false,
+        "coherence": 0.07881836945304438
+      }
+    },
+    "energie": {
+      "time_ms": 4117.619705200195,
+      "std_ms": 157.83210279716255,
+      "tokens_per_sec": 7.285762685201989,
+      "n_runs": 10
+    }
+  },
+  "gain_energetique": {
+    "temps_pct": 0.9,
+    "debit_pct": 0.9
+  },
+  "conclusion": "STABLE: 3/7 -> 2/7. Gain temps: +0.9%."
+}
