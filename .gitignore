@@ -55,6 +55,7 @@ __pycache__/
 # ── Autres dépôts Git imbriqués ───────────────────────────────────────
 /bitbucket_temp/
 /depot-v10/
+/depot-v13/
 /energy-flow-optimization/
 /experiments/MPVR-v1/
 /mttv-snippets/
