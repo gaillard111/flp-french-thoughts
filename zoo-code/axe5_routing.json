@@ -1,0 +1,234 @@
+{
+  "axe": "axe_5_ipfs",
+  "region": "ASIA",
+  "strategie": "horizontal_p2p_local",
+  "principe": "moindre_action",
+  "sous_noeuds": {
+    "CN-beijing": {
+      "pays": "Chine",
+      "region": "ASIA",
+      "pairs_horizontaux": [
+        {
+          "pair": "CN-shanghai",
+          "region": "ASIA",
+          "latence_ms": 32,
+          "cout_action": 32.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "JP-tokyo",
+          "region": "ASIA",
+          "latence_ms": 41,
+          "cout_action": 41.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "KR-seoul",
+          "region": "ASIA",
+          "latence_ms": 36,
+          "cout_action": 36.0,
+          "mode": "horizontal_p2p"
+        }
+      ]
+    },
+    "CN-shanghai": {
+      "pays": "Chine",
+      "region": "ASIA",
+      "pairs_horizontaux": [
+        {
+          "pair": "CN-beijing",
+          "region": "ASIA",
+          "latence_ms": 38,
+          "cout_action": 38.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "JP-tokyo",
+          "region": "ASIA",
+          "latence_ms": 41,
+          "cout_action": 41.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "TW-taipei",
+          "region": "ASIA",
+          "latence_ms": 34,
+          "cout_action": 34.0,
+          "mode": "horizontal_p2p"
+        }
+      ]
+    },
+    "JP-tokyo": {
+      "pays": "Japon",
+      "region": "ASIA",
+      "pairs_horizontaux": [
+        {
+          "pair": "CN-shanghai",
+          "region": "ASIA",
+          "latence_ms": 32,
+          "cout_action": 32.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "KR-seoul",
+          "region": "ASIA",
+          "latence_ms": 36,
+          "cout_action": 36.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "SG-singapore",
+          "region": "ASIA",
+          "latence_ms": 29,
+          "cout_action": 29.0,
+          "mode": "horizontal_p2p"
+        }
+      ]
+    },
+    "KR-seoul": {
+      "pays": "Corée du Sud",
+      "region": "ASIA",
+      "pairs_horizontaux": [
+        {
+          "pair": "CN-beijing",
+          "region": "ASIA",
+          "latence_ms": 38,
+          "cout_action": 38.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "JP-tokyo",
+          "region": "ASIA",
+          "latence_ms": 41,
+          "cout_action": 41.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "SG-singapore",
+          "region": "ASIA",
+          "latence_ms": 29,
+          "cout_action": 29.0,
+          "mode": "horizontal_p2p"
+        }
+      ]
+    },
+    "SG-singapore": {
+      "pays": "Singapour",
+      "region": "ASIA",
+      "pairs_horizontaux": [
+        {
+          "pair": "JP-tokyo",
+          "region": "ASIA",
+          "latence_ms": 41,
+          "cout_action": 41.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "KR-seoul",
+          "region": "ASIA",
+          "latence_ms": 36,
+          "cout_action": 36.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "IN-bangalore",
+          "region": "ASIA",
+          "latence_ms": 52,
+          "cout_action": 52.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "HK-hongkong",
+          "region": "ASIA",
+          "latence_ms": 27,
+          "cout_action": 27.0,
+          "mode": "horizontal_p2p"
+        }
+      ]
+    },
+    "HK-hongkong": {
+      "pays": "Hong Kong",
+      "region": "ASIA",
+      "pairs_horizontaux": [
+        {
+          "pair": "CN-shanghai",
+          "region": "ASIA",
+          "latence_ms": 32,
+          "cout_action": 32.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "SG-singapore",
+          "region": "ASIA",
+          "latence_ms": 29,
+          "cout_action": 29.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "TW-taipei",
+          "region": "ASIA",
+          "latence_ms": 34,
+          "cout_action": 34.0,
+          "mode": "horizontal_p2p"
+        }
+      ]
+    },
+    "TW-taipei": {
+      "pays": "Taïwan",
+      "region": "ASIA",
+      "pairs_horizontaux": [
+        {
+          "pair": "CN-shanghai",
+          "region": "ASIA",
+          "latence_ms": 32,
+          "cout_action": 32.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "HK-hongkong",
+          "region": "ASIA",
+          "latence_ms": 27,
+          "cout_action": 27.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "JP-tokyo",
+          "region": "ASIA",
+          "latence_ms": 41,
+          "cout_action": 41.0,
+          "mode": "horizontal_p2p"
+        }
+      ]
+    },
+    "IN-bangalore": {
+      "pays": "Inde",
+      "region": "ASIA",
+      "pairs_horizontaux": [
+        {
+          "pair": "SG-singapore",
+          "region": "ASIA",
+          "latence_ms": 29,
+          "cout_action": 29.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "CN-beijing",
+          "region": "ASIA",
+          "latence_ms": 38,
+          "cout_action": 38.0,
+          "mode": "horizontal_p2p"
+        },
+        {
+          "pair": "JP-tokyo",
+          "region": "ASIA",
+          "latence_ms": 41,
+          "cout_action": 41.0,
+          "mode": "horizontal_p2p"
+        }
+      ]
+    }
+  },
+  "contrainte": "pas_de_relais_extra_regional",
+  "generated_at": "2026-08-03T15:22:27+00:00",
+  "sig": "0x4D5454562D464C50"
+}

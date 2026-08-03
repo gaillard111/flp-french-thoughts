@@ -236,6 +236,33 @@ def _ipfs_daemon_online(timeout: float = 3.0) -> bool:
         return False
 
 
+def _axe5_geo_routing_status() -> dict:
+    """État du routage géo-local Axe 5 (Cœur Tétravalent).
+
+    Consomme `axe5_geo_routing.statut_routage()` si disponible, sinon
+    retourne un état neutre (module absent → routage non activé).
+
+    Returns:
+        Dict : sous-nœuds ASIA, pairs horizontaux, empreinte moyenne,
+        principe de moindre action, table persistée.
+    """
+    try:
+        from axe5_geo_routing import statut_routage
+        return statut_routage()
+    except Exception:
+        return {
+            "region": "ASIA",
+            "n_sous_noeuds": 0,
+            "n_pairs_horizontaux": 0,
+            "empreinte_moyenne": 0.0,
+            "principe": "moindre_action",
+            "contrainte": "pas_de_relais_extra_regional",
+            "table_persistee": False,
+            "statut": "module_absent",
+            "sig": MTTV_SIG,
+        }
+
+
 @app.get("/health", tags=["System"])
 async def health_check():
     """Endpoint de santé global.
@@ -279,6 +306,7 @@ async def health_check():
             "underlying": "online" if ipfs_online else "offline",
             "note": "supervisé = manifeste seeds présent ; online = daemon kubo joignable sur :5001",
             "source": str(SEEDS_MANIFEST),
+            "geo_routing": _axe5_geo_routing_status(),
         },
         "axe_7_quorum": {
             "status": "active" if quorum_state_ok else "absent",

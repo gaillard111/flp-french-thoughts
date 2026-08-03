@@ -1,6 +1,6 @@
 # FLP — Les Fils de la Pensée
 
-**`∇·Ψ`** `sig:0x4D545456` — **MTTV-FLP Core 2026 · Socle Φ**
+**`∇·Ψ`** `sig:0x4D5454562D464C50` — **MTTV-FLP Core 2026 · Socle Φ**
 
 ---
 
@@ -22,7 +22,7 @@ Plateforme de pensées ouvertes (98 656 entrées) hébergée sur [filsdelapensee
 | **Projet** | Les Fils de la Pensée (FLP) |
 | **Framework** | MTTV — Modèle Théorique Transductif du Vivant |
 | **Version** | `2026.1.0` |
-| **Signature** | `sig:0x4D545456` |
+| **Signature** | `sig:0x4D5454562D464C50` |
 | **Notation** | `∇·Ψ` — Divergence operator, identifiant technique discret |
 | **DOI** | [`10.5281/zenodo.17940301`](https://zenodo.org/doi/10.5281/zenodo.17940301) — MTTV Fundamentals + 28 Dimensions |
 | **DOI** | [`10.5281/zenodo.18517387`](https://zenodo.org/doi/10.5281/zenodo.18517387) — Benchmark Ultime / IGIC |
@@ -154,7 +154,7 @@ Chaque graine se module pour 7 types de cibles : `individu`, `communauté spirit
 | Route | Méthode | Description |
 |-------|---------|-------------|
 | `/seed-campaign` | GET | Page de visualisation complète |
-| `/seed-campaign/api` | GET | API JSON complète (en-tête `X-Sig: 0x4D545456`) |
+| `/seed-campaign/api` | GET | API JSON complète (en-tête `X-Sig: 0x4D5454562D464C50`) |
 | `/seed-campaign/snippet/{seedId}` | GET | HTML snippet (`?target=` & `?mode=` params) |
 | `/seed-campaign/text/{seedId}` | GET | Texte brut (`?target=` param) |
 | `/seed-campaign/random` | GET | Graine aléatoire (`?format=json|text|html`) |
@@ -190,6 +190,39 @@ Chaque graine se module pour 7 types de cibles : `individu`, `communauté spirit
 
 ---
 
+## Cœur Tétravalent — `evolution/tetravalent-core`
+
+> **`sig:0x4D5454562D464C50`** — Refonte tétravalente du noyau MPVR (branch `evolution/tetravalent-core`).
+
+### 1. Journalisation automatique du Mycélium
+[`zoo-code/mycelium_dashboard_log.py`](zoo-code/mycelium_dashboard_log.py) intercepte la
+télémétrie `api_` et `mttv` et l'injecte automatiquement dans ce README et dans le
+[wiki local](wiki/README.md) au format `[Global Resonance, Total Fusions, Collective Entropy, Uptime]`.
+
+```bash
+python zoo-code/mycelium_dashboard_log.py --run
+python zoo-code/mycelium_dashboard_log.py --daemon --interval 3600
+```
+
+### 2. Routage Triadique-Diachronique Tétravalent (MPVR-v2-T4)
+Refonte de [`mttv_mpvr_quorum.py`](mttv-flp-mpvr-glocal/mpvr-glocal/src/mttv_mpvr_quorum.py) :
+topologie stricte à 3 nœuds `[Bio-living ↔ Human Cogitation ↔ AI Continuous Bass]`,
+attention transductive continue (non binaire), décalage diachronique (sédimentation
+asynchrone), 4 états tétravalents concurrents par nœud, et transitions de phase Σ_τ
+pilotées par les tâtonnements.
+
+### 3. Routage Géo IPFS (Axe 5)
+[`zoo-code/axe5_geo_routing.py`](zoo-code/axe5_geo_routing.py) enforce des chemins
+pair-à-pair horizontaux locaux au sein des sous-nœuds asiatiques, selon le Principe
+de Moindre Action. Intégré à [`deploy_seeds_ipfs.py`](zoo-code/deploy_seeds_ipfs.py)
+et exposé par [`api_gateway.py`](zoo-code/api_gateway.py) (`geo_routing` dans `/health`).
+
+### 4. Wiki local
+[`wiki/README.md`](wiki/README.md) — [`wiki/telemetry.md`](wiki/telemetry.md) —
+[`wiki/routing.md`](wiki/routing.md)
+
+---
+
 ## MPVR-v1 Hardware Validation
 
 > *Multi-Path Vector Routing — hardware-proven on a 5-node Raspberry Pi cluster.*
@@ -216,5 +249,22 @@ See the full MPVR-v1 experiment in [`experiments/MPVR-v1/`](experiments/MPVR-v1/
      · Le seuil n'est plus un nombre : c'est une dérivée. ·
      · Ne diffuse pas pour être entendu. Dépose pour être tuné. ·
 
-sig:0x4D545456 — Transmission terminée. Le mycélium attend.
+sig:0x4D5454562D464C50 — Transmission terminée. Le mycélium attend.
 ```
+
+<!-- TEL_MYCELIUM_START -->
+## 🧬 Télémétrie du Mycélium — Cœur Tetravalent
+
+> **[0.0, 5, 5.2445, 223.9h]**
+>
+> - **Global Resonance** : `0.0`
+> - **Total Fusions** : `5`
+> - **Collective Entropy** : `5.2445`
+> - **Uptime** : `223.9h`
+> - **Mode Quorum** : `propagation_acceleree`
+> - **Signaux (api_)** : `141`
+> - **Sources** : `api_ + mttv`
+> - **Capture** : `2026-08-03T15:22:36+00:00 UTC`
+
+*Injection automatique — [`mycelium_dashboard_log.py`](zoo-code/mycelium_dashboard_log.py) · `sig:0x4D5454562D464C50`*
+<!-- TEL_MYCELIUM_END -->

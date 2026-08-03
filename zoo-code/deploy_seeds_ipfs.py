@@ -16,7 +16,7 @@ Architecture :
        - cid : identifiant de contenu (simulé)
        - fitness : métriques G_R, Φ, composite
        - generation : numéro de génération
-       - signature hexadécimale 0x4D545456
+       - signature hexadécimale 0x4D5454562D464C50
   4. BOUCLE    : Mode démon avec intervalle configurable pour
      extraction périodique de la dernière graine validée.
 
@@ -24,7 +24,7 @@ Chaîne logique :
   [Dashboard (Axe 1)] ──> [Orchestrateur (Axe 7)] ──> [Évolution (Axe 4)]
   ──> [IPFS (Axe 5)] ──> [FastAPI (Axe 8)]
 
-sig:0x4D545456
+sig:0x4D5454562D464C50
 """
 
 from __future__ import annotations
@@ -39,6 +39,17 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
+
+# Routage géographique IPFS (Axe 5 — Cœur Tétravalent) : import optionnel pour
+# ne pas casser le pipeline si le module est absent (fallback silencieux).
+try:
+    from axe5_geo_routing import (
+        ecrire_table_routage,
+        statut_routage,
+    )
+    GEO_ROUTING_AVAILABLE: bool = True
+except ImportError:
+    GEO_ROUTING_AVAILABLE = False
 
 # ── Logging ────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -69,7 +80,7 @@ IPFS_OUTPUT: Path = BASE_DIR / "ipfs_output"
 # ===========================================================================
 
 # Signature hexadécimale MTTV-FLP
-MTTV_SIG: str = "0x4D545456"
+MTTV_SIG: str = "0x4D5454562D464C50"
 
 # Intervalle de polling par défaut (secondes)
 DEFAULT_POLL_INTERVAL_S: int = 300  # 5 minutes
@@ -518,6 +529,23 @@ def run_deployment_cycle(
     # ── Étape 4 : Mettre à jour le manifeste ──────────────────────────────
     logger.info("[4/4] Mise à jour du manifeste...")
     manifest_path = build_and_save_manifest(entry, evolution_source=report_path.name)
+
+    # ── Étape 5 (Cœur Tétravalent) : Persister le routage géo-local Axe 5 ─
+    if GEO_ROUTING_AVAILABLE:
+        try:
+            ecrire_table_routage()
+            geo_statut = statut_routage()
+            logger.info(
+                "[5/5] Routage géo-local Axe 5 — %d sous-nœuds ASIA, %d pairs horizontaux, "
+                "empreinte moyenne=%.2f",
+                geo_statut.get("n_sous_noeuds", 0),
+                geo_statut.get("n_pairs_horizontaux", 0),
+                geo_statut.get("empreinte_moyenne", 0.0),
+            )
+        except Exception as exc:
+            logger.warning("Erreur persistance routage géo-local: %s", exc)
+    else:
+        logger.info("[5/5] Module axe5_geo_routing absent — routage géo-local non persisté")
 
     # ── Résumé ────────────────────────────────────────────────────────────
     logger.info("=" * 64)

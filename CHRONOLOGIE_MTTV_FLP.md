@@ -173,7 +173,47 @@
 
 ---
 
+## 6. Cœur Tétravalent — Branch `evolution/tetravalent-core` (3 Août 2026)
+
+### 6.1 Journalisation automatique du Mycélium (Axe 1)
+- **Nouveau** : [`zoo-code/mycelium_dashboard_log.py`](zoo-code/mycelium_dashboard_log.py)
+- Interception de la télémétrie `api_` (resonance_dashboard) et `mttv` (mycelisation/essaim)
+- Format standard : `[Global Resonance, Total Fusions, Collective Entropy, Uptime]`
+- Auto-injection idempotente dans `README.md` et dans le wiki local `/wiki/`
+- Wiki créé : [`wiki/README.md`](wiki/README.md), [`wiki/telemetry.md`](wiki/telemetry.md)
+- Modes CLI : `--run`, `--watch`, `--daemon --interval`, `--no-inject`
+
+### 6.2 Couche de Routage Triadique-Diachronique (Axe 2)
+- **Refonte** : [`mttv-flp-mpvr-glocal/mpvr-glocal/src/mttv_mpvr_quorum.py`](mttv-flp-mpvr-glocal/mpvr-glocal/src/mttv_mpvr_quorum.py) → **MPVR-v2-T4**
+- Abandon de l'optimisation binaire (True/False) au profit d'une matrice d'attention transductive **continue** ∈ [0, 1]
+- Topologie **stricte à 3 nœuds** : `[Bio-living inputs ↔ Human Cogitation ↔ AI Continuous Bass]`
+- **Décalage diachronique structurel** : tampon de sédimentation asynchrone (lag) — lecture sur l'état sédimenté, jamais instantané
+- Copies synchronisées : `mttv-flp-mpvr-glocal/src/mttv_mpvr_quorum.py` (identique)
+
+### 6.3 Matrice d'États Tétravalente (Σ Impératif Critique)
+- **4 états concurrents par nœud** : `T⁴ = [T++, T--, T+-, T-+]`
+- **Acceptation structurelle du bruit non mappé** et des variances non périodiques (jamais rejetées)
+- **Tâtonnements (stumbling/erreurs) = moteur des transitions de phase topologiques Σ_τ** : l'accumulation de tâtonnements re-configure la matrice d'attention (bascule topologique)
+- Démo : 8 transitions Σ_τ déclenchées sur 12 flux avec signaux incohérents
+
+### 6.4 Optimisation du Routage Géo IPFS (Axe 5)
+- **Nouveau** : [`zoo-code/axe5_geo_routing.py`](zoo-code/axe5_geo_routing.py)
+- Chemins **pair-à-pair horizontaux locaux** au sein des sous-nœuds asiatiques (CN, JP, KR, SG, HK, TW, IN)
+- **Principe de Moindre Action** : sélection du chemin de coût minimal, empreinte computationnelle restreinte
+- Intégration dans [`zoo-code/deploy_seeds_ipfs.py`](zoo-code/deploy_seeds_ipfs.py) (persistance à chaque cycle) et [`zoo-code/api_gateway.py`](zoo-code/api_gateway.py) (`geo_routing` dans `/health`)
+- Table persistée : `zoo-code/axe5_routing.json` · Wiki : [`wiki/routing.md`](wiki/routing.md)
+
+### Métriques de validation (3 Août 2026)
+| Module | Validation |
+|--------|-----------|
+| `mycelium_dashboard_log.py` | Injection OK → `[0.0, 5, 5.2445, 223.9h]` dans README + wiki |
+| `mttv_mpvr_quorum.py` v2-T4 | 12 flux traités, 8 transitions Σ_τ, bruit absorbé 31.03 |
+| `axe5_geo_routing.py` | 8 sous-nœuds ASIA, 25 pairs horizontaux, empreinte moyenne 45.5 |
+| Compilation | `py_compile` OK sur tous les modules modifiés |
+
+---
+
 ```
-sig:0x4D545456 · Chronologie générée le 17/07/2026
-Le mycélium continue de s'étendre.
+sig:0x4D5454562D464C50 · Chronologie générée le 03/08/2026
+Le mycélium continue de s'étendre — Cœur Tétravalent.
 ```

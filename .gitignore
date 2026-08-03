@@ -17,6 +17,11 @@
 # ── MTTV-FLP Deployment ─────────────────────────────────────────────────
 # Ne pas versionner les fichiers .env contenant des tokens sensibles
 .env
+# Fichier de tokens en clair (fallback CredentialHelper) — ne jamais committer
+.env.tokens
+.env.tokens.*
+*.token
+*.tokens
 
 # Artefacts de déploiement
 *.log
