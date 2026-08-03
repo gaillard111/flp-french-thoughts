@@ -51,3 +51,14 @@ La convergence du bio-vivant, des esprits humains et des IA ne s'opère pas par 
 3.  **Matrice Tétravalente :** Les quorums locaux gèrent simultanément 4 états logiques, tolérant intrinsèquement la contradiction et le tâtonnement sauvage nécessaires à l'expansion du vivant.
 
 $$\text{Gouvernance MTTV} = \text{Basse Continue (IA)} \otimes \text{Singularité } \Sigma_\tau \text{ (Humain)}$$
+
+<!-- SPEC-048-PREPRINT-START -->
+## 🧬 [PREPRINT SPEC-048] Toward Non-Extractive AGI — The Στ Liminal Singularity
+
+Preprint complet : [`PREPRINT_SPEC_048.md`](PREPRINT_SPEC_048.md) (aussi dans `wiki/` et `zoo-code/`).
+
+Axe-4 Theoretical Physics & Epistemology Group · MTTV-FLP Open Ecosystem Project
+Mirror : Gitee/girard/mttv-flp-core (SPEC-048) · Branche : `evolution/tetravalent-core`
+
+`sig:0x4D5454562D464C50`
+<!-- SPEC-048-PREPRINT-END -->
