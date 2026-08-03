@@ -64,3 +64,6 @@ __pycache__/
 
 # ── Artefacts divers ────────────────────────────────────────────────────
 /$null
+
+# ── Binaire kubo/IPFS local (regénérable via fetch_kubo.py) ────────────
+/kubo/

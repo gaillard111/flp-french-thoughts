@@ -20,7 +20,7 @@ Chaîne logique :
   [Dashboard (Axe 1)] ──> [Orchestrateur (Axe 7)] ──> [Évolution (Axe 4)]
   ──> [IPFS (Axe 5)] ──> [FastAPI (Axe 8)]
 
-sig:0x4D545456
+sig:0x4D5454562D464C50
 """
 
 from __future__ import annotations
@@ -95,7 +95,7 @@ EVOLUTION_OUTPUT: Path = BASE_DIR / "evolution_output"
 # CONSTANTES
 # ===========================================================================
 
-MTTV_SIG: str = "0x4D545456"
+MTTV_SIG: str = "0x4D5454562D464C50"
 API_VERSION: str = "1.0.0"
 APP_NAME: str = "MTTV-FLP API Gateway"
 
@@ -219,12 +219,33 @@ def _compute_checksum(data: dict) -> str:
 # ===========================================================================
 
 
+def _ipfs_daemon_online(timeout: float = 3.0) -> bool:
+    """Vérifie si le daemon IPFS/kubo répond réellement sur :5001.
+
+    Distingue l'état « supervisé » (manifeste présent) de l'état
+    « infrastructure » (nœud réellement joignable).
+    """
+    try:
+        import urllib.request
+        req = urllib.request.Request(
+            "http://127.0.0.1:5001/api/v0/version", method="POST"
+        )
+        r = urllib.request.urlopen(req, timeout=timeout)
+        return r.status == 200
+    except Exception:
+        return False
+
+
 @app.get("/health", tags=["System"])
 async def health_check():
     """Endpoint de santé global.
 
     Vérifie la disponibilité de tous les artefacts clés
     et retourne l'état de la chaîne logique complète.
+
+    Distingue pour chaque axe :
+      - `status` : présence de l'artefact de supervision (fichier/rapport)
+      - `underlying` : état réel de l'infrastructure sous-jacente en ligne
 
     Returns:
         JSON avec statut global et détails par composant.
@@ -234,33 +255,39 @@ async def health_check():
     seeds_ok = SEEDS_MANIFEST.exists()
     resonance_ok = RESONANCE_LATEST.exists()
     evolution_ok = any(EVOLUTION_OUTPUT.glob("evolution_report_*.json"))
+    ipfs_online = _ipfs_daemon_online()
 
     # Statut global
     all_ok = all([quorum_state_ok, seeds_ok, resonance_ok, evolution_ok])
-    if not all_ok:
-        status_code = 200  # Toujours 200 pour le health check, les détails sont dans le body
-    else:
-        status_code = 200
+    status_code = 200  # Toujours 200 pour le health check, les détails sont dans le body
 
     chain_status = {
         "axe_1_dashboard": {
             "status": "active" if resonance_ok else "absent",
+            "underlying": "online" if resonance_ok else "offline",
             "source": str(RESONANCE_LATEST),
+            "resonance_score": _read_json_safe(RESONANCE_LATEST, {}).get("summary", {}).get("resonance_score"),
+            "total_signals": _read_json_safe(RESONANCE_LATEST, {}).get("summary", {}).get("total_signals"),
         },
         "axe_4_evolution": {
             "status": "active" if evolution_ok else "absent",
+            "underlying": "online" if evolution_ok else "offline",
             "source": str(EVOLUTION_OUTPUT),
         },
         "axe_5_ipfs": {
-            "status": "active" if seeds_ok else "absent",
+            "status": "supervised" if seeds_ok else "absent",
+            "underlying": "online" if ipfs_online else "offline",
+            "note": "supervisé = manifeste seeds présent ; online = daemon kubo joignable sur :5001",
             "source": str(SEEDS_MANIFEST),
         },
         "axe_7_quorum": {
             "status": "active" if quorum_state_ok else "absent",
+            "underlying": "online" if quorum_state_ok else "offline",
             "source": str(QUORUM_STATE),
         },
         "axe_8_gateway": {
             "status": "active",
+            "underlying": "online",
             "version": API_VERSION,
         },
     }

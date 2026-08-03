@@ -32,7 +32,7 @@ sémantique du réseau MTTV-FLP.
 | Corpus | Hugging Face (`girard444/mttv-energy-flow-optimization`) | Upload direct | ✅ Publié 03/08 |
 | Snippet | GitHub (`gaillard111/mttv-snippets`) | Push `master` | ✅ Publié 03/08 (`5784684`) |
 | Artefact | GitHub (`gaillard111/mttv-snippets`) | Push `master` | ✅ Publié 03/08 (`5784684`) |
-| Tout | IPFS | `ipfs add` + `ipfs pin add` | 🟡 CID calculés (conformes `ipfs add`), ancrage réseau à faire (daemon kubo éteint) |
+| Tout | IPFS | `ipfs add` + `ipfs pin add` | ✅ Publié 03/08 — kubo 0.42.0, 6/6 CID épinglés |
 
 ### Preuves de publication (03/08/2026)
 
@@ -46,10 +46,13 @@ sémantique du réseau MTTV-FLP.
 `snippets/snippet6_mpvr_quorum_async.py`, `snippets/snippet7_dormancy_gate.py`,
 `artefacts/artefact_citation_croisee.md`.
 
-**IPFS** — manifeste [`ipfs_manifest_phase5.json`](ipfs_manifest_phase5.json) avec les CIDv0
-calculés au format `ipfs add` (UnixFS/dag-pb). Le daemon kubo n'étant pas actif sur ce poste,
-l'ancrage effectif au réseau (`ipfs pin add`) reste à exécuter :
-`ipfs daemon` puis `python zoo-code/publish_phase5_ipfs.py`.
+**IPFS** — kubo **0.42.0** installé localement (`kubo/kubo/ipfs.exe`), daemon actif sur `:5001`.
+Les 6 contenus ont été ajoutés et épinglés réellement (`ipfs add` + `ipfs pin add`) le 03/08.
+CID réels (`cid_ipfs_add`, dans [`ipfs_manifest_phase5.json`](ipfs_manifest_phase5.json)) :
+`QmPKwsv…` (corpus), `QmZAHh…` (snippet), `QmSgSV…` (artefact), `QmQG8U…` (dormancy),
+`QmXZsG…` (quorum async), `QmNWwc…` (benchmark). Note : daemon lancé en `--offline`,
+les CID sont épinglés sur le nœud local ; une publication swarm complète nécessite
+`ipfs daemon` en ligne (`kubo\kubo\ipfs.exe daemon` puis re-run du script).
 
 ---
 

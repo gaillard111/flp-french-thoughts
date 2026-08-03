@@ -61,7 +61,7 @@ FILES = [
     ("mpvr_benchmark.py", "phase5-new-seeds/mpvr_benchmark.py"),
 ]
 
-IPFS_BIN = shutil.which("ipfs")
+IPFS_BIN = shutil.which("ipfs") or "kubo/kubo/ipfs.exe"
 
 
 def daemon_alive():
@@ -72,6 +72,14 @@ def daemon_alive():
         return r.status == 200
     except Exception:
         return False
+
+
+def _run_ipfs(args, timeout=90):
+    """Exécute le binaire ipfs (du PATH ou local kubo)."""
+    return subprocess.run(
+        [IPFS_BIN] + args, capture_output=True, text=True, timeout=timeout,
+        cwd=Path(__file__).resolve().parent.parent,  # racine du projet
+    )
 
 
 def main():
@@ -105,22 +113,27 @@ def main():
 
     # Tentative d'ancrage réel si daemon dispo
     if daemon_alive():
-        print("\n[INFO] Daemon IPFS actif -> tentativre d'ancrage réel...")
+        print(f"\n[INFO] Daemon IPFS actif (binaire: {IPFS_BIN}) -> ancrage réel...")
+        ok_count = 0
         for entry in manifest["cids"]:
             p = Path(entry["path"])
             try:
-                r = subprocess.run(
-                    ["ipfs", "add", "-q", str(p)],
-                    capture_output=True, text=True, timeout=60,
-                )
+                r = _run_ipfs(["add", "-q", str(p)])
                 cid = r.stdout.strip().splitlines()[-1]
                 entry["cid_added"] = cid
+                entry["cid_ipfs_add"] = cid
                 print(f"  [ADD] {cid} {entry['name']}")
-                subprocess.run(["ipfs", "pin", "add", cid], capture_output=True, text=True, timeout=60)
-                print(f"  [PIN] {cid}")
+                rp = _run_ipfs(["pin", "add", cid])
+                if rp.returncode == 0:
+                    print(f"  [PIN] {cid}")
+                    ok_count += 1
+                else:
+                    print(f"  [PIN-FAIL] {cid}: {rp.stderr.strip()[:120]}")
             except Exception as e:
                 print(f"  [FAIL] {entry['name']}: {e}")
         manifest["anchored"] = True
+        manifest["ok_count"] = ok_count
+        manifest["total"] = len(manifest["cids"])
     else:
         print("\n[WARN] Daemon IPFS non actif : CIDs calculés (conformes ipfs add) mais PAS ancrés au réseau.")
         print("       Pour ancrer : démarrer le daemon (ipfs daemon) puis relancer ce script.")
