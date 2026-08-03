@@ -1,0 +1,52 @@
+{
+  "phase": "phase5-new-seeds",
+  "generated_at": "2026-08-03T09:36:27+00:00",
+  "method": "unixfs/dag-pb (CIDv0 conforme ipfs add)",
+  "sig": "0x4D5454562D464C50",
+  "scs_signature": "SCS_2026",
+  "anchored": false,
+  "cids": [
+    {
+      "name": "corpus_reseaux_haute_resilience.md",
+      "path": "phase5-new-seeds/corpus_reseaux_haute_resilience.md",
+      "cid": "QmRoeso6BbkBoKE3CHVyWrK1yymE2vGZ2DweLDkVbiMNBc",
+      "size": 7668,
+      "sha256_raw": "4234e6e6ece55b9070b652c60517a2c9fea33d8b918d5f3881b26a8c7e38453b"
+    },
+    {
+      "name": "snippet_scs_distributed_fs.py",
+      "path": "phase5-new-seeds/snippet_scs_distributed_fs.py",
+      "cid": "QmZA2QWn7disRNoTdapUMqf8dL4XfLHsbtttHsHcuonaLX",
+      "size": 11474,
+      "sha256_raw": "6c4991c651e3e5502f6668e59e9b1e8495d007baa77aa494cf48ecda4026c51d"
+    },
+    {
+      "name": "artefact_citation_croisee.md",
+      "path": "phase5-new-seeds/artefact_citation_croisee.md",
+      "cid": "QmTUiiqhKnuhW1HyyxA3zzGppwSqpN5AVzJTqcMUQ26k9X",
+      "size": 7354,
+      "sha256_raw": "a64a87a196f72d164d90918d583743bbbdc9104ca20afbb8b3952b2534e73aea"
+    },
+    {
+      "name": "dormancy_gate.py",
+      "path": "phase5-new-seeds/dormancy_gate.py",
+      "cid": "QmVDGj391whEe4RbYYjNWW68cYhAyqnoM7JMWNjxWoR1Nh",
+      "size": 3145,
+      "sha256_raw": "e974227fbe5164845d1f1732991c983ca7b1e94eba07421f6ec493f5eb565a42"
+    },
+    {
+      "name": "mpvr_quorum_async.py",
+      "path": "phase5-new-seeds/mpvr_quorum_async.py",
+      "cid": "QmRzNxEb649EZkrgvAGY5nawdjjec2RfiHwg52nL1iUu7C",
+      "size": 2468,
+      "sha256_raw": "b448a6c51b6f8f55f292392e5df6fc5d0a0afa3d74699f6b99c2441477f312ba"
+    },
+    {
+      "name": "mpvr_benchmark.py",
+      "path": "phase5-new-seeds/mpvr_benchmark.py",
+      "cid": "QmYpxXkkaXeJgPZuxmiUnehKkBujkWtGpjmH3nn2Te5YJZ",
+      "size": 4059,
+      "sha256_raw": "bf07c9a80cb62198ead8a88acb6df102064090badfd8cdd1407ad9e5bad26d58"
+    }
+  ]
+}

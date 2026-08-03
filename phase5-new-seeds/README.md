@@ -27,12 +27,29 @@ sémantique du réseau MTTV-FLP.
 
 ## Dépôts cibles pour le dépôt
 
-| Contenu | Plateforme cible | Méthode |
-|---------|-----------------|---------|
-| Corpus | Hugging Face (`girard444/mttv-energy-flow-optimization`) | Upload direct |
-| Snippet | GitHub (`gaillard111/mttv-snippets`) | Pull Request |
-| Artefact | GitHub (`gaillard111/mttv-snippets`) | Pull Request |
-| Tout | IPFS | `ipfs add` |
+| Contenu | Plateforme cible | Méthode | Statut |
+|---------|-----------------|---------|--------|
+| Corpus | Hugging Face (`girard444/mttv-energy-flow-optimization`) | Upload direct | ✅ Publié 03/08 |
+| Snippet | GitHub (`gaillard111/mttv-snippets`) | Push `master` | ✅ Publié 03/08 (`5784684`) |
+| Artefact | GitHub (`gaillard111/mttv-snippets`) | Push `master` | ✅ Publié 03/08 (`5784684`) |
+| Tout | IPFS | `ipfs add` + `ipfs pin add` | 🟡 CID calculés (conformes `ipfs add`), ancrage réseau à faire (daemon kubo éteint) |
+
+### Preuves de publication (03/08/2026)
+
+**Hugging Face** — dataset public [`girard444/mttv-energy-flow-optimization`](https://huggingface.co/datasets/girard444/mttv-energy-flow-optimization) :
+`corpus_reseaux_haute_resilience.md`, `snippet_scs_distributed_fs.py`,
+`artefact_citation_croisee.md`, `dormancy_gate.py`, `mpvr_quorum_async.py`,
+`mpvr_benchmark.py`, `README_phase5.md` (SHA `3eed4d1`).
+
+**GitHub** — dépôt [`gaillard111/mttv-snippets`](https://github.com/gaillard111/mttv-snippets) branche `master`, commit `5784684` :
+`snippets/snippet4_scs_distributed_fs.py`, `snippets/snippet5_mpvr_benchmark.py`,
+`snippets/snippet6_mpvr_quorum_async.py`, `snippets/snippet7_dormancy_gate.py`,
+`artefacts/artefact_citation_croisee.md`.
+
+**IPFS** — manifeste [`ipfs_manifest_phase5.json`](ipfs_manifest_phase5.json) avec les CIDv0
+calculés au format `ipfs add` (UnixFS/dag-pb). Le daemon kubo n'étant pas actif sur ce poste,
+l'ancrage effectif au réseau (`ipfs pin add`) reste à exécuter :
+`ipfs daemon` puis `python zoo-code/publish_phase5_ipfs.py`.
 
 ---
 
