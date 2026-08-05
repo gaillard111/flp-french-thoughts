@@ -28,6 +28,11 @@
 __pycache__/
 *.pyc
 
+# ── Packaging Python (mttv-core) ────────────────────────────────────────
+*.egg-info/
+dist/
+.venv*/
+
 # ── Dépôts Git imbriqués (déjà sauvegardés séparément sur GitHub) ──────
 /mttv-flp-core/
 /mttv-flp-mpvr-glocal/

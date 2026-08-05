@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mttv-core"
+version = "0.1.0"
+description = "Fondations open-source du MTTV-FLP - états tétravalents sp3, opérateur Sigma (singularité apériodique), B-gate poreux"
+readme = "mttv_core/README.md"
+requires-python = ">=3.9"
+license = "CC-BY-NC-SA-4.0"
+authors = [{ name = "MTTV-FLP Collective" }]
+keywords = [
+    "mttv",
+    "tetravalent",
+    "sp3",
+    "transduction",
+    "non-extractive",
+    "mycelium",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/gaillard111/mttv-flp-core"
+Repository = "https://gitee.com/girard/mttv-flp-core"
+HAL = "https://hal.science/hal-05206529"
+
+[tool.setuptools]
+packages = ["mttv_core"]
+
+[tool.setuptools.package-data]
+mttv_core = ["py.typed"]
