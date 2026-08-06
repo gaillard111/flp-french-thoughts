@@ -37,6 +37,7 @@ from .mpvr_bridge import (
     etats_to_tetravalent,
     tetravalent_to_etats,
 )
+from .calibration import calibrer_corpus, DEFAULT_SOURCES
 
 __version__ = "0.1.0"
 
@@ -67,4 +68,7 @@ __all__ = [
     "ETATS_TETRAVALENTS",
     "etats_to_tetravalent",
     "tetravalent_to_etats",
+    # calibration.py — calibration sur corpus réel
+    "calibrer_corpus",
+    "DEFAULT_SOURCES",
 ]

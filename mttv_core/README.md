@@ -99,12 +99,34 @@ print("foyer élu :", route["foyer_elu"], "— Φ stabilisé :", route["phi_stab
 ## Tests
 
 ```bash
-python tests/test_mttv_core.py
+python tests/test_mttv_core.py                # 18 vérifications (briques)
+python tests/test_mpvr_bridge.py              # 10 vérifications (pont MPVR)
+python tests/test_integration_mpvr_cross.py   # 5 vérifications (MPVR réel)
+python docs/verifier_invariants.py            # 20 invariants reproductibles
 ```
 
 Vérifie la cohérence du couplage : géométrie sp³ (109,47°), invariance T⁴ par
 transduction Ψ→B→Φ, retrait fonctionnel de Σ, apériodicité, absorption du
-bruit, quorum MPVR.
+bruit, quorum MPVR, et l'accord avec le MPVR-v2-T4 réel.
+
+## Calibration sur corpus réel
+
+```bash
+python -m mttv_core.calibration              # corpus MTTV/FLP par défaut
+python -m mttv_core.calibration --sources fichier.md --percentile 75
+```
+
+Mesure la signature T⁴ empirique du corpus (distribution des 4 pôles),
+recommande la tolérance de porosité (percentile des innovations) et les
+facteurs de normalisation du lexique. Rapport écrit dans
+`rapports/calibration_mttv_core.json`.
+
+## Invariants (notebook reproductible)
+
+[`docs/notebook_mttv_core_invariants.ipynb`](../docs/notebook_mttv_core_invariants.ipynb)
+documente et exécute les 8 invariants structurels : sp³, clôture Σ=1,
+invariance T⁴, retrait Σ, apériodicité, absorption de bruit, quorum MPVR,
+pont MPVR. Équivalent autonome : `python docs/verifier_invariants.py`.
 
 ---
 

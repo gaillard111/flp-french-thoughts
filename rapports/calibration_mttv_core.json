@@ -1,0 +1,160 @@
+{
+  "sources": [
+    "README_PHILOSOPHY.md",
+    "SYNTHESE_MTTV_FLP.md",
+    "agents_mycelisants_mttv.md",
+    "article_mttv_flp.md",
+    "dataset.jsonl",
+    "mttv_flp_core_2026/README.md",
+    "plans/MTTV_FLP_CORE_2026_MANIFESTO.md"
+  ],
+  "par_source": {
+    "article_mttv_flp.md": {
+      "jetons_lexique": 27,
+      "jetons_non_mappes": 524,
+      "abondance_brute": [
+        6.5,
+        0.7,
+        18.9,
+        0.9
+      ],
+      "t4_ferme": [
+        0.2407,
+        0.0259,
+        0.7,
+        0.0333
+      ],
+      "pole_dominant": "+-"
+    },
+    "README_PHILOSOPHY.md": {
+      "jetons_lexique": 35,
+      "jetons_non_mappes": 944,
+      "abondance_brute": [
+        10.2,
+        11.3,
+        8.2,
+        6.3
+      ],
+      "t4_ferme": [
+        0.2833,
+        0.3139,
+        0.2278,
+        0.175
+      ],
+      "pole_dominant": "--"
+    },
+    "SYNTHESE_MTTV_FLP.md": {
+      "jetons_lexique": 7,
+      "jetons_non_mappes": 540,
+      "abondance_brute": [
+        1.0,
+        2.4,
+        3.3,
+        0.3
+      ],
+      "t4_ferme": [
+        0.1429,
+        0.3429,
+        0.4714,
+        0.0429
+      ],
+      "pole_dominant": "+-"
+    },
+    "agents_mycelisants_mttv.md": {
+      "jetons_lexique": 96,
+      "jetons_non_mappes": 3341,
+      "abondance_brute": [
+        12.2,
+        16.6,
+        58.1,
+        9.1
+      ],
+      "t4_ferme": [
+        0.1271,
+        0.1729,
+        0.6052,
+        0.0948
+      ],
+      "pole_dominant": "+-"
+    },
+    "mttv_flp_core_2026/README.md": {
+      "jetons_lexique": 17,
+      "jetons_non_mappes": 423,
+      "abondance_brute": [
+        2.7,
+        3.1,
+        10.6,
+        0.6
+      ],
+      "t4_ferme": [
+        0.1588,
+        0.1824,
+        0.6235,
+        0.0353
+      ],
+      "pole_dominant": "+-"
+    },
+    "plans/MTTV_FLP_CORE_2026_MANIFESTO.md": {
+      "jetons_lexique": 31,
+      "jetons_non_mappes": 808,
+      "abondance_brute": [
+        6.5,
+        12.7,
+        9.4,
+        3.4
+      ],
+      "t4_ferme": [
+        0.2031,
+        0.3969,
+        0.2937,
+        0.1063
+      ],
+      "pole_dominant": "--"
+    },
+    "dataset.jsonl": {
+      "jetons_lexique": 108,
+      "jetons_non_mappes": 2687,
+      "abondance_brute": [
+        13.1,
+        4.9,
+        85.7,
+        5.3
+      ],
+      "t4_ferme": [
+        0.1202,
+        0.045,
+        0.7862,
+        0.0486
+      ],
+      "pole_dominant": "+-"
+    }
+  },
+  "agrege": {
+    "abondance_brute": [
+      52.2,
+      51.7,
+      194.2,
+      25.9
+    ],
+    "t4_ferme": [
+      0.1611,
+      0.1596,
+      0.5994,
+      0.0799
+    ],
+    "pole_dominant": "+-",
+    "jetons_non_mappes": 9267,
+    "n_innovations": 324
+  },
+  "tolérance_recommandee": 0.7896,
+  "percentile_tolerance": 50.0,
+  "facteurs_normalisation_lexique": {
+    "++": 3.7203,
+    "--": 3.7563,
+    "+-": 1.0,
+    "-+": 7.4981
+  },
+  "lexique_taille": 43,
+  "generated_at": "2026-08-06T05:12:23+00:00",
+  "sig": "0x4D5454562D464C50"
+}

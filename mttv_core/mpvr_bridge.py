@@ -204,14 +204,24 @@ class CoucheRoutageTriadiqueCore:
         """
         entree = self._etat_entrant(flux_signal)
 
-        # 2. Sédimentation diachronique de chaque nœud (lecture asynchrone)
+        # 2. Sédimentation diachronique + évolution des états des nœuds.
+        #    Chaque nœud se fond vers l'état entrant (diachronie), puis la
+        #    lecture sédimentée (asynchrone) alimente la triade. Les états
+        #    sont fermés (clôture Σ=1) : l'invariant T⁴ est préservé.
         etats_sedimentes = {}
         for role, noeud in self.noeuds.items():
-            noeud["tampon"].append(tuple(entree.valeurs))
-            if len(noeud["tampon"]) >= self.lag_diachronique:
-                etats_sedimentes[role] = EtatTetravalent(tuple(noeud["tampon"][0]))
-            else:
-                etats_sedimentes[role] = noeud["etat"]
+            nouvel = tuple(
+                max(0.0, min(1.0, noeud["etat"].valeurs[j] + entree.valeurs[j] * 0.5))
+                for j in range(4)
+            )
+            etat_fondu = EtatTetravalent(nouvel).fermer()
+            noeud["etat"] = etat_fondu
+            noeud["tampon"].append(tuple(etat_fondu.valeurs))
+            etats_sedimentes[role] = (
+                EtatTetravalent(tuple(noeud["tampon"][0])).fermer()
+                if len(noeud["tampon"]) >= self.lag_diachronique
+                else etat_fondu
+            )
 
         # Tâtonnements : signal incohérent → stumbling (moteur de Σ_τ)
         incoherent = bool(flux_signal.get("incoherent") or flux_signal.get("bruit"))

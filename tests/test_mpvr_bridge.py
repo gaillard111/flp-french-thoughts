@@ -108,10 +108,18 @@ def test_couplage() -> None:
         ),
     })
     etat_bio = etats_to_tetravalent(res_texte["etats_tetravalents"]["bio_vivant"])
+    # Tolérance 1e-3 : la sérialisation dict MPVR arrondit à 4 décimales ;
+    # l'invariant Σ=1 est exact sur EtatTetravalent (voir matrices.py).
     verifie(
         "couplage : BGate alimente la triade (T⁴ fermé)",
-        abs(sum(etat_bio.valeurs) - 1.0) < 1e-6,
+        abs(sum(etat_bio.valeurs) - 1.0) < 1e-3,
         str(tuple(round(x, 4) for x in etat_bio.valeurs)),
+    )
+    pole_bio, part_bio, _ = etat_bio.dominant()
+    verifie(
+        "couplage : le nœud bio_vivant reflète le pôle ++ du texte entrant",
+        pole_bio == "++",
+        f"dominant={pole_bio} part={part_bio:.3f}",
     )
 
     # Tâtonnements → transition Σ_τ (operateur_sigma / horloge apériodique).
