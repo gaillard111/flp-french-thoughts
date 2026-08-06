@@ -1,0 +1,48 @@
+{
+  "benchmark": "A6.1 — quorum poreux grande échelle",
+  "generated_at": "2026-08-06T22:33:20+00:00",
+  "resultats": [
+    {
+      "n": 2000,
+      "scenario": "normal",
+      "k": 8,
+      "theta": 3,
+      "seuil_validation": 0.5,
+      "tours_max": 40,
+      "n_valides": 2000,
+      "resilience": 1.0,
+      "latence_moyenne": 1.0,
+      "couplages": 16000,
+      "seed": 42,
+      "sig": "0x4D5454562D464C50"
+    },
+    {
+      "n": 2000,
+      "scenario": "split_brain",
+      "k": 8,
+      "theta": 3,
+      "seuil_validation": 0.5,
+      "tours_max": 40,
+      "n_valides": 2000,
+      "resilience": 1.0,
+      "latence_moyenne": 1.0,
+      "couplages": 16000,
+      "seed": 42,
+      "sig": "0x4D5454562D464C50"
+    },
+    {
+      "n": 2000,
+      "scenario": "sybil",
+      "k": 8,
+      "theta": 3,
+      "seuil_validation": 0.5,
+      "tours_max": 40,
+      "n_valides": 1434,
+      "resilience": 0.717,
+      "latence_moyenne": 1.0,
+      "couplages": 192592,
+      "seed": 42,
+      "sig": "0x4D5454562D464C50"
+    }
+  ]
+}

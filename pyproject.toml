@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mttv-core"
-version = "0.1.0"
+version = "0.1.1"
 description = "Fondations open-source du MTTV-FLP - états tétravalents sp3, opérateur Sigma (singularité apériodique), B-gate poreux"
 readme = "mttv_core/README.md"
 requires-python = ">=3.9"

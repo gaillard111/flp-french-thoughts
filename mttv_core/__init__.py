@@ -38,8 +38,21 @@ from .mpvr_bridge import (
     tetravalent_to_etats,
 )
 from .calibration import calibrer_corpus, DEFAULT_SOURCES
+from .decence import (
+    BudgetSommeil,
+    JournalEnergie,
+    SeuilDecenceGlobal,
+    RegistreEchecsAcceptables,
+)
+from .consensus import (
+    SEUIL_COSINUS,
+    seuil_resonance_depuis_cosinus,
+    matrice_resonance,
+    valider_consensus,
+    calibrer_seuil,
+)
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     # signatures
@@ -71,4 +84,15 @@ __all__ = [
     # calibration.py — calibration sur corpus réel
     "calibrer_corpus",
     "DEFAULT_SOURCES",
+    # decence.py — couche de décence (bloc A5)
+    "BudgetSommeil",
+    "JournalEnergie",
+    "SeuilDecenceGlobal",
+    "RegistreEchecsAcceptables",
+    # consensus.py — calibration consensus inter-IA (A3.2)
+    "SEUIL_COSINUS",
+    "seuil_resonance_depuis_cosinus",
+    "matrice_resonance",
+    "valider_consensus",
+    "calibrer_seuil",
 ]

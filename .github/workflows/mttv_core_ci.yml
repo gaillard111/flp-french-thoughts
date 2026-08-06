@@ -1,0 +1,48 @@
+name: mttv-core CI
+
+on:
+  push:
+    paths: ["mttv_core/**", "tests/**", "pyproject.toml", "docs/**"]
+  pull_request:
+    paths: ["mttv_core/**", "tests/**", "pyproject.toml", "docs/**"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install
+        run: python -m pip install --upgrade pip && python -m pip install .
+
+      - name: Test — fondation (18 vérifications)
+        run: python tests/test_mttv_core.py
+
+      - name: Test — pont MPVR (10 vérifications)
+        run: python tests/test_mpvr_bridge.py
+
+      - name: Test — intégration croisée réelle (5 vérifications)
+        run: python tests/test_integration_mpvr_cross.py
+
+      - name: Test — invariants reproductibles (20 vérifications)
+        run: python docs/verifier_invariants.py
+
+      - name: Test — couche de décence (14 vérifications)
+        run: python tests/test_decence.py
+
+      - name: Test — consensus inter-IA (7 vérifications)
+        run: python tests/test_consensus.py
+
+      - name: Benchmark — grande échelle A6.1 (N=500)
+        run: python -m mttv_core.benchmark_echelle --n 500 --tours 20
+
+      - name: Calibration — corpus réel (rapport)
+        run: python -m mttv_core.calibration
