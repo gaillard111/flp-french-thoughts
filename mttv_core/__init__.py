@@ -51,6 +51,20 @@ from .consensus import (
     valider_consensus,
     calibrer_seuil,
 )
+from .igic import (
+    calculer_igic,
+    facteur_protection_a3,
+    igic_module,
+    diagnostic_igic,
+    evaluer_scenario,
+)
+from .gouvernail import (
+    facteur_protection,
+    score_protege,
+    diagnostic_isolement,
+    gouvernail_anti_solipsisme,
+)
+from .scenarios import TableauAnticipation, tableau_canonique
 
 __version__ = "0.1.1"
 
@@ -95,4 +109,18 @@ __all__ = [
     "matrice_resonance",
     "valider_consensus",
     "calibrer_seuil",
+    # igic.py — IGIC + modulation A3 (A1.2)
+    "calculer_igic",
+    "facteur_protection_a3",
+    "igic_module",
+    "diagnostic_igic",
+    "evaluer_scenario",
+    # gouvernail.py — gouvernail A3 anti-solipsisme (A1.2/A4.2)
+    "facteur_protection",
+    "score_protege",
+    "diagnostic_isolement",
+    "gouvernail_anti_solipsisme",
+    # scenarios.py — tableau d'anticipation A/B/C + validation humaine (A4.2)
+    "TableauAnticipation",
+    "tableau_canonique",
 ]
