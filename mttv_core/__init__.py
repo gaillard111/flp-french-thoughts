@@ -65,6 +65,12 @@ from .gouvernail import (
     gouvernail_anti_solipsisme,
 )
 from .scenarios import TableauAnticipation, tableau_canonique
+from .ancrage import (
+    empreinte_immuable,
+    projeter_texte,
+    construire_dataset_ancrage,
+    resume_ancrage,
+)
 
 __version__ = "0.1.1"
 
@@ -123,4 +129,9 @@ __all__ = [
     # scenarios.py — tableau d'anticipation A/B/C + validation humaine (A4.2)
     "TableauAnticipation",
     "tableau_canonique",
+    # ancrage.py — dataset d'ancrage sémantique immuable (A1.1)
+    "empreinte_immuable",
+    "projeter_texte",
+    "construire_dataset_ancrage",
+    "resume_ancrage",
 ]
