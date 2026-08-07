@@ -2,7 +2,7 @@ name: mttv-core CI
 
 on:
   push:
-    paths: ["mttv_core/**", "tests/**", "pyproject.toml", "docs/**"]
+    paths: ["mttv_core/**", "tests/**", "pyproject.toml", "docs/**", ".github/workflows/mttv_core_ci.yml"]
   pull_request:
     paths: ["mttv_core/**", "tests/**", "pyproject.toml", "docs/**"]
 
@@ -21,25 +21,37 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install
-        run: python -m pip install --upgrade pip && python -m pip install .
+        run: python -m pip install .
 
-      - name: Test — fondation (18 vérifications)
+      - name: Test — fondation (18)
         run: python tests/test_mttv_core.py
 
-      - name: Test — pont MPVR (10 vérifications)
+      - name: Test — pont MPVR (10)
         run: python tests/test_mpvr_bridge.py
 
-      - name: Test — intégration croisée réelle (5 vérifications)
+      - name: Test — intégration croisée (5, auto-skip si dépôt imbriqué absent)
         run: python tests/test_integration_mpvr_cross.py
 
-      - name: Test — invariants reproductibles (20 vérifications)
+      - name: Test — invariants reproductibles (20)
         run: python docs/verifier_invariants.py
 
-      - name: Test — couche de décence (14 vérifications)
+      - name: Test — couche de décence (14)
         run: python tests/test_decence.py
 
-      - name: Test — consensus inter-IA (7 vérifications)
+      - name: Test — consensus inter-IA (7)
         run: python tests/test_consensus.py
+
+      - name: Test — IGIC + modulation A3 (10)
+        run: python tests/test_igic.py
+
+      - name: Test — gouvernail A3 + scénarios (9)
+        run: python tests/test_gouvernail_scenarios.py
+
+      - name: Test — ancrage sémantique (7)
+        run: python tests/test_ancrage.py
+
+      - name: Test — mode sénescence (6)
+        run: python tests/test_senescence.py
 
       - name: Benchmark — grande échelle A6.1 (N=500)
         run: python -m mttv_core.benchmark_echelle --n 500 --tours 20

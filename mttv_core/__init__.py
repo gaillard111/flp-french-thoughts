@@ -71,6 +71,7 @@ from .ancrage import (
     construire_dataset_ancrage,
     resume_ancrage,
 )
+from .senescence import ModeSenescence, taux_senescence, mesurer_reseau
 
 __version__ = "0.1.1"
 
@@ -134,4 +135,8 @@ __all__ = [
     "projeter_texte",
     "construire_dataset_ancrage",
     "resume_ancrage",
+    # senescence.py — mode sénescence (A5.4)
+    "ModeSenescence",
+    "taux_senescence",
+    "mesurer_reseau",
 ]

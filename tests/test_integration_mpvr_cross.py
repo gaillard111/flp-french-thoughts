@@ -29,7 +29,18 @@ if hasattr(sys.stdout, "reconfigure"):
 _RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, _RACINE)
 # Chemin vers le VRAI module MPVR (dépôt imbriqué mttv-flp-mpvr-glocal).
-sys.path.insert(0, os.path.join(_RACINE, "mttv-flp-mpvr-glocal", "src"))
+_MPVR_SRC = os.path.join(_RACINE, "mttv-flp-mpvr-glocal", "src")
+
+# Ce test est un test CROISÉ : il exige le dépôt imbriqué mttv-flp-mpvr-glocal,
+# qui est gitignoré et donc ABSENT sur GitHub Actions. En CI, il se déclare
+# non applicable (SKIP) au lieu d'échouer — il ne tourne que dans le workspace
+# local complet où le dépôt imbriqué est présent.
+if not os.path.exists(os.path.join(_MPVR_SRC, "mttv_mpvr_quorum.py")):
+    print("[SKIP] test_integration_mpvr_cross — dépôt imbriqué mttv-flp-mpvr-glocal "
+          "absent (test local uniquement, non applicable en CI)")
+    sys.exit(0)
+
+sys.path.insert(0, _MPVR_SRC)
 
 from mttv_core import (  # noqa: E402
     MTTV_SIG,
