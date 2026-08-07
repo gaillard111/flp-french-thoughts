@@ -13,7 +13,13 @@ jobs:
       matrix:
         python-version: ["3.9", "3.11", "3.12"]
     steps:
+      # Le dépôt flp-french-thoughts est volumineux (app PHP, PDFs, sous-modules) :
+      # le checkout complet échoue sur le runner (git exit 128). Clone partiel +
+      # shallow : seuls les arbres/commits sont téléchargés, les blobs à la demande.
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: 'blob:none'
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
