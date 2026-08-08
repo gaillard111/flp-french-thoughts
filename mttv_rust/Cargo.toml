@@ -16,8 +16,11 @@ tokio = { version = "1", features = ["rt-multi-thread", "sync", "macros", "time"
 
 [dev-dependencies]
 # Benchmarks de sobriété : CPU au repos ≈ 0, latence de transduction.
-# Le bench `sobriete` sera déclaré à l'Étape A (une cellule à mesurer).
 criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "sobriete"
+harness = false
 
 [profile.release]
 lto = true

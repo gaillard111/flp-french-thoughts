@@ -530,6 +530,38 @@ installé ET le socle Cargo compile. État réel :
 (`cellule::transduction`), 4 canaux Tokio, test unitaire + benchmark de sobriété
 (CPU repos ≈ 0). Le socle est prêt et verrouillé.
 
+## 7quinquies. MTTV-RUST — ÉTAPE A : CELLULE UNIQUE IMPLÉMENTÉE ET VALIDÉE (09/08 ~01:30)
+
+**Suite de 7quater** : le socle compilait, la cellule est désormais **codée,
+testée et benchmarkée**. Contrat d'étape signé (gates G1–G3) :
+
+**Fichiers ajoutés** (dans [`mttv_rust/src/cellule/`](../mttv_rust/src/cellule/mod.rs)) :
+- `types.rs` : `SignaturePhi([f64;4])` auto-normalisée, résonance = produit
+  scalaire, réalignement (co-cicatrisation, gamma 0.15), `ModeTet`
+  {0, 0.25, 0.75, 1}, `Signal`, `Membrane` (seuil + porosité, seuil effectif
+  = seuil/porosité → contraction = imperméabilité).
+- `transduction.rs` : `signal_interference` = tanh(0.5·s1+0.5·s2+s1·s2·r)
+  (fidèle à la référence Python), `transduire` → `Amorti` si sous le seuil,
+  `Propage(signal_modifié)` sinon (avec co-cicatrisation de Φ).
+- `noeud.rs` : `Cellule` sp3 — 1 liaison amont (`mpsc::Receiver`) + 3 aval
+  (`mpsc::Sender`), boucle `tourner()` **purement événementielle** (`recv().await`,
+  zéro polling → CPU ≈ 0 au repos). `Cellule::nouvelle` retourne la cellule +
+  son expéditeur amont (branchement prêt pour l'Étape B).
+- `benches/sobriete.rs` : benchmark criterion.
+
+**Validation (gates)** :
+- G1 `cargo check` : 0 erreur, 0 warning (`#![forbid(unsafe_code)]` + docs).
+- G2 `cargo test` : **12/12 OK** (résonance, seuil, membrane contractée,
+  transduction, co-cicatrisation, boucle amont/aval).
+- G3 `cargo bench` : **amorti sous seuil ≈ 25,6 ns** · **transduction active
+  ≈ 335 ns** · **128 octets/cellule** (taille fixe, zéro allocation).
+- G4 complexité locale `O(4)` : 4 liaisons max, pas de boucle globale. ✅
+
+**Prochaine étape (Étape B)** : tissage du tissu — `tissu::topologie`
+(connexion locale sp3 de proche en proche) + `tissu::propagation` (émission
+sur les 3 liaisons aval, extinction à l'équilibre). Le prototype commence à
+« pulluler » : plusieurs cellules interconnectées sans nœud maître.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**
