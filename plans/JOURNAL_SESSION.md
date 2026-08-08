@@ -557,6 +557,22 @@ testée et benchmarkée**. Contrat d'étape signé (gates G1–G3) :
   ≈ 335 ns** · **128 octets/cellule** (taille fixe, zéro allocation).
 - G4 complexité locale `O(4)` : 4 liaisons max, pas de boucle globale. ✅
 
+**Arbitrage méthodologique (09/08, suite aux remarques de l'IA conseillère)** :
+l'Étape A réalisée dépassait la lettre du mandat (« squelette strictement vide »)
+en incorporant la transduction et la boucle événementielle. **Option 2 retenue —
+recadrage sans rien détruire** (recommandée par zoo-code, validée par
+l'utilisateur) :
+- **Étape A stricte (scellée)** : structure + membrane + 4 canaux
+  (`types.rs` + structure de `noeud.rs`) — cellule **inanimée**.
+- **Étape A+ « le premier souffle » (validée 09/08)** : transduction,
+  `tourner()`, propagation sur 3 aval (`transduction.rs` + boucle) — cellule
+  **battante**, seule, 12/12 tests + bench.
+- **Étape B (à ouvrir)** : tissage du tissu.
+L'architecture [`01_ARCHITECTURE.md`](../mttv_rust/docs/01_ARCHITECTURE.md) a été
+mise à jour (découpage A → A+ → B → C). Aucun code n'a été défait : la
+requalification est documentaire, la discipline est rétablie, le travail validé
+est un acquis.
+
 **Prochaine étape (Étape B)** : tissage du tissu — `tissu::topologie`
 (connexion locale sp3 de proche en proche) + `tissu::propagation` (émission
 sur les 3 liaisons aval, extinction à l'équilibre). Le prototype commence à

@@ -33,20 +33,53 @@ avant d'ouvrir la suivante.
 
 ---
 
-## 2. DÉCOUPAGE MODULAIRE (ÉTAPES A → B → C)
+## 2. DÉCOUPAGE MODULAIRE (ÉTAPES A → A+ → B → C)
 
-### Étape A — Stabilisation de la cellule unique
+> **Requalification (arbitrage 09/08)** : l'Étape A a été scindée en deux
+> paliers distincts pour préserver la discipline du « se hâter lentement ».
+> La transduction et la boucle événementielle ne relèvent pas du simple
+> squelette structurel : elles constituent le **premier souffle** de la cellule.
+> Le code déjà validé reste en place — cette requalification ne détruit rien.
 
-Livrables :
+### Étape A — Stabilisation de la structure de la cellule unique (scellée)
+
+Livrables (structure pure) :
 1. La structure de données du nœud sp3 (état, tenseur Φ local, variables de membrane).
 2. Les 4 canaux Tokio (`mpsc`) orientés dans le temps.
 3. La machine à états de la membrane : `Impermeable` ↔ `Poreux`.
-4. La logique du seuil : amortissement passif vs transduction active.
-5. Un benchmark de sobriété : CPU ≈ 0 au repos, consommation mesurée à la
-   transduction.
+4. Le benchmark de sobriété structurel : taille fixe de la cellule (128 o),
+   zéro allocation dynamique.
 
-Contrat de sortie : une cellule unique est stabilisée, testée, benchmarkée ;
-aucune notion de réseau n'est encore introduite.
+Contrat de sortie : la **structure** de la cellule est stabilisée ; la cellule
+est **inanimée** (aucune loi de comportement).
+
+### Étape A+ — Le premier souffle : la cellule battante (validée 09/08)
+
+Livrables (comportement local, cellule seule, sans réseau) :
+1. La logique du seuil : amortissement passif vs transduction active.
+2. La formule d'interférence : `signal_interference = tanh(0.5·s1 + 0.5·s2 + s1·s2·r)`.
+3. La fonction `transduire` (co-cicatrisation Φ, gamma 0.15).
+4. La boucle événementielle `tourner()` (zéro polling, CPU ≈ 0 au repos).
+5. La propagation sur les 3 liaisons aval (émission, puis extinction).
+6. Le benchmark de sobriété comportemental : amorti ≈ 25,6 ns / actif ≈ 335 ns.
+
+Contrat de sortie : une cellule unique **battante** est testée (12/12) et
+benchmarkée ; **aucune notion de réseau n'est encore introduite**.
+
+### Étape B — Tissage du tissu
+
+Livrables :
+1. La topologie de connexion locale : chaque cellule se connecte **de proche en
+   proche** à exactement 4 voisines (géométrie sp3).
+2. La propagation du signal inter-cellules : un nœud poreux émet **exclusivement**
+   sur ses 3 liaisons restantes (la liaison d'entrée n'est pas re-réutilisée
+   dans le même cycle).
+3. La croissance organique : ajout de cellules par voisinage, sans table de
+   routage globale.
+4. Complexité locale vérifiée `O(k)` avec `k <= 4`.
+
+Contrat de sortie : un tissu de cellules interconnectées fonctionne sans nœud
+maître, sans consensus centralisé.
 
 ### Étape B — Tissage du tissu
 
