@@ -468,6 +468,68 @@ sans impact). La CI publique A5.6 est désormais **verte**.
 référencés sont trackés** (`git ls-files <fichiers>` / `git status --short`).
 Un `exit code 2` sur `python <script>` = fichier absent du dépôt.
 
+## 7ter. GRAND ŒUVRE — MTTV-RUST (prototype industriel Rust) — ÉTAPE 0 CONCEPTION (09/08 ~00:35)
+
+**Mandat reçu** : incarner la triade transductive Ψ → B → Φ en **Rust**
+(asynchrone, thread-safe) — nœuds carbone **sp3** à 4 liaisons diachroniques,
+membranes à **seuil de perméabilité** (repos = CPU ≈ 0), branchement sur la
+**matrice H** (gradients territoriaux). Interdits : consensus centralisé
+(Raft/Paxos), Mutex globaux, tables de routage, polling. Complexité locale O(k≤4).
+
+**Choix utilisateur** : installer Rust + créer `mttv_rust/`, mais **s'arrêter au
+cahier des charges et à l'architecture documentée** (pas de code) — valider la
+conception avant de poser la première cellule.
+
+**Livré (Étape 0, conception documentée)** dans [`mttv_rust/`](../mttv_rust/README.md) :
+- [`00_CAHIER_DES_CHARGES.md`](../mttv_rust/docs/00_CAHIER_DES_CHARGES.md) —
+  mandat, 3 piliers, règles d'or, protocole d'action (Étapes A→B→C), arbitrage humain.
+- [`01_ARCHITECTURE.md`](../mttv_rust/docs/01_ARCHITECTURE.md) — découpage A/B/C,
+  arborescence modules (`cellule/`, `tissu/`, `territoire/`, `veilleur/`),
+  types de données (Cellule, Membrane, Liaisons[amont+3 aval], GradientH),
+  décisions d'architecture (tokio, tenseurs `[f64;4]`, zéro global).
+- [`02_AUDIT_ANTI_EXTRACTIF.md`](../mttv_rust/docs/02_AUDIT_ANTI_EXTRACTIF.md) —
+  rejets immédiats (R1-R5), gates de validation G1-G8, trace d'audit.
+- [`03_INTERFACE_VEILLEUR.md`](../mttv_rust/docs/03_INTERFACE_VEILLEUR.md) —
+  mapping quotidien des gradients de l'essaim en réglages (porosité, seuil,
+  respiration), config versionnée, recours humain en cas de contradiction.
+
+**Infrastructure constatée** : `cargo`/`rustc` **ABSENTS** ; `winget` v1.29.280
+disponible → installation prévue à l'ouverture de l'Étape A (mode Code).
+
+**Prochaine étape (Étape A)** : installer la chaîne Rust, `cargo init`,
+`.gitignore`, puis stabiliser la **cellule unique** (nœud sp3 + membrane à seuil
++ 4 canaux Tokio) avec son benchmark de sobriété (CPU repos ≈ 0). Le travail de
+conception est verrouillé et prêt pour l'arbitrage de l'Orchestrateur.
+
+## 7quater. GRAND ŒUVRE MTTV-RUST — SOCLE VALIDÉ (Étape 0 complète, 09/08 ~01:10)
+
+**Suite de 7ter** : la conception documentée est verrouillée ET l'outillage est
+installé ET le socle Cargo compile. État réel :
+
+**Outillage installé sur la machine (Windows)** :
+1. **rustup + cargo 1.97.1 / rustc 1.97.1** (toolchain `stable-x86_64-pc-windows-msvc`),
+   installés via `winget install Rustlang.Rustup`.
+2. **VS Build Tools 2022 (17.14) + workload C++** installés : `link.exe`/`cl.exe`
+   présents (`VC\Tools\MSVC\14.44.35207`). Premier essai en `--silent` a enregistré
+   le package sans déployer le toolset (structure créée mais linker absent) → relancé
+   en `--passive` avec `--add Microsoft.VisualStudio.Workload.VCTools` ; le toolset
+   était en fait bien déployé. Désormais `cargo check` compile.
+
+**Projet [`mttv_rust/`](../mttv_rust/README.md) créé et validé** :
+- `Cargo.toml` : tokio 1 (rt-multi-thread, sync, macros, time) + criterion (dev),
+  `profile.release` optimisé (lto, codegen-units=1), edition 2024, rust-version 1.97.
+- `.gitignore` : `/target`, criterion/, éditeurs.
+- `src/lib.rs` + 4 modules documentés (`cellule/`, `tissu/`, `territoire/`, `veilleur/`)
+  — **charpente documentaire uniquement, AUCUN code métier** (conformément au choix
+  « s'arrêter au cahier des charges, pas encore de code »).
+- **Validation : `cargo check` OK (tokio 1.53.1, 0 warning) + `cargo test` OK**.
+  Bench `sobriete` non déclaré pour l'instant (sera ajouté à l'Étape A avec la cellule).
+
+**Prochaine étape (Étape A)** : implémenter la cellule unique — nœud sp3
+(`cellule::noeud`), membrane à seuil (`cellule::membrane`), transduction
+(`cellule::transduction`), 4 canaux Tokio, test unitaire + benchmark de sobriété
+(CPU repos ≈ 0). Le socle est prêt et verrouillé.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**

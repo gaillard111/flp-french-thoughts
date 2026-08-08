@@ -1,0 +1,15 @@
+# Rust / Cargo
+/target
+Cargo.lock.bak
+**/*.rs.bk
+
+# Sorties de benchmark
+/benches/target
+criterion/
+
+# Éditeurs / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

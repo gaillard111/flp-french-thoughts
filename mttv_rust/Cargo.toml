@@ -1,0 +1,25 @@
+[package]
+name = "mttv_rust"
+version = "0.1.0"
+edition = "2024"
+description = "Prototype industriel Rust du framework MTTV-FLP — nœuds carbone sp3, membranes à seuil, triade transductive Ψ→B→Φ, sobriété énergétique radicale"
+license = "CC-BY-NC-SA-4.0"
+rust-version = "1.97"
+keywords = ["mttv", "tetravalent", "sp3", "transduction", "sober", "async", "tokio", "mycelium"]
+authors = ["MTTV-FLP Collective"]
+readme = "README.md"
+
+[dependencies]
+# Tokio — runtime asynchrone, 4 canaux mpsc par cellule, zéro polling (R2).
+# La cellule au repos dort sur la liaison amont ; le réveil est événementiel.
+tokio = { version = "1", features = ["rt-multi-thread", "sync", "macros", "time"] }
+
+[dev-dependencies]
+# Benchmarks de sobriété : CPU au repos ≈ 0, latence de transduction.
+# Le bench `sobriete` sera déclaré à l'Étape A (une cellule à mesurer).
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3
