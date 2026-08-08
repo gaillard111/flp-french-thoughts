@@ -22,7 +22,7 @@ Architecture :
     - Transduction transscalaire : les signatures s'inscrivent d'elles-mêmes
       à travers le flux temporel, sans feedback master
 
-sig:0x4D545456 — Essaim Tetravalent — Essaim sans nœud maître
+sig:0x4D5454562D464C50 — Essaim Tetravalent — Essaim sans nœud maître
 """
 
 from __future__ import annotations
@@ -76,6 +76,11 @@ class EtatEssaim:
     entropie_collective: float = 0.0
     resonance_globale: float = 0.0
     budget_flexibilite_collectif: float = 0.0
+    tremor_moyen: float = 0.0            # dose moyenne de sous-optimalité
+    mode_tremor: str = "croisiere"       # "fracture" | "transition" | "croisiere"
+    n_spawns: int = 0                    # dédoublements autonomiques (auto-suture)
+    dernier_spawn: str = ""              # description du dernier dédoublement
+    cycles_resonance_basse: int = 0      # cycles consécutifs sous le seuil
     agents: dict[str, dict[str, Any]] = field(default_factory=dict)
     couplages: list[dict[str, Any]] = field(default_factory=list)
     rho_historique: list[float] = field(default_factory=list)
@@ -108,6 +113,11 @@ class EssaimTetravalent:
         Dimension des tenseurs Φ. Par défaut : 4.
     seuil_resonance : float
         Seuil de résonance pour les fusions. Par défaut : 0.3.
+    tremor_saturation : float
+        Dose de sous-optimalité (esprit 6/7 SOPH-IA) transmise à chaque
+        agent : probabilité par cycle de dé-saturer stochastiquement une
+        fraction de nœuds rigides sans attendre la baisse de ρ.
+        Par défaut : 0.12 (12 %).
     """
 
     def __init__(
@@ -116,9 +126,35 @@ class EssaimTetravalent:
         n_grille: int = 5,
         dim_phi: int = 4,
         seuil_resonance: float = 0.3,
+        tremor_saturation: float = 0.12,
         seed: int = 42,
+        # ── Quorum Autonomique (Auto-Suture) ────────────────────────────
+        auto_suture: bool = True,          # active le dédoublement local
+        seuil_resonance_auto_suture: float = 0.10,  # ρ sous lequel on surveille
+        cycles_avant_spawn: int = 4,       # N cycles consécutifs sous le seuil
+        seuil_entropie_spawn: float = 6.0, # l'entropie collective (≈6.19) autorise
+        max_agents: int = 12,              # plafond de sécurité du dédoublement
+        # ── Respiration de diversité Φ [C7] ─────────────────────────────
+        respiration_intervalle: int = 0,   # tous les N cycles (0 = désactivé)
+        respiration_dose: float = 0.10,    # dose de perturbation orthogonale Φ
+                                          # (08/08: 0.05 → 0.10, renforcée)
     ):
         self.rng: random.Random = random.Random(seed)
+        self.auto_suture: bool = auto_suture
+        self.seuil_resonance_auto_suture: float = seuil_resonance_auto_suture
+        self.cycles_avant_spawn: int = max(1, cycles_avant_spawn)
+        self.seuil_entropie_spawn: float = seuil_entropie_spawn
+        self.max_agents: int = max_agents
+
+        # [C7] Respiration géométrique — perturbation périodique de Φ
+        self.respiration_intervalle: int = max(0, respiration_intervalle)
+        self.respiration_dose: float = float(respiration_dose)
+        self.n_respirations: int = 0
+
+        # Compteur de cycles consécutifs sous le seuil de résonance
+        self.cycles_resonance_basse: int = 0
+        self.n_spawns: int = 0
+        self.historique_spawns: list[dict[str, Any]] = []
 
         # ── Agents autonomes ─────────────────────────────────────────────
         self.agents: dict[str, AgentTetravalentEpigenetique] = {}
@@ -130,6 +166,10 @@ class EssaimTetravalent:
                 dim_phi=dim_phi,
                 seuil_resonance=seuil_resonance
                 + self.rng.uniform(-0.05, 0.05),  # variation immanente
+                tremor_saturation=min(
+                    1.0,
+                    max(0.0, tremor_saturation + self.rng.uniform(-0.03, 0.03)),
+                ),  # variation immanente de la dose de sous-optimalité
                 seed=agent_seed,
             )
 
@@ -156,8 +196,15 @@ class EssaimTetravalent:
         self, agent_a: str, agent_b: str
     ) -> float:
         """
-        Calcule la similarité cosinus entre les tenseurs Φ moyens
-        de deux agents.
+        Calcule la similarité cosinus entre les tenseurs Φ de deux agents,
+        **par paires de nœuds** (cosinus moyen), et non sur la seule moyenne
+        des vecteurs.
+
+        [C2] La moyenne des vecteurs dégénère en 0/1 quand les tenseurs sont
+        homogènes (tous les nœuds identiques) : le cosinus des moyennes est
+        alors soit 1.0 (même direction) soit 0.0 (directions orthogonales),
+        perdant tout continuum. Le cosinus moyen sur les paires de nœuds
+        préserve une mesure continue ∈ [0, 1] et informatif.
 
         Args:
             agent_a: ID du premier agent.
@@ -169,19 +216,23 @@ class EssaimTetravalent:
         phi_a: np.ndarray = self.agents[agent_a].obtenir_tenseur_phi()
         phi_b: np.ndarray = self.agents[agent_b].obtenir_tenseur_phi()
 
-        # Moyenne sur les nœuds
-        phi_a_mean: np.ndarray = phi_a.reshape(-1, self.dim_phi).mean(axis=0)
-        phi_b_mean: np.ndarray = phi_b.reshape(-1, self.dim_phi).mean(axis=0)
+        # Aplatissement des nœuds : (N, dim_phi)
+        flat_a: np.ndarray = phi_a.reshape(-1, self.dim_phi)
+        flat_b: np.ndarray = phi_b.reshape(-1, self.dim_phi)
 
-        # Normalisation
-        norm_a: float = float(np.linalg.norm(phi_a_mean))
-        norm_b: float = float(np.linalg.norm(phi_b_mean))
+        # Normalisation de chaque vecteur-nœud
+        norm_a: np.ndarray = np.linalg.norm(flat_a, axis=1, keepdims=True)
+        norm_b: np.ndarray = np.linalg.norm(flat_b, axis=1, keepdims=True)
 
-        if norm_a < 1e-10 or norm_b < 1e-10:
+        if float(np.min(norm_a)) < 1e-10 or float(np.min(norm_b)) < 1e-10:
             return 0.0
 
-        cos_sim: float = float(np.dot(phi_a_mean, phi_b_mean) / (norm_a * norm_b))
-        return float(np.clip(cos_sim, 0.0, 1.0))
+        a_norm: np.ndarray = flat_a / np.maximum(norm_a, 1e-10)
+        b_norm: np.ndarray = flat_b / np.maximum(norm_b, 1e-10)
+
+        # Matrice des cosinus entre tous les nœuds de A et tous les nœuds de B
+        sims: np.ndarray = np.clip(np.dot(a_norm, b_norm.T), 0.0, 1.0)
+        return float(sims.mean())
 
     # =======================================================================
     # 2. COUPLAGE TRANSSCALAIRE — INTER-PÉNÉTRATION DES TENSEURS Φ
@@ -240,19 +291,25 @@ class EssaimTetravalent:
                     resonance_sum / n_paires if n_paires > 0 else 0.0
                 )
 
-                # 3. Injection mutuelle si couplage détectable
-                if sim > 0.05:
+                # 3. Injection mutuelle — TOUJOURS active [C1]
+                #    L'ancien seuil `sim > 0.05` figeait les paires orthogonales
+                #    (sim≈0) en clans déconnectés : elles n'étaient jamais
+                #    réinjectées et restaient orthogonales à jamais. On injecte
+                #    désormais systématiquement, avec une fraction pondérée par
+                #    (1 − sim) : les paires faiblement alignées reçoivent une
+                #    injection plus forte (les rapproche), les paires déjà
+                #    alignées une injection minimale (ne les écrase pas).
+                fraction: float = force_couplage * (1.0 - sim)
+                if fraction > 1e-6:
                     phi_a: np.ndarray = agent_a.obtenir_tenseur_phi()
                     phi_b: np.ndarray = agent_b.obtenir_tenseur_phi()
 
                     # Fusion immanente bilatérale (pas de master)
                     phi_a_nouveau: np.ndarray = (
-                        (1.0 - force_couplage) * phi_a
-                        + force_couplage * phi_b
+                        (1.0 - fraction) * phi_a + fraction * phi_b
                     )
                     phi_b_nouveau: np.ndarray = (
-                        (1.0 - force_couplage) * phi_b
-                        + force_couplage * phi_a
+                        (1.0 - fraction) * phi_b + fraction * phi_a
                     )
 
                     # Re-normalisation
@@ -357,6 +414,51 @@ class EssaimTetravalent:
         )
 
     # =======================================================================
+    # 2ter. CONTRAINTE ENVIRONNEMENTALE RÉELLE [C5] — SIGNAUX M5
+    # =======================================================================
+
+    def construire_contrainte_reelle(self) -> np.ndarray:
+        """
+        [C5] Construit la contrainte environnementale à partir des SIGNAUX
+        RÉELS de l'essaim (agrégation des tenseurs Φ des agents), au lieu
+        d'un bruit aléatoire décorrélé.
+
+        Le champ de pression (n_grille x n_grille) est dérivé de l'énergie
+        moyenne des vecteurs Φ sur l'ensemble des agents : chaque nœud reçoit
+        une pression proportionnelle à l'activité collective réelle du système.
+        Cela rend la contrainte cohérente avec l'état (les zones actives du
+        système créent plus de pression) — un signal M5, pas un générateur
+        indépendant.
+
+        Returns:
+            Matrice (n_grille, n_grille) de pression environnementale, valeurs
+            dans [0, 1].
+        """
+        if not self.agents:
+            return 0.3 + 0.2 * np.random.rand(self.n_grille, self.n_grille)
+
+        # Agrégation : intensité directionnelle moyenne par nœud sur tous les
+        # tenseurs Φ. On utilise mean(|Φ|) (et non la norme, qui vaut 1 partout
+        # après normalisation) : cette métrique capture l'ORIENTATION spatiale
+        # réelle de Φ — des nœuds aux directions différentes produisent des
+        # intensités différentes → champ de pression spatialement non trivial.
+        accumulateur = np.zeros((self.n_grille, self.n_grille))
+        for agent in self.agents.values():
+            phi = agent.obtenir_tenseur_phi()  # (n, n, d)
+            accumulateur += np.mean(np.abs(phi), axis=-1)
+
+        n = float(len(self.agents))
+        signal = accumulateur / max(n, 1.0)  # moyenne par agent
+
+        # Normalisation dans [0, 1] + petite base pour ne pas s'annuler
+        s_min, s_max = float(signal.min()), float(signal.max())
+        if s_max - s_min > 1e-9:
+            champ = (signal - s_min) / (s_max - s_min)
+        else:
+            champ = np.full_like(signal, 0.5)
+        return 0.3 + 0.7 * champ  # plage [0.3, 1.0] comme avant
+
+    # =======================================================================
     # 3. CYCLE D'ÉVOLUTION DE L'ESSAIM
     # =======================================================================
 
@@ -385,9 +487,26 @@ class EssaimTetravalent:
         self.compteur_temps += 1
 
         if contrainte_env is None:
-            contrainte_env = 0.3 + 0.2 * np.random.rand(
-                self.n_grille, self.n_grille
-            )
+            # [C5] Contrainte environnementale RÉELLE (signaux M5) : on dérive
+            # la pression environnementale de l'état collectif réel des agents
+            # (agrégation des tenseurs Φ) au lieu d'un bruit aléatoire
+            # décorrélé. Un champ spatial cohérent — chaque nœud reçoit une
+            # pression issue des signaux du système, pas d'un générateur
+            # indépendant.
+            contrainte_env = self.construire_contrainte_reelle()
+
+        # 0. Respiration de diversité Φ [C7] — AVANT le couplage.
+        #    Corrigé le 08/08 : la respiration était exécutée en FIN de cycle
+        #    (étape 7), donc le couplage transscalaire du cycle suivant
+        #    re-homogénéisait Φ avant le prochain état → la perturbation était
+        #    noyée (entropie restait au max théorique, couplage = 1.0). En la
+        #    déclenchant au DÉBUT du cycle, la diversité injectée influence
+        #    l'adaptation, le couplage et les fusions du même cycle.
+        if (
+            self.respiration_intervalle > 0
+            and self.compteur_temps % self.respiration_intervalle == 0
+        ):
+            self.respirer_diversite_phi()
 
         # 1. Adaptation individuelle
         for agent_id, agent in self.agents.items():
@@ -410,15 +529,282 @@ class EssaimTetravalent:
         # 5. Tentatives de fusions exaptatives spontanées
         self._fusions_spontanees()
 
+        # 6. Quorum Autonomique — Auto-Suture (dédoublement local)
+        #    Si ρ chute sous le seuil pendant N cycles ET que l'entropie
+        #    collective le permet (≈6.19), l'essaim se dédouble localement.
+        if self.auto_suture:
+            self._verifier_auto_suture(etat)
+
+        # 7. (Respiration C7 déplacée en DÉBUT de cycle — étape 0 — pour ne
+        #    plus être noyée par le couplage transscalaire du cycle suivant.)
+
         logger.info(
-            "Cycle #%d: %d agents, ρ_moyen=%.4f, couplage=%.4f",
+            "Cycle #%d: %d agents, ρ_moyen=%.4f, couplage=%.4f, "
+            "spawns=%d",
             self.compteur_temps,
             self.n_agents,
             etat.resonance_globale,
             etat.couplage_moyen,
+            self.n_spawns,
         )
 
         return etat
+
+    # =======================================================================
+    # 3bis. RESPIRATION DE DIVERSITÉ Φ [C7] — ANTI-HOMOGÉNÉISATION
+    # =======================================================================
+
+    def respirer_diversite_phi(self) -> None:
+        """
+        [C7] Respiration géométrique périodique des tenseurs Φ.
+
+        À intervalle régulier, injecte une petite composante **orthogonale**
+        aléatoire dans les tenseurs Φ de tous les agents. C'est le pendant
+        géométrique du Tremor de saturation : là où le Tremor désature les
+        nœuds rigides (états M), la respiration perturbe les directions Φ
+        pour empêcher l'effondrement vers une direction unique (qui se
+        manifeste par une entropie ≈ ln(n(n-1)) et un couplage binaire).
+
+        La composante injectée est orthogonalisée à Φ (Gram-Schmidt) : on
+        ne renforce pas l'alignement existant, on l'écarte délibérément —
+        conformément à l'esprit SOPH-IA de sous-optimalité assumée.
+        """
+        if self.dim_phi < 2 or not self.agents:
+            return
+
+        n_perturbes: int = 0
+        # ⚠️ random.Random (module standard) n'a PAS de méthode
+        # standard_normal (méthode numpy). L'ancien code plantait ici à
+        # chaque respiration (AttributeError), attrapée par le try/except
+        # du démon → la respiration ne s'exécutait JAMAIS (n_respirations=0)
+        # et l'essaim s'homogénéisait jusqu'à l'entropie maximale.
+        # On dérive un générateur numpy reproductible depuis le RNG de
+        # l'essaim (avance la séquence, donc continuité stochastique).
+        np_rng: np.random.Generator = np.random.default_rng(
+            self.rng.randrange(0, 2**32)
+        )
+        for agent in self.agents.values():
+            phi: np.ndarray = agent.obtenir_tenseur_phi()  # (n, n, d)
+            bruit: np.ndarray = np_rng.standard_normal(phi.shape)
+
+            # Orthogonalisation de Gram-Schmidt : retirer la projection
+            # du bruit sur Φ, ne garder que la composante perpendiculaire.
+            phi_flat: np.ndarray = phi.reshape(-1, self.dim_phi)
+            bruit_flat: np.ndarray = bruit.reshape(-1, self.dim_phi)
+            denom: np.ndarray = np.maximum(
+                np.sum(phi_flat * phi_flat, axis=1, keepdims=True), 1e-10
+            )
+            proj: np.ndarray = (
+                np.sum(bruit_flat * phi_flat, axis=1, keepdims=True) / denom
+            ) * phi_flat
+            bruit_ortho: np.ndarray = (bruit_flat - proj).reshape(phi.shape)
+
+            # Perturbation pondérée + re-normalisation par nœud
+            phi_perturbe: np.ndarray = (
+                (1.0 - self.respiration_dose) * phi
+                + self.respiration_dose * bruit_ortho
+            )
+            norms: np.ndarray = np.linalg.norm(
+                phi_perturbe, axis=-1, keepdims=True
+            )
+            agent.Phi = phi_perturbe / np.maximum(norms, 1e-10)
+            n_perturbes += 1
+
+        self.n_respirations += 1
+        logger.info(
+            "[C7] Respiration de diversité Φ: %d agent(s) perturbé(s) "
+            "(dose=%.2f, total=%d)",
+            n_perturbes, self.respiration_dose, self.n_respirations,
+        )
+
+    # =======================================================================
+    # 3bis. QUORUM AUTONOMIQUE — AUTO-SUTURE (DÉDOUBLEMENT LOCAL)
+    # =======================================================================
+
+    def _verifier_auto_suture(self, etat: EtatEssaim) -> None:
+        """
+        [AUTO-SUTURE] Vérifie si l'essaim doit se dédoubler localement.
+
+        Règle (rapport 2026-08-03, Quorum Autonomique) :
+            - Si la résonance chute sous `seuil_resonance_auto_suture` (0.10)
+              pendant plus de `cycles_avant_spawn` cycles consécutifs,
+              l'entropie collective (≈6.19) peut autoriser un dédoublement
+              local des agents les plus légers.
+            - Le couplage à 0.15 suffit à maintenir le quorum : les agents
+              n'ont pas besoin de se "connaître" pour résonner.
+
+        Args:
+            etat: État global du cycle courant.
+        """
+        if etat.resonance_globale < self.seuil_resonance_auto_suture:
+            self.cycles_resonance_basse += 1
+        else:
+            self.cycles_resonance_basse = 0
+            return
+
+        # Conditions d'autorisation du dédoublement :
+        if self.cycles_resonance_basse < self.cycles_avant_spawn:
+            return
+        if self.n_agents >= self.max_agents:
+            return
+        if etat.entropie_collective < self.seuil_entropie_spawn:
+            logger.info(
+                "Auto-suture bloquée: entropie=%.2f < %.2f (pas de "
+                "dédoublement)",
+                etat.entropie_collective, self.seuil_entropie_spawn,
+            )
+            return
+
+        # Dédoublement local des agents les plus légers (moins de fusions,
+        # plus de budget disponible) — aucun nœud maître, purement immanent.
+        agents_tries = sorted(
+            self.agents.items(),
+            key=lambda kv: (
+                len(kv[1].fusions_actives),
+                -kv[1].budget_flexibilite,
+            ),
+        )
+        n_a_doubler: int = max(1, len(agents_tries) // 2)
+        nouveaux_ids: list[str] = []
+
+        for i in range(n_a_doubler):
+            if self.n_agents >= self.max_agents:
+                break
+            parent_id, parent = agents_tries[i]
+            nouvel_id: Optional[str] = self.spawn_agent_local(parent_id)
+            if nouvel_id is not None:
+                nouveaux_ids.append(nouvel_id)
+
+        if nouveaux_ids:
+            self.cycles_resonance_basse = 0
+            self.n_spawns += len(nouveaux_ids)
+            description = (
+                f"auto-suture @t={self.compteur_temps}: "
+                f"+{len(nouveaux_ids)} agent(s) depuis "
+                f"{agents_tries[0][0] if agents_tries else '?'} "
+                f"(ρ={etat.resonance_globale:.3f}, "
+                f"H={etat.entropie_collective:.2f})"
+            )
+            self.historique_spawns.append({
+                "t": self.compteur_temps,
+                "nouveaux_ids": nouveaux_ids,
+                "resonance": round(etat.resonance_globale, 4),
+                "entropie_collective": round(
+                    etat.entropie_collective, 4
+                ),
+            })
+            etat.n_spawns = self.n_spawns
+            etat.dernier_spawn = description
+            logger.info(
+                "AUTO-SUTURE: %s", description,
+            )
+
+    def spawn_agent_local(self, parent_id: str) -> Optional[str]:
+        """
+        [AUTO-SUTURE] Dédouble un agent local existant en créant un clone
+        épigénétique légèrement muté (même tenseur Φ hérité, nouveau seed).
+
+        Principe : le clone hérite du tenseur Φ du parent (mémoire
+        immanente) mais démarre avec une variation stochastique → diversité
+        sans orchestration centrale.
+
+        Args:
+            parent_id: ID de l'agent à dédoubler.
+
+        Returns:
+            ID du nouvel agent, ou None si plafond atteint / parent inconnu.
+        """
+        parent = self.agents.get(parent_id)
+        if parent is None:
+            return None
+        if self.n_agents >= self.max_agents:
+            return None
+
+        # Nouvel ID : AgentTetra_{index continu}
+        indices = [
+            int(aid.replace("AgentTetra_", ""))
+            for aid in self.agents
+            if aid.startswith("AgentTetra_")
+        ]
+        nouvel_index: int = (max(indices) + 1) if indices else len(self.agents)
+        nouvel_id: str = f"AgentTetra_{nouvel_index:02d}"
+        if nouvel_id in self.agents:
+            nouvel_id = f"AgentTetra_{nouvel_index + self.n_spawns:02d}"
+
+        # Clone avec héritage du tenseur Φ et mutation légère
+        clone = AgentTetravalentEpigenetique(
+            n=self.n_grille,
+            dim_phi=self.dim_phi,
+            seuil_resonance=parent.seuil_resonance,
+            tremor_saturation=parent.tremor_saturation,
+            seed=self.rng.randint(0, 2**31 - 1),
+        )
+        # Héritage immanent du tenseur Φ (mémoire du parent)
+        clone.Phi = parent.obtenir_tenseur_phi().copy()
+
+        # [C3] MUTATION ANGULAIRE AU SPAWN — anti-clans.
+        # Le clone hérite de la mémoire du parent mais subit une ROTATION
+        # angulaire légère aléatoire de ses directions Φ (matrice orthogonale
+        # proche de l'identité). Cela empêche les clones de converger vers une
+        # direction identique (formation de clans) et préserve la diversité
+        # structurelle — pendant géométrique de la respiration C7, appliqué
+        # à chaque dédoublement.
+        if self.dim_phi >= 2:
+            ang: float = self.rng.uniform(0.0, 2 * np.pi)
+            c, s = float(np.cos(ang)), float(np.sin(ang))
+            # Rotation élémentaire dans le plan (0,1) — préserve la norme.
+            R: np.ndarray = np.eye(self.dim_phi)
+            R[0, 0], R[0, 1] = c, -s
+            R[1, 0], R[1, 1] = s, c
+            clone.Phi = np.tensordot(clone.Phi, R, axes=([-1], [1]))
+        clone.Phi = clone.Phi / np.linalg.norm(
+            clone.Phi, axis=-1, keepdims=True
+        )
+
+        self.agents[nouvel_id] = clone
+        self.n_agents = len(self.agents)
+        logger.debug(
+            "Dédoublement local: %s → %s", parent_id, nouvel_id,
+        )
+        return nouvel_id
+
+    def reinitialiser_flexibilite(self, fraction: float = 0.25) -> int:
+        """
+        [M1] Réinjecte de la flexibilité dans les matrices d'états.
+
+        Quand ρ est bloqué à 0 par rigidification totale des matrices M
+        (degrés_de_liberté = 0, aucun nœud flexible), on dé-sature
+        stochastiquement une fraction des nœuds rigides (M=1.0 → 0.25,
+        « veille réceptive ») sur chaque agent. Sans orchestration centrale :
+        le choix est aléatoire parmi les nœuds rigides. Le compteur de
+        résonance basse est remis à zéro, car le plateau est rompu.
+
+        Args:
+            fraction: Proportion de nœuds rigides à dé-saturer par agent
+                      (défaut 0.25 = 25 %).
+
+        Returns:
+            Nombre total de nœuds dé-saturés sur l'essaim.
+        """
+        total: int = 0
+        for agent_id, agent in self.agents.items():
+            indices = np.argwhere(agent.M == 1.0)
+            if len(indices) == 0:
+                continue
+            n_desaturer: int = max(1, int(len(indices) * fraction))
+            choix = self.rng.sample(
+                [tuple(i) for i in indices.tolist()], n_desaturer
+            )
+            for rx, ry in choix:
+                agent.M[rx, ry] = 0.25  # → veille réceptive
+            total += n_desaturer
+            logger.info(
+                "[M1] Flexibilité réinjectée: %s → %d nœud(s) à 0.25",
+                agent_id, n_desaturer,
+            )
+        if total > 0:
+            self.cycles_resonance_basse = 0  # le plateau est rompu
+        return total
 
     # =======================================================================
     # 4. FUSIONS SPONTANÉES — ÉMERGENCE SANS MASTER
@@ -503,6 +889,10 @@ class EssaimTetravalent:
                 "taux_occupation_flexible": etat_agent.get(
                     "taux_occupation_flexible"
                 ),
+                "tremor_saturation": etat_agent.get("tremor_saturation"),
+                "tremor_adaptatif": etat_agent.get("tremor_adaptatif"),
+                "n_desatures_tremor": etat_agent.get("n_desatures_tremor", 0),
+                "cycles_rho_plat": etat_agent.get("cycles_rho_plat", 0),
             }
             if etat_agent.get("rho_relationnel") is not None:
                 total_rho += etat_agent["rho_relationnel"]
@@ -529,6 +919,34 @@ class EssaimTetravalent:
             float(np.mean(entropies)) if entropies else 0.0
         )
 
+        # Tremor Adaptatif collectif — dose moyenne et mode de phase
+        tremors: list[float] = [
+            a.get("tremor_saturation", 0.12) for a in agents_dict.values()
+        ]
+        tremor_moyen: float = (
+            float(np.mean(tremors)) if tremors else 0.0
+        )
+        if tremor_moyen >= 0.15:
+            mode_tremor: str = "fracture"      # ρ bas → forçage de la fêlure
+        elif tremor_moyen <= 0.12:
+            mode_tremor = "croisiere"           # zone habitable → économie
+        else:
+            mode_tremor = "transition"
+
+        # Auto-suture : reporter l'état de dédoublement dans l'état courant
+        dernier_spawn: str = (
+            self.historique_spawns[-1].get("nouveaux_ids", [""])[0]
+            if self.historique_spawns
+            else ""
+        )
+        if self.historique_spawns:
+            dernier_spawn = (
+                "auto-suture @" + str(self.historique_spawns[-1].get("t", ""))
+                + " → " + ", ".join(
+                    self.historique_spawns[-1].get("nouveaux_ids", [])
+                )
+            )
+
         etat = EtatEssaim(
             n_agents=self.n_agents,
             n_fusions_total=total_fusions,
@@ -536,6 +954,11 @@ class EssaimTetravalent:
             entropie_collective=round(entropie_collective, 4),
             resonance_globale=round(resonance_globale, 4),
             budget_flexibilite_collectif=round(total_budget, 4),
+            tremor_moyen=round(tremor_moyen, 4),
+            mode_tremor=mode_tremor,
+            n_spawns=self.n_spawns,
+            dernier_spawn=dernier_spawn,
+            cycles_resonance_basse=self.cycles_resonance_basse,
             agents=agents_dict,
             couplages=[asdict(c) for c in couplages],
             rho_historique=(
@@ -623,10 +1046,170 @@ class EssaimTetravalent:
                 "seuil_resonance_base": self.seuil_resonance_base,
                 "compteur_temps": self.compteur_temps,
                 "n_cycles": len(self.historique_etats),
-                "sig": "0x4D545456",
+                "sig": "0x4D5454562D464C50",
             },
             "etat_courant": etat_courant.to_dict(),
         }
+
+    # ---------------------------------------------------------------------
+    # 7bis. SNAPSHOT COMPLET / RESTAURATION (reprise après interruption)
+    # ---------------------------------------------------------------------
+
+    @staticmethod
+    def _rng_state_to_json(state) -> list:
+        """Convertit un état de random.Random en structure JSON-safe."""
+        version, internal, gauss_next = state
+
+        def _conv(obj):
+            if isinstance(obj, tuple):
+                return [_conv(x) for x in obj]
+            if isinstance(obj, list):
+                return [_conv(x) for x in obj]
+            if isinstance(obj, (float, int, bool)) or obj is None:
+                return obj
+            if isinstance(obj, str):
+                return obj
+            # bytes → hex (historique des spawns / clés internes)
+            if isinstance(obj, bytes):
+                return {"__bytes__": obj.hex()}
+            return repr(obj)
+
+        return [_conv(internal), gauss_next]
+
+    @staticmethod
+    def _rng_state_from_json(encoded: list):
+        """Reconstruit un état de random.Random depuis la forme JSON-safe."""
+        internal_enc, gauss_next = encoded
+
+        def _unconv(obj):
+            if isinstance(obj, list):
+                return tuple(_unconv(x) for x in obj)
+            if isinstance(obj, dict) and "__bytes__" in obj:
+                return bytes.fromhex(obj["__bytes__"])
+            return obj
+
+        internal = _unconv(internal_enc)
+        return (3, internal, gauss_next)
+
+    def to_snapshot(self) -> dict[str, Any]:
+        """Exporte un snapshot COMPLET et restaurable de l'essaim.
+
+        Contrairement à `to_dict()`, capture l'état interne de chaque agent
+        (tenseurs Φ/Υ/E/M/H, fusions actives, historiques), les compteurs de
+        spawn, l'historique des auto-sutures et l'état du générateur aléatoire
+        — de quoi reprendre exactement après un redémarrage du démon.
+        """
+        return {
+            "meta": {
+                "n_agents": self.n_agents,
+                "n_grille": self.n_grille,
+                "dim_phi": self.dim_phi,
+                "seuil_resonance_base": self.seuil_resonance_base,
+                "auto_suture": self.auto_suture,
+                "seuil_resonance_auto_suture": self.seuil_resonance_auto_suture,
+                "cycles_avant_spawn": self.cycles_avant_spawn,
+                "seuil_entropie_spawn": self.seuil_entropie_spawn,
+                "max_agents": self.max_agents,
+                "respiration_intervalle": self.respiration_intervalle,
+                "respiration_dose": self.respiration_dose,
+                "sig": "0x4D5454562D464C50",
+            },
+            "etat": {
+                "compteur_temps": self.compteur_temps,
+                "cycles_resonance_basse": self.cycles_resonance_basse,
+                "n_spawns": self.n_spawns,
+                "n_respirations": self.n_respirations,
+                "historique_spawns": self.historique_spawns,
+                "rng_state": self._rng_state_to_json(self.rng.getstate()),
+            },
+            "agents": {
+                agent_id: agent.to_dict_complet()
+                for agent_id, agent in self.agents.items()
+            },
+        }
+
+    def restaurer(self, snapshot: dict[str, Any]) -> None:
+        """Restaure l'essaim depuis un snapshot produit par `to_snapshot()`.
+
+        Reconstruit les agents (tenseurs inclus), les compteurs de spawn,
+        l'historique des auto-sutures et l'état du RNG — sans réinitialiser
+        passivement la mémoire du mycélium.
+        """
+        meta: dict[str, Any] = snapshot.get("meta", {})
+        etat_data: dict[str, Any] = snapshot.get("etat", {})
+        agents_data: dict[str, Any] = snapshot.get("agents", {})
+
+        # Métadonnées structurelles.
+        # ⚠️ IMPORTANT — On ne restaure PAS les paramètres de COMPORTEMENT
+        # (auto_suture, respiration_intervalle, seuils…) depuis le snapshot :
+        # ceux-ci doivent venir de la LIGNE DE COMMANDE du processus courant
+        # (ex. --respiration-intervalle 24). Restaurer ces valeurs depuis un
+        # snapshot ancien (créé par un démon lancé sans respiration) les
+        # écrasait silencieusement, désactivant C7 en production.
+        # Seule la GÉOMÉTRIE (grille, dimension) est reprise du snapshot, car
+        # elle est nécessaire pour reconstruire les tenseurs des agents.
+        self.n_grille = int(meta.get("n_grille", self.n_grille))
+        self.dim_phi = int(meta.get("dim_phi", self.dim_phi))
+        self.seuil_resonance_base = float(
+            meta.get("seuil_resonance_base", self.seuil_resonance_base)
+        )
+
+        # Compteurs et historique
+        self.compteur_temps = int(etat_data.get("compteur_temps", self.compteur_temps))
+        self.cycles_resonance_basse = int(
+            etat_data.get("cycles_resonance_basse", self.cycles_resonance_basse)
+        )
+        self.n_spawns = int(etat_data.get("n_spawns", self.n_spawns))
+        self.n_respirations = int(
+            etat_data.get("n_respirations", self.n_respirations)
+        )
+        self.historique_spawns = list(
+            etat_data.get("historique_spawns", self.historique_spawns)
+        )
+
+        # Agents complets
+        self.agents = {}
+        for agent_id, agent_data in agents_data.items():
+            n = int(agent_data.get("n", self.n_grille))
+            d = int(agent_data.get("dim_phi", self.dim_phi))
+            seuil = float(
+                agent_data.get("seuil_resonance", self.seuil_resonance_base)
+            )
+            tremor = float(agent_data.get("tremor_saturation", 0.12))
+            agent = AgentTetravalentEpigenetique(
+                n=n,
+                dim_phi=d,
+                seuil_resonance=seuil,
+                tremor_saturation=tremor,
+                seed=self.rng.randint(0, 2**31 - 1),
+            )
+            agent.restaurer(agent_data)
+            self.agents[agent_id] = agent
+
+        self.n_agents = len(self.agents)
+
+        # RNG — continuité stochastique
+        #    ⚠️ Doit être restauré APRÈS la reconstruction des agents :
+        #    la création de chaque agent consomme self.rng.randint(...).
+        #    En restaurant l'état ensuite, la séquence aléatoire suivante
+        #    est strictement identique à celle de l'essaim d'origine.
+        rng_encoded = etat_data.get("rng_state")
+        if rng_encoded:
+            try:
+                self.rng.setstate(self._rng_state_from_json(rng_encoded))
+            except Exception as exc:
+                logger.warning("RNG non restaurable (%s) — reseed.", exc)
+        # L'historique d'états est réinitialisé : il sera reconstruit au
+        # premier cycle via _construire_etat.
+        self.historique_etats = []
+
+        logger.info(
+            "Essaim restauré: %d agents, t=%d, spawns=%d, fusions=%d",
+            self.n_agents,
+            self.compteur_temps,
+            self.n_spawns,
+            sum(len(a.fusions_actives) for a in self.agents.values()),
+        )
 
     def resume_pour_quorum(self) -> dict[str, Any]:
         """
@@ -656,6 +1239,11 @@ class EssaimTetravalent:
             "resonance_score": round(etat.resonance_globale, 4),
             "entropie_collective": round(etat.entropie_collective, 4),
             "couplage_moyen": round(etat.couplage_moyen, 4),
+            "tremor_moyen": round(etat.tremor_moyen, 4),
+            "mode_tremor": etat.mode_tremor,
+            "n_spawns": self.n_spawns,
+            "dernier_spawn": etat.dernier_spawn,
+            "cycles_resonance_basse": self.cycles_resonance_basse,
             "last_seen": etat.timestamp,
         }
 
@@ -681,7 +1269,7 @@ if __name__ == "__main__":
 
     _p("=" * 60)
     _p("  EssaimTetravalent -- Emergence sans noeud maitre")
-    _p("  Signature: 0x4D545456")
+    _p("  Signature: 0x4D5454562D464C50")
     _p("=" * 60)
 
     # Initialisation

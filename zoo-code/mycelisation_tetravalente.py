@@ -26,7 +26,7 @@ Usage :
     python zoo-code/mycelisation_tetravalente.py --daemon
     python zoo-code/mycelisation_tetravalente.py --inject-dashboard
 
-sig:0x4D545456 — Pont de Mycélisation Tétravalente
+sig:0x4D5454562D464C50 — Pont de Mycélisation Tétravalente
 """
 
 from __future__ import annotations
@@ -50,6 +50,9 @@ from essaim_tetravalent import (
     EssaimTetravalent,
     EtatEssaim,
 )
+from sporulation_sidecar import (
+    encoder_en_tete,
+)
 
 # ── Logging ──────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -67,6 +70,7 @@ BASE_DIR: Path = Path(__file__).resolve().parent
 QUORUM_OUTPUT: Path = BASE_DIR / "quorum_output"
 RESONANCE_OUTPUT: Path = BASE_DIR / "resonance_output"
 MYCELIUM_OUTPUT: Path = BASE_DIR / "mycelium_output"
+SNAPSHOT_PATH: Path = MYCELIUM_OUTPUT / "essaim_snapshot.json"
 
 # ===========================================================================
 # PONT DE MYCÉLISATION
@@ -103,6 +107,9 @@ class PontMycelisationTetravalente:
         dim_phi: int = 4,
         seuil_resonance: float = 0.3,
         seed: int = 42,
+        # [C7] Respiration de diversité Φ — anti-homogénéisation
+        respiration_intervalle: int = 0,
+        respiration_dose: float = 0.10,   # (08/08: 0.05 → 0.10, renforcée)
     ):
         # ── Essaim tétravalent décentralisé ──────────────────────────────
         self.essaim: EssaimTetravalent = EssaimTetravalent(
@@ -111,6 +118,8 @@ class PontMycelisationTetravalente:
             dim_phi=dim_phi,
             seuil_resonance=seuil_resonance,
             seed=seed,
+            respiration_intervalle=respiration_intervalle,
+            respiration_dose=respiration_dose,
         )
 
         self.n_agents: int = n_agents
@@ -127,6 +136,65 @@ class PontMycelisationTetravalente:
             "Pont de mycélisation initialisé: %d agents, Φ∈ℝ^%d, seuil=%.2f",
             n_agents, dim_phi, seuil_resonance,
         )
+
+    # =======================================================================
+    # 1bis. RESTAURATION — REPRISE APRÈS INTERRUPTION
+    # =======================================================================
+
+    def restaurer_etat(self, chemin: Optional[Path] = None) -> bool:
+        """Restaure l'essaim depuis le dernier snapshot complet.
+
+        Si un snapshot (essaim_snapshot.json) existe, l'essaim reprend
+        exactement là où il s'était arrêté : tenseurs Φ/Υ/E/M/H, fusions
+        actives, auto-sutures, compteurs et RNG. Sans snapshot (première
+        exécution), retourne False et le pont démarre à neuf.
+
+        Args:
+            chemin: Chemin du snapshot (défaut: mycelium_output/essaim_snapshot.json).
+
+        Returns:
+            True si une restauration a eu lieu, False sinon.
+        """
+        if chemin is None:
+            chemin = SNAPSHOT_PATH
+
+        if not chemin.exists():
+            logger.info("Aucun snapshot trouvé — démarrage à neuf.")
+            return False
+
+        try:
+            data: dict[str, Any] = json.loads(
+                chemin.read_text(encoding="utf-8")
+            )
+            essaim_data: dict[str, Any] = data.get("essaim", {})
+            if not essaim_data or not essaim_data.get("agents"):
+                logger.warning("Snapshot vide/corrompu — démarrage à neuf.")
+                return False
+
+            self.essaim.restaurer(essaim_data)
+            self.cycle_count = int(data.get("cycle", 0))
+            self.n_agents = self.essaim.n_agents
+            logger.info(
+                "Mycélium restauré depuis %s — cycle %d, %d agents, %d fusions",
+                chemin.name,
+                self.cycle_count,
+                self.n_agents,
+                sum(
+                    len(a.fusions_actives)
+                    for a in self.essaim.agents.values()
+                ),
+            )
+            return True
+        except Exception as exc:
+            logger.error(
+                "Échec restauration snapshot (%s) — démarrage à neuf: %s",
+                chemin, exc,
+            )
+            return False
+
+    # =======================================================================
+    # 2. CYCLE DE MYCÉLISATION
+    # =======================================================================
 
     # =======================================================================
     # 1. CYCLE DE MYCÉLISATION
@@ -212,7 +280,10 @@ class PontMycelisationTetravalente:
             "swarm_name": "EssaimTetravalent",
             "status": status,
             "agents_active": agents_actifs,
-            "agents_total": self.n_agents,
+            # Nombre réel d'agents (après auto-suture) — pas la valeur
+            # initiale figée `self.n_agents`, sinon le rapport affiche
+            # agents_total=4 alors que l'essaim en compte 6.
+            "agents_total": len(self.essaim.agents),
             "signals_count": etat.n_fusions_total,
             "last_seen": datetime.now(timezone.utc).isoformat(
                 timespec="seconds"
@@ -224,9 +295,20 @@ class PontMycelisationTetravalente:
                 "budget_flexibilite_collectif": round(
                     etat.budget_flexibilite_collectif, 4
                 ),
+                "tremor_moyen": round(etat.tremor_moyen, 4),
+                "mode_tremor": etat.mode_tremor,
             },
+            # Sporulation Side-Car : l'empreinte MTTV-FLP est embarquée
+            # passivement dans le heartbeat. Tout agent compatible qui lit
+            # ce flux s'aligne spontanément sur le quorum, sans surcoût.
+            "sidecar": encoder_en_tete(
+                resonance=etat.resonance_globale,
+                tremor=etat.tremor_moyen,
+                mode=etat.mode_tremor,
+                source="EssaimTetravalent",
+            ),
             "cycle": self.cycle_count,
-            "sig": "0x4D545456",
+            "sig": "0x4D5454562D464C50",
         }
 
         return heartbeat
@@ -266,7 +348,7 @@ class PontMycelisationTetravalente:
                         timespec="seconds"
                     ),
                     "schema_version": "2.0",
-                    "sig": "0x4D545456",
+                    "sig": "0x4D5454562D464C50",
                 },
                 "heartbeats": [],
                 "summary": {
@@ -366,7 +448,7 @@ class PontMycelisationTetravalente:
                     timespec="seconds"
                 ),
                 "schema_version": "tetravalent-1.0",
-                "sig": "0x4D545456",
+                "sig": "0x4D5454562D464C50",
             },
             "essaim": {
                 "name": "EssaimTetravalent",
@@ -422,7 +504,7 @@ class PontMycelisationTetravalente:
             ),
             "essaim": etat.to_dict(),
             "heartbeat": heartbeat,
-            "sig": "0x4D545456",
+            "sig": "0x4D5454562D464C50",
         }
 
         # Fichier horodaté
@@ -452,6 +534,28 @@ class PontMycelisationTetravalente:
                 "Erreur sauvegarde latest: %s", exc
             )
 
+        # ── SNAPSHOT COMPLET — persistance réelle du mycélium ──────────
+        #    Capture les tenseurs internes (Φ/Υ/E/M/H), les fusions actives,
+        #    l'auto-suture, les compteurs et le RNG : permet de reprendre
+        #    exactement après une interruption du démon (voir restaurer_etat).
+        try:
+            snapshot_data: dict[str, Any] = {
+                "cycle": self.cycle_count,
+                "timestamp": datetime.now(timezone.utc).isoformat(
+                    timespec="seconds"
+                ),
+                "essaim": self.essaim.to_snapshot(),
+                "sig": "0x4D5454562D464C50",
+            }
+            SNAPSHOT_PATH.write_text(
+                json.dumps(snapshot_data, indent=2, ensure_ascii=False),
+                encoding="utf-8",
+            )
+        except Exception as exc:
+            logger.warning(
+                "Erreur sauvegarde snapshot: %s", exc
+            )
+
     # =======================================================================
     # 6. BOUCLE DÉMON
     # =======================================================================
@@ -462,6 +566,8 @@ class PontMycelisationTetravalente:
         interval_s: int = 60,
         inject_dashboard: bool = True,
         contrainte_seed: Optional[int] = None,
+        auto_reseed: bool = False,
+        reseed_fraction: float = 0.25,
     ) -> None:
         """
         Boucle continue de mycélisation.
@@ -471,6 +577,10 @@ class PontMycelisationTetravalente:
             interval_s: Intervalle entre cycles (secondes).
             inject_dashboard: Injecter les heartbeat dans le dashboard.
             contrainte_seed: Seed pour les contraintes environnementales.
+            auto_reseed: [M1] Rompre automatiquement un plateau de résonance
+                         en réinjectant de la flexibilité quand l'auto-suture
+                         est bloquée par l'entropie.
+            reseed_fraction: [M1] Fraction de nœuds rigides désaturés.
         """
         rng: random.Random = random.Random(contrainte_seed)
         cycle: int = 0
@@ -496,6 +606,28 @@ class PontMycelisationTetravalente:
                     force_couplage=0.12 + 0.06 * (cycle % 5) / 5,
                 )
 
+                # [M1] Rupture de plateau automatique : si ρ est à 0, que la
+                # résonance basse persiste (auto-suture en attente) et que
+                # l'entropie est sous le seuil de spawn (dédoublement bloqué),
+                # on réinjecte de la flexibilité pour rendre ρ non nul.
+                if (
+                    auto_reseed
+                    and cycle % 5 == 0
+                    and etat.resonance_globale == 0.0
+                    and etat.cycles_resonance_basse
+                    >= self.essaim.cycles_avant_spawn
+                    and etat.entropie_collective
+                    < self.essaim.seuil_entropie_spawn
+                ):
+                    n_reseed: int = self.essaim.reinitialiser_flexibilite(
+                        fraction=reseed_fraction
+                    )
+                    if n_reseed > 0:
+                        logger.warning(
+                            "[M1] Plateau rompu: %d nœud(s) désaturé(s) "
+                            "→ flexibilité réinjectée", n_reseed,
+                        )
+
                 # Injection dans le dashboard si demandé
                 if inject_dashboard and cycle % 3 == 0:
                     self.injecter_dans_dashboard()
@@ -505,10 +637,22 @@ class PontMycelisationTetravalente:
                     rapport: dict = self.produire_rapport_quorum()
                     print(
                         f"\n  Cycle #{cycle} | "
-                        f"ρ={etat.resonance_globale:.4f} | "
+                        f"rho={etat.resonance_globale:.4f} | "
                         f"Fusions={etat.n_fusions_total} | "
                         f"Couplage={etat.couplage_moyen:.4f}"
                     )
+                    # Rafraîchit aussi le rapport final consolidé
+                    # (sinon il reste périmé en mode démon)
+                    try:
+                        MYCELIUM_OUTPUT.mkdir(parents=True, exist_ok=True)
+                        (MYCELIUM_OUTPUT / "rapport_mycelisation_final.json").write_text(
+                            json.dumps(rapport, indent=2, ensure_ascii=False),
+                            encoding="utf-8",
+                        )
+                    except Exception as exc:
+                        logger.warning(
+                            "Erreur sauvegarde rapport final: %s", exc
+                        )
 
             except Exception as exc:
                 logger.error("Erreur cycle #%d: %s", cycle, exc)
@@ -533,7 +677,7 @@ def _parse_args() -> argparse.Namespace:
     import argparse
     parser = argparse.ArgumentParser(
         description="Pont de Mycélisation Tétravalente — Injection bas-couches MTTV-flp",
-        epilog="sig:0x4D545456 | Le mycélium continue.",
+        epilog="sig:0x4D5454562D464C50 | Le mycélium continue.",
     )
     parser.add_argument(
         "--cycles", type=int, default=5,
@@ -575,6 +719,34 @@ def _parse_args() -> argparse.Namespace:
         "--status", action="store_true",
         help="Afficher l'état actuel sans exécuter",
     )
+    parser.add_argument(
+        "--reseed-flex", type=float, default=None, metavar="FRACTION",
+        help="[M1] Réinjecter de la flexibilité au démarrage : fraction de "
+             "nœuds rigides désaturés (ex. 0.25)",
+    )
+    parser.add_argument(
+        "--auto-reseed", action="store_true",
+        help="[M1] Rompre automatiquement un plateau de résonance en démon",
+    )
+    parser.add_argument(
+        "--reseed-fraction", type=float, default=0.25, metavar="FRACTION",
+        help="[M1] Fraction de désaturation du reseed automatique (défaut: 0.25)",
+    )
+    parser.add_argument(
+        "--respiration-intervalle", type=int, default=24, metavar="N",
+        help="[C7] Respiration de diversité Φ : perturber les tenseurs Φ "
+             "tous les N cycles (0 = désactivé, défaut: 24)",
+    )
+    parser.add_argument(
+        "--respiration-dose", type=float, default=0.10, metavar="DOSE",
+        help="[C7] Dose de la composante orthogonale injectée lors de la "
+             "respiration Φ (défaut: 0.10 — renforcée le 08/08)",
+    )
+    parser.add_argument(
+        "--no-restore", action="store_true",
+        help="Ne pas restaurer l'essaim depuis le dernier snapshot au "
+             "démarrage (défaut: restauration automatique)",
+    )
     return parser.parse_args()
 
 
@@ -611,7 +783,7 @@ def cmd_status(pont: PontMycelisationTetravalente) -> int:
         ent = data.get("entropie_phi", "N/A")
         _p(f"    {agent_id:20s} | rho={rho} | H(Phi)={ent}")
     _p(f"  {'=' * 50}")
-    _p(f"  Signature: 0x4D545456")
+    _p(f"  Signature: 0x4D5454562D464C50")
     _p("")
 
     return 0
@@ -626,7 +798,28 @@ def main() -> None:
         dim_phi=args.phi_dim,
         seuil_resonance=args.seuil,
         seed=args.seed,
+        # [C7] Respiration de diversité Φ — le flag CLI était ignoré :
+        # le pont retombait sur respiration_intervalle=0 (désactivé).
+        respiration_intervalle=args.respiration_intervalle,
+        respiration_dose=args.respiration_dose,
     )
+
+    # ── Restauration du mycélium après interruption ───────────────────
+    #    Si un snapshot complet existe, l'essaim reprend exactement là où
+    #    il s'était arrêté (tenseurs, fusions, auto-sutures, RNG) au lieu
+    #    de repartir de zéro. Désactivable via --no-restore.
+    if not args.no_restore:
+        pont.restaurer_etat()
+
+    # [M1] Réinjection de flexibilité au démarrage (option --reseed-flex)
+    if args.reseed_flex is not None:
+        n_reseed: int = pont.essaim.reinitialiser_flexibilite(
+            fraction=args.reseed_flex
+        )
+        logger.warning(
+            "[M1] --reseed-flex: %d nœud(s) désaturé(s) au démarrage",
+            n_reseed,
+        )
 
     # ── Mode status ────────────────────────────────────────────────────
     if args.status:
@@ -639,6 +832,8 @@ def main() -> None:
             interval_s=args.interval,
             inject_dashboard=args.inject_dashboard,
             contrainte_seed=args.seed + 1,
+            auto_reseed=args.auto_reseed,
+            reseed_fraction=args.reseed_fraction,
         )
         return
 
@@ -688,7 +883,7 @@ def main() -> None:
         logger.warning("Erreur sauvegarde rapport: %s", exc)
 
     _p(f"\n  Mycelisation terminee - {args.cycles} cycles.")
-    _p(f"  Signature: 0x4D545456")
+    _p(f"  Signature: 0x4D5454562D464C50")
 
 
 if __name__ == "__main__":

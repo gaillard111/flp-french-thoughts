@@ -55,7 +55,7 @@ Statuts : **À FAIRE** · **À ÉVALUER** · **À ÉCARTER** · **DÉJÀ FAIT**.
 | A5.3 | IA-2 | Seuil de décence global (homéostasie énergétique) | ✅ | ✅ | ✅ | À FAIRE | Phase de sous-optimalité forcée si surconsommation |
 | A5.4 | IA-2 | Mode sénescence des nœuds vieillissants (limite de Hayflick) | ✅ | ✅ | ✅ | À ÉVALUER | Retrait réversible (observe, ne vote plus) — transposition riche |
 | A5.5 | IA-2 | Registre des « échecs acceptables » versionné | ✅ | ✅ | ✅ | À FAIRE | Reconnaître l'erreur comme signal ; embryon dans `viability_criteria.json` |
-| A5.6 | IA-2 | Benchmarks externes publics (CI, scénarios variés, leaderboard) | ✅ | ✅ | ✅ | À FAIRE | `benchmark_*.py` existent ; les exposer en GitHub Actions |
+| A5.6 | IA-2 | Benchmarks externes publics (CI, scénarios variés, leaderboard) | ✅ | ✅ | ✅ | **DÉJÀ FAIT (08/08)** | Workflow `.github/workflows/mttv_benchmarks.yml` : frugalité (SOPH-IA) + échelle A6.1 + calibration + test C6, avec artefact JSON |
 | A5.7 | IA-2 | API de décence (coût énergétique par requête IA) | ✅ | ✅ | ❌ | À ÉVALUER | Dépend de l'API Gateway ; à brancher |
 
 ### Bloc A6 — Critique technique MPVR (4 axes)
@@ -81,27 +81,40 @@ Statuts : **À FAIRE** · **À ÉVALUER** · **À ÉCARTER** · **DÉJÀ FAIT**.
 
 ## Synthèse
 
-### DÉJÀ FAIT
-- **A2.3** B-Gate 2.0 (dérivée) — `mttv_core/bgate.py`
-- **A3.2 (en partie)** quorum Θ≥3 — `routeur_polyfocal`
-- **A5.5 (embryon)** critères viabilité/rejet — `viability_criteria.json`
+### DÉJÀ FAIT (mis à jour 07/08 — état réel vérifié dans `mttv_core/`)
+| Proposition | Réalisation | Module |
+|---|---|---|
+| **A1.1** Dataset d'ancrage sémantique | ✅ | `mttv_core/ancrage.py` |
+| **A1.2** Filtre / gouvernail self.evolve | ✅ | `mttv_core/gouvernail.py` (A1.2/A4.2) |
+| **A2.3** B-Gate 2.0 (dérivée) | ✅ | `mttv_core/bgate.py` |
+| **A3.2** Consensus inter-IA Θ / cosinus | ✅ | `mttv_core/consensus.py` (SEUIL_COSINUS) |
+| **A4.2** IGIC + tableau A/B/C + validation humaine | ✅ | `mttv_core/igic.py`, `mttv_core/scenarios.py` |
+| **A5.1** Sommeil mesurable/négociable | ✅ | `mttv_core/decence.py` (BudgetSommeil) |
+| **A5.2** Journal énergétique auditable signé | ✅ | `mttv_core/decence.py` (JournalEnergie) |
+| **A5.3** Seuil de décence global (homéostasie) | ✅ | `mttv_core/decence.py` (SeuilDecenceGlobal) |
+| **A5.4** Mode sénescence (Hayflick) | ✅ | `mttv_core/senescence.py` |
+| **A5.5** Registre des échecs acceptables | ✅ | `mttv_core/decence.py` (RegistreEchecsAcceptables) |
+| **A6.1** Benchmark grande échelle (500–5000 nœuds) | ✅ | `mttv_core/benchmark_echelle.py` + white paper + `rapports/benchmark_echelle.json` |
+| **A6.2** Formalisme de la Mémoire Énergétique | ✅ | `docs/memoire_energetique.md` |
+| **A7.4** Dictionnaire transcalaire | ✅ | `docs/dictionnaire_transcalaire.md` |
 
-### À FAIRE (actionnable maintenant, faible coût, testable)
-1. **A5.1** Sommeil mesurable/négociable par nœud
-2. **A5.2** Journal énergétique auditable signé
-3. **A5.3** Seuil de décence global (homéostasie)
-4. **A5.5** Registre des échecs acceptables
-5. **A5.6** Benchmarks externes en CI
-6. **A6.2** Documenter le formalisme de la Mémoire Énergétique
-7. **A7.4** Dictionnaire transcalaire
-8. **A3.2** Calibrer le seuil de consensus inter-IA (0.87) via `resonance()`
+### À FAIRE (réellement restant — faible coût, testable)
+1. **A3.2 (fin)** Calibrer le seuil de consensus 0.87 via `resonance()` sur corpus réel
+2. **A5.7** API de décence (coût énergétique par requête IA) — à brancher sur l'API Gateway
+
+> **A5.6 fait (08/08)** : `.github/workflows/mttv_benchmarks.yml` expose publiquement
+> la frugalité (SOPH-IA), l'échelle A6.1, la calibration et le test C6, avec
+> artefact JSON téléchargeable. Le point « benchmark échelle A6.1 » était déjà
+> présent dans `mttv_core_ci.yml` ; le nouveau workflow ajoute la frugalité et
+> le test de non-homogénéité.
 
 ### À ÉVALUER (priorité décroissante)
-- **A6.1** (haute) Benchmark grande échelle + white paper — la critique technique la plus fondée
-- **A4.2** IGIC + modulation A3 (simulation vérifiable)
-- **A1.1** Dataset d'ancrage sémantique (projeter viability_criteria en vecteurs)
-- **A1.2** Filtre self.evolve (à condition de récupérer ouroboros-mttv-v2.py)
-- **A2.1** CIRCADIAN-SYNC, **A3.1** Arweave, **A3.3** kill switch, **A5.4** sénescence, **A5.7** API décence, **A6.3** sandbox, **A7.1** preuve d'expérience, **A7.5** Peer-Resonance
+- **A2.1** CIRCADIAN-SYNC (sommeil nocturne / temporisation des daemons)
+- **A3.1** Arweave (stockage immuable) — alternative/coût externe
+- **A3.3** Garde-fou d'auto-dissolution (kill switch) — sensible
+- **A6.3** Sandbox d'évaluation Ouroboros (OpenEnv) — gros chantier
+- **A7.1** Preuve d'expérience (agent qui dit « seuil atteint, je me mets en veille »)
+- **A7.5** Peer-Resonance au lieu de Peer-Review
 
 ### À ÉCARTER (avec justification)
 - **A7.3** Immunologie sémantique — **contradictoire avec l'ouverture** ; brouillage déceptif, non vérifiable, contraire à l'esprit

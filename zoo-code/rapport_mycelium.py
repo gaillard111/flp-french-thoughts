@@ -12,6 +12,7 @@ sig:0x4D5454562D464C50
 
 import argparse
 import json
+import math
 import os
 import sys
 import time
@@ -80,18 +81,119 @@ def extraire_metriques(data: dict) -> dict:
     Gère deux schémas de producteurs :
       - cycles/latest  : `{"essaim": {...métriques à plat...}}`
       - rapport final  : `{"essaim": {"etat_courant": {...métriques...}}}`
+
+    [M7] Agrége aussi les causes racines par agent : flexibilité moyenne
+    (degrés de liberté), désaturations Tremor cumulées et cycles ρ bas.
     """
     etat = data.get("essaim", data.get("etat_essaim", data.get("etat", {})))
     if isinstance(etat, dict) and isinstance(etat.get("etat_courant"), dict):
         etat = etat["etat_courant"]
+    agents = etat.get("agents", {}) if isinstance(etat, dict) else {}
+    flex_values: list[float] = [
+        float(a.get("taux_occupation_flexible") or 0.0)
+        for a in agents.values() if isinstance(a, dict)
+    ]
+    desat_values: list[int] = [
+        int(a.get("n_desatures_tremor") or 0)
+        for a in agents.values() if isinstance(a, dict)
+    ]
+    # n_grille : présent dans meta du snapshot (essaim.meta.n_grille) ou à plat
+    n_grille = None
+    meta = data.get("meta") if isinstance(data, dict) else None
+    if isinstance(meta, dict):
+        n_grille = meta.get("n_grille")
+    if n_grille is None and isinstance(etat, dict):
+        n_grille = etat.get("n_grille")
+    if n_grille is None and isinstance(data, dict):
+        essaim_raw = data.get("essaim")
+        if isinstance(essaim_raw, dict):
+            n_grille = essaim_raw.get("n_grille")
+
     return {
         "resonance_globale": etat.get("resonance_globale", "N/A"),
+        "n_grille": int(n_grille) if n_grille else 5,
         "entropie_collective": etat.get("entropie_collective", "N/A"),
         "couplage_moyen": etat.get("couplage_moyen", "N/A"),
         "fusions_total": etat.get("n_fusions_total", "N/A"),
         "budget_flexibilite": etat.get("budget_flexibilite_collectif", "N/A"),
-        "n_agents": len(etat.get("agents", {})),
+        "tremor_moyen": etat.get("tremor_moyen", "N/A"),
+        "mode_tremor": etat.get("mode_tremor", "N/A"),
+        "n_spawns": etat.get("n_spawns", 0),
+        "n_agents": len(agents),
+        "cycles_resonance_basse": etat.get("cycles_resonance_basse", 0),
+        "taux_occupation_flexible": (
+            round(sum(flex_values) / len(flex_values), 4)
+            if flex_values else 0.0
+        ),
+        "n_desatures_tremor": sum(desat_values) if desat_values else 0,
         "timestamp": data.get("timestamp", etat.get("timestamp", "N/A")),
+    }
+
+
+def diagnostiquer_homogeneisation(m: dict) -> dict:
+    """[C4] Détecte l'homogénéisation de l'essaim.
+
+    L'entropie structurelle de Φ atteint son maximum théorique
+    (≈ log(n_grille²·(n_grille²−1)) ≈ 6.3969 pour une grille 5×5) quand TOUS
+    les vecteurs Φ sont identiques (distribution de similarité uniforme).
+    Combiné à un couplage moyen ≈ 1.0, c'est un signe d'HOMOGÉNÉISATION
+    (perte de diversité) — et non de « diversité saine » comme l'ancien
+    docstring le suggérait.
+
+    Retourne un dict avec : niveau ("ok" | "attention" | "alerte"), message,
+    entropie_max (théorique) et marge.
+    """
+    entropie = m.get("entropie_collective", "N/A")
+    couplage = m.get("couplage_moyen", "N/A")
+    n_grille = int(m.get("n_grille", 5) or 5)   # grille de l'essaim (5 par défaut)
+
+    # Maximum théorique : N = n_grille² vecteurs Φ → distribution de similarité
+    # uniforme sur N(N-1) paires → entropie max = log(N(N-1)).
+    # Pour grille 5×5 : N=25 → log(25·24) = log(600) ≈ 6.3969.
+    try:
+        n_grille = max(2, int(n_grille))
+        n_vecteurs: int = n_grille * n_grille
+        entropie_max: float = float(
+            math.log(n_vecteurs * (n_vecteurs - 1))
+        )
+    except Exception:
+        entropie_max = 6.3969  # valeur de référence pour grille 5×5
+
+    if not isinstance(entropie, (int, float)) or not isinstance(couplage, (int, float)):
+        return {"niveau": "ok", "message": "", "entropie_max": round(entropie_max, 4), "marge": None}
+
+    marge = entropie_max - entropie
+    couplage_haut = couplage >= 0.98
+    entropie_max_atteinte = marge <= 0.05
+
+    if entropie_max_atteinte and couplage_haut:
+        return {
+            "niveau": "alerte",
+            "message": (
+                f"[C4] ALERTE HOMOGÉNÉISATION : entropie={entropie:.4f} ≈ max "
+                f"théorique ({entropie_max:.4f}) ET couplage={couplage:.3f} ≈ 1.0. "
+                "Tous les Φ sont alignés → perte de diversité (à ne pas lire "
+                "comme une diversité saine)."
+            ),
+            "entropie_max": round(entropie_max, 4),
+            "marge": round(marge, 4),
+        }
+    if entropie_max_atteinte:
+        return {
+            "niveau": "attention",
+            "message": (
+                f"[C4] Attention : entropie={entropie:.4f} au voisinage du max "
+                f"théorique ({entropie_max:.4f}) — surveiller l'homogénéisation."
+            ),
+            "entropie_max": round(entropie_max, 4),
+            "marge": round(marge, 4),
+        }
+    return {
+        "niveau": "ok",
+        "message": f"[C4] Diversité OK : entropie={entropie:.4f} sous le max "
+                   f"({entropie_max:.4f}), marge={marge:.4f}.",
+        "entropie_max": round(entropie_max, 4),
+        "marge": round(marge, 4),
     }
 
 
@@ -117,7 +219,18 @@ def generer_rapport_console(n_cycles: int = 5) -> str:
         lignes.append(f"  Couplage moyen    : {m['couplage_moyen']}")
         lignes.append(f"  Fusions totales   : {m['fusions_total']}")
         lignes.append(f"  Budget flexibilite: {m['budget_flexibilite']}")
+        lignes.append(f"  Tremor moyen      : {m['tremor_moyen']} "
+                      f"({m['mode_tremor']})")
+        lignes.append(f"  Auto-suture spawns: {m['n_spawns']}")
         lignes.append(f"  Agents actifs     : {m['n_agents']}")
+        lignes.append(f"  Flexibilite moy.  : {m['taux_occupation_flexible']}")
+        lignes.append(f"  Desat. tremor     : {m['n_desatures_tremor']}")
+        lignes.append(f"  Cycles rho bas    : {m['cycles_resonance_basse']}")
+        # [C4] Diagnostic d'homogénéisation (entropie au max théorique + couplage ~1)
+        c4 = diagnostiquer_homogeneisation(m)
+        lignes.append(f"  Entropie max th.  : {c4['entropie_max']}")
+        if c4["niveau"] != "ok":
+            lignes.append(f"  ⚠️ {c4['message']}")
         lignes.append("")
 
     # Derniers cycles
@@ -144,6 +257,25 @@ def generer_rapport_console(n_cycles: int = 5) -> str:
             lignes.append("  [Tendance]")
             lignes.append(f"  Evolution resonance: {'+' if dr >= 0 else ''}{dr:.4f}")
             lignes.append(f"  Nouvelles fusions  : {'+' if df >= 0 else ''}{df}")
+            # [M7] Durée du plateau terminal : cycles consécutifs (en fin de
+            # liste) à résonance nulle — mesure directe de la pétrification.
+            try:
+                seq_trend = [
+                    extraire_metriques(lire_fichier(c)) for c in cycles
+                ]
+                plat: int = 0
+                for m in reversed(seq_trend):
+                    r = m['resonance_globale']
+                    if isinstance(r, (int, float)) and r == 0:
+                        plat += 1
+                    else:
+                        break
+                if plat >= 1:
+                    lignes.append(
+                        f"  Plateau (rho=0)    : {plat} cycle(s) consecutif(s)"
+                    )
+            except (ValueError, TypeError):
+                pass
             lignes.append("")
         except (ValueError, TypeError):
             pass
@@ -159,11 +291,42 @@ def generer_rapport_console(n_cycles: int = 5) -> str:
                 if isinstance(r, (int, float)) and r == 0 and isinstance(f, (int, float)) and f > 0:
                     zeros += 1
             if zeros >= 2:
+                dernier_m = seq[-1]
+                flex = dernier_m.get('taux_occupation_flexible', 'N/A')
+                entro = dernier_m.get('entropie_collective', 'N/A')
+                cyc = dernier_m.get('cycles_resonance_basse', 'N/A')
+                rho_dernier = dernier_m.get('resonance_globale', 'N/A')
+                budget = dernier_m.get('budget_flexibilite', 'N/A')
                 lignes.append("  [!DIAGNOSTIC] Plateau de résonance détecté :")
                 lignes.append(f"    {zeros}/{len(seq)} cycles récents ont une résonance nulle malgré des fusions.")
-                lignes.append("    Cause probable : tous les rho_relationnel des agents sont à 0.0")
-                lignes.append("    (aucun couplage relationnel actif) → la résonance reste à 0.0000")
-                lignes.append("    tant que les similarités phi ne produisent pas de rho non nul.")
+                lignes.append(f"    Flexibilité moyenne (degrés liberté) : {flex}")
+                lignes.append(f"    Budget flexibilité collective        : {budget}")
+                lignes.append(f"    Cycles consécutifs ρ bas            : {cyc}")
+                lignes.append(f"    Entropie collective                 : {entro} (seuil spawn ≈ 6.0)")
+                if isinstance(rho_dernier, (int, float)) and rho_dernier == 0:
+                    # Distinguer les deux attracteurs de dormance :
+                    #  - métabolique : budget épuisé à 0 + tout flexible → ρ=0 par construction
+                    #  - rigide      : trop de nœuds rigides, trop peu de flexibilité
+                    budget_ok = isinstance(budget, (int, float)) and budget <= 0.05
+                    flex_ok = isinstance(flex, (int, float)) and flex >= 0.9
+                    if budget_ok and flex_ok:
+                        lignes.append("    [M7] ALERTE dormance MÉTABOLIQUE ACTIVE :")
+                        lignes.append("      budget de flexibilité épuisé alors que TOUS les nœuds")
+                        lignes.append("      sont flexibles → ρ = 0 par construction (plus aucun nœud")
+                        lignes.append("      rigide pour régénérer le budget).")
+                        lignes.append("      Correction intégrée : re-rigidification homéostatique (M7)")
+                        lignes.append("      active automatiquement (plancher métabolique + 0.25 des")
+                        lignes.append("      nœuds les plus centraux repassent en rigide).")
+                    elif budget_ok:
+                        lignes.append("    [M7] ALERTE dormance métabolique : budget épuisé (0.0)")
+                        lignes.append("      mais flexibilité partielle — re-rigidification homéostatique")
+                        lignes.append("      (M7) requise / active.")
+                    else:
+                        lignes.append("    [M7] ALERTE dormance RIGIDE :")
+                        lignes.append("      injecter de la flexibilité (M1/M2) ou activer --auto-reseed")
+                else:
+                    lignes.append(f"    Résonance du dernier cycle : {rho_dernier} →")
+                    lignes.append("      plateau historique, en cours de résolution")
                 lignes.append("")
         except (ValueError, TypeError):
             pass
@@ -187,6 +350,19 @@ def generer_rapport_html(n_cycles: int = 20) -> str:
         couplages.append(m['couplage_moyen'] if isinstance(m['couplage_moyen'], (int, float)) else 0)
 
     m_rapport = extraire_metriques(lire_fichier(rapport)) if rapport else {}
+
+    # [C4] Diagnostic d'homogénéisation pour le rapport HTML
+    c4 = diagnostiquer_homogeneisation(m_rapport) if m_rapport else {
+        "niveau": "ok", "message": "", "entropie_max": "N/A", "marge": None
+    }
+    c4_couleur = {
+        "alerte": "#ff6b6b", "attention": "#ffb84d", "ok": "#81c784"
+    }.get(c4["niveau"], "#81c784")
+    c4_bandeau = (
+        f'<div style="background:#1b1b1b;border:1px solid {c4_couleur};'
+        f'border-radius:8px;padding:10px 16px;margin-top:12px;color:{c4_couleur};">'
+        f'{c4["message"] if c4["message"] else "Diversité OK."}</div>'
+    )
 
     html = f"""<!DOCTYPE html>
 <html lang="fr">
@@ -216,6 +392,7 @@ def generer_rapport_html(n_cycles: int = 20) -> str:
   <div class="metrique"><div class="valeur">{m_rapport.get('entropie_collective','N/A')}</div><div class="label">Entropie</div></div>
   <div class="metrique"><div class="valeur">{m_rapport.get('budget_flexibilite','N/A')}</div><div class="label">Budget flexibilité</div></div>
 </div>
+{c4_bandeau}
 <h2>Évolution des cycles</h2>
 <table>
 <tr><th>Cycle</th><th>Résonance</th><th>Fusions</th><th>Couplage</th><th>Tendance</th></tr>

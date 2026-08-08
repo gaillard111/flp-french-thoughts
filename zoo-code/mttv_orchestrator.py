@@ -22,7 +22,7 @@ Usage :
     python zoo-code/mttv_orchestrator.py daemon      # Mode watchdog continu
     python zoo-code/mttv_orchestrator.py start --api-only  # Démarre seulement l'API
 
-sig:0x4D545456
+sig:0x4D5454562D464C50
 """
 
 from __future__ import annotations
@@ -80,7 +80,7 @@ logging.basicConfig(
 logger = logging.getLogger("mttv_orchestrator")
 logger.info("=" * 60)
 logger.info("  MTTV-FLP ORCHESTRATOR")
-logger.info("  Signature: 0x4D545456")
+logger.info("  Signature: 0x4D5454562D464C50")
 logger.info("=" * 60)
 
 
@@ -135,7 +135,7 @@ SERVICES: list[ServiceDef] = [
         cwd=PROJECT_ROOT,
         pid_file=MONITORING_DIR / ".monitoring_service.pid",
         log_file=MONITORING_DIR / "monitoring_service.log",
-        persistent=False,  # S'exécute et termine (scheduler daily)
+        persistent=False,
     ),
     ServiceDef(
         name="ipfs_active_pinner",
@@ -144,7 +144,7 @@ SERVICES: list[ServiceDef] = [
         cwd=PROJECT_ROOT,
         pid_file=PHASE4_DIR / ".ipfs_pinner.pid",
         log_file=PHASE4_DIR / "ipfs_active_pinner.log",
-        persistent=False,  # S'exécute et termine (un cycle)
+        persistent=False,
     ),
     ServiceDef(
         name="script_dormant",
@@ -153,6 +153,42 @@ SERVICES: list[ServiceDef] = [
         cwd=PROJECT_ROOT,
         pid_file=PHASE4_DIR / ".script_dormant.pid",
         log_file=PHASE4_DIR / "dormant_node.log",
+        persistent=True,
+    ),
+    ServiceDef(
+        name="resonance_dashboard",
+        description="Dashboard Résonance (Axe 1) — collecte signaux essaims",
+        cmd=[sys.executable, str(BASE_DIR / "resonance_dashboard.py")],
+        cwd=PROJECT_ROOT,
+        pid_file=BASE_DIR / ".resonance_dashboard.pid",
+        log_file=BASE_DIR / "resonance_dashboard.log",
+        persistent=True,
+    ),
+    ServiceDef(
+        name="mycelisation",
+        description="Mycélisation Tétravalente — cycles épigénétiques",
+        cmd=[sys.executable, str(BASE_DIR / "mycelisation_tetravalente.py"),
+             "--daemon", "--cycles", "0",
+             "--auto-reseed", "--reseed-fraction", "0.25",
+             # [C7] Respiration de diversité Φ toutes les 24 cycles —
+             # anti-homogénéisation géométrique (le flag CLI est maintenant
+             # bien transmis au pont).
+             # 08/08 : dose renforcée 0.05 → 0.10 (anti-homogénéisation).
+             "--respiration-intervalle", "24",
+             "--respiration-dose", "0.10"],
+        cwd=PROJECT_ROOT,
+        pid_file=BASE_DIR / ".mycelisation.pid",
+        log_file=BASE_DIR / "mycelisation.log",
+        persistent=True,
+    ),
+    ServiceDef(
+        name="envoyer_rapport",
+        description="Daemon rapport quotidien MTTV-FLP (email 08:00, permanent)",
+        cmd=[sys.executable, str(BASE_DIR / "envoyer_rapport.py"), "--daemon",
+             "--html", "--heure", "8"],
+        cwd=PROJECT_ROOT,
+        pid_file=BASE_DIR / ".envoyer_rapport.pid",
+        log_file=BASE_DIR / "envoyer_rapport.log",
         persistent=True,
     ),
 ]
@@ -505,7 +541,7 @@ def _print_status(results: list[dict[str, Any]]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="MTTV-FLP Service Orchestrator — Gestion centralisée des services",
-        epilog="sig:0x4D545456",
+        epilog="sig:0x4D5454562D464C50",
     )
     parser.add_argument(
         "action",
@@ -529,6 +565,14 @@ def main() -> None:
         help="N'agir que sur le script dormant",
     )
     parser.add_argument(
+        "--rapport-only", action="store_true",
+        help="N'agir que sur le daemon envoyer_rapport",
+    )
+    parser.add_argument(
+        "--mycelisation-only", action="store_true",
+        help="N'agir que sur le service de mycélisation tétravalente",
+    )
+    parser.add_argument(
         "--interval", type=float, default=15.0,
         help="Intervalle du watchdog en secondes (défaut: 15)",
     )
@@ -549,6 +593,10 @@ def main() -> None:
         targets = ["monitoring_service"]
     elif args.dormant_only:
         targets = ["script_dormant"]
+    elif args.rapport_only:
+        targets = ["envoyer_rapport"]
+    elif args.mycelisation_only:
+        targets = ["mycelisation"]
 
     # Exécuter l'action
     if args.action == "start":

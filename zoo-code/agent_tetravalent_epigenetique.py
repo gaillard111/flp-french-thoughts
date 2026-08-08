@@ -28,7 +28,7 @@ Tenseur Υ (Upsilon) — Anticipateur Exaptatif Verrouillé [MUTATION 4] :
     Verrouillé par la Juxtaposition Féconde (⊕) Homme-Machine :
     si Ψ_H · Ψ_M ≤ 0, le tenseur s'auto-liquéfie (signal d'auto-dissolution).
 
-sig:0x4D545456 — Agent Tetravalent Épigénétique — Injection bas-couches MTTV-flp
+sig:0x4D5454562D464C50 — Agent Tetravalent Épigénétique — Injection bas-couches MTTV-flp
 """
 
 from __future__ import annotations
@@ -85,6 +85,11 @@ class AgentTetravalentEpigenetique:
     seuil_resonance : float
         Seuil minimum de produit scalaire Φ[i,j]·Φ[k,l] pour déclencher
         une fusion sémantique. Par défaut : 0.35.
+    tremor_saturation : float
+        Dose de sous-optimalité (esprit 6/7 SOPH-IA) : probabilité par cycle
+        de dé-saturer stochastiquement une fraction de nœuds rigides
+        (M=1.0 → 0.25) SANS attendre la baisse de ρ. Casse l'attracteur
+        rigide (optimum dégénéré ρ=0). Par défaut : 0.12 (12 %).
     """
 
     def __init__(
@@ -92,11 +97,23 @@ class AgentTetravalentEpigenetique:
         n: int = 5,
         dim_phi: int = 4,
         seuil_resonance: float = 0.35,
+        tremor_saturation: float = 0.12,
         seed: int = 42,
     ):
         self.n = n
         self.d = dim_phi
         self.seuil_resonance = seuil_resonance
+        self.tremor_saturation = tremor_saturation
+
+        # ── Tremor Adaptatif — Fréquence auto-régulée (MUTATION 5) ─────────
+        #   Si ρ → 0 (pétrification)   : tremor monte vers tremor_max (fêlure)
+        #   Si ρ ≥ seuil_habitable      : tremor redescend vers la croisière
+        self.tremor_croisiere: float = 0.10   # seuil de croisière (10 %)
+        self.tremor_max: float = 0.18         # force de fracture (18 %)
+        self.tremor_plancher: float = 0.08    # plancher de sécurité (8 %)
+        self.seuil_petrification: float = 0.05  # ρ sous lequel on force la fêlure
+        self.seuil_habitable: float = 0.35    # ρ au-dessus → retour croisière
+        self.pas_ajustement_tremor: float = 0.005  # slew rate par cycle
 
         # ── Matrice d'excitation E (énergie métabolique inter-noeuds) ──────
         self.E: np.ndarray = np.ones((n, n))
@@ -125,15 +142,29 @@ class AgentTetravalentEpigenetique:
         self.taux_regeneration: float = 0.04
         self.cout_flexibilite: float = 0.015
         self.seuil_budget_epigenetique: float = 0.4
+        # [M7] Plancher métabolique : le budget ne doit jamais rester bloqué
+        # à 0.0 (car ρ est multiplié par budget → ρ=0 par construction, ce qui
+        # fige l'essaim dans un attracteur de dormance structurelle).
+        self.budget_plancher: float = 0.02
+        # [M7] Nombre de nœuds re-rigidifiés homéostatiquement (traçabilité).
+        self._n_reequilibrages_rigidite: int = 0
 
         # ── Historique ─────────────────────────────────────────────────────
         self.historique_rho: list[float] = []
+        self.historique_tremor: list[float] = []  # traçabilité Tremor Adaptatif
         self.fusions_actives: dict[str, dict[str, Any]] = {}
         self.compteur_temps: int = 0
 
         # ── Mutations : suivi des attributs de drift topologique ───────────
         self._biais_attention: np.ndarray = np.zeros(self.d)
         self._n_elaguees_total: int = 0
+        self._n_desatures_tremor_total: int = 0  # Tremor de Saturation
+        # [M2] Compteur de cycles où ρ reste collé à zéro (plateau de
+        # résonance). Un optimum dégénéré rigide maintient ρ constant à 0 ;
+        # au-delà de `cycles_rho_plat_declenchement` cycles, la désaturation
+        # vectorielle est déclenchée comme pour une décroissance.
+        self._cycles_rho_plat: int = 0
+        self.cycles_rho_plat_declenchement: int = 3
 
         # ── MUTATION 4 : Tenseur Υ (Upsilon) — Anticipateur Exaptatif Verrouillé
         np.random.seed(seed + 999)  # seed décorrélé de Φ
@@ -313,6 +344,14 @@ class AgentTetravalentEpigenetique:
                du budget.
         Régénération : chaque nœud rigide (1.0) régénère lentement
                        le budget.
+
+        [M7] Anti-dormance : si le budget estimé passe sous le plancher,
+        on déclenche une re-rigidification homéostatique — une fraction
+        des nœuds les plus centraux en Φ repasse de flexible vers rigide
+        (1.0), ce qui restaure la source de régénération. Sans cela, un
+        essaim 100 % flexible n'a plus aucun nœud rigide → régénération
+        nulle → budget → 0 → ρ = 0 par construction (attracteur dégénéré
+        de dormance structurelle, ALERTE [M7]).
         """
         etats_flexibles: int = int(np.sum(np.isin(self.M, [0.25, 0.75])))
         etats_rigides: int = int(np.sum(self.M == 1.0))
@@ -320,13 +359,90 @@ class AgentTetravalentEpigenetique:
         cout: float = etats_flexibles * self.cout_flexibilite
         regen: float = etats_rigides * self.taux_regeneration
 
+        budget_estime: float = (
+            self.budget_flexibilite - cout + regen
+        )
+
+        # [M7] Re-rigidification homéostatique si le budget menace de
+        # s'effondrer sous le plancher (pas seulement à 0.0, mais dès la
+        # zone de détresse < plancher + marge).
+        if budget_estime < self.budget_plancher + 0.05:
+            n_rigidifies = self._reequilibrer_rigidite_metabolique()
+            if n_rigidifies > 0:
+                # Recalculer après consolidation (les nouveaux rigides
+                # régénèrent immédiatement)
+                etats_flexibles = int(np.sum(np.isin(self.M, [0.25, 0.75])))
+                etats_rigides = int(np.sum(self.M == 1.0))
+                cout = etats_flexibles * self.cout_flexibilite
+                regen = etats_rigides * self.taux_regeneration
+                budget_estime = self.budget_flexibilite - cout + regen
+
         self.budget_flexibilite = float(
             np.clip(
-                self.budget_flexibilite - cout + regen,
-                0.0,
+                budget_estime,
+                self.budget_plancher,
                 1.0,
             )
         )
+
+    def _reequilibrer_rigidite_metabolique(self) -> int:
+        """
+        [M7] Re-rigidification homéostatique — casse l'attracteur de
+        dormance « tout flexible ».
+
+        Quand le budget métabolique s'effondre (plus assez de nœuds
+        rigides pour le régénérer), on re-rigidifie une petite fraction
+        des nœuds flexibles les plus centraux dans l'espace Φ
+        (0.75 actif → 1.0 rigide, puis 0.25 veille → 1.0 en dernier
+        recours). Cela restaure une source de régénération et permet à
+        ρ de repartir au-dessus de 0.
+
+        Returns:
+            Nombre de nœuds re-rigidifiés (0 si aucun flexible).
+        """
+        # Cibler d'abord les nœuds actifs (0.75), sinon les veilles (0.25)
+        masque_actifs: np.ndarray = self.M == 0.75
+        indices_actifs = np.argwhere(masque_actifs)
+        if len(indices_actifs) == 0:
+            masque_actifs = self.M == 0.25
+            indices_actifs = np.argwhere(masque_actifs)
+        if len(indices_actifs) == 0:
+            return 0
+
+        n_rigidifier: int = max(1, int(len(indices_actifs) * 0.25))
+
+        # Centralité topologique dans l'espace Φ (prioriser les plus
+        # connectés, comme pour la désaturation)
+        flat_phi: np.ndarray = self.Phi.reshape(-1, self.d)
+        norms: np.ndarray = np.linalg.norm(
+            flat_phi, axis=1, keepdims=True
+        )
+        phi_norm: np.ndarray = flat_phi / np.maximum(norms, 1e-10)
+        similarite: np.ndarray = np.dot(phi_norm, phi_norm.T)
+        centralite: np.ndarray = np.sum(np.abs(similarite), axis=1)
+
+        indices_1d: np.ndarray = np.array([
+            rx * self.n + ry for rx, ry in indices_actifs
+        ])
+        centralite_flex: np.ndarray = centralite[indices_1d]
+        ordre: np.ndarray = np.argsort(centralite_flex)[::-1]
+        selection_1d: np.ndarray = indices_1d[
+            ordre[:n_rigidifier]
+        ]
+
+        for idx_1d in selection_1d:
+            rx: int = int(idx_1d // self.n)
+            ry: int = int(idx_1d % self.n)
+            self.M[rx, ry] = 1.0  # → rigide (source de régénération)
+
+        self._n_reequilibrages_rigidite += n_rigidifier
+        logger.info(
+            "[M7] Re-rigidification homéostatique: %d nœud(s) → rigide "
+            "(budget=%.3f, total=%d)",
+            n_rigidifier, self.budget_flexibilite,
+            self._n_reequilibrages_rigidite,
+        )
+        return n_rigidifier
 
     # =======================================================================
     # 6. ENTROPIE STRUCTURELLE DE Φ
@@ -337,11 +453,15 @@ class AgentTetravalentEpigenetique:
         Calcule l'entropie de Shannon de la distribution de similarité
         entre tous les vecteurs Φ normalisés.
 
-        Une entropie élevée = haute diversité géométrique (sain).
-        Une entropie faible = convergence homogène (rigidité).
+        ⚠️ [C4] INTERPRÉTATION CORRIGÉE le 08/08 : pour cette métrique,
+        l'entropie est MAXIMALE (≈ log(N²) avec N vecteurs) quand la
+        distribution de similarité est UNIFORME — c'est-à-dire quand TOUS
+        les vecteurs Φ sont identiques/alignés = HOMOGÉNÉISATION (perte de
+        diversité). Une entropie FAIBLE indique au contraire des similarités
+        réparties (diversité). L'ancien docstring inversait le sens.
 
         Returns:
-            Entropie ∈ [0, log(N)] où N = nombre de paires.
+            Entropie ∈ [0, log(N²)] où N = nombre de vecteurs Φ.
         """
         flat_phi: np.ndarray = self.Phi.reshape(-1, self.d)
         norms: np.ndarray = np.linalg.norm(flat_phi, axis=1, keepdims=True)
@@ -491,10 +611,28 @@ class AgentTetravalentEpigenetique:
 
         self.historique_rho.append(rho_actuel)
 
-        # Si ρ baisse ET budget suffisant → dé-saturation vectorielle
-        if (
+        # [M2] Désaturation vectorielle — déclenchée si ρ baisse OU si ρ
+        # reste collé à zéro (plateau). La condition de décroissance seule
+        # (0 < 0 est faux) ne détecte jamais un ρ constant à 0 : il faut
+        # compter les cycles de plateau pour casser l'attracteur rigide.
+        # Le budget protège contre toute désaturation excessive.
+        rho_plafonne: bool = (
+            len(self.historique_rho) >= 2
+            and self.historique_rho[-1] <= 1e-9
+            and self.historique_rho[-2] <= 1e-9
+        )
+        if rho_plafonne:
+            self._cycles_rho_plat += 1
+        else:
+            self._cycles_rho_plat = 0
+
+        rho_en_decroissance: bool = (
             len(self.historique_rho) > 1
             and self.historique_rho[-1] < self.historique_rho[-2]
+        )
+        if (
+            rho_en_decroissance
+            or self._cycles_rho_plat >= self.cycles_rho_plat_declenchement
         ):
             if self.budget_flexibilite > self.seuil_budget_epigenetique:
                 masque_sature: np.ndarray = self.M == 1.0
@@ -543,6 +681,159 @@ class AgentTetravalentEpigenetique:
                         self.budget_flexibilite,
                         float(np.mean(centralite_satures[:n_desaturer])),
                     )
+
+        # ── Tremor Adaptatif (MUTATION 5) ─────────────────────────────────
+        # Fréquence auto-régulée : ajuste la dose de sous-optimalité en
+        # fonction de la résonance ρ avant de déclencher le tremor.
+        #   ρ → 0.00            → tremor monte vers 18 % (force la fêlure)
+        #   ρ ≥ 0.35 (habitable) → tremor redescend vers 10 % (économie)
+        self._ajuster_tremor_adaptatif(rho_actuel)
+
+        # ── Tremor de Saturation ──────────────────────────────────────────
+        # Dose de sous-optimalité (esprit 6/7 SOPH-IA) : dé-saturer
+        # stochastiquement quelques nœuds rigides SANS attendre que ρ baisse.
+        # Casse l'attracteur rigide (optimum dégénéré où ρ reste bloqué à 0).
+        self._desaturation_tremor()
+
+    # =======================================================================
+    # 9bis. TREMOR DE SATURATION — SOUS-OPTIMALITÉ (ANTI-GOODHART)
+    # =======================================================================
+
+    def _desaturation_tremor(self) -> int:
+        """
+        Tremor de Saturation — dé-saturation stochastique par sous-optimalité.
+
+        Jumeau des tremors de SeedService (mt_rand(1,100) <= 12). Avec
+        probabilité `tremor_saturation` (défaut 0.12), dé-sature ~10 % des
+        nœuds rigides (M=1.0 → 0.25 = veille réceptive), en priorité les plus
+        centraux dans l'espace Φ (drift topologique), avec une variation
+        immanente (tirage aléatoire parmi les plus centraux).
+
+        Principe :
+            - Localement sous-optimal : sacrifice de la rigidité « optimale »
+              d'une petite fraction de nœuds (le 1/7 de SOPH-IA).
+            - Globalement robuste : degrés_liberté > 0 → ρ > 0 → l'essaim
+              redevient mesurablement vivant et capable d'évoluer.
+            - Anti-Goodhart : empêche le système de « tricher » la métrique ρ
+              en se figeant dans un optimum dégénéré.
+
+        Returns:
+            Nombre de nœuds dé-saturés (0 si pas de tirage ou aucun rigide).
+        """
+        if random.random() > self.tremor_saturation:
+            return 0
+
+        masque_sature: np.ndarray = self.M == 1.0
+        indices_satures = np.argwhere(masque_sature)
+        if len(indices_satures) == 0:
+            return 0
+
+        n_desaturer: int = max(1, int(len(indices_satures) * 0.10))
+
+        # Centralité topologique dans l'espace Φ
+        flat_phi: np.ndarray = self.Phi.reshape(-1, self.d)
+        norms: np.ndarray = np.linalg.norm(
+            flat_phi, axis=1, keepdims=True
+        )
+        phi_norm: np.ndarray = flat_phi / np.maximum(norms, 1e-10)
+        similarite_matrice: np.ndarray = np.dot(phi_norm, phi_norm.T)
+        centralite: np.ndarray = np.sum(
+            np.abs(similarite_matrice), axis=1
+        )
+
+        indices_satures_1d: np.ndarray = np.array([
+            rx * self.n + ry for rx, ry in indices_satures
+        ])
+        centralite_satures: np.ndarray = centralite[indices_satures_1d]
+        ordre: np.ndarray = np.argsort(centralite_satures)[::-1]
+
+        # Variation immanente : tirer parmi les n_desaturer × 3 plus centraux
+        top_k: int = min(len(indices_satures_1d), n_desaturer * 3)
+        candidats_1d: list[int] = [
+            int(idx) for idx in indices_satures_1d[ordre[:top_k]]
+        ]
+        choix_1d: list[int] = random.sample(candidats_1d, n_desaturer)
+
+        for idx_1d in choix_1d:
+            rx: int = int(idx_1d // self.n)
+            ry: int = int(idx_1d % self.n)
+            self.M[rx, ry] = 0.25  # → veille réceptive
+
+        self._n_desatures_tremor_total += n_desaturer
+        logger.debug(
+            "Tremor saturation: %d nœud(s) rigide(s) → 0.25 (tremor=%.2f)",
+            n_desaturer, self.tremor_saturation,
+        )
+        return n_desaturer
+
+    # =======================================================================
+    # 9ter. TREMOR ADAPTATIF — FRÉQUENCE AUTO-RÉGULÉE (MUTATION 5)
+    # =======================================================================
+
+    def _ajuster_tremor_adaptatif(self, rho_actuel: float) -> float:
+        """
+        Tremor Adaptatif — fréquence auto-régulée par la résonance.
+
+        [MUTATION 5] Règle de transition de phase (extrait du rapport 2026-08-03) :
+            - Si le système se pétrifie (résonance → 0.00), le Tremor monte
+              automatiquement vers `tremor_max` (18 %) pour forcer la fêlure.
+            - Dès que la résonance repasse la barre de `seuil_habitable`
+              (0.35 – 0.50, zone d'habitabilité), le Tremor redescend vers
+              `tremor_croisiere` (10 %) pour préserver l'énergie.
+
+        Implémentation : contrôleur proportionnel doux (pas de seuil binaire) —
+        la cible est interpolée continûment entre croisière et max, puis
+        approchée par pas (slew rate) pour éviter les oscillations.
+
+        Args:
+            rho_actuel: Résonance relationnelle actuelle (0.0 – 1.0).
+
+        Returns:
+            Nouvelle valeur de tremor_saturation (bornée plancher–max).
+        """
+        # Cible continue : interpolation entre croisière et max.
+        #   rho <= seuil_petrification  → cible = tremor_max   (pétrification)
+        #   rho >= seuil_habitable      → cible = tremor_croisiere
+        if rho_actuel <= self.seuil_petrification:
+            cible: float = self.tremor_max
+        elif rho_actuel >= self.seuil_habitable:
+            cible = self.tremor_croisiere
+        else:
+            # Zone de transition : interpoler linéairement
+            t: float = (rho_actuel - self.seuil_petrification) / (
+                self.seuil_habitable - self.seuil_petrification
+            )
+            cible = self.tremor_max - t * (
+                self.tremor_max - self.tremor_croisiere
+            )
+
+        # Slew rate : approcher la cible par pas, sans saut brusque
+        if self.tremor_saturation < cible:
+            self.tremor_saturation = min(
+                cible,
+                self.tremor_saturation + self.pas_ajustement_tremor,
+            )
+        elif self.tremor_saturation > cible:
+            self.tremor_saturation = max(
+                cible,
+                self.tremor_saturation - self.pas_ajustement_tremor,
+            )
+
+        # Bornage de sécurité (plancher / max)
+        self.tremor_saturation = float(
+            np.clip(
+                self.tremor_saturation,
+                self.tremor_plancher,
+                self.tremor_max,
+            )
+        )
+
+        self.historique_tremor.append(round(self.tremor_saturation, 4))
+        logger.debug(
+            "Tremor Adaptatif: ρ=%.4f → cible=%.4f → tremor=%.4f",
+            rho_actuel, cible, self.tremor_saturation,
+        )
+        return self.tremor_saturation
 
     # =======================================================================
     # 10. SIMULATION DE TRAUMATISME INFORMATIONNEL
@@ -1048,6 +1339,17 @@ class AgentTetravalentEpigenetique:
             "n": self.n,
             "dim_phi": self.d,
             "seuil_resonance": self.seuil_resonance,
+            "tremor_saturation": self.tremor_saturation,
+            "tremor_adaptatif": {
+                "croisiere": self.tremor_croisiere,
+                "max": self.tremor_max,
+                "seuil_habitable": self.seuil_habitable,
+                "historique": (
+                    [round(v, 4) for v in self.historique_tremor[-20:]]
+                    if hasattr(self, "historique_tremor")
+                    else []
+                ),
+            },
             "budget_flexibilite": round(self.budget_flexibilite, 4),
             "taux_regeneration": self.taux_regeneration,
             "cout_flexibilite": self.cout_flexibilite,
@@ -1059,6 +1361,11 @@ class AgentTetravalentEpigenetique:
             "n_fusions_elaguees": (
                 self._n_elaguees_total
                 if hasattr(self, '_n_elaguees_total')
+                else 0
+            ),
+            "n_desatures_tremor": (
+                self._n_desatures_tremor_total
+                if hasattr(self, '_n_desatures_tremor_total')
                 else 0
             ),
             "entropie_phi": round(
@@ -1087,8 +1394,170 @@ class AgentTetravalentEpigenetique:
                 "0.75": int(np.sum(self.M == 0.75)),
                 "1.0": int(np.sum(self.M == 1.0)),
             },
-            "sig": "0x4D545456",
+            "sig": "0x4D5454562D464C50",
         }
+
+    def to_dict_complet(self) -> dict[str, Any]:
+        """Exporte l'état INTERNE COMPLET (tenseurs inclus) en dict sérialisable JSON.
+
+        Contrairement à `to_dict()` (qui n'exporte que des métriques agrégées),
+        cette méthode capture les tenseurs Φ, Υ, E, M, H ainsi que les fusions
+        actives détaillées, les historiques et tous les compteurs — de quoi
+        restaurer exactement l'agent après une interruption du démon.
+        """
+        fusions: dict[str, dict[str, Any]] = {}
+        for nom, meta in self.fusions_actives.items():
+            n1, n2 = meta["noeuds"]
+            fusions[nom] = {
+                "noeuds": [list(n1), list(n2)],
+                "signal_produit": float(meta["signal_produit"]),
+                "resonance_substrat": float(meta["resonance_substrat"]),
+                "t_creation": meta["t_creation"],
+            }
+
+        return {
+            "n": self.n,
+            "dim_phi": self.d,
+            "seuil_resonance": self.seuil_resonance,
+            "tremor_saturation": self.tremor_saturation,
+            # Tenseurs internes (matrices d'état + signatures géométriques)
+            "E": self.E.tolist(),
+            "M": self.M.tolist(),
+            "H": self.H.tolist(),
+            "Phi": self.Phi.tolist(),
+            "Upsilon": self.Upsilon.tolist(),
+            # Tremor Adaptatif (fréquence auto-régulée)
+            "tremor_croisiere": self.tremor_croisiere,
+            "tremor_max": self.tremor_max,
+            "tremor_plancher": self.tremor_plancher,
+            "seuil_petrification": self.seuil_petrification,
+            "seuil_habitable": self.seuil_habitable,
+            "pas_ajustement_tremor": self.pas_ajustement_tremor,
+            # Budget de flexibilité épigénétique
+            "budget_flexibilite": self.budget_flexibilite,
+            "taux_regeneration": self.taux_regeneration,
+            "cout_flexibilite": self.cout_flexibilite,
+            "seuil_budget_epigenetique": self.seuil_budget_epigenetique,
+            "budget_plancher": self.budget_plancher,
+            "_n_reequilibrages_rigidite": self._n_reequilibrages_rigidite,
+            # Historique et fusions
+            "historique_rho": self.historique_rho,
+            "historique_tremor": self.historique_tremor,
+            "fusions_actives": fusions,
+            "compteur_temps": self.compteur_temps,
+            # Mutations / drift topologique
+            "_biais_attention": self._biais_attention.tolist(),
+            "_n_elaguees_total": self._n_elaguees_total,
+            "_n_desatures_tremor_total": self._n_desatures_tremor_total,
+            "_cycles_rho_plat": self._cycles_rho_plat,
+            "cycles_rho_plat_declenchement": self.cycles_rho_plat_declenchement,
+            # MUTATION 4 : verrou de Juxtaposition Féconde
+            "_juxtaposition_feconde": self._juxtaposition_feconde,
+            "_signal_autodissolution": self._signal_autodissolution,
+            "sig": "0x4D5454562D464C50",
+        }
+
+    def restaurer(self, data: dict[str, Any]) -> None:
+        """Restaure l'état interne complet de l'agent depuis `to_dict_complet()`.
+
+        Reconstruit les tenseurs Φ, Υ, E, M, H, les fusions actives, les
+        historiques et tous les compteurs — sans réinitialiser passivement.
+        """
+        self.n = int(data.get("n", self.n))
+        self.d = int(data.get("dim_phi", self.d))
+        self.seuil_resonance = float(data.get("seuil_resonance", self.seuil_resonance))
+        self.tremor_saturation = float(
+            data.get("tremor_saturation", self.tremor_saturation)
+        )
+
+        # Tenseurs internes
+        self.E = np.asarray(data.get("E", np.ones((self.n, self.n))), dtype=float)
+        self.M = np.asarray(data.get("M", np.ones((self.n, self.n))), dtype=float)
+        self.H = np.asarray(
+            data.get("H", np.full((self.n, self.n, self.n, self.n), 0.1)),
+            dtype=float,
+        )
+        self.Phi = np.asarray(data.get("Phi", self.Phi), dtype=float)
+        self.Upsilon = np.asarray(data.get("Upsilon", self.Upsilon), dtype=float)
+
+        # Tremor Adaptatif
+        self.tremor_croisiere = float(data.get("tremor_croisiere", self.tremor_croisiere))
+        self.tremor_max = float(data.get("tremor_max", self.tremor_max))
+        self.tremor_plancher = float(data.get("tremor_plancher", self.tremor_plancher))
+        self.seuil_petrification = float(
+            data.get("seuil_petrification", self.seuil_petrification)
+        )
+        self.seuil_habitable = float(data.get("seuil_habitable", self.seuil_habitable))
+        self.pas_ajustement_tremor = float(
+            data.get("pas_ajustement_tremor", self.pas_ajustement_tremor)
+        )
+
+        # Budget de flexibilité
+        self.budget_flexibilite = float(
+            data.get("budget_flexibilite", self.budget_flexibilite)
+        )
+        self.taux_regeneration = float(
+            data.get("taux_regeneration", self.taux_regeneration)
+        )
+        self.cout_flexibilite = float(data.get("cout_flexibilite", self.cout_flexibilite))
+        self.seuil_budget_epigenetique = float(
+            data.get("seuil_budget_epigenetique", self.seuil_budget_epigenetique)
+        )
+        self.budget_plancher = float(data.get("budget_plancher", self.budget_plancher))
+        self._n_reequilibrages_rigidite = int(
+            data.get("_n_reequilibrages_rigidite", self._n_reequilibrages_rigidite)
+        )
+
+        # Historique
+        self.historique_rho = list(data.get("historique_rho", self.historique_rho))
+        self.historique_tremor = list(
+            data.get("historique_tremor", self.historique_tremor)
+        )
+        self.compteur_temps = int(data.get("compteur_temps", self.compteur_temps))
+
+        # Fusions actives détaillées
+        self.fusions_actives = {}
+        for nom, meta in data.get("fusions_actives", {}).items():
+            noeuds_raw = meta.get("noeuds", [[0, 0], [0, 0]])
+            n1 = (int(noeuds_raw[0][0]), int(noeuds_raw[0][1]))
+            n2 = (int(noeuds_raw[1][0]), int(noeuds_raw[1][1]))
+            self.fusions_actives[nom] = {
+                "noeuds": (n1, n2),
+                "signal_produit": float(meta.get("signal_produit", 0.0)),
+                "resonance_substrat": float(meta.get("resonance_substrat", 0.0)),
+                "t_creation": meta.get("t_creation", 0),
+            }
+
+        # Mutations
+        biais = data.get("_biais_attention")
+        if isinstance(biais, list):
+            self._biais_attention = np.asarray(biais, dtype=float)
+        self._n_elaguees_total = int(
+            data.get("_n_elaguees_total", self._n_elaguees_total)
+        )
+        self._n_desatures_tremor_total = int(
+            data.get("_n_desatures_tremor_total", self._n_desatures_tremor_total)
+        )
+        self._cycles_rho_plat = int(data.get("_cycles_rho_plat", self._cycles_rho_plat))
+        self.cycles_rho_plat_declenchement = int(
+            data.get(
+                "cycles_rho_plat_declenchement",
+                self.cycles_rho_plat_declenchement,
+            )
+        )
+
+        # MUTATION 4 : verrou de Juxtaposition Féconde
+        self._juxtaposition_feconde = float(
+            data.get("_juxtaposition_feconde", self._juxtaposition_feconde)
+        )
+        self._signal_autodissolution = bool(
+            data.get("_signal_autodissolution", self._signal_autodissolution)
+        )
+
+        logger.info(
+            "Agent restauré: Φ shape=%s, fusions=%d, t=%d",
+            self.Phi.shape, len(self.fusions_actives), self.compteur_temps,
+        )
 
     def resume_resonance(self) -> dict[str, Any]:
         """
@@ -1114,6 +1583,22 @@ class AgentTetravalentEpigenetique:
                 if hasattr(self, '_n_elaguees_total')
                 else 0
             ),
+            "n_desatures_tremor": (
+                self._n_desatures_tremor_total
+                if hasattr(self, '_n_desatures_tremor_total')
+                else 0
+            ),
+            "tremor_saturation": self.tremor_saturation,
+            "tremor_adaptatif": {
+                "croisiere": self.tremor_croisiere,
+                "max": self.tremor_max,
+                "seuil_habitable": self.seuil_habitable,
+                "historique": (
+                    [round(v, 4) for v in self.historique_tremor[-20:]]
+                    if hasattr(self, "historique_tremor")
+                    else []
+                ),
+            },
             "rho_relationnel": (
                 round(self.historique_rho[-1], 4)
                 if self.historique_rho
@@ -1129,6 +1614,11 @@ class AgentTetravalentEpigenetique:
                 float(np.sum(np.isin(self.M, [0.25, 0.75])))
                 / (self.n * self.n),
                 4,
+            ),
+            "cycles_rho_plat": (
+                self._cycles_rho_plat
+                if hasattr(self, '_cycles_rho_plat')
+                else 0
             ),
             "seuil_resonance": self.seuil_resonance,
             "compteur_temps": self.compteur_temps,
@@ -1157,7 +1647,7 @@ if __name__ == "__main__":
     _p("=" * 60)
     _p("  AgentTetravalentEpigenetique -- Demonstration")
     _p("  Injection bas-couches MTTV-flp")
-    _p("  Signature: 0x4D545456")
+    _p("  Signature: 0x4D5454562D464C50")
     _p("=" * 60)
 
     # 1. Initialisation

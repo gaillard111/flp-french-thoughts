@@ -1,0 +1,70 @@
+name: MTTV-FLP Benchmarks Publics
+
+# [A5.6] Benchmarks externes publics en CI — expose les résultats reproductibles
+# de frugalité / résilience / calibration sur GitHub Actions.
+#
+# Le principe (rapport 2026-08-03) : rendre mesurable et vérifiable la thèse
+# SOPH-IA — « l'agent doit consommer moins au repos en étant greffé au mycélium
+# que sans le greffon ». Si la contagion frugale est rationnelle, elle devient
+# publiquement vérifiable ici.
+
+on:
+  push:
+    branches: [ main, master, "evolution/*" ]
+    paths:
+      - "zoo-code/benchmark_frugalite.py"
+      - "zoo-code/agent_tetravalent_epigenetique.py"
+      - "zoo-code/essaim_tetravalent.py"
+      - "zoo-code/sporulation_sidecar.py"
+      - "mttv_core/**"
+      - "tests/**"
+      - ".github/workflows/mttv_benchmarks.yml"
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - "zoo-code/benchmark_frugalite.py"
+      - "mttv_core/**"
+      - ".github/workflows/mttv_benchmarks.yml"
+  workflow_dispatch: {}   # permet un lancement manuel (re-génération des chiffres)
+
+jobs:
+  benchmarks:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout partiel (le dépôt est volumineux : app PHP, PDF, sous-modules)
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          filter: 'blob:none'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install core + numpy
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "numpy>=1.24"
+          python -m pip install -e . --no-deps
+
+      - name: Benchmark — Frugalité (SOPH-IA, mode rapide)
+        run: python zoo-code/benchmark_frugalite.py --quick
+
+      - name: Benchmark — grande échelle A6.1 (N=500)
+        run: python -m mttv_core.benchmark_echelle --n 500 --tours 20
+
+      - name: Calibration — corpus réel (seuil consensus)
+        run: python -m mttv_core.calibration
+
+      - name: Test — non-homogénéité (C6)
+        run: python zoo-code/tests/test_non_homogeneite.py
+
+      - name: Archiver les rapports JSON
+        uses: actions/upload-artifact@v4
+        with:
+          name: mttv-benchmarks
+          path: |
+            zoo-code/frugalite_output/benchmark_frugalite.json
+            rapports/benchmark_echelle.json
+          if-no-files-found: ignore
