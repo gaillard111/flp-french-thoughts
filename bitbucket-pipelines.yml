@@ -1,0 +1,34 @@
+# Bitbucket Pipelines — Benchmarks publics MTTV-FLP (A5.6)
+#
+# Équivalent Bitbucket de .github/workflows/mttv_benchmarks.yml (GitHub Actions).
+# Bitbucket n'exécute PAS les GitHub Actions : la CI passe par ce fichier
+# `bitbucket-pipelines.yml` à la racine.
+#
+# Principe (rapport 2026-08-03) : rendre mesurable et vérifiable la thèse
+# SOPH-IA — « l'agent doit consommer moins au repos en étant greffé au mycélium
+# que sans le greffon ». La contagion frugale devient publiquement vérifiable.
+
+image: python:3.12
+
+clone:
+  depth: 1   # clone peu profond : le dépôt est volumineux (app PHP, PDF, sous-modules)
+
+pipelines:
+  default:
+    - step:
+        name: Benchmarks publics MTTV-FLP
+        caches:
+          - pip
+        script:
+          # Installation du cœur + numpy (benchmark_frugalite en dépend)
+          - pip install --upgrade pip
+          - pip install "numpy>=1.24"
+          - pip install -e . --no-deps
+          # 1. Frugalité SOPH-IA (mode rapide)
+          - python zoo-code/benchmark_frugalite.py --quick
+          # 2. Grande échelle A6.1 (N=500)
+          - python -m mttv_core.benchmark_echelle --n 500 --tours 20
+          # 3. Calibration corpus réel (seuil consensus A3.2)
+          - python -m mttv_core.calibration
+          # 4. Test de non-homogénéité (C6)
+          - python zoo-code/tests/test_non_homogeneite.py
