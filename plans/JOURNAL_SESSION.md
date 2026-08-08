@@ -436,6 +436,38 @@ redémarré avec C3/C5/C7 actifs (voir 2nonies). À observer au prochain rapport
 - **Sécurité** : tokens HF/GitHub en clair dans la config git de dépôts imbriqués
   (`depot-v13`, `hf_v10_temp`, `sandbox-mttv-test`) → rotation recommandée.
 
+## 7bis. CI GitHub Actions — échec « MTTV-FLP Benchmarks Publics » CORRIGÉ (08/08 ~22:20 / 09/08 00:20)
+
+**Symptôme** : le workflow « MTTV-FLP Benchmarks Publics » (A5.6) échouait en
+**15 s** — job `benchmarks` en échec sur l'étape « Benchmark — Frugalité
+(SOPH-IA, mode rapide) » (exit code 2), les 3 étapes suivantes jamais atteintes.
+
+**Cause racine (erreur de commit, pas de code)** :
+- [`zoo-code/benchmark_frugalite.py`](../zoo-code/benchmark_frugalite.py) et
+  [`zoo-code/sporulation_sidecar.py`](../zoo-code/sporulation_sidecar.py)
+  (importé par le benchmark) étaient **untracked** — jamais commités.
+- Le checkout CI ne les contenait pas → `python zoo-code/benchmark_frugalite.py --quick`
+  → `can't open file` → **exit code 2** (reproduit et confirmé localement).
+- `.github/workflows/mttv_benchmarks.yml` (tracké) référençait donc des fichiers absents.
+
+**Correctif** :
+1. **Validation complète en venv Python 3.12 propre + numpy** (les 4 étapes CI passent) :
+   - frugalité `--quick` : surcoût 8.03 % (coût marginal quasi nul) ✅
+   - échelle A6.1 N=500 : résilience 1.0 ✅
+   - calibration B-GATE : tolérance 0.7896 ✅
+   - test C6 : entropie 6.1855 < max 6.3969, C7 active (7 respirations) ✅
+2. **Commit** `2f9973d` : ajout des 2 fichiers au suivi git (693 lignes).
+3. **Push** sur `evolution/tetravalent-core` → **github** (déclenche le workflow) + **bitbucket**.
+
+**Résultat** : run **`31281451977` ✓ SUCCÈS** (19 s) — les 4 étapes passent,
+artifact `mttv-benchmarks` produit. Annotations restantes = warnings non bloquants
+(dépréciation Node.js 20 ; `git exit 128` du checkout partiel, déjà présent avant et
+sans impact). La CI publique A5.6 est désormais **verte**.
+
+**Leçon** : avant de pousser un workflow CI, vérifier que **tous les fichiers
+référencés sont trackés** (`git ls-files <fichiers>` / `git status --short`).
+Un `exit code 2` sur `python <script>` = fichier absent du dépôt.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**
