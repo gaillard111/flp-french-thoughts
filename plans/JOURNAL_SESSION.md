@@ -562,6 +562,31 @@ testée et benchmarkée**. Contrat d'étape signé (gates G1–G3) :
 sur les 3 liaisons aval, extinction à l'équilibre). Le prototype commence à
 « pulluler » : plusieurs cellules interconnectées sans nœud maître.
 
+## 8. FIN DE SESSION — 09/08 ~01:30 (pause volontaire, tout verrouillé)
+
+**Pause** : session suspendue à la demande de l'utilisateur. Rien n'est perdu :
+le point de reprise est la **fin de l'Étape A** (section 7quinquies ci-dessus).
+
+**État d'ensemble à la pause** :
+1. **CI GitHub Actions** : workflow « MTTV-FLP Benchmarks Publics » **vert**
+   (run 31281451977 ✓) — voir 7bis.
+2. **Grand Œuvre MTTV-RUST** : Étape 0 (socle) + **Étape A (cellule sp3)
+   implémentée, testée (12/12), benchmarkée** (amorti ≈ 25,6 ns, actif ≈ 335 ns,
+   128 o/cellule) — voir 7ter/7quater/7quinquies. Commits `54b088d` → `166a001`
+   poussés github + bitbucket.
+3. **Mycélium Python** : démon tournant avec C3/C5/C7 (dose 0.10) — à observer
+   au prochain rapport.
+
+**Point de reprise (prochaine session)** :
+- **Étape B — Tissage du tissu** : [`tissu::topologie`](../mttv_rust/src/tissu/mod.rs)
+  (connexion locale sp3 de proche en proche) + `tissu::propagation` (émission
+  sur les 3 liaisons aval, extinction à l'équilibre). Le prototype pullule.
+- Puis Étape C (matrice H, porosité adaptative) ; interface Veilleur.
+- Rappels en attente : analyse du rapport mycélium (effet C3/C5/C7) ;
+  A3.2 / A5.7 ; rangement de la racine ; rotation tokens (sécurité).
+
+*Le fil est reconstitué. Toute session reprend ici (Étape A complète, Étape B à ouvrir).*
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**
