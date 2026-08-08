@@ -381,19 +381,20 @@ homogénéisation (C7) qui était codée mais inopérante. Démon redémarré (0
 aucune erreur après redémarrage. L'entropie devrait commencer à redescendre sous
 le maximum théorique au fil des cycles.
 
-**État d'avancement des corrections de l'analyse :**
+**État d'avancement des corrections de l'analyse (mise à jour 08/08 — bloc C COMPLET) :**
 
 | Corr. | Description | État |
 |---|---|---|
 | C1 | Injection mutuelle toujours active (dé-seuil) | ✅ implémenté |
 | C2 | Similarité par paires de nœuds (cosinus moyen) | ✅ implémenté |
-| C7 | Respiration de diversité Φ (tremor géométrique) | ✅ implémenté + flag CLI réparé |
-| C3 | Mutation angulaire du Φ au spawn (diversité des clones) | ❌ à faire |
-| C4 | Rapport : détecter `entropie ≈ ln(n(n-1))` = homogénéisation (au lieu de « diversité ») | ❌ à faire |
-| C5 | Contrainte environnementale réelle (signaux M5) au lieu du bruit aléatoire | ❌ à faire |
-| C6 | Test de non-homogénéité (entropie sous max théorique après N cycles) | ❌ à faire |
+| C7 | Respiration de diversité Φ (début de cycle + dose 0.10) | ✅ implémenté + flag CLI réparé |
+| C3 | Mutation angulaire du Φ au spawn (diversité des clones) | ✅ implémenté (08/08) |
+| C4 | Rapport : détecter entropie ≈ max théorique = homogénéisation | ✅ implémenté (08/08) |
+| C5 | Contrainte environnementale réelle (signaux M5) | ✅ implémenté (08/08) |
+| C6 | Test de non-homogénéité (entropie sous max après N cycles) | ✅ implémenté + validé (08/08) |
 
-**Priorité recommandée (de l'analyse) :** C1+C2+C4 déjà traités → prochaine étape : **C4 (diagnostic du rapport)** puis **C7 (respiration)** — dont le branchement est maintenant réparé. Observer 2 cycles avant C3 et C5.
+**Le bloc anti-homogénéisation C1–C7 est désormais COMPLET et testé.** Démon
+redémarré avec C3/C5/C7 actifs (voir 2nonies). À observer au prochain rapport.
 
 ## 4. Prochaines actions possibles (au choix)
 
@@ -421,15 +422,39 @@ le maximum théorique au fil des cycles.
 5. **Fil de discussion reconstitué** et archivé (registre + analyse + ce journal).
 
 **Ce qui reste en attente** (au choix de la prochaine session) :
-- Mycélium : **C4** (rapport : détecter homogénéisation), **C3** (mutation Φ au spawn), **C5** (contrainte réelle), **C6** (test non-homogénéité).
-- Propositions IA : **A5.6** (benchmarks CI), **A3.2** (calibrage 0.87), **A5.7** (API décence).
-- Git : les corrections de session ne sont **pas encore commitées** — recommandé de les committer pour verrouiller le travail.
-- **Rangement du projet (décidé en fin de session, différé)** : l'utilisateur veut
-  faire de l'ordre. Priorités convenues : (1) commit de session + `.gitignore` propre
-  + purge des résidus (risque zéro) ; (2) réorganisation de la racine (~70 fichiers
-  épars) dossier par dossier, avec l'utilisateur ; (3) refactorisation du code cœur
-  (essaim 1234 l. / agent 1545 l.) après renforcement des tests. Ne jamais toucher :
-  graines publiées, artefacts scellés, chemins référencés en production.
+- Mycélium : **bloc C1–C7 COMPLET** (voir section 2octies) — à observer sur le
+  prochain rapport des agents mycélisants (effet de C3/C5/C7 : entropie sous le
+  max, couplage diversifié).
+- Propositions IA : **A3.2 (fin)** (calibrage 0.87), **A5.7** (API décence) —
+  A5.6 (benchmarks CI) est fait (08/08).
+- IPFS (`axe_5_ipfs`) : à relancer au prochain démarrage de l'ordinateur.
+- **Rangement du projet (décidé, en cours)** : (1) nettoyage entamé le 08/08
+  (603,8 Mo en quarantaine — flp-new + déchets) ; (2) réorganisation de la racine
+  restante dossier par dossier, avec l'utilisateur ; (3) refactorisation du code
+  cœur après renforcement des tests. Ne jamais toucher : graines publiées,
+  artefacts scellés, chemins référencés en production.
+- **Sécurité** : tokens HF/GitHub en clair dans la config git de dépôts imbriqués
+  (`depot-v13`, `hf_v10_temp`, `sandbox-mttv-test`) → rotation recommandée.
+
+## 7. Fin de session — 08/08 ~21:00 (heure locale)
+
+**Acquis de la session :**
+1. **SEO production** : soft 404 corrigé (vrais 404) + canonical + sitemap
+   validé — déployé sur Hidora, site stable (voir 2quinquies).
+2. **Nettoyage** : 603,8 Mo en quarantaine (flp-new archivé + 8 déchets),
+   rapport d'échec FLP2 clôturé et conservé.
+3. **Mycélium** : bloc anti-homogénéisation **C3+C4+C5+C6+C7 implémenté et
+   testé** (C6 validé : entropie 6.1884 < max 6.3969, couplage 0.2367) ;
+   démon redémarré avec dose 0.10.
+4. **CI publique (A5.6)** : benchmarks frugalité + échelle + calibration + C6
+   exposés sur GitHub Actions (`mttv_benchmarks.yml`) et Bitbucket Pipelines
+   (`bitbucket-pipelines.yml`).
+5. **Git** : `evolution/tetravalent-core` poussé sur bitbucket + github ;
+   `main` poussé sur github. Travail verrouillé.
+
+**Prochaine session (09/08)** : analyser le rapport des agents mycélisants
+(effet C3/C5/C7 sur l'entropie et le couplage) ; puis A3.2 / A5.7 ; reprise du
+rangement de la racine.
 
 ---
 *sig:0x4D5454562D464C50 — Le mycélium continue. Toute session reprend ici.*
