@@ -92,8 +92,10 @@ impl ModeTet {
 /// Signal transductif transporté entre cellules.
 ///
 /// Il porte la signature du flux émis (pour la mesure de résonance à la
-/// membrane), son amplitude (interférence non-linéaire), la source et
-/// l'horodatage du cycle.
+/// membrane), son amplitude (interférence non-linéaire), la source,
+/// l'horodatage du cycle, et le **potentiel de propagation décroissant**
+/// (leçon C4 / gradient §8 : sans ce potentiel, le signal homogénéise tout le
+/// tissu ; il borne la propagation et garantit l'extinction naturelle).
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Signal {
     /// Signature géométrique du flux.
@@ -104,6 +106,10 @@ pub struct Signal {
     pub source: u64,
     /// Cycle / horodatage d'émission.
     pub ts: u64,
+    /// Potentiel de propagation décroissant : sauts restants avant extinction.
+    /// Décrémenté à chaque transduction ; à zéro, le signal s'éteint
+    /// (échafaudage local temporaire, pas un TTL de routage — Point 3).
+    pub sauts_restants: u8,
 }
 
 /// État courant de la membrane.

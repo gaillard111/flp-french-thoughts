@@ -109,6 +109,7 @@ pub async fn essai_signal_aligne() -> ResultatEssai {
         amplitude: 0.8,
         source: 0,
         ts: 1,
+        sauts_restants: 8,
     }])
     .await
 }
@@ -120,6 +121,7 @@ pub async fn essai_signal_orthogonal() -> ResultatEssai {
         amplitude: 0.8,
         source: 0,
         ts: 1,
+        sauts_restants: 8,
     }])
     .await
 }
@@ -132,12 +134,14 @@ pub async fn essai_sequence_mixte() -> ResultatEssai {
             amplitude: 0.8,
             source: 0,
             ts: 1,
+            sauts_restants: 8,
         },
         Signal {
             signature: SignaturePhi::new(PHI_ALIGNE),
             amplitude: 0.8,
             source: 0,
             ts: 2,
+            sauts_restants: 8,
         },
     ])
     .await

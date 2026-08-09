@@ -68,6 +68,13 @@ pub fn transduire(
         return IssueTransduction::Amorti;
     }
 
+    // Potentiel de propagation décroissant : à zéro, le signal s'éteint.
+    // C'est l'anti-homogénéisation (leçon C4) : sans ce potentiel, le signal
+    // homogénéiserait tout le tissu (extinction forcée, pas de boucle).
+    if signal.sauts_restants == 0 {
+        return IssueTransduction::Amorti;
+    }
+
     // Co-cicatrisation : réalignement plastique de Φ vers le signal reçu.
     phi.realigner_vers(&signal.signature, GAMMA_REALIGNEMENT);
 
@@ -83,6 +90,7 @@ pub fn transduire(
         amplitude,
         source,
         ts,
+        sauts_restants: signal.sauts_restants - 1,
     };
 
     IssueTransduction::Propage(sortant)
@@ -102,6 +110,7 @@ mod tests {
             amplitude: 0.8,
             source: 1,
             ts: 0,
+            sauts_restants: 8,
         };
         let issue = transduire(&mut phi, &mut membrane, &signal, 7, 1);
         assert_eq!(issue, IssueTransduction::Amorti);
@@ -118,6 +127,7 @@ mod tests {
             amplitude: 0.8,
             source: 1,
             ts: 0,
+            sauts_restants: 8,
         };
         let issue = transduire(&mut phi, &mut membrane, &signal, 7, 1);
         match issue {
@@ -145,6 +155,7 @@ mod tests {
             amplitude: 0.8,
             source: 1,
             ts: 0,
+            sauts_restants: 8,
         };
         let issue = transduire(&mut phi, &mut membrane, &signal, 7, 1);
         // La transduction doit propager (signal modifié, source = 7).

@@ -715,6 +715,56 @@ orientée, propagation, extinction) puis B2b (croissance/auto-suture), B3
 (dynamique + gradient Veilleur §8 : compteur de sauts, diversité résiduelle,
 entropie d'alerte).
 
+## 9ter. B2a RÉALISÉ — LA MAILLE SP3 PULLULE (09/08 ~11:35)
+
+**Contexte** : ordre de préparation B2a reçu (2 IA conseils + gradient §8),
+plan [`07_PLAN_B2a.md`](../mttv_rust/docs/07_PLAN_B2a.md) rédigé, implémentation
+validée. Le commit `c2ca624` (B1b) reste sanctuarisé.
+
+**Implémenté** :
+- [`cellule/types.rs`](../mttv_rust/src/cellule/types.rs) : champ
+  `sauts_restants` dans `Signal` (**potentiel de propagation décroissant**,
+  verrou 2 / Point 3 Orchestrateur).
+- [`cellule/transduction.rs`](../mttv_rust/src/cellule/transduction.rs) :
+  `transduire` décrémente le potentiel, extinction à zéro.
+- [`cellule/noeud.rs`](../mttv_rust/src/cellule/noeud.rs) : refactor
+  `_traiter` (logique commune) + `traiter_disponible` (battement piloté,
+  lecture non-bloquante `try_recv` — pour l'observation déterministe).
+- [`tissu/topologie.rs`](../mttv_rust/src/tissu/topologie.rs) : `Tissu`
+  (gestateur, jamais routeur) — **arbre ternaire sp3 orienté** (1 amont +
+  3 aval, racine sans amont, feuilles en frange), Φ diversifiés par niveau.
+- [`tissu/propagation.rs`](../mttv_rust/src/tissu/propagation.rs) :
+  `propager` (battement par vagues jusqu'à extinction), `diversite_tissu`
+  (= 1 − similarité moyenne des Φ, métrique C4 claire), test de
+  **juste distance**.
+
+**Résultat — l'expérience (métriques réelles)** :
+```
+=== TISSU B2a — maille sp3 orientée ===
+cellules: 40 (arbre ternaire profondeur 3)
+transductions: 40 | amortis: 0 | cellules atteintes: 40
+sauts: 1 | diversité tissu: 0.037 | sim moyenne: 0.963
+extinction: true
+```
+- **Pullulement** : 40/40 cellules atteintes et transduites (multi-voies, la
+  cible diffuse sur ses 3 aval) — le tissu s'irradie de proche en proche.
+- **Juste distance** : 1 saut suffit pour couvrir l'arbre (ni extinction trop
+  rapide, ni boucle — pas de réverbération).
+- **Extinction** : le battement s'arrête, le tissu revient au repos.
+- **Leçon C4 reproduite par le réel** : `diversité = 0.037`, `sim moyenne =
+  0.963` → le tissu **statique homogénéise** (la co-cicatrisation aligne les Φ),
+  exactement comme l'alerte C4 du rapport mycélium. **La respiration de
+  diversité active est donc confirmée comme remède obligatoire pour B3**
+  (verrou 2 des IA conseils).
+
+**Gates** : G1 `cargo check` 0 erreur/0 warning · G2 `cargo test` **26/26**
+(12 A+ + 4 B1a + 3 B1b + 3 topologie + 2 diversité + 1 juste distance +
+1 rapport). **La maille sp3 4-régulier orientée est validée par le réel.**
+
+**Prochain palier (B2b)** : croissance organique / auto-suture (naissance de
+cellules), puis **B3** : dynamique du tissu + **respiration de diversité
+(anti-homogénéisation active)** — le remède à l'alerte C4 observée.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**

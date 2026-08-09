@@ -18,9 +18,16 @@
 
 pub mod essai;
 pub mod lien;
+pub mod propagation;
+pub mod topologie;
 
 pub use essai::{
     essai_signal_aligne, essai_signal_orthogonal, essai_sequence_mixte,
     lancer_essais, ResultatEssai,
 };
 pub use lien::{brancher, ErreurBranchement, TAMPON_LIAISON};
+pub use propagation::{
+    diversite_tissu, propager, ResultatPropagation, SAUTS_INITIAUX,
+    SEUIL_ALERTE_ENTROPIE,
+};
+pub use topologie::{Tissu, PROFONDEUR_DEFAUT, TAMPON_TISSU};

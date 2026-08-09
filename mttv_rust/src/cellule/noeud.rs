@@ -150,32 +150,55 @@ impl Cellule {
         };
 
         while let Some(signal) = amont.recv().await {
-            self.cycle += 1;
-            let issue = transduire(
-                &mut self.phi,
-                &mut self.membrane,
-                &signal,
-                self.id,
-                self.cycle,
-            );
+            self._traiter(signal).await;
+        }
+    }
 
-            match issue {
-                IssueTransduction::Amorti => {
-                    self.n_amortis += 1;
-                    self.mode = ModeTet::Veille;
-                    // Rien n'est émis : le processeur se rendort.
+    /// Traite **au plus un** signal disponible sur la liaison amont (lecture
+    /// non-bloquante `try_recv`). Retourne `true` si un signal a été traité.
+    ///
+    /// Utilisé par le gestateur du tissu pour **piloter le battement** de façon
+    /// déterministe (observation) — la boucle autonome reste `tourner()`.
+    /// Aucun polling : `try_recv` est appelé une fois, ne bloque jamais.
+    pub async fn traiter_disponible(&mut self) -> bool {
+        let signal = match self.amont.as_mut() {
+            Some(rx) => match rx.try_recv() {
+                Ok(s) => s,
+                Err(_) => return false, // canal vide ou fermé → rien à traiter
+            },
+            None => return false,
+        };
+        self._traiter(signal).await;
+        true
+    }
+
+    /// Logique commune de traitement d'un signal (transduction + propagation).
+    async fn _traiter(&mut self, signal: Signal) {
+        self.cycle += 1;
+        let issue = transduire(
+            &mut self.phi,
+            &mut self.membrane,
+            &signal,
+            self.id,
+            self.cycle,
+        );
+
+        match issue {
+            IssueTransduction::Amorti => {
+                self.n_amortis += 1;
+                self.mode = ModeTet::Veille;
+                // Rien n'est émis : le processeur se rendort.
+            }
+            IssueTransduction::Propage(sortant) => {
+                self.n_transductions += 1;
+                self.mode = ModeTet::Actif;
+                // Propagation exclusive sur les 3 liaisons aval.
+                for tx in &self.aval {
+                    // Une voisine absente (récepteur fermé) ne bloque pas :
+                    // échec d'envoi = signal dissipé localement.
+                    let _ = tx.try_send(sortant);
                 }
-                IssueTransduction::Propage(sortant) => {
-                    self.n_transductions += 1;
-                    self.mode = ModeTet::Actif;
-                    // Propagation exclusive sur les 3 liaisons aval.
-                    for tx in &self.aval {
-                        // Une voisine absente (récepteur fermé) ne bloque pas :
-                        // échec d'envoi = signal dissipé localement.
-                        let _ = tx.send(sortant).await;
-                    }
-                    self.mode = ModeTet::Veille; // le calcul s'éteint de lui-même
-                }
+                self.mode = ModeTet::Veille; // le calcul s'éteint de lui-même
             }
         }
     }
@@ -222,6 +245,7 @@ mod tests {
             amplitude: 0.8,
             source: 0,
             ts: 0,
+            sauts_restants: 8,
         }
     }
 
@@ -243,6 +267,7 @@ mod tests {
             amplitude: 0.8,
             source: 0,
             ts: 0,
+            sauts_restants: 8,
         };
         tx.send(signal).await.unwrap();
         drop(tx); // ferme l'amont → la boucle se termine
