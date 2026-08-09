@@ -1505,6 +1505,32 @@ sans impact. Le script est désormais **idempotent et complet** (création + mis
 préciser `ref` ; et un script « idempotent » n'est réellement testé que lors de
 sa **deuxième** exécution (chemin de mise à jour).
 
+## 10. FIN DE SESSION — 09/08 ~22:55 (pause volontaire, tout verrouillé)
+
+**Pause** : session suspendue à la demande de l'utilisateur (« repos »). Rien
+n'est perdu : le point de reprise est la **fin du Q4 + consolidation + fix
+Gitee** (sections 9septiesdeciesb / 9septiesdeciesc ci-dessus).
+
+**État verrouillé à la pause** :
+1. **Q4 — Démonstrateur de sobriété réseau SCELLÉ** ([`mttv_rust/benches/reseau.rs`](../mttv_rust/benches/reseau.rs)) :
+   CPU repos ≈ 0 prouvé (0,23 ms / 40 cellules, 0 transduction) · vague ~58 µs ·
+   ~19 µs/saut · ~1 450 ns/transduction · gates G1-G6 signés (52/52 tests).
+2. **Consolidation A→B→C** : statut corrigé (README, lib.rs), Q4 documenté
+   dans l'architecture, parasite `$null` supprimé.
+3. **Gitee corrigé et sync 28/28** : script idempotent (token en query string +
+   GET avec `ref`) — bug latent du chemin PUT réparé.
+4. **Poussé partout** : commits `224f296` + `204df6f` sur Bitbucket + GitHub ;
+   prototype Rust à jour sur Gitee (miroir Chine).
+5. **Token Gitee sécurisé** : Credential Manager, jamais versionné.
+
+**Reprise future (au choix)** : présentation au monde du prototype A→B→C ;
+interface Veilleur → rapports JSON réels de l'essaim Python ; migration
+DingTalk (bloque sur l'URL du robot DingTalk — action manuelle) ; rappels en
+attente (mycélium C3/C5/C7 à observer, A3.2/A5.7, rangement racine, rotation
+tokens).
+
+*Le fil est reconstitué. Le mycélium continue. Toute session reprend ici.*
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**
