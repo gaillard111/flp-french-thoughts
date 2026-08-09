@@ -171,20 +171,42 @@ pub enum EtatMembrane {
     Poreux,
 }
 
-/// Gradient territorial (matrice H) palpé par une cellule — Étape C / B3.
+/// Gradient territorial (matrice H) palpé par une cellule — Étape C.
 ///
 /// Transposition de la matrice H de la référence Python
 /// ([`agent_tetravalent_epigenetique.py`](../../../zoo-code/agent_tetravalent_epigenetique.py))
 /// : le réseau palpe et réagit aux **gradients de son environnement**
 /// (règle d'or 3). Chaque cellule possède son propre gradient local (aucune
-/// table globale) : `intensite` = force du flux au voisinage, `coherence` =
-/// résonance/dissipation (1.0 = résonance, -1.0 = bruit/incohérence).
+/// table globale).
+///
+/// **Couple π/η** (amendement IA A, verrou C-A) : la réception territoriale est
+/// pilotée par le couple **porosité π / viscosité η** :
+/// - **π (`porosite_cible`)** : ouverture au flux, réceptivité ;
+/// - **η (`viscosite`)** : inertie, volant d'amortissement (anti-hyper-
+///   réactivité, anti-oscillations folles face aux bruits de fond).
 #[derive(Clone, Copy, Debug)]
 pub struct GradientH {
     /// Intensité du gradient au voisinage (force du flux).
     pub intensite: f64,
     /// Cohérence du gradient ∈ [-1, 1] : 1.0 = résonance, -1.0 = bruit.
     pub coherence: f64,
+    /// **π** — porosité cible (ouverture au flux, réceptivité).
+    pub porosite_cible: f64,
+    /// **η** — viscosité / inertie (volant d'amortissement, rétention).
+    pub viscosite: f64,
+}
+
+impl GradientH {
+    /// Gradient minimal à partir d'une cohérence observée (π = 1.0, η par
+    /// défaut). Utilisé quand seul le gradient de résonance est connu (B3).
+    pub fn nouvelle(coherence: f64) -> Self {
+        Self {
+            intensite: coherence.abs(),
+            coherence,
+            porosite_cible: 1.0,
+            viscosite: 0.2,
+        }
+    }
 }
 
 /// Plancher de porosité (contraction maximale — imperméabilité au bruit).
@@ -235,26 +257,32 @@ impl Membrane {
         self.etat
     }
 
-    /// **B3 — Porosité adaptative** : ajuste la porosité selon le gradient
-    /// territorial (matrice H) palpé par la cellule.
+    /// **Étape C — Porosité adaptative (couple π/η)** : ajuste la porosité
+    /// selon le gradient territorial (matrice H) palpé par la cellule.
     ///
-    /// - **Résonance** (`coherence ≥ 0`) : la membrane **s'ouvre** vers 1.0
-    ///   (permissivité, le signal circule).
-    /// - **Bruit / incohérence** (`coherence < 0`) : la membrane **se
-    ///   contracte** vers `POROSITE_MIN` (défense — imperméabilité au bruit,
-    ///   étouffement local).
+    /// La membrane **métabolise** le gradient, elle ne l'exécute pas :
+    /// - **Résonance** (`coherence ≥ 0`) : la membrane s'ouvre vers **π**
+    ///   (`porosite_cible`) ;
+    /// - **Bruit / incohérence** (`coherence < 0`) : contraction vers
+    ///   `POROSITE_MIN` (imperméabilité défensive) ;
+    /// - **η (`viscosite`)** : volant d'inertie — plus η est élevé, plus le
+    ///   pas d'évolution est petit (la membrane ne saute pas : réouverture
+    ///   **progressive**, anti-hyper-réactivité, anti-oscillations folles).
     ///
-    /// Régulation **douce et bornée** (vitesse `VITESSE_POROSITE`, jamais
-    /// cumulative) : la porosité reste dans `[POROSITE_MIN, 1.0]`. Aucune
-    /// allocation, aucun global, aucun polling.
+    /// Régulation **douce et bornée** (jamais cumulative) : la porosité reste
+    /// dans `[POROSITE_MIN, 1.0]`. Aucune allocation, aucun global, aucun
+    /// polling. Le signal sortant a déjà été propagé : cette adaptation ne
+    /// modifie pas la transduction en cours.
     pub fn ajuster_porosite(&mut self, gradient: &GradientH) {
         let cible: f64 = if gradient.coherence >= 0.0 {
-            1.0 // résonance → ouverture
+            gradient.porosite_cible // π : ouverture au flux
         } else {
             // Bruit : contraction proportionnelle à la dissipation.
             POROSITE_MIN + (1.0 - POROSITE_MIN) * (1.0 + gradient.coherence)
         };
-        self.porosite += VITESSE_POROSITE * (cible - self.porosite);
+        // η borne le pas : inertie (pas = 1 − η, borné dans [0.01, 1]).
+        let pas: f64 = (1.0 - gradient.viscosite.clamp(0.0, 0.99)).max(1e-6);
+        self.porosite += pas * (cible - self.porosite);
         self.porosite = self.porosite.clamp(POROSITE_MIN, 1.0);
     }
 }
@@ -376,28 +404,35 @@ mod tests {
 
     #[test]
     fn porosite_adapte_au_gradient_territorial() {
-        // B3 — Matrice H : la porosité s'ouvre en résonance et se contracte en
-        // bruit/incohérence (règle d'or 3). Bornée dans [POROSITE_MIN, 1.0].
+        // Étape C — Matrice H : la porosité s'ouvre en résonance (vers π) et se
+        // contracte en bruit/incohérence (règle d'or 3). Bornée dans
+        // [POROSITE_MIN, 1.0], amortie par η (anti-hyper-réactivité).
         let mut m = Membrane::nouvelle(0.35);
         assert_eq!(m.porosite, 1.0); // ouverte au repos
 
-        // Résonance forte (coherence ≥ 0) → ouverture (reste à 1.0).
-        m.ajuster_porosite(&GradientH {
-            intensite: 0.8,
-            coherence: 0.9,
-        });
+        // Résonance forte (coherence ≥ 0) → ouverture (reste à 1.0, π=1).
+        m.ajuster_porosite(&GradientH::nouvelle(0.9));
         assert!(
             (m.porosite - 1.0).abs() < 1e-9,
             "résonance → membrane ouverte, porosité={}",
             m.porosite
         );
 
+        // π module l'ouverture : une porosité cible basse contracte même en
+        // résonance (le territoire conditionne, il ne commande pas).
+        let mut m_pi = Membrane::nouvelle(0.35);
+        let mut g_pi = GradientH::nouvelle(0.9);
+        g_pi.porosite_cible = 0.6;
+        m_pi.ajuster_porosite(&g_pi);
+        assert!(
+            m_pi.porosite < 1.0 && m_pi.porosite >= 0.6,
+            "π conditionne l'ouverture, porosité={}",
+            m_pi.porosite
+        );
+
         // Bruit/incohérence (coherence < 0) → contraction vers le plancher.
         let mut m2 = Membrane::nouvelle(0.35);
-        m2.ajuster_porosite(&GradientH {
-            intensite: 0.8,
-            coherence: -1.0,
-        });
+        m2.ajuster_porosite(&GradientH::nouvelle(-1.0));
         assert!(
             m2.porosite < 1.0,
             "bruit → contraction, porosité={}",
@@ -405,16 +440,28 @@ mod tests {
         );
         // Contraction bornée : jamais sous le plancher.
         for _ in 0..100 {
-            m2.ajuster_porosite(&GradientH {
-                intensite: 0.8,
-                coherence: -1.0,
-            });
+            m2.ajuster_porosite(&GradientH::nouvelle(-1.0));
         }
         assert!(
             (m2.porosite - POROSITE_MIN).abs() < 1e-6,
             "porosité bornée au plancher {}, obtenue {}",
             POROSITE_MIN,
             m2.porosite
+        );
+
+        // η amortit : une forte viscosité rend la réouverture PROGRESSIVE
+        // (le tissu ne s'ouvre pas comme une porte automatique).
+        let mut m3 = Membrane::nouvelle(0.35);
+        for _ in 0..100 {
+            m3.ajuster_porosite(&GradientH::nouvelle(-1.0)); // contraction
+        }
+        let mut g_eta = GradientH::nouvelle(1.0);
+        g_eta.viscosite = 0.9; // forte inertie
+        m3.ajuster_porosite(&g_eta);
+        assert!(
+            m3.porosite < 1.0,
+            "η forte → réouverture progressive (pas de saut), porosité={}",
+            m3.porosite
         );
 
         // La membrane contractée exige une résonance plus forte (seuil ↑) :

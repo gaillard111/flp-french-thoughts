@@ -66,14 +66,11 @@ pub fn transduire(
 ) -> IssueTransduction {
     let resonance: f64 = phi.resonance(&signal.signature);
 
-    // B3 — Matrice H : la résonance locale est le gradient territorial palpé
-    // par la cellule (règle d'or 3). La porosité s'ajuste avant le seuil :
-    // un territoire en résonance ouvre la membrane, un territoire en
-    // bruit/incohérence la contracte (imperméabilité au bruit).
-    membrane.ajuster_porosite(&GradientH {
-        intensite: signal.amplitude.abs(),
-        coherence: resonance,
-    });
+    // Étape C — Matrice H : la résonance locale est le gradient territorial
+    // palpé par la cellule (règle d'or 3). La porosité s'ajuste avant le seuil
+    // via le couple π/η : résonance → ouverture vers π, bruit → contraction,
+    // η amortit (réouverture progressive, anti-hyper-réactivité).
+    membrane.ajuster_porosite(&GradientH::nouvelle(resonance));
 
     if !franchit_seuil(membrane, resonance) {
         return IssueTransduction::Amorti;

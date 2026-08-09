@@ -7,8 +7,12 @@
 //! pression du territoire numérique**, traduits en réglages concrets du
 //! prototype Rust : porosité, seuils, respiration, topologie.
 //!
-//! Contenu prévu (pas encore implémenté — socle) :
-//! - `adaptateur` : ingestion des rapports, mapping en configuration versionnée ;
-//! - recours humain en cas de contradiction avec la triade fondamentale.
+//! **`adaptateur`** : membrane de traduction (Étape C, Q2) — ingestion pure,
+//! bornée, validée par construction ; repli sur le dernier état stable ;
+//! recours humain tracé en cas de violation de la triade.
 //!
 //! Références : `docs/03_INTERFACE_VEILLEUR.md`.
+
+pub mod adaptateur;
+
+pub use adaptateur::{Adaptateur, ErreurVeilleur, RapportVeilleur, traduire, valider_rapport};

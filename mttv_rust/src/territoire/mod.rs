@@ -7,15 +7,20 @@
 //! s'ouvre en résonance informationnelle et se contracte jusqu'à
 //! l'imperméabilité dans les zones de bruit, d'attaque ou d'incohérence.
 //!
-//! Contenu prévu à l'Étape C (pas encore implémenté — socle) :
-//! - `matrice_h` : gradients H, ajustement dynamique de la porosité ;
-//! - règles d'amortissement et de dissipation locales.
-//!
-//! **`spike`** : SPIKE SACRIFIABLE du protocole « Double Filtre » (phase 2) —
-//! épreuve par le réel des verrous Q1/Q2 (GradientH π/η, ingestion pure,
-//! repli état stable). À jeter ou intégrer selon l'arbitrage.
+//! Contenu de l'Étape C (implémenté — 09/08) :
+//! - **`mpvr`** : portes MPVR/σ **strictement locales** (verrou C-B) — quorum
+//!   Θ ≥ 3, signature σ de convergence, jamais consensus/registre global ;
+//! - **`spike`** : SPIKE SACRIFIABLE du protocole « Double Filtre » (phase 2) —
+//!   épreuve par le réel des verrous Q1/Q2 (GradientH π/η, ingestion pure,
+//!   repli état stable). À jeter ou intégrer selon l'arbitrage.
 //!
 //! Références : `docs/00_CAHIER_DES_CHARGES.md` (règle d'or 3),
 //! `docs/01_ARCHITECTURE.md` §2 (Étape C) et §4.3.
 
+pub mod mpvr;
 pub mod spike;
+
+pub use mpvr::{
+    porte_mpvr_scs, signature_convergence, valider_quorum, Perspective,
+    SEUIL_QUORUM,
+};
