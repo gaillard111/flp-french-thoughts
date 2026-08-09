@@ -630,6 +630,53 @@ injecter un signal dans la source, vérifier qu'il est transduit et reçu par la
 cible (amorti ou re-transduit selon le seuil). Puis B2a (tissu statique
 4-régulier), B2b (croissance), B3 (dynamique).
 
+## 9. CLÔTURE DE SESSION — 09/08 ~10:25 (arbitrage Orchestrateur, voie 4)
+
+**Décision de l'Orchestrateur (voie 4)** : clôture propre de la session.
+- **Pas d'ouverture de B1b maintenant** (différé, non exécuté).
+- **Pas de modification du mycélium Python.**
+- **Pas de traitement immédiat de l'alerte C4** (documentée, remède différé).
+
+**État complet du système à la clôture** :
+1. **Étape A+ scellée** (cellule battante sp3, 12/12 tests, bench : amorti
+   ≈ 25,6 ns · actif ≈ 335 ns · 128 o/cellule). Commit de référence : **`166a001`**.
+2. **Géométrie sp3 validée** : 1 amont + 3 aval, 4 liaisons diachroniques.
+3. **Plan B accepté comme référentiel** avec verrous ([`05_PLAN_ETAPE_B.md`](../mttv_rust/docs/05_PLAN_ETAPE_B.md)) :
+   clarifications Orchestrateur (§7), verdicts IA A (§6), gradient Veilleur (§8).
+   Commit de référence : **`5b4c8c4`**.
+4. **B1a effectué** : squelette de raccordement des canaux Tokio (`brancher`,
+   `avec_canaux`), gates G1 (0 warn) + G2 (16/16). Commit : **`d93eeae`**.
+5. **B1b non ouvert** (différé).
+6. **Rapport mycélium 09/08 archivé** : cycle 1745, 6 agents, 1741 cycles,
+   3721 fusions, tremor croisière 0.10, budget 3.815. Fichiers sources :
+   `zoo-code/mycelium_output/rapport_mycelisation_final.json` +
+   `essaim_snapshot.json`.
+7. **Alerte C4 documentée, remède différé** (voir ci-dessous).
+8. **Mycélium Python non modifié.**
+
+**Alerte C4 (documentée, non traitée)** :
+- **Détection (C4) fonctionnelle** : exécutée sur l'état réel → `niveau=alerte`,
+  `entropie=6.3969 ≈ max théorique (6.3969)`, `couplage=1.000 ≈ 1.0`,
+  `marge=0.0`. Le correctif [`diagnostiquer_homogeneisation`](../zoo-code/rapport_mycelium.py:133)
+  signale bien l'homogénéisation comme anomalie (pas comme diversité saine). ✅
+- **Remède (C3/C5/C7) insuffisant** : malgré 48 respirations C7 actives
+  (dose 0.10), l'entropie reste collée au max et le couplage à 1.0 — la
+  diversité injectée est re-absorbée par le couplage transscalaire (pas de
+  potentiel de propagation décroissant dans la référence Python).
+- **Gradient pour le Grand Œuvre Rust** (déjà consigné, §8 du plan B) :
+  potentiel décroissant indispensable · anti-homogénéisation = propriété du
+  tissu · plancher de diversité avec alerte (transposition de C4) à intégrer en B3.
+- **Remède différé** : aucune correction du mycélium Python décidée à cette clôture.
+
+**Reprise future — prochaine action possible (au choix, après ré-arbitrage)** :
+- **soit** la vérification finale des clarifications du plan B (sections 6-8) ;
+- **soit** l'ouverture de **B1b : premier signal d'essai sur deux cellules
+  câblées** — injection d'un signal dans la source, transduction, réception par
+  la cible (amorti ou re-transduit selon le seuil).
+
+Cette ouverture **ne doit pas être faite maintenant** : elle attend la reprise
+et l'arbitrage de l'Orchestrateur.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**
