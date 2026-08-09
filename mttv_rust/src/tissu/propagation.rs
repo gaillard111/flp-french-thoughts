@@ -49,6 +49,10 @@ pub struct ResultatPropagation {
     pub diversite_tissu: f64,
     /// Similarité moyenne des Φ (pour l'interprétation de la diversité).
     pub sim_moyenne: f64,
+    /// Porosité moyenne des membranes après propagation (B3 — homéostasie du
+    /// milieu). Proche de 1.0 = le tissu est resté perméable au signal
+    /// cohérent ; basse = contraction défensive (bruit/incohérence).
+    pub porosite_moyenne: f64,
     /// `true` si le tissu est retombé au repos (toutes les cellules ont rendu
     /// leur état — extinction en cascade complète).
     pub extinction: bool,
@@ -99,6 +103,7 @@ pub async fn propager_avec_sauts(
     let mut n_amortis: u64 = 0;
     let mut n_cellules_atteintes: u64 = 0;
     let mut profondeur_max_transduite: u32 = 0;
+    let mut somme_porosite: f64 = 0.0;
     let mut phis: Vec<SignaturePhi> = Vec::with_capacity(revenues.len());
 
     for r in &revenues {
@@ -108,8 +113,14 @@ pub async fn propager_avec_sauts(
             n_cellules_atteintes += 1;
             profondeur_max_transduite = profondeur_max_transduite.max(r.profondeur);
         }
+        somme_porosite += r.porosite;
         phis.push(r.phi);
     }
+    let porosite_moyenne: f64 = if revenues.is_empty() {
+        0.0
+    } else {
+        somme_porosite / revenues.len() as f64
+    };
 
     // Similarité moyenne des Φ (paires) — diversité = 1 − sim.
     let n = phis.len();
@@ -137,6 +148,7 @@ pub async fn propager_avec_sauts(
         n_sauts: profondeur_max_transduite,
         diversite_tissu: (1.0 - sim_moyenne).clamp(0.0, 1.0),
         sim_moyenne,
+        porosite_moyenne,
         // Toutes les cellules ont rendu leur état → le tissu est au repos.
         extinction: true,
     }
@@ -220,7 +232,10 @@ mod tests {
             "sauts: {} | diversité tissu: {:.3} | sim moyenne: {:.3}",
             r.n_sauts, r.diversite_tissu, r.sim_moyenne
         );
-        println!("extinction: {}", r.extinction);
+        println!(
+            "porosité moyenne (B3/matrice H): {:.3} | extinction: {}",
+            r.porosite_moyenne, r.extinction
+        );
         println!("=== FIN TISSU B2a-bis ===");
     }
 
@@ -293,6 +308,42 @@ mod tests {
         );
         // La propagation reste intacte : le tissu s'irradie puis s'éteint.
         assert!(r.extinction, "le tissu doit revenir au repos");
+    }
+
+    #[tokio::test]
+    async fn matrice_h_porosite_adapte_et_homeostasie_du_milieu() {
+        use super::super::topologie::Tissu;
+
+        // B3 — Matrice H / homéostasie du milieu : les cellules palpent leur
+        // territoire (résonance locale) et ajustent leur porosité. Face à un
+        // signal cohérent (aligné), la membrane s'ouvre (résonance → porosité
+        // → 1.0) : le milieu reste perméable et la propagation stable. La
+        // porosité reste bornée dans [POROSITE_MIN, 1.0] (homéostasie).
+        let mut tissu = Tissu::construire_arbre(3);
+        let r = propager(&mut tissu).await;
+
+        // Propagation stable face au signal : extinction et atteintes.
+        assert!(
+            r.n_cellules_atteintes >= 40,
+            "le signal cohérent doit irradier le tissu (40), obtenu {}",
+            r.n_cellules_atteintes
+        );
+        assert!(r.extinction, "le tissu doit revenir au repos (homéostasie)");
+
+        // Homéostasie : porosité agrégée (métrique, pas une table globale) —
+        // la membrane s'est ouverte en résonance et reste bornée dans [0,1].
+        assert!(
+            (0.0..=1.0).contains(&r.porosite_moyenne),
+            "porosité moyenne dans [0,1], obtenue {}",
+            r.porosite_moyenne
+        );
+        // Résonance forte → porosité ouverte (moyenne > 0.9), le milieu est
+        // perméable au signal cohérent (pas de contraction par le bruit).
+        assert!(
+            r.porosite_moyenne > 0.9,
+            "la porosité moyenne doit rester ouverte en résonance (> 0.9), obtenue {}",
+            r.porosite_moyenne
+        );
     }
 
     #[tokio::test]

@@ -1000,6 +1000,62 @@ proche, sans nœud maître, en préservant sa diversité. **B2b est SCELLÉ.**
 **Prochain palier (B3)** : dynamique du tissu + matrice H / porosité adaptative.
 Non ouvert tant que le présent commit n'est pas poussé.
 
+## 9nonies. B3 RÉALISÉ — MATRICE H / POROSITÉ ADAPTATIVE + HOMÉOSTASIE DU MILIEU (09/08 ~14:10)
+
+**Contexte** : suite de 9octies (B2b scellé). Feuille de route IA conseils —
+« le tissu sait battre, se lier, s'irradier en autonomie, respirer et croître ;
+il lui reste à **sentir son territoire** ». B3 intègre la **porosité adaptative**
+(Matrice H) et l'**homéostasie globale** du milieu.
+
+**Implémenté (code)** :
+- [`cellule/types.rs`](../mttv_rust/src/cellule/types.rs) : type **`GradientH`**
+  (matrice H transposée — `intensite` + `coherence`, règle d'or 3 : le réseau
+  palpe les gradients de son environnement) + `POROSITE_MIN` / `VITESSE_POROSITE`
+  + **`Membrane::ajuster_porosite`** : ouverture en résonance (`coherence ≥ 0`
+  → porosité → 1.0), contraction en bruit/incohérence (`coherence < 0` →
+  porosité → plancher). Régulation **douce et bornée**, jamais cumulative.
+- [`cellule/transduction.rs`](../mttv_rust/src/cellule/transduction.rs) :
+  `transduire` **palpe le territoire** — la résonance locale forme le gradient
+  H qui module la porosité **avant** l'évaluation du seuil (seuil effectif =
+  seuil / porosité : une membrane contractée exige une résonance plus forte).
+- [`cellule/mod.rs`](../mttv_rust/src/cellule/mod.rs) : exports `GradientH`,
+  `POROSITE_MIN`, `VITESSE_POROSITE`.
+- [`tissu/topologie.rs`](../mttv_rust/src/tissu/topologie.rs) : `CelluleRevenue`
+  capture la **porosité finale** (observation par `JoinHandle`, jamais registre).
+- [`tissu/propagation.rs`](../mttv_rust/src/tissu/propagation.rs) :
+  `ResultatPropagation.porosite_moyenne` (métrique agrégée d'homéostasie) +
+  tests.
+
+**Preuve par le réel (métriques B3)** :
+```
+=== TISSU B2a-bis — maille sp3 orientée (immanente) ===
+cellules: 40 | transductions: 40 | amortis: 0 | cellules atteintes: 40
+sauts: 3 | diversité tissu: 0.247 | sim moyenne: 0.753
+porosité moyenne (B3/matrice H): 1.000 | extinction: true
+```
+- **Homéostasie du milieu** : face à un signal **cohérent** (aligné), la
+  porosité moyenne reste **1.000** — la membrane s'ouvre en résonance, le
+  milieu reste perméable et la propagation stable (40/40, extinction).
+- **Porosité adaptative prouvée** (test unitaire) : une résonance forte ouvre
+  la membrane (→ 1.0) ; un **bruit/incohérence** (`coherence = -1`) la contracte
+  vers `POROSITE_MIN` (imperméabilité défensive), bornée après 100 cycles.
+- La diversité (0.247) et la juste distance (sauts: 3) sont **préservées** :
+  la porosité adaptative ne casse pas la propagation.
+
+**Gates** : G1 `cargo check` **0 erreur / 0 warning** · G2 `cargo test`
+**36/36** (34 + `porosite_adapte_au_gradient_territorial` +
+`matrice_h_porosite_adapte_et_homeostasie_du_milieu`) · G3 `cargo bench
+--no-run` compile · G5 **0 polling** · G6 **0 global** (matrice H = gradient
+**local** par cellule, aucun registre global ; porosité bornée `[POROSITE_MIN, 1]`).
+
+**Le tissu sent son territoire** : la dynamique active est en place — la
+porosité module la perméabilité selon la résonance/dissipation du milieu, et
+l'homéostasie garantit la stabilité de la propagation. **B3 est SCELLÉ.**
+
+**Prochain palier (Étape C / Territoire)** : branchement sur la **matrice H**
+territoriale réelle (gradients injectés par le Veilleur) + interface
+Veilleur-Adaptateur. Non ouvert tant que le présent commit n'est pas poussé.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**

@@ -64,6 +64,8 @@ pub struct CelluleRevenue {
     pub etat: EtatCellule,
     /// Signature Φ finale (après co-cicatrisation + respiration).
     pub phi: SignaturePhi,
+    /// Porosité finale de la membrane (B3 — homéostasie du milieu).
+    pub porosite: f64,
 }
 
 /// Tissu — **gestateur pur**, jamais routeur.
@@ -202,6 +204,7 @@ impl Tissu {
                 profondeur,
                 etat: cellule.etat(),
                 phi: cellule.phi,
+                porosite: cellule.membrane.porosite,
             }
         });
         taches.push(handle);

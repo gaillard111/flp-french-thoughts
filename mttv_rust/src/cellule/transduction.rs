@@ -12,7 +12,7 @@
 //! Fidélité : interférence `tanh(0.5·s1 + 0.5·s2 + s1·s2·r)` et co-cicatrisation
 //! par réalignement de Φ (référence Python). Aucune boucle, aucune allocation.
 
-use super::types::{EtatMembrane, Membrane, Signal, SignaturePhi};
+use super::types::{EtatMembrane, GradientH, Membrane, Signal, SignaturePhi};
 
 /// Constante de réalignement plastique (référence : `gamma = 0.15`).
 const GAMMA_REALIGNEMENT: f64 = 0.15;
@@ -44,14 +44,16 @@ pub enum IssueTransduction {
 
 /// Exécute un cycle complet de transduction sur un signal entrant.
 ///
-/// - Mesure la résonance entre la signature locale Φ et celle du signal.
+/// - **Palpe le territoire** (B3) : la résonance mesurée forme le gradient
+///   local (matrice H) qui **module la porosité** de la membrane avant
+///   l'évaluation du seuil (ouverture en résonance, contraction en bruit).
 /// - Si < seuil → `IssueTransduction::Amorti` (aucune propagation, CPU ≈ 0).
 /// - Sinon → réaligne localement Φ (co-cicatrisation), construit le signal
 ///   modifié par interférence et le renvoie pour propagation sur les 3 aval.
 ///
 /// Paramètres (purs) :
 /// - `phi` : signature locale Φ de la cellule (mise à jour en place).
-/// - `membrane` : membrane à seuil (état mis à jour en place).
+/// - `membrane` : membrane à seuil (état et porosité mis à jour en place).
 /// - `signal` : signal entrant.
 /// - `source` : identifiant de la cellule (devient source du signal émis).
 /// - `ts` : horodatage du cycle courant.
@@ -63,6 +65,15 @@ pub fn transduire(
     ts: u64,
 ) -> IssueTransduction {
     let resonance: f64 = phi.resonance(&signal.signature);
+
+    // B3 — Matrice H : la résonance locale est le gradient territorial palpé
+    // par la cellule (règle d'or 3). La porosité s'ajuste avant le seuil :
+    // un territoire en résonance ouvre la membrane, un territoire en
+    // bruit/incohérence la contracte (imperméabilité au bruit).
+    membrane.ajuster_porosite(&GradientH {
+        intensite: signal.amplitude.abs(),
+        coherence: resonance,
+    });
 
     if !franchit_seuil(membrane, resonance) {
         return IssueTransduction::Amorti;

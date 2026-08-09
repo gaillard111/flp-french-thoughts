@@ -171,16 +171,39 @@ pub enum EtatMembrane {
     Poreux,
 }
 
+/// Gradient territorial (matrice H) palpé par une cellule — Étape C / B3.
+///
+/// Transposition de la matrice H de la référence Python
+/// ([`agent_tetravalent_epigenetique.py`](../../../zoo-code/agent_tetravalent_epigenetique.py))
+/// : le réseau palpe et réagit aux **gradients de son environnement**
+/// (règle d'or 3). Chaque cellule possède son propre gradient local (aucune
+/// table globale) : `intensite` = force du flux au voisinage, `coherence` =
+/// résonance/dissipation (1.0 = résonance, -1.0 = bruit/incohérence).
+#[derive(Clone, Copy, Debug)]
+pub struct GradientH {
+    /// Intensité du gradient au voisinage (force du flux).
+    pub intensite: f64,
+    /// Cohérence du gradient ∈ [-1, 1] : 1.0 = résonance, -1.0 = bruit.
+    pub coherence: f64,
+}
+
+/// Plancher de porosité (contraction maximale — imperméabilité au bruit).
+pub const POROSITE_MIN: f64 = 0.15;
+
+/// Vitesse d'adaptation de la porosité (régulation douce, non cumulative).
+pub const VITESSE_POROSITE: f64 = 0.2;
+
 /// Membrane virtuelle métastable (Simondon) — seuil de perméabilité critique.
 ///
-/// La porosité (`porosite` ∈ [0, 1]) s'ajustera dynamiquement à l'Étape C
-/// (ouverture en résonance, contraction en bruit/attaque) — la base seuil
-/// statique est posée ici.
+/// La porosité (`porosite` ∈ [POROSITE_MIN, 1]) s'ajuste **dynamiquement**
+/// (Étape C / B3) : **ouverture en résonance, contraction en bruit/attaque**
+/// (règle d'or 3). La porosité module le seuil effectif (`seuil / porosite`) :
+/// une membrane contractée exige une résonance plus forte pour devenir poreuse.
 #[derive(Clone, Copy, Debug)]
 pub struct Membrane {
     /// Seuil critique de perméabilité (référence : `seuil_resonance` ≈ 0.35).
     pub seuil: f64,
-    /// Porosité courante ∈ [0, 1] (1 = ouverte, 0 = contractée).
+    /// Porosité courante ∈ [POROSITE_MIN, 1] (1 = ouverte, min = contractée).
     pub porosite: f64,
     /// État courant de la membrane.
     pub etat: EtatMembrane,
@@ -210,6 +233,29 @@ impl Membrane {
             EtatMembrane::Impermeable
         };
         self.etat
+    }
+
+    /// **B3 — Porosité adaptative** : ajuste la porosité selon le gradient
+    /// territorial (matrice H) palpé par la cellule.
+    ///
+    /// - **Résonance** (`coherence ≥ 0`) : la membrane **s'ouvre** vers 1.0
+    ///   (permissivité, le signal circule).
+    /// - **Bruit / incohérence** (`coherence < 0`) : la membrane **se
+    ///   contracte** vers `POROSITE_MIN` (défense — imperméabilité au bruit,
+    ///   étouffement local).
+    ///
+    /// Régulation **douce et bornée** (vitesse `VITESSE_POROSITE`, jamais
+    /// cumulative) : la porosité reste dans `[POROSITE_MIN, 1.0]`. Aucune
+    /// allocation, aucun global, aucun polling.
+    pub fn ajuster_porosite(&mut self, gradient: &GradientH) {
+        let cible: f64 = if gradient.coherence >= 0.0 {
+            1.0 // résonance → ouverture
+        } else {
+            // Bruit : contraction proportionnelle à la dissipation.
+            POROSITE_MIN + (1.0 - POROSITE_MIN) * (1.0 + gradient.coherence)
+        };
+        self.porosite += VITESSE_POROSITE * (cible - self.porosite);
+        self.porosite = self.porosite.clamp(POROSITE_MIN, 1.0);
     }
 }
 
@@ -326,5 +372,57 @@ mod tests {
         };
         assert_eq!(m.evaluer(0.5), EtatMembrane::Impermeable);
         assert_eq!(m.evaluer(0.8), EtatMembrane::Poreux);
+    }
+
+    #[test]
+    fn porosite_adapte_au_gradient_territorial() {
+        // B3 — Matrice H : la porosité s'ouvre en résonance et se contracte en
+        // bruit/incohérence (règle d'or 3). Bornée dans [POROSITE_MIN, 1.0].
+        let mut m = Membrane::nouvelle(0.35);
+        assert_eq!(m.porosite, 1.0); // ouverte au repos
+
+        // Résonance forte (coherence ≥ 0) → ouverture (reste à 1.0).
+        m.ajuster_porosite(&GradientH {
+            intensite: 0.8,
+            coherence: 0.9,
+        });
+        assert!(
+            (m.porosite - 1.0).abs() < 1e-9,
+            "résonance → membrane ouverte, porosité={}",
+            m.porosite
+        );
+
+        // Bruit/incohérence (coherence < 0) → contraction vers le plancher.
+        let mut m2 = Membrane::nouvelle(0.35);
+        m2.ajuster_porosite(&GradientH {
+            intensite: 0.8,
+            coherence: -1.0,
+        });
+        assert!(
+            m2.porosite < 1.0,
+            "bruit → contraction, porosité={}",
+            m2.porosite
+        );
+        // Contraction bornée : jamais sous le plancher.
+        for _ in 0..100 {
+            m2.ajuster_porosite(&GradientH {
+                intensite: 0.8,
+                coherence: -1.0,
+            });
+        }
+        assert!(
+            (m2.porosite - POROSITE_MIN).abs() < 1e-6,
+            "porosité bornée au plancher {}, obtenue {}",
+            POROSITE_MIN,
+            m2.porosite
+        );
+
+        // La membrane contractée exige une résonance plus forte (seuil ↑) :
+        // elle étouffe le bruit localement (imperméabilité défensive).
+        assert_eq!(
+            m2.evaluer(0.2),
+            EtatMembrane::Impermeable,
+            "la membrane contractée doit étouffer un signal faible"
+        );
     }
 }

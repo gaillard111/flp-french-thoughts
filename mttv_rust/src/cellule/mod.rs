@@ -22,5 +22,6 @@ pub use transduction::{
     transduire, IssueTransduction, signal_interference,
 };
 pub use types::{
-    EtatMembrane, Membrane, ModeTet, Signal, SignaturePhi,
+    EtatMembrane, GradientH, Membrane, ModeTet, Signal, SignaturePhi,
+    POROSITE_MIN, VITESSE_POROSITE,
 };
