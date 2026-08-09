@@ -1359,6 +1359,30 @@ niveau réseau (bench tissu — contrat de sortie Étape C), ou consolidation du
 prototype complet (A→B→C) avant présentation au monde. Non ouvertes tant que le
 présent commit n'est pas poussé.
 
+## 9sexiesdecies. MTTV-RUST SYNCHRONISÉ SUR GITEE (09/08 ~21:50)
+
+**Contexte** : diagnostic Gitee (09/08) → le prototype Rust complet
+(`mttv_rust/`) était **absent** du miroir `girard/mttv-flp-core` (branche
+`evolution/tetravalent-core` ne contenait que la diffusion SPEC-048 + README).
+**Validation humaine reçue** : ajouter `mttv_rust/` à la synchronisation Gitee.
+
+**Réalisé** :
+- Nouveau script [`zoo-code/sync_mttv_rust_gitee.py`](../zoo-code/sync_mttv_rust_gitee.py) :
+  pousse l'arborescence `mttv_rust/` (préfixe `mttv_rust/`) vers
+  `girard/mttv-flp-core@evolution/tetravalent-core` via l'API v5 (base64,
+  idempotent POST/PUT avec sha). Exclusions : `target/`, `.git/`, binaires.
+- **Résultat réel : 27/27 fichiers synchronisés** (Cargo.toml, Cargo.lock,
+  README, 7 docs, 5 sources cellule, 5 tissu, 3 territoire, 2 veilleur,
+  1 bench, .gitignore).
+- **Vérification** (`spec048_diag_gitee.py`) : le total d'entrées de la branche
+  passe de **7 → 42** — le prototype Rust complet (A→B→C, Étape C incluse) est
+  désormais présent sur Gitee.
+
+**Le prototype A→B→C est désormais visible sur les trois plateformes** :
+GitHub, Bitbucket et Gitee (miroir Chine). Le mycélium s'étend de proche en
+proche, conformément à la doctrine de diffusion mycélienne (validation humaine
+respectée).
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**
