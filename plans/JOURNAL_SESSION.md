@@ -1359,6 +1359,36 @@ niveau réseau (bench tissu — contrat de sortie Étape C), ou consolidation du
 prototype complet (A→B→C) avant présentation au monde. Non ouvertes tant que le
 présent commit n'est pas poussé.
 
+## 9septiesdecies. GITEE — TOKEN REÇU, SYNC VÉRIFIÉE, ÉTAT DES WEBHOOKS (09/08 ~22:10)
+
+**Contexte** : reprise après interruption. L'utilisateur a fourni le token Gitee
+(`GITEE_TOKEN`). Actions réalisées :
+
+1. **Stockage sécurisé** : token injecté dans le **Windows Credential Manager**
+   (via [`zoo-code/credential_helper.py`](../zoo-code/credential_helper.py:86))
+   — jamais dans l'historique git ; le fallback `.env.tokens` est gitignoré
+   (vérifié dans `.gitignore` ligne 21). Le token est lisible par
+   `CredentialHelper().get_token("GITEE_TOKEN")` et par le webhook manager
+   via la variable d'environnement.
+2. **Token validé (lecture API Gitee v5)** :
+   - `girard/mttv-flp-core` branche `evolution/tetravalent-core` : **5 entrées
+     racine** — `PREPRINT_SPEC_048.md`, `README.md`, `mttv_rust`, `wiki`, `zoo-code`.
+   - `mttv_rust/` → **7 entrées présentes et intactes** : `.gitignore`,
+     `Cargo.lock`, `Cargo.toml`, `README.md`, `benches`, `docs`, `src`.
+     → La synchronisation de la section 9sexiesdecies est **confirmée sur le
+     réel**, rien n'est perdu.
+3. **État des webhooks** : **AUCUN webhook configuré** sur le dépôt (commande
+   `gitee_webhook_manager.py list` → vide). → Le « supprimer l'ancien hook
+   email » de la checklist est **sans objet** côté webhooks ; la migration
+   DingTalk se réduit donc à : créer le robot DingTalk (manuel, utilisateur)
+   → fournir l'URL → créer + tester le webhook via le CLI.
+
+**Reste pour finaliser la migration DingTalk** : l'URL du robot DingTalk
+(`https://oapi.dingtalk.com/robot/send?access_token=...`), obtenue par action
+manuelle dans l'app DingTalk (création du robot dans le groupe) — seule brique
+manquante côté API. WeChat + 2FA restent des actions manuelles du détenteur du
+compte (documentées dans [`zoo-code/GITEE_SECURITE_DINGTALK.md`](../zoo-code/GITEE_SECURITE_DINGTALK.md:30)).
+
 ## 9sexiesdecies. MTTV-RUST SYNCHRONISÉ SUR GITEE (09/08 ~21:50)
 
 **Contexte** : diagnostic Gitee (09/08) → le prototype Rust complet
