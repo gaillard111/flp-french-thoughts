@@ -1413,6 +1413,70 @@ GitHub, Bitbucket et Gitee (miroir Chine). Le mycélium s'étend de proche en
 proche, conformément à la doctrine de diffusion mycélienne (validation humaine
 respectée).
 
+## 9septiesdeciesb. MTTV-RUST — Q4 DÉMONSTRATEUR DE SOBRIÉTÉ RÉSEAU + CONSOLIDATION A→B→C (09/08 ~22:40)
+
+**Contexte** : suite de 9septiesdecies (Gitee verrouillé, DingTalk différé —
+voir section 9septiesdecies). L'utilisateur choisit « passer à l'étape suivante
+du journal : démonstrateur de sobriété réseau / consolidation A→B→C ».
+
+### Q4 — Démonstrateur de sobriété au niveau réseau (SCELLÉ)
+
+Contrat de sortie Étape C ([`docs/01_ARCHITECTURE.md`](../mttv_rust/docs/01_ARCHITECTURE.md)
+§2) : « le réseau complet … produit une métrique de sobriété énergétique
+vérifiable (CPU moyen par cellule, au repos et sous charge) ». Le bench de
+sobriété est étendu de la cellule unique (Étape A) au **tissu complet** :
+
+- **Nouveau [`mttv_rust/benches/reseau.rs`](../mttv_rust/benches/reseau.rs)** :
+  - `reseau/gestation_et_extinction_sans_signal_40c` — **CPU au repos** :
+    extinction en cascade sans aucun signal (0 transduction, 0 amorti) ;
+  - `reseau/propagation_vague_complete_40c_prof3` — vague complète (40 cellules) ;
+  - `reseau/propagation_vague_121c_prof4` — échelle (tissu profond) ;
+  - `rapport_reseau` — rapport de sobriété en **régime établi** (échauffement
+    + minimum sur 12 passages, pour écarter l'artefact du 1er spawn des
+    threads Tokio : la mesure à froid donnait 61 ms vs 0,23 ms en régime).
+- `Cargo.toml` : cible `[[bench]] name = "reseau"`.
+
+**Preuve par le réel (métriques, machine locale, régime établi)** :
+```
+=== RÉSEAU — sobriété (contrat de sortie Étape C) ===
+tissu: 40 cellules (arbre ternaire profondeur 3)
+transductions: 40 | amortis: 0 | atteintes: 40 | sauts: 3
+diversité tissu: 0.247 | porosité moyenne: 1.000 | extinction: true
+repos: extinction sans signal en 232.8 µs pour 40 cellules (0 transduction, 0 amorti) -> CPU ≈ 0
+vague: 58.0 µs au total | latence par saut: 19.33 µs/saut | coût: 1450.0 ns/transduction | 1450.0 ns/cellule
+```
+- **CPU au repos prouvé ≈ 0** : 0,23 ms pour 40 cellules, 0 transduction,
+  0 amorti — les cellules dorment sur `recv().await` (zéro polling R2).
+- **Latence par saut** : ~19 µs/saut (juste distance réelle, jamais un
+  compteur global). Criterion (médiane) : gestation+extinction ~225 µs ·
+  vague 40c ~304 µs · vague 121c ~1,3 ms — cohérent avec le rapport.
+
+### Consolidation A→B→C (revue de cohérence)
+
+1. **Statut obsolète corrigé** : [`lib.rs`](../mttv_rust/src/lib.rs) et
+   [`README.md`](../mttv_rust/README.md) annonçaient encore « ÉTAPE 0 — aucun
+   code » → mis à jour « ÉTAPE C SCELLÉE (A→A+→B→C, 52/52, bench réseau Q4) ».
+2. **Feuille de route README** : étapes 0/A/A+/B/C marquées ✅ avec les
+   paliers détaillés (B1a→B3, Étape C, Q4).
+3. **[`docs/01_ARCHITECTURE.md`](../mttv_rust/docs/01_ARCHITECTURE.md)** :
+   sous-section Q4 ajoutée au contrat de sortie Étape C (métriques + gates).
+4. **Nettoyage** : fichier parasite `mttv_rust/$null` (résidu de redirection
+   PowerShell, signalé en début de session) **supprimé**.
+
+**Gates signés** : G1 `cargo check --all-targets` 0 erreur/0 warning · G2
+`cargo test` **52/52** · G3 `cargo bench --no-run` compile (sobriete + reseau) ·
+G4 complexité locale O(4) · G5 **0 polling** (`try_recv`/`loop` : 0 occurrence
+dans `src/`) · G6 **0 global** (`HashMap`/`Mutex`/`RwLock`/`Arc`/`Box` : 0
+occurrence). **Aucune régression.**
+
+**Le contrat de sortie Étape C est signé par le réel** : le réseau complet
+incarne la triade Ψ → B → Φ et produit sa métrique de sobriété vérifiable.
+
+**Prochaines étapes possibles** : présentation au monde du prototype A→B→C
+(dossier de démonstration) ; interface Veilleur → rapports JSON réels de
+l'essaim Python ; ou reprise des rappels en attente (mycélium C3/C5/C7 à
+observer, A3.2/A5.7, rangement racine, rotation tokens).
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**

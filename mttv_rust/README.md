@@ -1,7 +1,9 @@
 # MTTV-RUST — Prototype industriel Rust du framework MTTV-FLP
 
 **Sig** : `0x4D5454562D464C50`
-**Statut actuel** : **ÉTAPE 0 — CONCEPTION DOCUMENTÉE, AUCUN CODE**
+**Statut actuel** : **ÉTAPE C SCELLÉE (09/08)** — prototype complet A → A+ → B → C
+implémenté, testé (52/52) et benchmarké. Démonstrateur de sobriété au niveau
+réseau signé (Q4, `benches/reseau.rs`).
 
 Le Grand Œuvre : matérialiser en Rust (architecture asynchrone, thread-safe) un
 prototype industriel qui prouve la **sobriété énergétique radicale** de la recette
@@ -23,11 +25,15 @@ transduction locale franchissant un seuil.
 
 ## Feuille de route
 
-- **Étape 0 (en cours)** : conception documentée, validation par l'Orchestrateur.
-- **Étape A** : stabilisation de la cellule unique (nœud sp3, membrane à seuil,
-  4 canaux Tokio) — contractuellement la première pierre posée en mode Code.
-- **Étape B** : tissage du tissu (topologie locale sp3, propagation sur 3 liaisons).
-- **Étape C** : dynamique du fluide (matrice H, amortissement, porosité adaptative).
+- **Étape 0** ✅ conception documentée, validée par l'Orchestrateur.
+- **Étape A** ✅ cellule sp3 unique (nœud sp3, membrane à seuil, 4 canaux Tokio),
+  scellée — Étape A+ (premier souffle : transduction, boucle événementielle).
+- **Étape B** ✅ tissage du tissu : B1a (raccordement), B1b (transduction
+  prouvée), B2a-bis (autonomie immanente, rejet R4/R2), B2b (croissance),
+  B3 (matrice H / porosité adaptative + homéostasie).
+- **Étape C** ✅ dynamique du fluide + MPVR/σ locales + Veilleur (membrane de
+  traduction), scellée — **Q4** : démonstrateur de sobriété réseau signé
+  ([`benches/reseau.rs`](benches/reseau.rs)).
 
 Chaque étape est verrouillée par le contrat d'étape (build release, tests, bench
 de sobriété) avant d'ouvrir la suivante. Le Maître d'Œuvre audite chaque fragment

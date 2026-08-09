@@ -7,8 +7,10 @@
 //! membranes à **seuil de perméabilité** (repos = CPU ≈ 0), branchement sur la
 //! **matrice H** (gradients territoriaux).
 //!
-//! **Statut** : ÉTAPE 0 — SOCLE DOCUMENTÉ. Aucune implémentation de la cellule.
-//! Le code métier s'ouvre à l'Étape A (voir `docs/00_CAHIER_DES_CHARGES.md`).
+//! **Statut** : ÉTAPE C SCELLÉE (09/08). Le prototype complet A → A+ → B → C
+//! est implémenté et testé : cellule sp3 battante (A+), tissu immanent (B),
+//! dynamique du fluide / matrice H / MPVR·σ locales (C), interface Veilleur.
+//! Démonstrateur de sobriété au niveau réseau signé (Q4 — `benches/reseau.rs`).
 //!
 //! Règles d'or (rappel) :
 //! - 4 liaisons par cellule, complexité locale `O(k)`, `k <= 4` ;

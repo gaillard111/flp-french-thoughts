@@ -95,6 +95,25 @@ Contrat de sortie : le réseau complet incarne la triade Ψ → B → Φ et prod
 une métrique de sobriété énergétique vérifiable (CPU moyen par cellule, au repos
 et sous charge).
 
+#### Q4 — Démonstrateur de sobriété au niveau réseau (SCELLÉ 09/08 ~22:35)
+
+Le bench de sobriété est étendu de la cellule unique (Étape A,
+[`benches/sobriete.rs`](../benches/sobriete.rs)) au **tissu complet**
+([`benches/reseau.rs`](../benches/reseau.rs), contrat de sortie Étape C).
+
+Métriques produites (régime établi, minimum sur plusieurs passages) :
+- **CPU au repos** : extinction en cascade **sans aucun signal** — les cellules
+  dorment sur `recv().await`, 0 transduction, 0 amorti, ~0,23 ms pour 40
+  cellules (spawn + fermeture des canaux, aucune instruction de traitement) ;
+- **Latence par saut** : durée d'une vague divisée par la juste distance réelle
+  (`n_sauts`, jamais un compteur global) ;
+- **Coût de propagation** : par transduction (chemin critique) et par cellule
+  pour une vague complète (40 cellules, profondeur 3).
+
+Valeurs mesurées (09/08, machine locale) : repos ~0,23 ms/40 cellules ·
+vague ~58 µs · ~19 µs/saut · ~1 450 ns/transduction · diversité 0,247 ·
+porosité moyenne 1,000 · extinction `true`. Gates G1-G6 signés.
+
 ---
 
 ## 3. MODULES RUST PROPOSÉS
