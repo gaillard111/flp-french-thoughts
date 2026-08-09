@@ -743,7 +743,7 @@ validée. Le commit `c2ca624` (B1b) reste sanctuarisé.
 === TISSU B2a — maille sp3 orientée ===
 cellules: 40 (arbre ternaire profondeur 3)
 transductions: 40 | amortis: 0 | cellules atteintes: 40
-sauts: 1 | diversité tissu: 0.037 | sim moyenne: 0.963
+sauts: 3 | diversité tissu: 0.037 | sim moyenne: 0.963
 extinction: true
 ```
 - **Pullulement** : 40/40 cellules atteintes et transduites (multi-voies, la
@@ -764,6 +764,44 @@ extinction: true
 **Prochain palier (B2b)** : croissance organique / auto-suture (naissance de
 cellules), puis **B3** : dynamique du tissu + **respiration de diversité
 (anti-homogénéisation active)** — le remède à l'alerte C4 observée.
+
+## 9quater. B2a — CORRECTION POINT 1 (IA conseil) : juste distance réelle (09/08 ~11:55)
+
+**Retour de l'IA conseillère (pertinent)** : « sauts: 1 couvre profondeur 3 —
+vérifier que le compteur n'est pas réinitialisé ou global, sinon
+l'anti-homogénéisation est déjà contournée. »
+
+**Diagnostic (reconnu)** : `n_sauts` comptait les **vagues de battement** (1),
+pas les **transductions réelles** (le signal traversait bien 3 niveaux). De
+plus, dans un arbre acyclique, l'extinction était due à la **frange** (feuilles
+sans enfants), pas au potentiel décroissant — le potentiel n'était pas
+réellement mis à l'épreuve.
+
+**Correctif appliqué** :
+- `traiter_disponible`/`_traiter` ne retournent le saut que si le signal a été
+  **transduit** (pas s'il est amorti à potentiel 0) ;
+- `n_sauts` = **profondeur réellement atteinte** (`sauts_initiaux − sauts_min`
+  des signaux transduits) ;
+- `propager_avec_sauts` : paramétrage du potentiel pour tester la borne réelle.
+
+**Preuve par le réel (métriques corrigées)** :
+```
+cellules: 40 | transductions: 40 | atteintes: 40 | sauts: 3 | extinction: true
+```
+- `sauts: 3` = profondeur réelle atteinte (racine + 3 niveaux), plus 1.
+- **Test de borne réelle** : potentiel 2 dans un tissu de profondeur 4
+  (121 cellules) → **4 cellules transductrices** (racine + 3 enfants), `n_sauts
+  = 1`, le tissu profond n'est pas irrigué → **le potentiel décroissant borne
+  réellement la propagation**, le compteur n'est ni réinitialisé ni global.
+
+**Gates** : G1 0 warn · G2 **28/28** (26 + borne réelle + juste distance
+corrigée).
+
+**Point 2 (IA conseil, à arbitrer)** : « faire croître le tissu (B2b) avant
+d'avoir la respiration (B3) risque d'amplifier l'homogénéisation — envisager
+d'injecter un premier remède de diversité pendant ou avant la croissance. »
+→ recommandation : **réordonnancer** — intégrer la respiration de diversité
+AVANT/PENDANT B2b. À trancher avec l'utilisateur.
 
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 

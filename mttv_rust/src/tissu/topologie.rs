@@ -164,8 +164,10 @@ impl Tissu {
     }
 
     /// Fait battre une cellule d'un cycle : traite un signal disponible sur
-    /// son amont (non-bloquant). Retourne `true` si un signal a été traité.
-    pub async fn battre(&mut self, id: u64) -> bool {
+    /// son amont (non-bloquant). Retourne `Some(sauts_restants)` du signal
+    /// reçu si un signal a été traité, `None` sinon. La profondeur atteinte se
+    /// déduit de `SAUTS_INITIAUX - sauts_restants` (juste distance réelle).
+    pub async fn battre(&mut self, id: u64) -> Option<u8> {
         let noeud = self
             .noeuds
             .get_mut(&id)

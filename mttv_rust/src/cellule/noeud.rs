@@ -155,25 +155,31 @@ impl Cellule {
     }
 
     /// Traite **au plus un** signal disponible sur la liaison amont (lecture
-    /// non-bloquante `try_recv`). Retourne `true` si un signal a été traité.
+    /// non-bloquante `try_recv`). Retourne `Some(sauts_restants)` du signal
+    /// **reçu** (avant décrément) **uniquement si le signal a été transduit**
+    /// (pas s'il a été amorti — le potentiel à zéro ou le sous-seuil ne compte
+    /// pas comme un saut atteint). `None` si rien à traiter.
     ///
-    /// Utilisé par le gestateur du tissu pour **piloter le battement** de façon
-    /// déterministe (observation) — la boucle autonome reste `tourner()`.
-    /// Aucun polling : `try_recv` est appelé une fois, ne bloque jamais.
-    pub async fn traiter_disponible(&mut self) -> bool {
+    /// Utilisé par le gestateur pour piloter le battement (observation) et
+    /// mesurer la profondeur réellement atteinte (juste distance). Aucun
+    /// polling : `try_recv` est appelé une fois.
+    pub async fn traiter_disponible(&mut self) -> Option<u8> {
         let signal = match self.amont.as_mut() {
             Some(rx) => match rx.try_recv() {
                 Ok(s) => s,
-                Err(_) => return false, // canal vide ou fermé → rien à traiter
+                Err(_) => return None, // canal vide ou fermé → rien à traiter
             },
-            None => return false,
+            None => return None,
         };
-        self._traiter(signal).await;
-        true
+        let sauts_recus = signal.sauts_restants;
+        let a_transduit = self._traiter(signal).await;
+        if a_transduit { Some(sauts_recus) } else { None }
     }
 
     /// Logique commune de traitement d'un signal (transduction + propagation).
-    async fn _traiter(&mut self, signal: Signal) {
+    /// Retourne `true` si le signal a été transduit (propage), `false` s'il a
+    /// été amorti (sous le seuil ou potentiel à zéro).
+    async fn _traiter(&mut self, signal: Signal) -> bool {
         self.cycle += 1;
         let issue = transduire(
             &mut self.phi,
@@ -188,6 +194,7 @@ impl Cellule {
                 self.n_amortis += 1;
                 self.mode = ModeTet::Veille;
                 // Rien n'est émis : le processeur se rendort.
+                false
             }
             IssueTransduction::Propage(sortant) => {
                 self.n_transductions += 1;
@@ -199,6 +206,7 @@ impl Cellule {
                     let _ = tx.try_send(sortant);
                 }
                 self.mode = ModeTet::Veille; // le calcul s'éteint de lui-même
+                true
             }
         }
     }

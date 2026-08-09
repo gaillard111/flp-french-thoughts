@@ -46,13 +46,23 @@ pub struct ResultatPropagation {
     pub extinction: bool,
 }
 
-/// Injecte un signal aligné à la racine et fait battre le tissu jusqu'à
-/// extinction. Retourne les métriques de propagation réelles.
-///
-/// Le signal porte `SAUTS_INITIAUX` sauts ; chaque vague fait battre toutes les
-/// cellules une fois (profondeur par profondeur). Le battement s'arrête quand
-/// plus aucune cellule ne traite de signal (extinction).
+/// Injecte un signal aligné à la racine (avec `SAUTS_INITIAUX` sauts) et fait
+/// battre le tissu jusqu'à extinction. Retourne les métriques de propagation
+/// réelles. `n_sauts` mesure la **profondeur réelle atteinte** (transductions
+/// en chaîne), pas le nombre de vagues de battement.
 pub async fn propager(tissu: &mut Tissu) -> ResultatPropagation {
+    propager_avec_sauts(tissu, SAUTS_INITIAUX).await
+}
+
+/// Variante paramétrée : injecte un signal avec `sauts_initiaux` sauts.
+///
+/// Sert au **test de juste distance réelle** : un potentiel faible doit
+/// empêcher d'atteindre les profondeurs profondes (le potentiel décroissant
+/// borne la propagation, pas seulement la frange de l'arbre).
+pub async fn propager_avec_sauts(
+    tissu: &mut Tissu,
+    sauts_initiaux: u8,
+) -> ResultatPropagation {
     let injecteur = tissu.injecteur();
 
     // Signal aligné avec la racine (Φ = [1,0,0,0], profondeur 0).
@@ -61,25 +71,31 @@ pub async fn propager(tissu: &mut Tissu) -> ResultatPropagation {
         amplitude: 0.8,
         source: tissu.racine_id,
         ts: 0,
-        sauts_restants: SAUTS_INITIAUX,
+        sauts_restants: sauts_initiaux,
     };
     injecteur.send(signal).await.expect("injection échouée");
 
-    // Battre le tissu par vagues jusqu'à extinction (aucun signal traité).
-    let mut n_sauts: u32 = 0;
+    // Battre le tissu par vagues jusqu'à extinction (aucun signal transduit).
+    // La **profondeur réelle atteinte** se mesure via le plus petit
+    // `sauts_restants` observé parmi les signaux **transduits** :
+    // `n_sauts = sauts_initiaux - sauts_min`. Un signal reçu et transduit avec
+    // `sauts_restants = k` a déjà traversé `sauts_initiaux - k` transductions
+    // (vraie juste distance, pas le nombre de vagues de battement).
+    let mut sauts_min: u8 = sauts_initiaux;
     loop {
         let mut traite_au_moins_un = false;
         // Battre toutes les cellules une fois (ordre par id, déterministe).
         for id in 0..tissu.taille() as u64 {
-            if tissu.battre(id).await {
+            if let Some(sauts_recus) = tissu.battre(id).await {
                 traite_au_moins_un = true;
+                sauts_min = sauts_min.min(sauts_recus);
             }
         }
         if !traite_au_moins_un {
             break; // extinction : le tissu est au repos
         }
-        n_sauts += 1;
     }
+    let n_sauts: u32 = sauts_initiaux as u32 - sauts_min as u32;
 
     // Agréger les états de toutes les cellules.
     let mut n_transductions: u64 = 0;
@@ -207,6 +223,46 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn potentiel_faible_borne_la_propagation() {
+        use super::super::topologie::Tissu;
+
+        // Tissu profond (profondeur 4 = 1+3+9+27+81 = 121 cellules). Un signal
+        // avec un potentiel FAIBLE (2 sauts) ne doit PAS atteindre les niveaux
+        // profonds : le potentiel décroissant borne la propagation — c'est la
+        // preuve que ce n'est pas seulement la frange qui arrête (contre le
+        // soupçon du conseil 1 : compteur réinitialisé/global — il ne l'est pas).
+        let mut tissu = Tissu::construire_arbre(4);
+        let r = propager_avec_sauts(&mut tissu, 2).await;
+
+        // Potentiel 2 → 1 niveau de transduction au-delà de la racine :
+        // racine (reçue à 2) + 3 enfants (reçus à 1) = 4 cellules transductrices.
+        // Les petits-enfants reçoivent 0 → amortis (n_sauts = 1, pas 4).
+        assert_eq!(
+            r.n_sauts, 1,
+            "potentiel 2 → 1 niveau transduit, obtenu {}",
+            r.n_sauts
+        );
+
+        // 4 cellules transduisent (racine + 3 enfants) ; le tissu de 121
+        // cellules n'est pas irrigué en profondeur — la propagation est bornée.
+        assert_eq!(
+            r.n_cellules_atteintes, 4,
+            "potentiel 2 → 4 cellules transductrices, obtenu {}",
+            r.n_cellules_atteintes
+        );
+        assert!(
+            r.n_transductions < tissu.taille() as u64,
+            "le potentiel doit borner ({} transductions < {} cellules)",
+            r.n_transductions,
+            tissu.taille()
+        );
+
+        // Le potentiel est décrémenté localement (pas global) : un signal avec
+        // plus de sauts va plus loin (comparé à juste_distance, n_sauts=3).
+        assert!(r.extinction, "le tissu doit revenir au repos");
+    }
+
+    #[tokio::test]
     async fn juste_distance_pullulement_puis_extinction() {
         use super::super::topologie::Tissu;
 
@@ -228,12 +284,13 @@ mod tests {
             r.n_transductions
         );
 
-        // 2. Juste distance : sauts bornés (ni 0 — extinction immédiate — ni
-        //    démesurés — boucle). SAUTS_INITIAUX=8 borne la propagation.
-        assert!(
-            r.n_sauts >= 1 && r.n_sauts <= SAUTS_INITIAUX as u32,
-            "juste distance : n_sauts={} doit être dans [1, {}]",
-            r.n_sauts, SAUTS_INITIAUX
+        // 2. Juste distance (mesure réelle) : avec SAUTS_INITIAUX=8 et profondeur
+        //    3, le signal traverse exactement 3 niveaux → n_sauts == 3. C'est la
+        //    profondeur atteinte, pas le nombre de vagues de battement (1).
+        assert_eq!(
+            r.n_sauts, 3,
+            "profondeur atteinte attendue = 3, obtenu {}",
+            r.n_sauts
         );
 
         // 3. Extinction : le tissu est retombé au repos (le battement s'arrête).
