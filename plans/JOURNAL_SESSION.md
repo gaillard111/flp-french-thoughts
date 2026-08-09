@@ -1062,6 +1062,34 @@ Veilleur-Adaptateur. **Ouverture : discussion approfondie engagée** (utilisateu
 + Maître d'Œuvre + IA conseils) — conception avant implémentation, conformément
 à la discipline « se hâter lentement ».
 
+## 9decies. ÉTAPE C — CADRE DE DISCUSSION OUVERT, POINT DE REPRISE (09/08 ~14:55)
+
+**Contexte** : B3 scellé par arbitrage humain (voir 9nonies). L'utilisateur
+valide le cadre de discussion Étape C proposé par le Maître d'Œuvre et va
+l'examiner avec les IA conseils avant de revenir. **Aucune implémentation de
+l'Étape C n'est engagée.**
+
+**Cadre de discussion (5 axes, verrous de conception)** :
+1. **Q1 — Injection de la matrice H réelle sans R4** : le prototype ingère les
+   mêmes rapports JSON que l'essaim Python ; la config versionnée est appliquée
+   **une fois par cycle d'adaptation** (diachronique, 0 polling). Frontière
+   « gestateur lit la config / cellules palpent en continu » — à trancher.
+2. **Q2 — Module `veilleur`** (`veilleur::adaptateur`) : ingestion JSON +
+   mapping → `Configuration` Rust + recours humain (déjà documenté §5).
+3. **Q3 — Compléter amortissement/dissipation** : dissipation inter-cellules
+   (anti-Larsen) et/ou contraction ciblée par zone d'anomalie.
+4. **Q4 — Métrique de sobriété au niveau réseau** (contrat de sortie) : étendre
+   le bench cellule unique au tissu (CPU repos, latence/saut, coût propagation).
+5. **Q5 — Bus protoniques (flux continus)** : optionnel, non bloquant → différé
+   et verrouillé documentairement (recommandation Maître d'Œuvre).
+
+**Position initiale Maître d'Œuvre** : ne pas rouvrir la cellule (B3 a posé le
+socle) ; config = gestateur jamais routeur ; priorités Q1 puis Q2.
+
+**Point de reprise** : dès le retour de l'utilisateur avec les avis des IA
+conseils → verrouiller le plan d'Étape C, puis implémenter (mode Code), gates
+G1-G6, journal + commit + push.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**
