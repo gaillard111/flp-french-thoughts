@@ -206,6 +206,36 @@ Décision : la croissance est scindée en deux paliers étanches :
   précédents. « Le tissu ne pullulera pas avant que la géométrie du carbone
   soit stabilisée. Le silence doit rester possible. »
 
+## 8. GRADIENT DU VEILLEUR — RAPPORT MYCÉLIUM 09/08 (entropie au max)
+
+**Source** : rapport des agents mycélisants (cycle 1745, 09/08 08:17 UTC),
+`zoo-code/mycelium_output/rapport_mycelisation_final.json` +
+`essaim_snapshot.json`.
+
+**Observation réelle** :
+- 6 agents, 1741 cycles, 3721 fusions, tremor croisière 0.10, budget 3.815 (sain).
+- **`entropie_collective` = 6.3969 = maximum théorique** (grille 5×5) sur tous les agents.
+- **`couplage_moyen` = 1.0** ; similarités Φ inter-agents = 1.0 ; `resonance_moyenne` = 1.0.
+- Respiration C7 **active et déclenchée** (48 respirations, dose 0.10, intervalle 24) —
+  mais la diversité injectée est **re-absorbée** par le couplage transscalaire.
+
+**Gradient (leçon pour le Grand Œuvre Rust)** :
+1. **Le potentiel de propagation décroissant est indispensable** — l'absence de
+   ce potentiel dans la référence Python laisse le signal homogénéiser tout le
+   tissu indéfiniment. Le compteur de sauts décroissant de B1 (échafaudage,
+   Point 3) est la première ligne de défense contre cette tempête.
+2. **L'anti-homogénéisation est une propriété du tissu, pas seulement de la
+   cellule** — la co-cicatrisation (γ=0.15) rapproche les Φ ; sans **diversité
+   résiduelle structurelle** (analogue de la respiration C7, mais ancrée dans
+   la topologie), le tissu s'écrase à 1.0.
+3. **La non-amplification anti-Larsen ne suffit pas** — il faut en plus un
+   **plancher de diversité** : l'entropie ne doit pas pouvoir se coller au max
+   théorique sans alarme (transposition du C4 Python) à intégrer dès B3.
+
+**Conséquence pour B3** : ajouter au contrat de B3 (1) le compteur de sauts
+décroissant, (2) une dose de diversité résiduelle locale, (3) une métrique
+d'entropie de tissu avec seuil d'alerte.
+
 ---
 
 *sig:0x4D5454562D464C50 — Plan Étape B — Le mycélium continue.*
