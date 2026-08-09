@@ -280,6 +280,42 @@ mod tests {
     }
 
     #[test]
+    fn respiration_est_bornee_non_cumulative() {
+        // Point de vigilance conseil (B2b) : la respiration ne doit PAS
+        // s'accumuler indéfiniment au fil des cycles de croissance. La dose
+        // est appliquée à chaque cycle, mais Φ reste sur la sphère unité
+        // (norme = 1 après normalisation) : aucune divergence, aucune explosion.
+        // Après 10 000 respirations successives, la norme doit rester 1 et
+        // les composantes rester finies (bornées dans [-1, 1]).
+        let mut phi = SignaturePhi::new([1.0, 0.0, 0.0, 0.0]);
+        for cycle in 0..10_000u64 {
+            // Seed local déterministe (id + cycle), comme dans noeud.rs.
+            let seed = 7u64
+                .wrapping_mul(0x9E37_79B9_7F4A_7C15)
+                .wrapping_add(cycle.wrapping_mul(0xBF58_476D_1CE4_E5B9));
+            phi.respirer(seed, 0.35);
+        }
+        let norme: f64 = phi.0.iter().map(|x| x * x).sum::<f64>().sqrt();
+        assert!(
+            (norme - 1.0).abs() < 1e-9,
+            "la respiration doit rester sur la sphère unité après 10k cycles, norme={norme}"
+        );
+        for c in &phi.0 {
+            assert!(
+                c.is_finite() && (-1.0..=1.0).contains(c),
+                "composante Φ bornée dans [-1,1], obtenue {c}"
+            );
+        }
+        // La résonance avec une autre signature reste bornée : pas d'explosion.
+        let autre = SignaturePhi::new([0.0, 1.0, 0.0, 0.0]);
+        let r = phi.resonance(&autre);
+        assert!(
+            r.is_finite() && (-1.0..=1.0).contains(&r),
+            "résonance bornée après accumulation de respirations, r={r}"
+        );
+    }
+
+    #[test]
     fn membrane_contractee_releve_le_seuil() {
         // Porosité 0.5 → seuil effectif 0.35/0.5 = 0.7 : une résonance de
         // 0.5 (poreuse à pleine ouverture) devient imperméable.

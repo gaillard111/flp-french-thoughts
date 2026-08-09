@@ -296,6 +296,62 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn croissance_b2b_preserve_le_plancher_diversite() {
+        use super::super::topologie::Tissu;
+
+        // B2b : le tissu croît à la frange (bourgeonnement), puis le signal
+        // pullule dans le tissu agrandi. Grâce au Poumon de Diversité (déjà en
+        // place AVANT la croissance), l'arrivée des nouvelles cellules ne doit
+        // pas écraser le plancher d'entropie : diversité > 0.200 (au lieu de
+        // ~0.037 sans respiration).
+        let mut tissu = Tissu::construire_arbre(2); // 13 cellules
+        assert_eq!(tissu.taille(), 13);
+
+        // Croissance : une génération de bourgeons à la frange (9 feuilles × 3
+        // aval = 27 nouveaux nœuds) → 40 cellules, comme un arbre de profondeur 3.
+        let n_nes = tissu.croitre();
+        assert_eq!(n_nes, 27);
+        assert_eq!(tissu.taille(), 40);
+
+        let r = propager(&mut tissu).await;
+
+        // Preuve par le réel : rapport chiffré de la croissance (visible avec
+        // `cargo test -- --nocapture`).
+        println!("=== TISSU B2b — croissance à la frange ===");
+        println!(
+            "cellules: {} | transductions: {} | amortis: {} | atteintes: {}",
+            tissu.taille(), r.n_transductions, r.n_amortis, r.n_cellules_atteintes
+        );
+        println!(
+            "sauts: {} | diversité tissu: {:.3} | sim moyenne: {:.3}",
+            r.n_sauts, r.diversite_tissu, r.sim_moyenne
+        );
+        println!("extinction: {}", r.extinction);
+        println!("=== FIN TISSU B2b ===");
+
+        // Le signal pullule dans le tissu agrandi : toutes les cellules atteintes.
+        assert!(
+            r.n_cellules_atteintes >= 40,
+            "le signal doit atteindre le tissu agrandi (40), obtenu {}",
+            r.n_cellules_atteintes
+        );
+        assert!(r.extinction, "le tissu agrandi doit revenir au repos");
+
+        // Conservation de l'entropie : le plancher de diversité est maintenu
+        // grâce au poumon actif (remède C4/C7), bien au-dessus du seuil 0.037.
+        assert!(
+            r.diversite_tissu > 0.200,
+            "la croissance doit préserver le plancher de diversité (> 0.200), obtenu {}",
+            r.diversite_tissu
+        );
+        assert!(
+            r.sim_moyenne < 0.963,
+            "la similarité moyenne doit rester sous 0.963 après croissance, obtenu {}",
+            r.sim_moyenne
+        );
+    }
+
+    #[tokio::test]
     async fn juste_distance_pullulement_puis_extinction() {
         use super::super::topologie::Tissu;
 

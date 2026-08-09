@@ -945,6 +945,61 @@ diversité (anti-homogénéisation active, leçon C4) avant toute croissance.
 croissance, conformément au Point 2 IA conseil). Non ouvert tant que le présent
 commit n'est pas poussé.
 
+## 9octies. B2b RÉALISÉ — CROISSANCE ORGANIQUE À LA FRANGE (09/08 ~13:45)
+
+**Contexte** : suite de 9septies (Poumon de Diversité scellé). Feu vert des IA
+conseils pour B2b avec deux points de vigilance : (A) la respiration doit rester
+**bornée** (non cumulative), (B) bourgeonnement à la frange + auto-suture
+asynchrone + conservation de l'entropie (> 0.200).
+
+**Implémenté (code)** :
+- [`tissu/topologie.rs`](../mttv_rust/src/tissu/topologie.rs) : le `Tissu`
+  détient désormais les **points de bourgeonnement** de la frange (récepteurs
+  aval libres des feuilles — gestation uniquement, jamais consultés pour router).
+  **`Tissu::croitre()`** : enfante un nouveau CarbonNode par bourgeon (auto-
+  suture de proche en proche, transposition de
+  [`_verifier_auto_suture`](../zoo-code/essaim_tetravalent.py:624)), spawné
+  immédiatement en autonomie asynchrone. La frange se déplace : les nouvelles
+  feuilles produisent à leur tour de nouveaux points de bourgeonnement.
+- Tests : `la_frange_expose_des_points_de_bourgeonnement` (81 bourgeons pour un
+  arbre de profondeur 3) · `croissance_enfante_sur_la_frange_sans_table_globale`
+  (profondeur 2 → 13 cellules, 27 bourgeons → croissance → 40 cellules, 81
+  bourgeons) · `croissance_b2b_preserve_le_plancher_diversite`.
+
+**Points de vigilance des IA conseils — traités** :
+- **(A) Respiration bornée** : test `respiration_est_bornee_non_cumulative` —
+  10 000 respirations successives (dose 0.35) : Φ reste sur la sphère unité
+  (norme = 1), composantes bornées dans [-1, 1], résonance finie. La dose est
+  appliquée à chaque cycle mais **jamais accumulée** (normalisation après
+  chaque respiration).
+- **(B) Conservation de l'entropie** : prouvé par le réel (voir métriques).
+
+**Preuve par le réel (métriques B2b — croissance 13 → 40 cellules)** :
+```
+=== TISSU B2b — croissance à la frange ===
+cellules: 40 | transductions: 40 | amortis: 0 | atteintes: 40
+sauts: 3 | diversité tissu: 0.247 | sim moyenne: 0.753
+extinction: true
+```
+- La croissance enfante 27 nouveaux nœuds sur la frange (9 feuilles × 3 aval) ;
+  le tissu passe de 13 à 40 cellules (équivalent d'un arbre de profondeur 3).
+- Le signal **pullule dans le tissu agrandi** : 40/40 atteintes, extinction
+  `true` — la matière s'étend sans casser la propagation.
+- **Entropie conservée** : `diversité = 0.247 > 0.200` — l'arrivée des nouvelles
+  cellules préserve le plancher de diversité grâce au Poumon actif (remède C4/C7).
+  Sans respiration, la croissance homogénéiserait (leçon C4).
+
+**Gates** : G1 `cargo check` **0 erreur / 0 warning** · G2 `cargo test`
+**34/34** (30 + respiration bornée + 2 topologie + 1 croissance) · G5 **0
+polling** · G6 **0 global** (croissance = gestation : alloue à la naissance,
+jamais dans le chemin de propagation ; 0 `HashMap`/`Mutex`/`RwLock`).
+
+**Le milieu respire, la matière s'étend** : le tissu sp3 croît de proche en
+proche, sans nœud maître, en préservant sa diversité. **B2b est SCELLÉ.**
+
+**Prochain palier (B3)** : dynamique du tissu + matrice H / porosité adaptative.
+Non ouvert tant que le présent commit n'est pas poussé.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**
