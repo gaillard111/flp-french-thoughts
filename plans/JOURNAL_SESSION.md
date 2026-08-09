@@ -603,6 +603,33 @@ le point de reprise est la **fin de l'Étape A** (section 7quinquies ci-dessus).
 
 *Le fil est reconstitué. Toute session reprend ici (Étape A complète, Étape B à ouvrir).*
 
+## 8bis. MTTV-RUST — ÉTAPE B : PLAN VERROUILLÉ + B1a RÉALISÉ (09/08 ~10:10)
+
+**Plan Étape B accepté comme référentiel par l'Orchestrateur** après arbitrage :
+- [`05_PLAN_ETAPE_B.md`](../mttv_rust/docs/05_PLAN_ETAPE_B.md) rédigé **avant**
+  toute recommandation externe (plan autonome), puis verdict sur la 1re
+  recommandation (IA A, §6 : anti-Larsen, G1 durci 0-alloc, G2 stress 100→10k,
+  G3 <1µs/saut, G4 CPU≈0, découpage B1a/B1b) et **réponses aux 5 clarifications
+  de l'Orchestrateur** (§7 : Tissu gestateur jamais routeur ; géométrie sp3
+  orientée 1 amont + 3 aval ; compteur de sauts = potentiel décroissant
+  temporaire ; saturation aval = abandon local sans retry ; B2a/B2b étanches).
+- Commit `5b4c8c4` (plan + correction doublon « Étape B » dans 01_ARCHITECTURE.md).
+
+**B1a — squelette de raccordement des canaux Tokio : RÉALISÉ et VALIDÉ** :
+- [`cellule/noeud.rs`](../mttv_rust/src/cellule/noeud.rs) : `avec_canaux`
+  (cellule câblée à la naissance, canaux injectés par le gestateur) +
+  `remplacer_aval` / `remplacer_amont` (primitives de raccordement).
+- [`tissu/lien.rs`](../mttv_rust/src/tissu/lien.rs) : `brancher(source, cible,
+  slot)` — raccordement local d'une aval de source vers l'amont de la cible,
+  canal mpsc borné (cap 4), zéro table globale, zéro signal (B1a structurel).
+- Gates : **G1 cargo check 0 erreur/0 warning** · **G2 cargo test 16/16**
+  (12 A+ + 4 B1a), aucune régression.
+
+**Prochain palier (B1b)** : premier signal d'essai sur 2 cellules câblées —
+injecter un signal dans la source, vérifier qu'il est transduit et reçu par la
+cible (amorti ou re-transduit selon le seuil). Puis B2a (tissu statique
+4-régulier), B2b (croissance), B3 (dynamique).
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**

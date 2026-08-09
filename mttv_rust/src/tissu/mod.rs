@@ -3,12 +3,19 @@
 //! **Sig** : `0x4D5454562D464C50`
 //!
 //! Le réseau croît et s'organise **de proche en proche** : chaque cellule se
-//! connecte à exactement 4 voisines (géométrie sp3), sans table de routage
-//! globale, sans nœud maître, sans consensus centralisé.
+//! connecte à exactement 4 voisines orientées (1 amont + 3 aval, géométrie sp3
+//! diachronique), sans table de routage globale, sans nœud maître, sans
+//! consensus centralisé.
 //!
-//! Contenu prévu à l'Étape B (pas encore implémenté — socle) :
-//! - `topologie`   : connexion locale sp3, croissance organique ;
-//! - `propagation` : émission sur les 3 liaisons aval, extinction à l'équilibre.
+//! - [`lien`] : B1a — le squelette de raccordement des canaux Tokio
+//!   (`brancher` relie une liaison aval d'une cellule à l'amont d'une autre).
+//! - `topologie` : B2a — tissu statique minimal (géométrie 4-régulière) puis
+//!   B2b — croissance organique (auto-suture) — **à venir**.
+//! - `propagation` : B3 — dynamique immanente (anti-Larsen, extinction) — **à venir**.
 //!
 //! Références : `docs/00_CAHIER_DES_CHARGES.md` (règle d'or 1),
-//! `docs/01_ARCHITECTURE.md` §2 (Étape B).
+//! `docs/05_PLAN_ETAPE_B.md` (plan B1→B2→B3, clarifications Orchestrateur).
+
+pub mod lien;
+
+pub use lien::{brancher, ErreurBranchement, TAMPON_LIAISON};

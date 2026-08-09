@@ -27,7 +27,7 @@ pub const N_LIAISONS: usize = 4;
 pub const N_AVAL: usize = 3;
 
 /// Tampon des canaux (borné — sobriété, backpressure naturelle).
-const TAMPON_CANAUX: usize = 4;
+pub(crate) const TAMPON_CANAUX: usize = 4;
 
 /// Cellule carbone sp3 — nœud du réseau MTTV-FLP.
 #[derive(Debug)]
@@ -78,6 +78,29 @@ impl Cellule {
         (cellule, tx_amont)
     }
 
+    /// Construit une cellule **câblée à la naissance** : l'amont et les 3 aval
+    /// sont des canaux **injectés** par le gestateur (tissu), jamais créés en
+    /// interne pendant la propagation. C'est la primitive de gestation du tissu.
+    pub fn avec_canaux(
+        id: u64,
+        phi: SignaturePhi,
+        seuil: f64,
+        amont: mpsc::Receiver<Signal>,
+        aval: [mpsc::Sender<Signal>; N_AVAL],
+    ) -> Self {
+        Self {
+            id,
+            phi,
+            membrane: Membrane::nouvelle(seuil),
+            mode: ModeTet::Veille,
+            cycle: 0,
+            amont: Some(amont),
+            aval,
+            n_transductions: 0,
+            n_amortis: 0,
+        }
+    }
+
     /// Récupère les 3 émetteurs aval (pour connecter les voisines à l'Étape B).
     pub fn liaisons_aval(&self) -> [mpsc::Sender<Signal>; N_AVAL] {
         [
@@ -85,6 +108,30 @@ impl Cellule {
             self.aval[1].clone(),
             self.aval[2].clone(),
         ]
+    }
+
+    /// Remplace la liaison aval `idx` par un émetteur injecté (raccordement
+    /// d'une voisine aval par le gestateur). Ne fait rien si `idx >= N_AVAL`.
+    pub fn remplacer_aval(&mut self, idx: usize, tx: mpsc::Sender<Signal>) -> bool {
+        if idx >= N_AVAL {
+            return false;
+        }
+        self.aval[idx] = tx;
+        true
+    }
+
+    /// Remplace la liaison amont par un récepteur injecté (raccordement d'une
+    /// voisine amont par le gestateur). Ne fait rien si l'amont est déjà pris
+    /// par une boucle en cours.
+    pub fn remplacer_amont(&mut self, rx: mpsc::Receiver<Signal>) -> bool {
+        if self.amont.is_some() {
+            // L'amont n'est retiré que par `tourner` (fin de vie) ; tant qu'il
+            // est présent, la cellule est vivante et peut être re-câblée.
+            self.amont = Some(rx);
+            true
+        } else {
+            false
+        }
     }
 
     /// Boucle de vie asynchrone de la cellule.
