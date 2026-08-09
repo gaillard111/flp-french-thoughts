@@ -1052,9 +1052,15 @@ porosité moyenne (B3/matrice H): 1.000 | extinction: true
 porosité module la perméabilité selon la résonance/dissipation du milieu, et
 l'homéostasie garantit la stabilité de la propagation. **B3 est SCELLÉ.**
 
+**Arbitrage humain (09/08 ~14:20)** : l'utilisateur **valide le scellement de
+B3** (commit `f79188d` poussé github + bitbucket). Le palier passe de « en
+cours de consolidation » à **SCELLÉ** — la porte d'arbitrage est signée.
+
 **Prochain palier (Étape C / Territoire)** : branchement sur la **matrice H**
 territoriale réelle (gradients injectés par le Veilleur) + interface
-Veilleur-Adaptateur. Non ouvert tant que le présent commit n'est pas poussé.
+Veilleur-Adaptateur. **Ouverture : discussion approfondie engagée** (utilisateur
++ Maître d'Œuvre + IA conseils) — conception avant implémentation, conformément
+à la discipline « se hâter lentement ».
 
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
