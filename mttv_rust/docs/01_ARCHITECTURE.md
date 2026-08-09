@@ -81,21 +81,6 @@ Livrables :
 Contrat de sortie : un tissu de cellules interconnectées fonctionne sans nœud
 maître, sans consensus centralisé.
 
-### Étape B — Tissage du tissu
-
-Livrables :
-1. La topologie de connexion locale : chaque cellule se connecte **de proche en
-   proche** à exactement 4 voisines (géométrie sp3).
-2. La propagation du signal : un nœud poreux émet **exclusivement** sur ses 3
-   liaisons restantes (la liaison d'entrée n'est pas re-réutilisée dans le même
-   cycle).
-3. La croissance organique : ajout de cellules par voisinage, sans table de
-   routage globale.
-4. Complexité locale vérifiée `O(k)` avec `k <= 4`.
-
-Contrat de sortie : un tissu de cellules interconnectées fonctionne sans nœud
-maître, sans consensus centralisé.
-
 ### Étape C — Dynamique du fluide
 
 Livrables :
