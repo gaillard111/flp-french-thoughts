@@ -677,6 +677,44 @@ cible (amorti ou re-transduit selon le seuil). Puis B2a (tissu statique
 Cette ouverture **ne doit pas être faite maintenant** : elle attend la reprise
 et l'arbitrage de l'Orchestrateur.
 
+## 9bis. B1b RÉALISÉ ET PROUVÉ — transduction sp3 de proche en proche (09/08 ~11:07)
+
+**Contexte** : la voie 4 avait différé B1b. L'utilisateur a ensuite transmis une
+recommandation simondonienne (« l'expérience du réel valide la théorie ») puis a
+**arbitré lui-même** : protocole présenté ([`06_PROTOCOLE_B1b.md`](../mttv_rust/docs/06_PROTOCOLE_B1b.md))
+→ feu vert (avec vigilance : `etat()` strictement passive).
+
+**B1b implémenté** :
+- [`cellule/noeud.rs`](../mttv_rust/src/cellule/noeud.rs) : méthode `etat()`
+  **strictement passive** (lecture `&self`, aucun effet de bord, aucun verrou,
+  aucune allocation) + type `EtatCellule`.
+- [`tissu/essai.rs`](../mttv_rust/src/tissu/essai.rs) : 3 essais (aligné,
+  orthogonal, séquence mixte) + `lancer_essais()` (rapport des métriques réelles).
+- **Bug corrigé en route** : deadlock détecté (la cible attendait un canal jamais
+  fermé) → drop de la source avant l'attente de la cible + timeout de sécurité
+  (un test qui bloque est un bug, jamais une attente infinie).
+
+**Résultat — l'expérience valide la théorie (métriques réelles)** :
+```
+1. aligné    : source(T=1,A=0) cible(T=1,A=0) reçu=true  lat=102.8µs
+2. orthogonal: source(T=0,A=1) cible(T=0,A=0) reçu=false lat=15.9µs
+3. mixte     : source(T=1,A=1) cible(T=1,A=0) reçu=true  lat=28.5µs
+```
+- Le signal aligné **traverse** la liaison (~103 µs) ; l'orthogonal est **filtré**
+  à la source (~16 µs, étouffement local, la cible reste au repos) ; la séquence
+  mixte est **déterministe et isolée** (la cible ne traite que `S+`).
+- Le mode retombe en `Veille` après chaque transduction : **le calcul s'éteint
+  de lui-même** (sobriété).
+
+**Gates** : G1 `cargo check` 0 erreur/0 warning · G2 `cargo test` **19/19**
+(12 A+ + 4 B1a + 3 B1b). La transduction sp3 de proche en proche est **prouvée
+par le réel**.
+
+**Prochain palier (B2a)** : tissu statique minimal 4-régulier (géométrie sp3
+orientée, propagation, extinction) puis B2b (croissance/auto-suture), B3
+(dynamique + gradient Veilleur §8 : compteur de sauts, diversité résiduelle,
+entropie d'alerte).
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**

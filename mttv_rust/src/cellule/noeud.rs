@@ -179,6 +179,36 @@ impl Cellule {
             }
         }
     }
+
+    /// État observable de la cellule — **strictement passif**.
+    ///
+    /// Lecture seule (`&self`), aucun effet de bord, aucun verrou, aucune
+    /// allocation. Sert à l'observation de l'essai B1b (et au rapport) : les
+    /// compteurs et le mode sont copiés par valeur, sans toucher à la cellule.
+    pub fn etat(&self) -> EtatCellule {
+        EtatCellule {
+            id: self.id,
+            cycle: self.cycle,
+            mode: self.mode,
+            n_transductions: self.n_transductions,
+            n_amortis: self.n_amortis,
+        }
+    }
+}
+
+/// État observable d'une cellule (copie passive, pour observation).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct EtatCellule {
+    /// Identifiant de la cellule.
+    pub id: u64,
+    /// Compteur de cycles.
+    pub cycle: u64,
+    /// Mode tétravalent courant.
+    pub mode: ModeTet,
+    /// Nombre de transductions actives.
+    pub n_transductions: u64,
+    /// Nombre de signaux amortis.
+    pub n_amortis: u64,
 }
 
 #[cfg(test)]

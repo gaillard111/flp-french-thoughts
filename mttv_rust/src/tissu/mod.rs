@@ -16,6 +16,11 @@
 //! Références : `docs/00_CAHIER_DES_CHARGES.md` (règle d'or 1),
 //! `docs/05_PLAN_ETAPE_B.md` (plan B1→B2→B3, clarifications Orchestrateur).
 
+pub mod essai;
 pub mod lien;
 
+pub use essai::{
+    essai_signal_aligne, essai_signal_orthogonal, essai_sequence_mixte,
+    lancer_essais, ResultatEssai,
+};
 pub use lien::{brancher, ErreurBranchement, TAMPON_LIAISON};

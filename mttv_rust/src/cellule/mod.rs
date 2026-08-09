@@ -17,7 +17,7 @@ mod noeud;
 mod transduction;
 mod types;
 
-pub use noeud::{Cellule, N_AVAL, N_LIAISONS};
+pub use noeud::{Cellule, EtatCellule, N_AVAL, N_LIAISONS};
 pub use transduction::{
     transduire, IssueTransduction, signal_interference,
 };
