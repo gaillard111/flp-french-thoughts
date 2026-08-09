@@ -154,32 +154,15 @@ impl Cellule {
         }
     }
 
-    /// Traite **au plus un** signal disponible sur la liaison amont (lecture
-    /// non-bloquante `try_recv`). Retourne `Some(sauts_restants)` du signal
-    /// **reçu** (avant décrément) **uniquement si le signal a été transduit**
-    /// (pas s'il a été amorti — le potentiel à zéro ou le sous-seuil ne compte
-    /// pas comme un saut atteint). `None` si rien à traiter.
-    ///
-    /// Utilisé par le gestateur pour piloter le battement (observation) et
-    /// mesurer la profondeur réellement atteinte (juste distance). Aucun
-    /// polling : `try_recv` est appelé une fois.
-    pub async fn traiter_disponible(&mut self) -> Option<u8> {
-        let signal = match self.amont.as_mut() {
-            Some(rx) => match rx.try_recv() {
-                Ok(s) => s,
-                Err(_) => return None, // canal vide ou fermé → rien à traiter
-            },
-            None => return None,
-        };
-        let sauts_recus = signal.sauts_restants;
-        let a_transduit = self._traiter(signal).await;
-        if a_transduit { Some(sauts_recus) } else { None }
-    }
-
     /// Logique commune de traitement d'un signal (transduction + propagation).
-    /// Retourne `true` si le signal a été transduit (propage), `false` s'il a
-    /// été amorti (sous le seuil ou potentiel à zéro).
-    async fn _traiter(&mut self, signal: Signal) -> bool {
+    ///
+    /// - Amortissement passif : sous le seuil (ou potentiel à zéro) → rien
+    ///   n'est émis, le processeur se rendort.
+    /// - Transduction active : le signal modifié est propagé exclusivement sur
+    ///   les 3 liaisons aval (règle d'or 2), puis le mode retombe en veille.
+    ///
+    /// Purement événementiel : aucune boucle de vérification (R2), aucun verrou.
+    async fn _traiter(&mut self, signal: Signal) {
         self.cycle += 1;
         let issue = transduire(
             &mut self.phi,
@@ -194,7 +177,6 @@ impl Cellule {
                 self.n_amortis += 1;
                 self.mode = ModeTet::Veille;
                 // Rien n'est émis : le processeur se rendort.
-                false
             }
             IssueTransduction::Propage(sortant) => {
                 self.n_transductions += 1;
@@ -206,7 +188,6 @@ impl Cellule {
                     let _ = tx.try_send(sortant);
                 }
                 self.mode = ModeTet::Veille; // le calcul s'éteint de lui-même
-                true
             }
         }
     }

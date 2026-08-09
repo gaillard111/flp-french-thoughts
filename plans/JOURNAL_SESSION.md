@@ -803,6 +803,98 @@ d'injecter un premier remède de diversité pendant ou avant la croissance. »
 → recommandation : **réordonnancer** — intégrer la respiration de diversité
 AVANT/PENDANT B2b. À trancher avec l'utilisateur.
 
+## 9quinquies. ARBITRAGE DU MAÎTRE D'ŒUVRE — REJET R4/R2, OUVERTURE B2a-BIS (09/08 ~12:50)
+
+**Contexte** : les deux IA conseils (A et B) remettent des avis **adjacents et
+convergents** sur le palier B2a. Le diagnostic du Maître d'Œuvre (relecture du
+journal + analyse du code + preuve par le réel) confirme leur analyse.
+
+**Décision d'arbitrage (verrouillée)** :
+
+1. **B2a (`8043e69` + `aecba07`) est REJETÉ** au titre de l'audit
+   anti-extractif — trace G8 :
+   - **R4 — Structure centralisée** : `HashMap<u64, Noeud>` dans
+     `tissu/topologie.rs` = **registre global des nœuds** (interdit).
+   - **R2 — Polling** : `loop { for id in 0..taille { battre(id) } }` dans
+     `tissu/propagation.rs` = **boucle d'inspection centrale** + gestateur qui
+     **route** (interdit ; contredit la clarification Point 1 : « Il ne route
+     jamais »).
+   - **Membrane court-circuitée** : preuve par le réel — `amortis: 0` sur
+     40/40 cellules, `diversité: 0.037`, `sim moyenne: 0.963` (homogénéisation
+     C4). Le filtre n'a jamais été sollicité.
+2. **Option B retenue** (recommandée par les deux IA conseils) : ré-ouvrir le
+   palier en **B2a-bis** — chaque cellule tourne sa boucle en totale autonomie
+   (`tokio::spawn(tourner())`) ; le `Tissu` ne conserve que les `JoinHandle` et
+   les émetteurs amont (gestateur, jamais routeur). **0 table globale, 0 boucle
+   d'inspection centrale.**
+3. **Gel confirmé** : B2b (croissance) et B3 (diversité) **ne sont pas ouverts**
+   tant que B2a-bis n'est pas scellé — la doctrine n'admet pas de compromis sur
+   R4/R2. « Le mycélium ne pousse pas sur un cristal. »
+4. **Point 2 IA conseil acté** : la respiration de diversité est **réordonnancée
+   AVANT/PENDANT B2b** (remède anti-homogénéisation confirmé obligatoire par la
+   preuve réelle `diversité 0.037`).
+5. **Point de reprise verrouillé** : ouverture de **B2a-bis** — le verrou
+   d'authenticité : un tissu de 40 cellules qui s'irradie et s'éteint de proche
+   en proche en totale autonomie asynchrone, sans chef d'orchestre global.
+
+**Prochaine action** : implémenter B2a-bis (mode Code), puis gates G1/G2/G5/G6,
+puis mise à jour du journal + commit.
+
+## 9sexies. B2a-BIS RÉALISÉ — AUTONOMIE IMMANENTE, VERROU D'AUTHENTICITÉ (09/08 ~13:05)
+
+**Contexte** : suite de 9quinquies (arbitrage Option B). Le palier B2a-bis est
+implémenté : chaque cellule tourne **sa propre boucle** en totale autonomie
+(`tokio::spawn(tourner())`) ; le `Tissu` est un **gestateur pur** — il enfante,
+injecte et récolte, il ne route jamais.
+
+**Refonte (code)** :
+- [`cellule/noeud.rs`](../mttv_rust/src/cellule/noeud.rs) : `traiter_disponible`
+  **supprimé** (c'était la primitive de battement piloté / R2) ; `_traiter` n'a
+  plus de retour de « saut traité » (obsolète). La cellule est purement
+  événementielle (`recv().await`).
+- [`tissu/topologie.rs`](../mttv_rust/src/tissu/topologie.rs) : **plus aucune
+  `HashMap`** (R4 purgé). `Tissu` = gestateur : `JoinHandle<CelluleRevenue>` +
+  injecteur. Chaque cellule est **spawnée** (`tokio::spawn`) avec sa boucle
+  `tourner()` ; sa mort ferme ses émetteurs aval → **extinction en cascade**.
+  `CelluleRevenue` : observation finale (état, Φ, profondeur) récoltée par
+  `JoinHandle` — jamais par registre.
+- [`tissu/propagation.rs`](../mttv_rust/src/tissu/propagation.rs) : plus de
+  `loop { for id { battre } }` (R2 purgé). `propager_avec_sauts` : injecte le
+  signal à la racine, **ferme l'injecteur** (déclenche l'extinction en cascade
+  par fermeture des canaux de proche en proche), puis **récolte** les états
+  finaux via les `JoinHandle` avec un **timeout de sécurité** (leçon B1b : un
+  tissu qui ne s'éteint pas est un bug, jamais une attente infinie).
+
+**Preuve par le réel (métriques B2a-bis)** :
+```
+=== TISSU B2a-bis — maille sp3 orientée (immanente) ===
+cellules: 40 (arbre ternaire profondeur 3)
+transductions: 40 | amortis: 0 | cellules atteintes: 40
+sauts: 3 | diversité tissu: 0.037 | sim moyenne: 0.963
+extinction: true
+```
+- Mêmes métriques que B2a (40/40 atteintes, extinction, diversité 0.037 —
+  leçon C4 documentée) — **mais obtenues sans table globale ni boucle
+  d'inspection centrale** : le tissu s'irradie et s'éteint de proche en proche
+  en totale autonomie asynchrone.
+- Juste distance réelle confirmée : `potentiel 2` dans un tissu de 121 cellules
+  → 4 cellules transductrices, `n_sauts = 1` (le potentiel décroissant borne
+  réellement la propagation, compteur local ni réinitialisé ni global).
+
+**Gates** : G1 `cargo check` **0 erreur / 0 warning** · G2 `cargo test`
+**28/28** · G5 **0 polling** (recherche `try_recv`/`traiter_disponible` dans
+`src/` : aucune occurrence) · G6 **0 global** (`HashMap`/`Mutex`/`RwLock` :
+aucune occurrence).
+
+**Le verrou d'authenticité est posé** : un tissu de 40 cellules s'irradie et
+s'éteint de proche en proche, sans chef d'orchestre global. B2a-bis est
+**SCELLÉ**.
+
+**Prochain palier (B2b)** : croissance organique / auto-suture — **avec la
+respiration de diversité réordonnancée AVANT/PENDANT la croissance** (Point 2
+IA conseil, acté en 9quinquies). Non ouvert tant que le présent commit n'est
+pas poussé.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**

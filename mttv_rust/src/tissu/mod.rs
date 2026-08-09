@@ -30,4 +30,4 @@ pub use propagation::{
     diversite_tissu, propager, propager_avec_sauts, ResultatPropagation,
     SAUTS_INITIAUX, SEUIL_ALERTE_ENTROPIE,
 };
-pub use topologie::{Tissu, PROFONDEUR_DEFAUT, TAMPON_TISSU};
+pub use topologie::{CelluleRevenue, Tissu, PROFONDEUR_DEFAUT, TAMPON_TISSU};

@@ -1,24 +1,31 @@
-//! # B2a — Propagation multi-voies + extinction + entropie de tissu
+//! # B2a-bis — Propagation immanente + extinction en cascade + entropie de tissu
 //!
 //! **Sig** : `0x4D5454562D464C50`
 //!
+//! Arbitrage : [`plans/JOURNAL_SESSION.md`](../../../plans/JOURNAL_SESSION.md) §9quinquies.
 //! Plan : [`docs/07_PLAN_B2a.md`](../../docs/07_PLAN_B2a.md).
 //!
-//! Orchestre le **battement** du tissu (gestateur pilotant les cellules de façon
-//! déterministe) et mesure :
-//! - la **propagation multi-voies** : un signal injecté à la racine « pullule »
-//!   de proche en proche (chaque cellule diffuse sur ses 3 aval) ;
-//! - le **potentiel décroissant** : extinction naturelle après N sauts
-//!   (juste distance — ni extinction trop rapide, ni boucle) ;
-//! - l'**entropie de tissu** : dispersion des Φ des cellules, avec seuil
-//!   d'alerte (anti-homogénéisation, leçon C4).
+//! La propagation est **immanente** : le gestateur injecte un signal à la
+//! racine, puis **ne fait plus rien**. Chaque cellule, dans sa propre tâche
+//! (`tokio::spawn(tourner())`), reçoit le signal sur sa liaison amont, le
+//! transduit et le diffuse sur ses 3 liaisons aval — de proche en proche.
 //!
-//! Aucun polling : `battre` est appelé une fois par cellule par vague, la
-//! lecture est non-bloquante (`try_recv`). Aucun verrou global.
+//! - **Zéro polling** : aucune boucle d'inspection centrale (R2).
+//! - **Extinction en cascade** : quand le gestateur ferme l'amont de la racine
+//!   (drop de l'injecteur), la racine termine sa boucle, ferme ses 3 aval, ce
+//!   qui ferme l'amont des enfants, et ainsi de suite — le tissu retombe au
+//!   repos de lui-même. Le potentiel décroissant (`sauts_restants`) borne la
+//!   propagation (juste distance, anti-homogénéisation).
+//! - **Observation immanente** : le gestateur **récolte** l'état final de chaque
+//!   cellule via son `JoinHandle` (fin de vie), jamais via un registre global.
+//!
+//! Aucun verrou global, aucune table de routage.
+
+use std::time::Duration;
 
 use crate::cellule::{Signal, SignaturePhi};
 
-use super::topologie::Tissu;
+use super::topologie::{CelluleRevenue, Tissu};
 
 /// Nombre de sauts initial d'un signal injecté (potentiel de propagation).
 pub const SAUTS_INITIAUX: u8 = 8;
@@ -26,7 +33,7 @@ pub const SAUTS_INITIAUX: u8 = 8;
 /// Seuil d'alerte d'entropie de tissu (fraction du max théorique).
 pub const SEUIL_ALERTE_ENTROPIE: f64 = 0.98;
 
-/// Résultat d'une vague de propagation dans le tissu.
+/// Résultat d'une propagation immanente dans le tissu.
 #[derive(Clone, Copy, Debug)]
 pub struct ResultatPropagation {
     /// Nombre total de transductions dans le tissu.
@@ -35,21 +42,21 @@ pub struct ResultatPropagation {
     pub n_amortis: u64,
     /// Nombre de cellules ayant transduit au moins une fois.
     pub n_cellules_atteintes: u64,
-    /// Nombre de sauts traversés par le signal (vagues de battement).
+    /// Profondeur réellement atteinte par le signal (juste distance).
     pub n_sauts: u32,
     /// Diversité de tissu après propagation : 1 − similarité moyenne des Φ.
     /// Élevée = sain ; basse ≈ 0 = homogénéisation (alerte C4).
     pub diversite_tissu: f64,
     /// Similarité moyenne des Φ (pour l'interprétation de la diversité).
     pub sim_moyenne: f64,
-    /// `true` si le tissu est retombé au repos (plus aucun signal en vol).
+    /// `true` si le tissu est retombé au repos (toutes les cellules ont rendu
+    /// leur état — extinction en cascade complète).
     pub extinction: bool,
 }
 
-/// Injecte un signal aligné à la racine (avec `SAUTS_INITIAUX` sauts) et fait
-/// battre le tissu jusqu'à extinction. Retourne les métriques de propagation
-/// réelles. `n_sauts` mesure la **profondeur réelle atteinte** (transductions
-/// en chaîne), pas le nombre de vagues de battement.
+/// Injecte un signal aligné à la racine (avec `SAUTS_INITIAUX` sauts) et
+/// laisse le tissu s'irradier puis s'éteindre **de lui-même**. Retourne les
+/// métriques de propagation réelles.
 pub async fn propager(tissu: &mut Tissu) -> ResultatPropagation {
     propager_avec_sauts(tissu, SAUTS_INITIAUX).await
 }
@@ -74,47 +81,37 @@ pub async fn propager_avec_sauts(
         sauts_restants: sauts_initiaux,
     };
     injecteur.send(signal).await.expect("injection échouée");
+    // Fermer l'amont de la racine → déclenche l'extinction en cascade.
+    drop(injecteur);
 
-    // Battre le tissu par vagues jusqu'à extinction (aucun signal transduit).
-    // La **profondeur réelle atteinte** se mesure via le plus petit
-    // `sauts_restants` observé parmi les signaux **transduits** :
-    // `n_sauts = sauts_initiaux - sauts_min`. Un signal reçu et transduit avec
-    // `sauts_restants = k` a déjà traversé `sauts_initiaux - k` transductions
-    // (vraie juste distance, pas le nombre de vagues de battement).
-    let mut sauts_min: u8 = sauts_initiaux;
-    loop {
-        let mut traite_au_moins_un = false;
-        // Battre toutes les cellules une fois (ordre par id, déterministe).
-        for id in 0..tissu.taille() as u64 {
-            if let Some(sauts_recus) = tissu.battre(id).await {
-                traite_au_moins_un = true;
-                sauts_min = sauts_min.min(sauts_recus);
-            }
-        }
-        if !traite_au_moins_un {
-            break; // extinction : le tissu est au repos
-        }
-    }
-    let n_sauts: u32 = sauts_initiaux as u32 - sauts_min as u32;
+    // Récolte immanente : le tissu s'éteint de lui-même (chaîne de fermeture
+    // des canaux de proche en proche). Un tissu qui ne s'éteint pas est un
+    // bug — jamais une attente infinie (leçon B1b) : timeout de sécurité.
+    let revenues: Vec<CelluleRevenue> = tokio::time::timeout(
+        Duration::from_secs(10),
+        tissu.recolter(),
+    )
+    .await
+    .expect("le tissu ne s'éteint pas (deadlock — canal jamais fermé)");
 
-    // Agréger les états de toutes les cellules.
+    // Agréger les états finaux (observation ponctuelle de chaque cellule).
     let mut n_transductions: u64 = 0;
     let mut n_amortis: u64 = 0;
     let mut n_cellules_atteintes: u64 = 0;
-    let mut phis: Vec<SignaturePhi> = Vec::with_capacity(tissu.taille());
+    let mut profondeur_max_transduite: u32 = 0;
+    let mut phis: Vec<SignaturePhi> = Vec::with_capacity(revenues.len());
 
-    for id in 0..tissu.taille() as u64 {
-        let etat = tissu.etat(id);
-        n_transductions += etat.n_transductions;
-        n_amortis += etat.n_amortis;
-        if etat.n_transductions > 0 {
+    for r in &revenues {
+        n_transductions += r.etat.n_transductions;
+        n_amortis += r.etat.n_amortis;
+        if r.etat.n_transductions > 0 {
             n_cellules_atteintes += 1;
+            profondeur_max_transduite = profondeur_max_transduite.max(r.profondeur);
         }
-        // Φ de la cellule : re-normalisé depuis l'état (stocké dans le tissu).
-        // On lit la signature via la cellule — exposée publiquement.
-        phis.push(tissu.phi(id));
+        phis.push(r.phi);
     }
 
+    // Similarité moyenne des Φ (paires) — diversité = 1 − sim.
     let n = phis.len();
     let sim_moyenne: f64 = if n > 1 {
         let mut somme = 0.0;
@@ -134,10 +131,14 @@ pub async fn propager_avec_sauts(
         n_transductions,
         n_amortis,
         n_cellules_atteintes,
-        n_sauts,
+        // Juste distance = profondeur maximale réellement atteinte par une
+        // transduction (équivalent à `sauts_initiaux − sauts_min` des signaux
+        // transduits), mesurée via la profondeur de naissance de chaque cellule.
+        n_sauts: profondeur_max_transduite,
         diversite_tissu: (1.0 - sim_moyenne).clamp(0.0, 1.0),
         sim_moyenne,
-        extinction: n_sauts > 0,
+        // Toutes les cellules ont rendu leur état → le tissu est au repos.
+        extinction: true,
     }
 }
 
@@ -206,10 +207,11 @@ mod tests {
         use super::super::topologie::Tissu;
 
         let mut tissu = Tissu::construire_arbre(3);
+        let taille = tissu.taille(); // capture AVANT propager (la récolte vide les tâches)
         let r = propager(&mut tissu).await;
 
-        println!("=== TISSU B2a — maille sp3 orientée ===");
-        println!("cellules: {} (arbre ternaire profondeur 3)", tissu.taille());
+        println!("=== TISSU B2a-bis — maille sp3 orientée (immanente) ===");
+        println!("cellules: {} (arbre ternaire profondeur 3)", taille);
         println!(
             "transductions: {} | amortis: {} | cellules atteintes: {}",
             r.n_transductions, r.n_amortis, r.n_cellules_atteintes
@@ -219,7 +221,7 @@ mod tests {
             r.n_sauts, r.diversite_tissu, r.sim_moyenne
         );
         println!("extinction: {}", r.extinction);
-        println!("=== FIN TISSU B2a ===");
+        println!("=== FIN TISSU B2a-bis ===");
     }
 
     #[tokio::test]
@@ -232,6 +234,7 @@ mod tests {
         // preuve que ce n'est pas seulement la frange qui arrête (contre le
         // soupçon du conseil 1 : compteur réinitialisé/global — il ne l'est pas).
         let mut tissu = Tissu::construire_arbre(4);
+        let taille = tissu.taille();
         let r = propager_avec_sauts(&mut tissu, 2).await;
 
         // Potentiel 2 → 1 niveau de transduction au-delà de la racine :
@@ -251,10 +254,10 @@ mod tests {
             r.n_cellules_atteintes
         );
         assert!(
-            r.n_transductions < tissu.taille() as u64,
+            r.n_transductions < taille as u64,
             "le potentiel doit borner ({} transductions < {} cellules)",
             r.n_transductions,
-            tissu.taille()
+            taille
         );
 
         // Le potentiel est décrémenté localement (pas global) : un signal avec
@@ -286,14 +289,15 @@ mod tests {
 
         // 2. Juste distance (mesure réelle) : avec SAUTS_INITIAUX=8 et profondeur
         //    3, le signal traverse exactement 3 niveaux → n_sauts == 3. C'est la
-        //    profondeur atteinte, pas le nombre de vagues de battement (1).
+        //    profondeur atteinte, pas le nombre de vagues de battement.
         assert_eq!(
             r.n_sauts, 3,
             "profondeur atteinte attendue = 3, obtenu {}",
             r.n_sauts
         );
 
-        // 3. Extinction : le tissu est retombé au repos (le battement s'arrête).
+        // 3. Extinction : le tissu est retombé au repos (toutes les cellules ont
+        //    rendu leur état — extinction en cascade immanente).
         assert!(r.extinction, "le tissu doit revenir au repos");
 
         // 4. Observation documentée (leçon C4) : le tissu STATIQUE homogénéise
