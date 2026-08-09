@@ -1090,6 +1090,88 @@ socle) ; config = gestateur jamais routeur ; priorités Q1 puis Q2.
 conseils → verrouiller le plan d'Étape C, puis implémenter (mode Code), gates
 G1-G6, journal + commit + push.
 
+## 9undecies. ÉTAPE C — COMPLÉMENT DE CADRE VERROUILLÉ C-A → C-D (09/08 ~20:05)
+
+**Contexte** : les deux IA conseils valident le cadre (9decies) **sous réserve
+d'amendements explicites** (retours A et B), reçus par l'utilisateur. Les
+amendements sont **intégrés tels quels** — précision chirurgicale, « rien à
+retrancher, rien à ajouter sur le fond » (IA B). Le complément scelle l'Étape C
+comme fondations doctrinales et logicielles inébranlables. **Il ne sert pas à
+ouvrir une nouvelle couche de contrôle** — le point de vigilance absolu reste :
+*le territoire est une ambiance que le tissu palpe, jamais une autorité que le
+tissu exécute*.
+
+### Verrou C-A — Sens et territoire (territoire = ambiance, jamais commande)
+
+Inscrit explicitement :
+- La **matrice H est un gradient, jamais une commande**.
+- La configuration territoriale **ne route jamais ; elle conditionne**.
+- Le gestateur **lit la config versionnée** mais **n'applique pas un état au
+  réseau** : il **dépose des conditions locales bornées**.
+- Les cellules **métabolisent ces conditions localement**, via leur membrane.
+- L'humain reste **passeur de sens**, jamais boucle de contrôle temps réel.
+
+**Amendement intégré (IA A)** — couple **π/η (porosité / viscosité)** :
+- **π — porosité** : ouverture au flux, réceptivité ;
+- **η — viscosité / inertie** : volant d'amortissement, rétention.
+- Si la config ne modulait que la porosité, la membrane serait **trop réactive**
+  face aux bruits de fond ; un paramètre d'**inertie** est requis pour
+  **stabiliser la réception territoriale** (anti-oscillations folles,
+  anti-hyper-réactivité). → `GradientH` évolue : `intensite`, `coherence`,
+  et réception pilotée par le couple π/η.
+
+### Verrou C-B — Garanties contre capture et pouvoir (preuves, pas commandement)
+
+Inscrit explicitement :
+- **MPVR n'est pas un consensus global** ; **σ n'est pas un registre global**.
+- Aucune validation ne doit introduire polling, attente globale, table centrale
+  ou coordination centralisée (R2/R4).
+- Si MPVR/σ sont des portes runtime, elles doivent être : **locales,
+  asynchrones, bornées, sans allocation dans le chemin critique, sans blocage
+  global**.
+- La licence CC-BY-NC-SA est un garde-fou juridique utile mais **insuffisant** :
+  les **garanties techniques restent primordiales** — zéro nœud maître, zéro
+  registre global, zéro polling, zéro consensus.
+
+### Verrou C-C — Responsabilité et répartition (veilleur = membrane de traduction)
+
+Inscrit explicitement :
+- `veilleur::adaptateur` = **membrane de traduction**, pas un centre de décision.
+- Le Veilleur **traduit des rapports territoriaux en `GradientH`** ; il **ne
+  produit pas des ordres**, **ne lit pas l'état du tissu**, **n'attend pas de
+  réponse** : **ingestion pure, bornée, validée par construction**.
+- En cas de contradiction avec la triade Ψ → B → Φ : **refuse la config,
+  maintient le dernier état stable, déclenche un recours humain tracé**.
+- Répartition de la responsabilité :
+  - **IA / prototype** : basse continue, homéostasie, traçabilité, traduction ;
+  - **humain** : passeur de sens, arbitrage éthique, recours exceptionnel ;
+  - **vivant / territoire** : champ de gradients, source d'afférence, jamais
+    objet d'extraction.
+
+### Verrou C-D — Bus protoniques (horizon matériel, différé)
+
+Inscrit explicitement :
+- Les **bus protoniques sont un horizon matériel, pas une étape logicielle**.
+- Le prototype Rust actuel est un **proxy événementiel, sobre, immanent**.
+- L'interface `GradientH` reste **abstraite et rétro-traductible** : un futur
+  flux protonique réel pourra s'y brancher **sans refonte**.
+
+### Synthèse (feuille de route définitive et scellée — transmise telle quelle par l'utilisateur)
+
+1. **Rédaction et traçage de ce complément** au journal (présent document).
+2. **Intégration technique** : modélisation de l'ambiance territoriale via le
+   couple **π/η** dans l'interface `GradientH`.
+3. **Spécification `veilleur::adaptateur`** : ingestion pure, bornée, sans
+   lecture d'état du tissu, repli automatique sur le dernier état stable +
+   alerte pour recours humain en cas de violation de la triade.
+
+**Le cadre est verrouillé sans ambiguïté. L'Étape C dispose de ses fondations
+doctrinales et logicielles inébranlables.**
+
+**Prochaine action (mode Code)** : implémenter l'Étape C selon ces verrous —
+`GradientH` étendu (π/η), `veilleur::adaptateur` (membrane de traduction),
+portes MPVR/σ locales et asynchrones, gates G1-G6, journal + commit + push.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**
