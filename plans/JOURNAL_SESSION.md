@@ -1243,6 +1243,55 @@ d'ordres, ne lit pas l'état du tissu, n'attend pas de réponse.
 **Prochaine action** : sur validation de cette spec par l'utilisateur et les IA
 conseils → implémenter Q1/Q2 (mode Code), gates G1-G6, journal + commit + push.
 
+## 9terdecies. ÉTAPE C — PROTOCOLE « DOUBLE FILTRE » : CHECKLIST + SPIKE RÉALISÉS, ARBITRAGE HUMAIN EN ATTENTE (09/08 ~21:10)
+
+**Contexte** : les IA conseils rejettent la validation différée et la revue
+purement formelle ; elles imposent le **protocole « Double Filtre »** :
+1. **Checklist contradictoire** (GO/NO-GO par point) ;
+2. **Spike minimal** (preuve par le réel, sacrifiable) ;
+3. **Arbitrage humain** ;
+4. Ouverture de l'implémentation complète.
+
+### Phase 1 — Checklist contradictoire : ✅ GO GLOBAL
+
+Fiche : [`plans/FICHE_CONFORMITE_ETAPE_C_Q1Q2.md`](FICHE_CONFORMITE_ETAPE_C_Q1Q2.md).
+- C-A (5/5 GO) · C-B (5/5 GO) · C-C (6/6 GO) · C-D (3/3 GO) · Audit anti-
+  extractif (5/5 GO + 3 ⏳ spike) · Cohérence Python R5 (3/3 GO).
+- **Aucun NO-GO doctrinal.** Les points ⏳ (0 alloc chemin critique, drop
+  propre, gates) relèvent de la preuve par le réel → objet de la phase 2.
+
+### Phase 2 — Spike minimal : ✅ SPIKE RÉUSSI
+
+Fichier : [`mttv_rust/src/territoire/spike.rs`](../mttv_rust/src/territoire/spike.rs)
+(sacrifiable) + rapport : [`plans/RAPPORT_SPIKE_ETAPE_C_Q1Q2.md`](RAPPORT_SPIKE_ETAPE_C_Q1Q2.md).
+- **Q1** : `GradientH` π/η + `MembranePiEta::recevoir` — réception locale
+  bornée, contraction en bruit, réouverture **progressive** (η = volant
+  d'inertie), zéro global, zéro polling, zéro allocation.
+- **Q2** : `ingere_rapport` (bornes par construction) + `VeilleurStable` (repli
+  sur dernier état stable, refus tracé, recours humain sur violation triade).
+- **Le réel a parlé** : la réouverture est **progressive** (0.86 après 1 cycle,
+  pas 1.0) — c'est le comportement anti-hyper-réactivité voulu, révélé par le
+  spike. Test corrigé en conséquence (réouverture monotone, pas de seuil
+  instantané).
+- **Critères de preuve tous satisfaits** : CPU repos ≈ 0 (événementiel), 43/43
+  tests sans panique, types `Copy` fixes (32/16/40 o), bornes π/η sur 10 000
+  cycles, 0 HashMap/Mutex/polling/Box/Arc, drop propre, refus + repli.
+
+### Phase 3 — Arbitrage humain (EN ATTENTE)
+
+L'utilisateur tranche à partir de **deux documents** :
+1. [`plans/FICHE_CONFORMITE_ETAPE_C_Q1Q2.md`](FICHE_CONFORMITE_ETAPE_C_Q1Q2.md) (checklist) ;
+2. [`plans/RAPPORT_SPIKE_ETAPE_C_Q1Q2.md`](RAPPORT_SPIKE_ETAPE_C_Q1Q2.md) (rapport du réel).
+
+**L'implémentation complète de l'Étape C ne s'ouvrira que si** : aucun verrou
+doctrinal violé (✓ GO) · spike stable (✓) · recours humain tracé (✓) ·
+frontière Gestateur/cellules non ambiguë (✓).
+
+**Point de reprise** : feu vert humain → implémentation complète de l'Étape C
+(Q1 : intégration π/η dans `GradientH` de production + `ajuster_porosite` ;
+Q2 : `veilleur::adaptateur` dans le module `veilleur`), gates G1-G6, journal +
+commit + push.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**

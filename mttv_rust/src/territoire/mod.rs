@@ -11,5 +11,11 @@
 //! - `matrice_h` : gradients H, ajustement dynamique de la porosité ;
 //! - règles d'amortissement et de dissipation locales.
 //!
+//! **`spike`** : SPIKE SACRIFIABLE du protocole « Double Filtre » (phase 2) —
+//! épreuve par le réel des verrous Q1/Q2 (GradientH π/η, ingestion pure,
+//! repli état stable). À jeter ou intégrer selon l'arbitrage.
+//!
 //! Références : `docs/00_CAHIER_DES_CHARGES.md` (règle d'or 3),
 //! `docs/01_ARCHITECTURE.md` §2 (Étape C) et §4.3.
+
+pub mod spike;
