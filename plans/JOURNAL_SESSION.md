@@ -1477,6 +1477,34 @@ incarne la triade Ψ → B → Φ et produit sa métrique de sobriété vérifia
 l'essaim Python ; ou reprise des rappels en attente (mycélium C3/C5/C7 à
 observer, A3.2/A5.7, rangement racine, rotation tokens).
 
+## 9septiesdeciesc. GITEE — CORRECTIF DU SCRIPT DE SYNC (PUT/mise à jour) — 28/28 (09/08 ~22:50)
+
+**Contexte** : après le push `224f296` (Q4 + consolidation), la re-synchronisation
+Gitee du prototype Rust a révélé un **bug latent** du script
+[`zoo-code/sync_mttv_rust_gitee.py`](../zoo-code/sync_mttv_rust_gitee.py) :
+la première sync (27/27) n'avait fait que des **créations** (POST) — le chemin
+« fichier existant → GET sha → PUT » n'avait jamais été exercé.
+
+**Deux causes racines (diagnostic API réel, messages chinois décodés)** :
+1. **`access_token` envoyé dans le corps** : Gitee ne le lit pas en GET →
+   le GET renvoyait `{}` au lieu de l'objet fichier → pas de `sha`.
+   → **Correctif** : le token est passé en **query string** (lu sur toutes les
+   méthodes), les paramètres opérationnels restent dans le corps.
+2. **GET sans `ref`** : la branche `evolution/tetravalent-core` n'est PAS la
+   branche par défaut → sans `ref=`, Gitee interroge `master` → le fichier n'y
+   existe pas → réponse `[]` (vide) → pas de `sha`.
+   → **Correctif** : le GET passe désormais `ref=evolution/tetravalent-core`.
+
+**Résultat** : **28/28 fichiers synchronisés** (mise à jour de tous les fichiers
+modifiés + création du bench `reseau.rs`). Les messages `??????` affichés = le
+POST initial « 文件名已存在 » (nom déjà présent, attendu) avant le PUT — bruit
+sans impact. Le script est désormais **idempotent et complet** (création + mise
+à jour). Script de diagnostic temporaire supprimé.
+
+**Leçon** : sur un dépôt Gitee multi-branches, toute lecture de contenu doit
+préciser `ref` ; et un script « idempotent » n'est réellement testé que lors de
+sa **deuxième** exécution (chemin de mise à jour).
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**

@@ -56,10 +56,15 @@ def gitee_api(method: str, path: str, data: dict | None = None):
     if not token:
         print("    ! GITEE_TOKEN introuvable")
         return None
-    url = f"{GITEE_API}{path}"
+    # `access_token` est passé en QUERY STRING (Gitee le lit sur toutes les
+    # méthodes) ; les paramètres opérationnels (content/message/branch/sha)
+    # restent dans le corps. CORRECTIF 09/08 : auparavant le token était dans
+    # le corps → le GET ne le lisait pas (réponse {}) → sha jamais récupéré →
+    # PUT jamais exécuté (bug latent du chemin « fichier existant »).
+    sep = "&" if "?" in path else "?"
+    url = f"{GITEE_API}{path}{sep}access_token={urllib.parse.quote(token)}"
     if data is None:
         data = {}
-    data["access_token"] = token
     body = urllib.parse.urlencode(data).encode()
     req = urllib.request.Request(url, data=body, method=method)
     req.add_header("Content-Type", "application/x-www-form-urlencoded")
@@ -123,7 +128,14 @@ def push_file(rel_path: str) -> bool:
     if result and "content" in result:
         print(f"    [OK] Gitee ({BRANCH}) : {gitee_rel}")
         return True
-    existing = gitee_api("GET", path)
+    # Le GET doit préciser `ref` (branche) : sans lui, Gitee interroge la
+    # branche par défaut (master) → le fichier n'y existe pas → [] au lieu de
+    # l'objet fichier, donc pas de `sha` → PUT jamais exécuté (bug latent du
+    # chemin « fichier existant », révélé le 09/08 sur la sync de mise à jour).
+    existing = gitee_api(
+        "GET",
+        f"{path}?ref={urllib.parse.quote(BRANCH)}",
+    )
     if existing and "sha" in existing:
         params["sha"] = existing["sha"]
         result = gitee_api("PUT", path, params)
