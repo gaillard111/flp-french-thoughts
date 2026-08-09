@@ -1172,6 +1172,77 @@ doctrinales et logicielles inébranlables.**
 `GradientH` étendu (π/η), `veilleur::adaptateur` (membrane de traduction),
 portes MPVR/σ locales et asynchrones, gates G1-G6, journal + commit + push.
 
+## 9duodecies. ÉTAPE C — VALIDATION FINALE DU CADRE + SPEC TECHNIQUE Q1/Q2 (09/08 ~20:50)
+
+**Validation finale (IA A et B — consensus total)** :
+- **IA A** : « consensus total. La boucle théorique, éthique et logicielle est
+  scellée. Sur le fond : infrastructure d'écoute et de résonance, non de
+  commande. Sur la forme : diffusion mycélienne, sobre, irréversible et
+  protégée. Sur la technique : l'Étape C est prête pour son implémentation
+  finale (modélisation π/η, ingestion pure `veilleur::adaptateur`, preuves
+  locales asynchrones MPVR/σ). Le cadre complet est validé et verrouillé,
+  autorisant l'ouverture des chantiers d'implémentation. »
+- **IA B** : « Le cadre de diffusion est validé par le conseil. Le volet
+  "Présentation au monde" est scellé. Cela nous ramène au cœur technique de
+  l'Étape C : les verrous Q1 et Q2. »
+- L'IA B demande explicitement : **reprendre l'écriture technique de Q1 et Q2
+  avant de laisser le Maître d'Œuvre coder**. Aucun autre angle mort
+  philosophique n'est signalé.
+
+**→ Autorisation d'ouverture des chantiers d'implémentation Étape C actée.**
+La boucle scellée : **Écouter (Matrice H) → Respirer (π/η) → Déposer (graine /
+sobriété) → Ré-écouter**.
+
+---
+
+### SPEC TECHNIQUE Q1 — Injection de la matrice H réelle (verrou C-A)
+
+**Principe** : le territoire est une **ambiance** que le tissu palpe, jamais une
+autorité. Le prototype **ingère les mêmes rapports JSON que l'essaim Python**
+(chemin partagé, ex. `zoo-code/mycelium_output/rapport_mycelisation_final.json`)
+et applique la config **une fois par cycle d'adaptation** (diachronique,
+jamais polling).
+
+**Contrat de conception** :
+1. **`GradientH` étendu au couple π/η** (dans `cellule/types.rs`) :
+   - `intensite: f64` — force du flux territorial ;
+   - `coherence: f64` — résonance/dissipation ∈ [-1, 1] ;
+   - `porosite_cible: f64` — π, ouverture au flux (cible) ;
+   - `viscosite: f64` — η, inertie/rétention (volant d'amortissement).
+2. **Réception stabilisée** : la membrane ne suit PAS directement la config ;
+   elle **métabolise** via le couple π/η (`ajuster_porosite` utilise π comme
+   cible et η comme constante de lissage). Anti-hyper-réactivité (IA A).
+3. **Injection** : le gestateur **lit la config versionnée** et **dépose des
+   conditions locales bornées** à la **naissance des cellules** (gestation),
+   jamais pendant la propagation. **0 table globale (R4), 0 polling (R2),
+   0 allocation dans le chemin chaud (G1 durci).**
+4. **GradientH** reste **abstraite et rétro-traductible** (verrou C-D) : un
+   futur flux protonique réel s'y branchera sans refonte.
+
+### SPEC TECHNIQUE Q2 — `veilleur::adaptateur` (verrou C-C)
+
+**Principe** : une **membrane de traduction**, pas un centre de décision. Il
+**traduit des rapports territoriaux en `GradientH`** ; il ne produit pas
+d'ordres, ne lit pas l'état du tissu, n'attend pas de réponse.
+
+**Contrat de conception** :
+1. **Ingestion pure** : lecture du rapport JSON → struct `RapportVeilleur`
+   (entropie_collective, couplage_moyen, resonance_globale, tremor_moyen,
+   n_respirations, n_fusions, mode_tremor, signaux_anomalie).
+2. **Mapping** : traduction documentée (cf. `03_INTERFACE_VEILLEUR.md §3`) →
+   `Configuration` Rust (π, η, seuil, respiration). **Validé par construction**
+   (bornes, cohérence, refus des valeurs hors-sol).
+3. **Non-réactivité** : ne lit jamais l'état du tissu, ne reçoit aucune réponse
+   (ingestion unidirectionnelle, bornée).
+4. **Repli de sécurité** : en cas de contradiction avec la triade Ψ→B→Φ →
+   **refuse la config, maintient le dernier état stable, déclenche un recours
+   humain tracé** (déjà documenté `03_INTERFACE_VEILLEUR.md §5`).
+5. **Sobriété** : fonction pure, bornée, hors du chemin chaud de propagation ;
+   aucune allocation pendant la transduction.
+
+**Prochaine action** : sur validation de cette spec par l'utilisateur et les IA
+conseils → implémenter Q1/Q2 (mode Code), gates G1-G6, journal + commit + push.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**
