@@ -266,6 +266,36 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn poumon_de_diversite_releve_la_diversite_au_dessus_du_seuil_c4() {
+        use super::super::topologie::Tissu;
+
+        // Remède C4/C7 : la respiration locale à l'extinction doit maintenir la
+        // diversité du tissu BIEN AU-DESSUS du seuil d'homogénéisation observé
+        // sans respiration (diversité ≈ 0.037, sim ≈ 0.963). La valeur réelle
+        // mesurée (dose 0.35) est ≈ 0.24 — marge large, preuve robuste.
+        let mut tissu = Tissu::construire_arbre(3);
+        let r = propager(&mut tissu).await;
+
+        assert!(
+            r.diversite_tissu > 0.037,
+            "la respiration doit maintenir la diversité au-dessus du seuil C4 (0.037), obtenu {}",
+            r.diversite_tissu
+        );
+        assert!(
+            r.diversite_tissu > 0.10,
+            "le Poumon de Diversité doit relever nettement la diversité (> 0.10), obtenu {}",
+            r.diversite_tissu
+        );
+        assert!(
+            r.sim_moyenne < 0.963,
+            "la similarité moyenne doit redescendre sous 0.963 (anti-lissage), obtenu {}",
+            r.sim_moyenne
+        );
+        // La propagation reste intacte : le tissu s'irradie puis s'éteint.
+        assert!(r.extinction, "le tissu doit revenir au repos");
+    }
+
+    #[tokio::test]
     async fn juste_distance_pullulement_puis_extinction() {
         use super::super::topologie::Tissu;
 

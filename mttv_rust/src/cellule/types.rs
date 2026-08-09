@@ -56,6 +56,53 @@ impl SignaturePhi {
         }
         self.normaliser();
     }
+
+    /// **Poumon de diversité** — respiration géométrique locale (remède C4/C7).
+    ///
+    /// Injecte une composante **orthogonale** (Gram-Schmidt) à Φ, pondérée par
+    /// `dose`, puis re-normalise. C'est le pendant exact de la référence Python
+    /// [`respirer_diversite_phi`](../../../zoo-code/essaim_tetravalent.py:557) :
+    /// on n'amplifie pas l'alignement existant, on l'**écarte délibérément**
+    /// (SOPH-IA : sous-optimalité assumée) — c'est ce qui contrecarre le lissage
+    /// de la co-cicatrisation (sans respiration, le tissu s'écrase à sim ≈ 0.963).
+    ///
+    /// **Local et sobre** : le bruit est **déterministe**, dérivé du `seed` local
+    /// (identité/cycle de la cellule) — zéro allocation, zéro global, zéro
+    /// polling. Chaque cellule respire vers une direction propre → diversité
+    /// de tissu maintenue (plancher d'entropie au-dessus du seuil C4).
+    pub fn respirer(&mut self, seed: u64, dose: f64) {
+        // Bruit pseudo-aléatoire déterministe (SplitMix64) local au seed.
+        let mut x: u64 = seed.wrapping_add(0x9E37_79B9_7F4A_7C15);
+        let mut bruit = [0.0f64; 4];
+        for c in bruit.iter_mut() {
+            x = (x ^ (x >> 30)).wrapping_mul(0xBF58_476D_1CE4_E5B9);
+            x = (x ^ (x >> 27)).wrapping_mul(0x94D0_49BB_1331_11EB);
+            x ^= x >> 31;
+            // Normalise le bruit dans [-1, 1].
+            *c = (x as f64 / u64::MAX as f64) * 2.0 - 1.0;
+        }
+
+        // Gram-Schmidt : retirer la projection du bruit sur Φ, ne garder que la
+        // composante perpendiculaire (orthogonalisation, comme la référence).
+        let norm2: f64 = self.0.iter().map(|v| v * v).sum::<f64>().max(1e-12);
+        let projection: f64 = self
+            .0
+            .iter()
+            .zip(bruit.iter())
+            .map(|(a, b)| a * b)
+            .sum::<f64>()
+            / norm2;
+        let mut ortho = [0.0f64; 4];
+        for i in 0..4 {
+            ortho[i] = bruit[i] - projection * self.0[i];
+        }
+
+        // Perturbation pondérée (1 − dose)·Φ + dose·ortho, puis normalisation.
+        for i in 0..4 {
+            self.0[i] = (1.0 - dose) * self.0[i] + dose * ortho[i];
+        }
+        self.normaliser();
+    }
 }
 
 /// État tétravalent d'un nœud interne.
@@ -198,6 +245,38 @@ mod tests {
         let mut m = Membrane::nouvelle(0.35);
         assert_eq!(m.evaluer(0.2), EtatMembrane::Impermeable);
         assert_eq!(m.evaluer(0.4), EtatMembrane::Poreux);
+    }
+
+    #[test]
+    fn respiration_locale_deterministe_et_preserve_la_norme() {
+        // La respiration (Poumon de Diversité C7) est déterministe pour un même
+        // seed local, préserve la norme L2 (Φ reste sur la sphère unité) et
+        // écarte la signature vers une direction propre (anti-lissage).
+        let a = SignaturePhi::new([1.0, 0.0, 0.0, 0.0]);
+        let mut b = a;
+        b.respirer(7, 0.35);
+
+        // Déterminisme : même seed → même résultat.
+        let mut b2 = SignaturePhi::new([1.0, 0.0, 0.0, 0.0]);
+        b2.respirer(7, 0.35);
+        assert_eq!(b, b2, "la respiration doit être déterministe par seed");
+
+        // Norme conservée (normalisation interne).
+        let norme: f64 = b.0.iter().map(|x| x * x).sum::<f64>().sqrt();
+        assert!((norme - 1.0).abs() < 1e-9, "Φ doit rester sur la sphère unité, norme={norme}");
+
+        // Écartement : la composante orthogonale injectée réduit la résonance
+        // avec la signature initiale (elle ne renforce pas l'alignement).
+        let resonance = a.resonance(&b);
+        assert!(
+            resonance < 1.0,
+            "la respiration doit écarter Φ de sa direction initiale, r={resonance}"
+        );
+
+        // Seeds différents → directions différentes (plancher de diversité).
+        let mut c = SignaturePhi::new([1.0, 0.0, 0.0, 0.0]);
+        c.respirer(11, 0.35);
+        assert_ne!(b, c, "deux seeds différents doivent diverger");
     }
 
     #[test]

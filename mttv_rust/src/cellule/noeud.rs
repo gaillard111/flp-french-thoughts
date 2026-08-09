@@ -29,6 +29,15 @@ pub const N_AVAL: usize = 3;
 /// Tampon des canaux (borné — sobriété, backpressure naturelle).
 pub(crate) const TAMPON_CANAUX: usize = 4;
 
+/// **Poumon de diversité** — dose de respiration locale (remède C4/C7).
+///
+/// Transposition de `respiration_dose` de la référence Python
+/// ([`essaim_tetravalent.py`](../../../zoo-code/essaim_tetravalent.py:557)).
+/// À chaque extinction (retour en `Veille`), la cellule écarte légèrement sa
+/// signature Φ vers une composante orthogonale locale : c'est ce qui empêche
+/// la co-cicatrisation de lisser tout le tissu (sim → 1.0, homogénéisation C4).
+pub(crate) const DOSE_RESPIRATION: f64 = 0.35;
+
 /// Cellule carbone sp3 — nœud du réseau MTTV-FLP.
 #[derive(Debug)]
 pub struct Cellule {
@@ -160,6 +169,11 @@ impl Cellule {
     ///   n'est émis, le processeur se rendort.
     /// - Transduction active : le signal modifié est propagé exclusivement sur
     ///   les 3 liaisons aval (règle d'or 2), puis le mode retombe en veille.
+    /// - **Poumon de diversité** : à l'extinction (retour en `Veille`), la
+    ///   cellule respire — elle écarte sa signature Φ vers une composante
+    ///   **orthogonale locale** (remède C4/C7). Le signal sortant a déjà été
+    ///   propagé : la respiration ne modifie donc pas la transduction en cours,
+    ///   elle contrecarre le lissage de la co-cicatrisation pour la suite.
     ///
     /// Purement événementiel : aucune boucle de vérification (R2), aucun verrou.
     async fn _traiter(&mut self, signal: Signal) {
@@ -190,6 +204,15 @@ impl Cellule {
                 self.mode = ModeTet::Veille; // le calcul s'éteint de lui-même
             }
         }
+
+        // Respiration locale à l'extinction : seed déterministe (id + cycle),
+        // zéro global, zéro allocation — chaque cellule s'écarte dans une
+        // direction propre (diversité de tissu, plancher anti-homogénéisation).
+        let seed: u64 = self
+            .id
+            .wrapping_mul(0x9E37_79B9_7F4A_7C15)
+            .wrapping_add(self.cycle.wrapping_mul(0xBF58_476D_1CE4_E5B9));
+        self.phi.respirer(seed, DOSE_RESPIRATION);
     }
 
     /// État observable de la cellule — **strictement passif**.

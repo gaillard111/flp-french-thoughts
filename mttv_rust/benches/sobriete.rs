@@ -25,6 +25,7 @@ fn signal_alignes() -> Signal {
         amplitude: 0.8,
         source: 0,
         ts: 0,
+        sauts_restants: 8,
     }
 }
 
@@ -34,6 +35,7 @@ fn signal_orthogonal() -> Signal {
         amplitude: 0.8,
         source: 0,
         ts: 0,
+        sauts_restants: 8,
     }
 }
 

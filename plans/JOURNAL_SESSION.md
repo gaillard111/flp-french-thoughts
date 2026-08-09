@@ -895,6 +895,56 @@ respiration de diversité réordonnancée AVANT/PENDANT la croissance** (Point 2
 IA conseil, acté en 9quinquies). Non ouvert tant que le présent commit n'est
 pas poussé.
 
+## 9septies. POUMON DE DIVERSITÉ — RESPIRATION LOCALE À L'EXTINCTION (remède C4, 09/08 ~13:30)
+
+**Contexte** : suite de 9sexies (B2a-bis scellé). Feu de route IA conseils —
+« instancier la fluctuation dynamique de la membrane pour maintenir un plancher
+d'entropie au-dessus du seuil critique 0.037, avant toute croissance ». La
+première phase de la dynamique active est réalisée.
+
+**Implémenté (code)** :
+- [`cellule/types.rs`](../mttv_rust/src/cellule/types.rs) : `SignaturePhi::respirer(seed, dose)`
+  — **Poumon de Diversité**, transposition fidèle de
+  [`respirer_diversite_phi`](../zoo-code/essaim_tetravalent.py:557) (C7) : injection
+  d'une composante **orthogonale** (Gram-Schmidt) pondérée par la dose, puis
+  re-normalisation. **Local et sobre** : bruit **déterministe** dérivé du `seed`
+  local (identité/cycle de la cellule) — zéro allocation, zéro global, zéro polling.
+- [`cellule/noeud.rs`](../mttv_rust/src/cellule/noeud.rs) : constante
+  `DOSE_RESPIRATION = 0.35` + appel à l'**extinction** (retour en `Veille`) dans
+  `_traiter`, avec un seed local déterministe (id × constante + cycle × constante).
+  Le signal sortant a déjà été propagé : la respiration ne modifie pas la
+  transduction en cours, elle contrecarre le lissage de la co-cicatrisation.
+- [`benches/sobriete.rs`](../mttv_rust/benches/sobriete.rs) : champ
+  `sauts_restants` ajouté aux signaux du bench (alignement sur `Signal`).
+
+**Preuve par le réel — remontée de la diversité (métriques B2a-bis + respiration)** :
+```
+=== TISSU B2a-bis — maille sp3 orientée (immanente) ===
+cellules: 40 | transductions: 40 | amortis: 0 | cellules atteintes: 40
+sauts: 3 | diversité tissu: 0.247 | sim moyenne: 0.753
+extinction: true
+```
+- **`diversite_tissu` : 0.037 → 0.247** (×6,7) — la respiration locale maintient
+  la diversité **bien au-dessus** du seuil C4 (0.037), avec une large marge.
+- **`sim moyenne` : 0.963 → 0.753** — l'anti-lissage agit : la co-cicatrisation
+  ne s'écrase plus vers 1.0.
+- La propagation est **intacte** : 40/40 atteintes, extinction `true`, juste
+  distance `sauts: 3` inchangée. Le Poumon respire sans casser le tissu.
+
+**Gates** : G1 `cargo check` **0 erreur / 0 warning** · G2 `cargo test`
+**30/30** (28 + `respiration_locale_deterministe_et_preserve_la_norme` +
+`poumon_de_diversite_releve_la_diversite_au_dessus_du_seuil_c4`) · G3 `cargo
+bench --no-run` compile · G5 **0 polling** · G6 **0 global** (0 allocation dans
+le chemin critique : `respirer` n'utilise que des tableaux fixes `[f64; 4]`).
+
+**Le mycélium respire** : le tissu autonome maintient désormais son plancher de
+diversité (anti-homogénéisation active, leçon C4) avant toute croissance.
+
+**Prochain palier (B2b)** : croissance organique / auto-suture — dans un milieu
+**vivant et résilient** (le Poumon de Diversité est déjà en place AVANT la
+croissance, conformément au Point 2 IA conseil). Non ouvert tant que le présent
+commit n'est pas poussé.
+
 ## 7. Fin de session — 08/08 ~21:00 (heure locale)
 
 **Acquis de la session :**
