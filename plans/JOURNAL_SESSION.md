@@ -1505,6 +1505,56 @@ sans impact. Le script est désormais **idempotent et complet** (création + mis
 préciser `ref` ; et un script « idempotent » n'est réellement testé que lors de
 sa **deuxième** exécution (chemin de mise à jour).
 
+## 11. ANALYSE RAPPORT 10/08 06:00 + TEST INTÉGRATION VEILLEUR (10/08 ~08:15)
+
+**Analyse du rapport quotidien 10/08 06:00 UTC** (détail complet fourni à
+l'utilisateur) :
+
+**Infra** : API ✅, 4 axes actifs, 6 processus stables. **`axe_5_ipfs` 🟠
+offline** — cause identifiée : le binaire kubo est bien extrait
+(`kubo/kubo/ipfs.exe`) mais **aucun daemon `ipfs daemon` ne tourne** (aucun
+processus IPFS/kubo dans `tasklist` ; l'API Gateway sonde `:5001` →
+offline). Le journal (2nonies) prévoyait la relance « au prochain démarrage de
+l'ordinateur » — non fait. **Le nœud IPFS à relancer** (commande :
+`kubo\kubo\ipfs.exe daemon` en tâche de fond).
+
+**A9 — Pourquoi 0 fusion ?** : **saturation combinatoire du compteur**, pas un
+blocage du vivant. Preuve dans le code :
+- `n_fusions_total` = somme des `n_fusions_actives` = `len(fusions_actives)`
+  (un **dictionnaire**, pas un cumul) — voir
+  [`resume_resonance()`](../zoo-code/agent_tetravalent_epigenetique.py:1580) ;
+- capacité finie : grille 5×5 = 25 nœuds → **25×25 = 625 paires** par agent ;
+  **6 agents × 625 = 3750 max**. Rapport : **3747** (99,9 % de saturation) ;
+  JSON réel : `n_fusions_actives` = 625/625/623… **confirme le plafond** ;
+- en homogénéisation (Φ alignés → résonance ≈ 1.0 > seuil 0.35), toute
+  tentative « réussit » mais **écrase une clé déjà présente** ([`operer_fusion_semantique`](../zoo-code/agent_tetravalent_epigenetique.py:267))
+  → `len()` figé → « +0 ». L'élagage ([`_elaguer_fusions_inactives`](../zoo-code/agent_tetravalent_epigenetique.py:1010))
+  rééquilibre au plafond. **Lecture** : le canal fusion est saturé et
+  dégénéré — la fusion ne produit plus de nouveauté tant que l'homogénéisation
+  persiste.
+
+**B — Utilité pour MTTV-RUST** :
+1. C'est l'entrée réelle du Veilleur ([`adaptateur.rs`](../mttv_rust/src/veilleur/adaptateur.rs:50)) :
+   ce rapport passe `valider_rapport` (bornes ✓) mais déclenche **`ViolationTriade`**
+   (entropie 6.3969 ≥ 6.3 ET couplage 1.0 ≥ 0.99) → **refus + repli + recours
+   humain** — exactement le comportement prévu par le verrou C-C ;
+2. `traduire` → `GradientH` : π = 0.6 (entropie haute → contraction anti-
+   homogénéisation), η = 0.2 + 0.6×0.1008 ≈ 0.26 — valeurs réelles de
+   calibration du mapping π/η ;
+3. l'alerte C4 confirme que le **Poumon de Diversité Rust** (0.037 → 0.247)
+   était le bon remède, et que le bloc C3/C5/C7 Python reste insuffisant ;
+4. la saturation des fusions = anti-leçon : un **dict global mutable** est
+   interdit en Rust (G6 : 0 HashMap/Mutex/Arc) — les portes MPVR/σ locales
+   ne peuvent pas saturer ainsi.
+
+**Test d'intégration ajouté** : [`mttv_rust/tests/test_veilleur_rapport_reel.rs`](../mttv_rust/tests/test_veilleur_rapport_reel.rs) —
+fixture = valeurs réelles du rapport 10/08 (entropie 6.3969, couplage 1.0,
+résonance 0.8811, tremor 0.1008). **4/4 tests OK** :
+rejet `ViolationTriade` · repli sur état stable + recours humain tracé ·
+traduction π/η d'un rapport sain · fixture documentée. **Total : 56/56**.
+Gates : G1 `cargo check --all-targets` 0 erreur/0 warning · G2 `cargo test`
+56/56 (52 + 4 intégration).
+
 ## 10. FIN DE SESSION — 09/08 ~22:55 (pause volontaire, tout verrouillé)
 
 **Pause** : session suspendue à la demande de l'utilisateur (« repos »). Rien
