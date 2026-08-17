@@ -1,0 +1,77 @@
+{
+  "meta": {
+    "export_version": "4a.1",
+    "version": "v1.0.0",
+    "dataset_doi": "10.5281/zenodo.21977492",
+    "generated_by": "semantic/export.py",
+    "sig": "sig:0x4D5454562D464C50",
+    "source": "semantic/ (couche canonique)",
+    "counts": {
+      "anomalies": 1
+    },
+    "source_digest": "51c1d60961bb005794c0a444755edac7dc9584ba4743e823fdc8b7744f7bec6a",
+    "note": "Export dérivé, déterministe (sans horodatage). Référents chiffrés phase 4B : version v1.0.0, DOI 10.5281/zenodo.21977492 (réservé). Les fiches canoniques de semantic/ font foi."
+  },
+  "anomalies": [
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:anomaly/138-139-lignes",
+      "labels": {
+        "fr": "Anomalie 138/139 lignes (dataset.jsonl)",
+        "en": "Anomaly 138/139 lines (dataset.jsonl)",
+        "zh": null,
+        "hi": null
+      },
+      "description": "Écart documenté entre les 138 paires prompt/response annoncées (CHRONOLOGIE_MTTV_FLP.md:63) et les 139 lignes constatées dans dataset.jsonl. L'écart n'est pas corrigé automatiquement (décision 5) ; une résolution éventuelle est humaine.",
+      "status": "documented",
+      "resolution": null,
+      "observed_at": "2026-08-16",
+      "affected_artifacts": [
+        "mttvflp:artifact/dataset.jsonl",
+        "mttvflp:artifact/chronologie-mttv-flp"
+      ],
+      "observations": [
+        {
+          "value": "139 lignes constatées (y compris éventuelle ligne finale vide)",
+          "source_ref": {
+            "path": "dataset.jsonl",
+            "kind": "primary",
+            "locator": "lignes 1-139",
+            "hash": "92fb7dd053d275075b4814ea67ef7decb5b147c8ee9e4199b89bffa7f6847835",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "note": null
+        },
+        {
+          "value": "138 paires prompt/response annoncées",
+          "source_ref": {
+            "path": "CHRONOLOGIE_MTTV_FLP.md",
+            "kind": "primary",
+            "locator": "ligne 63",
+            "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "note": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/anomalie-dataset-jsonl",
+          "role": "subject",
+          "note": "L'anomalie porte sur dataset.jsonl"
+        },
+        {
+          "relation_id": "mttvflp:relation/anomalie-chronologie-138",
+          "role": "subject",
+          "note": "L'anomalie porte sur l'affirmation de CHRONOLOGIE_MTTV_FLP.md"
+        }
+      ],
+      "provenance_record": null,
+      "notes": "Représentation d'anomalie (entity_kind anomaly), distincte des concepts (correction phase 3B0). Les deux observations divergentes sont conservées telles quelles."
+    }
+  ]
+}

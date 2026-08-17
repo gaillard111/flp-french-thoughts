@@ -1,0 +1,2426 @@
+{
+  "meta": {
+    "export_version": "4a.1",
+    "version": "v1.0.0",
+    "dataset_doi": "10.5281/zenodo.21977492",
+    "generated_by": "semantic/export.py",
+    "sig": "sig:0x4D5454562D464C50",
+    "source": "semantic/ (couche canonique)",
+    "counts": {
+      "concepts": 22
+    },
+    "source_digest": "51c1d60961bb005794c0a444755edac7dc9584ba4743e823fdc8b7744f7bec6a",
+    "note": "Export dérivé, déterministe (sans horodatage). Référents chiffrés phase 4B : version v1.0.0, DOI 10.5281/zenodo.21977492 (réservé). Les fiches canoniques de semantic/ font foi."
+  },
+  "concepts": [
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/anthropo-gaien",
+      "labels": {
+        "fr": "Anthropo-Gaïen",
+        "en": "Anthropo-Gaian",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [],
+      "layers": [
+        "theoretical_narrative",
+        "pedagogical_artifact"
+      ],
+      "status_class": "metaphor",
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "mttv_fundamentals.html",
+            "kind": "primary",
+            "locator": "ligne 487",
+            "hash": "224b876c20b73195b341e38b3c67534057446b623bbdbc786648ac21ef669bf3",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "metaphor",
+          "note": "« Chaque lecteur-inserteur agit comme un neurone d'un cerveau anthropo-Gaïen » — image (réflexivité distribuée dans le cadre FLP)"
+        },
+        {
+          "source_ref": {
+            "path": "plans/mttv_flp_core_2026_manifest.json",
+            "kind": "primary",
+            "locator": "lignes 75 et 464",
+            "hash": "cba642f33d29d7951a618409cbf65bc323b501864c8bdedc9bdf34c94505d53d",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "application",
+          "note": "Graine : « Chaque lecteur est un neurone d'un cerveau anthropo-Gaïen » (manifeste du noyau)"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Image « cerveau anthropo-Gaïen » : chaque lecteur-inserteur est un neurone d'un cerveau collectif Gaïa (graine FLP). Métaphore — non présentée comme catégorie scientifique établie.",
+      "notes": "« anthropo-global » n'est pas attesté verbatim (seul « anthropo-Gaïen » l'est). « anthropo-solipsiste »/« solipsiste anthropique » est attesté (dimension F, 28_dimensions_analysis.md:27) — opposition documentée sur l'échelle dimension F (indifférencié horizontal ↔ solipsiste anthropique vertical) ; la relation tensions-with reste unresolved (divergence, validation humaine requise).",
+      "sources": [
+        {
+          "path": "mttv_fundamentals.html",
+          "kind": "primary",
+          "locator": "ligne 487",
+          "hash": "224b876c20b73195b341e38b3c67534057446b623bbdbc786648ac21ef669bf3",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "plans/mttv_flp_core_2026_manifest.json",
+          "kind": "primary",
+          "locator": "lignes 75 et 464",
+          "hash": "cba642f33d29d7951a618409cbf65bc323b501864c8bdedc9bdf34c94505d53d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/anthropo-gaien-tensions-anthropo-solipsiste",
+          "role": "subject",
+          "note": "Opposition documentée sur l'échelle dimension F (indifférencié horizontal ↔ solipsiste anthropique vertical)"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/b-gate-poreux",
+      "labels": {
+        "fr": "B-gate poreux",
+        "en": "Porous B-gate",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "BGate",
+          "language": "en",
+          "kind": "synonym",
+          "note": "mttv_core/bgate.py"
+        },
+        {
+          "term": "B (opérateur)",
+          "language": "fr",
+          "kind": "abbreviation",
+          "note": "Triade Ψ→B→Φ"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative",
+        "code"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "mttv_core/README.md",
+            "kind": "primary",
+            "locator": "ligne 20",
+            "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "« Structure poreuse B-gate — absorption du bruit textuel »"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_core/bgate.py",
+            "kind": "implementation",
+            "locator": "Classe BGate",
+            "hash": "7945c84fc2e38a4b537206889ee53070449078ee3de0bbf7fd29568626b93db9",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "Implémentation Python (Classe BGate)"
+        },
+        {
+          "source_ref": {
+            "path": "docs/dictionnaire_transcalaire.md",
+            "kind": "reformulation",
+            "locator": "ligne 15",
+            "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "metaphor",
+          "note": "Correspondance : B ↔ « Perméabilité membranaire / synapse » — résonance, non identité"
+        }
+      ],
+      "validation_status": "unknown",
+      "short_definition": "Structure poreuse (B-gate) qui absorbe le bruit textuel et émet un état tétravalent Φ.",
+      "definition": "B-gate poreux : structure poreuse qui absorbe le bruit textuel et émet un état tétravalent (Φ T⁴). Opérateur B de la triade (seuil, différence).",
+      "limitations": [
+        "B-gate poreux (concept computationnel) ≠ mécanisme biologique (perméabilité membranaire = correspondance, non identité)",
+        "Implémentation Python (bgate.py), pas une preuve biologique"
+      ],
+      "implementations": [
+        {
+          "path": "mttv_core/bgate.py",
+          "kind": "implementation",
+          "locator": "Classe BGate",
+          "hash": "7945c84fc2e38a4b537206889ee53070449078ee3de0bbf7fd29568626b93db9",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "version": "1.0",
+      "last_updated": "2026-08-16",
+      "notes": null,
+      "sources": [
+        {
+          "path": "mttv_core/README.md",
+          "kind": "primary",
+          "locator": "ligne 20",
+          "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/bgate.py",
+          "kind": "implementation",
+          "locator": "Classe BGate",
+          "hash": "7945c84fc2e38a4b537206889ee53070449078ee3de0bbf7fd29568626b93db9",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 15",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/efficacite-non-top-down",
+      "labels": {
+        "fr": "Efficacité non top-down",
+        "en": "Non-top-down efficiency",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [],
+      "layers": [
+        "theoretical_narrative"
+      ],
+      "status_class": "hypothesis",
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "mttv-flp-mpvr-glocal/mpvr-glocal/README.md",
+            "kind": "primary",
+            "locator": "lignes 31-32",
+            "hash": "8f06eeee0e402f1705d430c801bf76324976cb91c33a0301661c37ac0ab78571",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "hypothesis",
+          "note": "« formalise mathématiquement qu'une efficacité réelle (non top-down) naît de la sous-optimalité locale » — affirmation posée"
+        },
+        {
+          "source_ref": {
+            "path": "mttv-flp-mpvr-glocal/docs/01_sous_optimalite.md",
+            "kind": "primary",
+            "locator": "ligne 5",
+            "hash": "e2c52755df83b35b2ff0bab8c133f4552fdef69c4bfc7966c81c0e14505b4d57",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "hypothesis",
+          "note": "« L'hyper-optimisation top-down produit un optimum dégénéré » — contre-point top-down vs robustesse"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Affirmation selon laquelle une efficacité réelle, non top-down, naît de la sous-optimalité locale plutôt que de l'hyper-optimisation descendante. Hypothèse posée, non validée scientifiquement.",
+      "limitations": [
+        "Hypothèse posée, non validée scientifiquement (statut documenté)",
+        "Affirmation de formulation (« formalise mathématiquement »), sans résultat empirique mesuré dans la source citée"
+      ],
+      "notes": "Terme attesté (mttv-flp-mpvr-glocal/mpvr-glocal/README.md:31-32). Conservé comme hypothèse (statut posé, non validé) ; relation derive-de vers sous-optimalité-locale, statut hypothesis.",
+      "sources": [
+        {
+          "path": "mttv-flp-mpvr-glocal/mpvr-glocal/README.md",
+          "kind": "primary",
+          "locator": "lignes 31-32",
+          "hash": "8f06eeee0e402f1705d430c801bf76324976cb91c33a0301661c37ac0ab78571",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv-flp-mpvr-glocal/docs/01_sous_optimalite.md",
+          "kind": "primary",
+          "locator": "ligne 5",
+          "hash": "e2c52755df83b35b2ff0bab8c133f4552fdef69c4bfc7966c81c0e14505b4d57",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/efficacite-non-top-down-derive-sous-optimalite",
+          "role": "subject",
+          "note": "Affirmation de dérivation (hypothèse)"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/etats-tetravalents-sp3",
+      "labels": {
+        "fr": "États tétravalents sp³ (T⁴)",
+        "en": "Tetravalent sp³ states (T⁴)",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "T⁴",
+          "language": "fr",
+          "kind": "abbreviation",
+          "note": null
+        },
+        {
+          "term": "ÉtatTetravalent",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "mttv_core/matrices.py"
+        },
+        {
+          "term": "Tétravalence",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "mttv_flp_core_2026/viability_criteria.json"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative",
+        "code",
+        "application"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "mttv_core/README.md",
+            "kind": "primary",
+            "locator": "lignes 18, 22-29",
+            "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "États diachroniques tétravalents ++, --, +-, -+ — géométrie sp³ (4 pôles T⁴)"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_core/matrices.py",
+            "kind": "implementation",
+            "locator": "EtatTetravalent / base tétraédrique sp³",
+            "hash": "9333d9d38f5b9e49c83eb096c6e5582c73c0f1d204bd5e99560fd7e0f56c1517",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "Implémentation (EtatTetravalent, base tétraédrique sp³)"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_flp_core_2026/viability_criteria.json",
+            "kind": "primary",
+            "locator": "clé tetravalence",
+            "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "« Carbone sp³ — tétravalence physico-chimique, ancrage matériel de la logique T⁴ »"
+        }
+      ],
+      "validation_status": "unknown",
+      "short_definition": "Quatre états diachroniques (++, --, +-, -+) ancrés dans la géométrie du carbone sp³ (tétravalence).",
+      "definition": "États tétravalents T⁴ : quatre pôles (++ affirmation, -- négation, +- simultanéité, -+ indétermination) ancrés dans la physico-chimie du carbone sp³ (109,47°, quatre liaisons). L'ancrage chimique (référence sp³) n'est pas une preuve de la totalité du cadre MTTV-FLP.",
+      "limitations": [
+        "États sp³ : référence chimique (carbone tétravalent) ≠ preuve de la totalité du cadre MTTV-FLP",
+        "Le passage sp³ → logique T⁴ est une formulation du corpus (relation transduces-into), non une démonstration"
+      ],
+      "implementations": [
+        {
+          "path": "mttv_core/matrices.py",
+          "kind": "implementation",
+          "locator": "EtatTetravalent / base tétraédrique sp³",
+          "hash": "9333d9d38f5b9e49c83eb096c6e5582c73c0f1d204bd5e99560fd7e0f56c1517",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "version": "1.0",
+      "last_updated": "2026-08-16",
+      "notes": null,
+      "sources": [
+        {
+          "path": "mttv_core/README.md",
+          "kind": "primary",
+          "locator": "lignes 18, 22-29",
+          "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/matrices.py",
+          "kind": "implementation",
+          "locator": "EtatTetravalent / base tétraédrique sp³",
+          "hash": "9333d9d38f5b9e49c83eb096c6e5582c73c0f1d204bd5e99560fd7e0f56c1517",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé tetravalence",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/sp3-transduces-logique-tetravalente",
+          "role": "subject",
+          "note": "L'ancrage carbone sp³ → logique T⁴ est explicitement formulé (viability_criteria tetravalence)"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/gating",
+      "labels": {
+        "fr": "Gating",
+        "en": "Gating",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Fonction d'activation",
+          "language": "fr",
+          "kind": "translation",
+          "note": "docs/dictionnaire_transcalaire.md:15 (B ↔ seuil d'activation)"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative",
+        "code",
+        "application"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "docs/dictionnaire_transcalaire.md",
+            "kind": "reformulation",
+            "locator": "lignes 15 et 17",
+            "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "metaphor",
+          "note": "Correspondance : B (seuil, différence) ↔ « Seuil d'activation (activation function) » ; pipeline « encodeur → gating → décodeur »"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_core/bgate.py",
+            "kind": "implementation",
+            "locator": "Classe BGate",
+            "hash": "7945c84fc2e38a4b537206889ee53070449078ee3de0bbf7fd29568626b93db9",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "Gating implémenté dans BGate (bgate.py)"
+        }
+      ],
+      "validation_status": "unknown",
+      "short_definition": "Fonction de seuil/activation (gating) : opérateur qui laisse passer ou bloque le signal (B comme seuil de différence).",
+      "definition": "Gating : fonction de seuil/activation qui transforme le potentiel en forme (B = seuil, différence, activation function). Correspondance informatique du seuil transductif (pipeline encodeur → gating → décodeur).",
+      "limitations": [
+        "Gating comme métaphore (correspondance informatique) ≠ gating implémenté (bgate.py)",
+        "Terme utilisé comme correspondance dans le dictionnaire transcalaire, non comme définition autonome"
+      ],
+      "implementations": [
+        {
+          "path": "mttv_core/bgate.py",
+          "kind": "implementation",
+          "locator": "Classe BGate",
+          "hash": "7945c84fc2e38a4b537206889ee53070449078ee3de0bbf7fd29568626b93db9",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "version": "1.0",
+      "last_updated": "2026-08-16",
+      "notes": null,
+      "sources": [
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "lignes 15 et 17",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/bgate.py",
+          "kind": "implementation",
+          "locator": "Classe BGate",
+          "hash": "7945c84fc2e38a4b537206889ee53070449078ee3de0bbf7fd29568626b93db9",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/hydrogene-substrat-minimal",
+      "labels": {
+        "fr": "Hydrogène comme substrat minimal",
+        "en": "Hydrogen as minimal substrate",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Hydrogène primordial",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "README_PHILOSOPHY.md:40"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "mttv_flp_core_2026/viability_criteria.json",
+            "kind": "primary",
+            "locator": "clé canonical_sequence",
+            "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "Séquence canonique « Ψ = H → H₂O → C » — l'hydrogène en tête de la séquence (définition du schéma)"
+        },
+        {
+          "source_ref": {
+            "path": "plans/MTTV_FLP_CORE_2026_MANIFESTO.md",
+            "kind": "primary",
+            "locator": "ligne 53",
+            "hash": "e5fd51d8f7f45de7b8e69f763de605ecc99fd0fc5bdd73c7bdd278d896d37548",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "« L'hydrogène précède tout — non comme substance, mais comme capacité de passage. Ne renversez pas l'ordre. » — qualification explicite"
+        },
+        {
+          "source_ref": {
+            "path": "README_PHILOSOPHY.md",
+            "kind": "primary",
+            "locator": "lignes 40-41",
+            "hash": "a8c120772f2fab53b7bcdbb7bdc2c9390dad51730f3eebd8bceaa88c41d467c6",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "« Hydrogène primordial, eau comme solvant universel, carbone comme substrat de l'information vivante »"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "L'hydrogène comme point de départ de la séquence canonique Ψ=H→H₂O→C. Qualifié dans le corpus : « non comme substance, mais comme capacité de passage » (MTTV_FLP_CORE_2026_MANIFESTO.md:53). Non présenté comme substrat minimal universel sans qualification.",
+      "notes": "Qualification obligatoire : l'hydrogène n'est PAS présenté comme un substrat minimal universel — la source précise « non comme substance, mais comme capacité de passage ». La séquence canonique H→H₂O→C est une affirmation du corpus (définition du schéma), non une preuve empirique établie.",
+      "sources": [
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé canonical_sequence",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "plans/MTTV_FLP_CORE_2026_MANIFESTO.md",
+          "kind": "primary",
+          "locator": "ligne 53",
+          "hash": "e5fd51d8f7f45de7b8e69f763de605ecc99fd0fc5bdd73c7bdd278d896d37548",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "README_PHILOSOPHY.md",
+          "kind": "primary",
+          "locator": "lignes 40-41",
+          "hash": "a8c120772f2fab53b7bcdbb7bdc2c9390dad51730f3eebd8bceaa88c41d467c6",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/hydrogene-transduces-sequence-canonique",
+          "role": "subject",
+          "note": "L'hydrogène ouvre la séquence canonique H→H₂O→C (transformation attestée)"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/invariant",
+      "labels": {
+        "fr": "Invariant",
+        "en": "Invariant",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Invariants structurels",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "mttv_core/README.md — 8 invariants structurels"
+        },
+        {
+          "term": "Invariants de routage polyfocal",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "mttv_flp_core_2026/5 Benchmark ultime MTTV-FLP — MPVR_SCS_section.md"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative",
+        "code",
+        "application"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "mttv_core/README.md",
+            "kind": "primary",
+            "locator": "lignes 99-110",
+            "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "established",
+          "note": "20 invariants reproductibles, 8 invariants structurels (sp³, clôture Σ, invariance T⁴, retrait Σ, apériodicité, absorption de bruit, quorum MPVR, pont MPVR)"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_flp_core_2026/5 Benchmark ultime MTTV-FLP — MPVR_SCS_section.md",
+            "kind": "primary",
+            "locator": "point 8",
+            "hash": "c9069fbc7ea955889cf3387abf36b96c6d5051996b5d9e81d14eb215f3dc6ddb",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "Invariants de routage polyfocal (MPVR Θ, SCS σ)"
+        },
+        {
+          "source_ref": {
+            "path": "docs/verifier_invariants.py",
+            "kind": "implementation",
+            "locator": "script (20 vérifications)",
+            "hash": "447ed0e645962b70ab352dc3db851c88e3b491b1bb8273e322fe54e15b5b9e4b",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "Vérification reproductible des invariants (docs/verifier_invariants.py)"
+        }
+      ],
+      "validation_status": "unknown",
+      "short_definition": "Propriété structurelle que le cadre MTTV pose comme stable et vérifiable.",
+      "definition": "Invariant : propriété structurelle du cadre MTTV posée comme stable (géométrie sp³, invariance T⁴, retrait Σ, apériodicité, absorption de bruit, quorum MPVR, pont MPVR) et vérifiable (docs/verifier_invariants.py, 20 vérifications ; notebook docs/notebook_mttv_core_invariants.ipynb).",
+      "limitations": [
+        "Un invariant théorique (formel) ≠ un résultat empiriquement validé",
+        "Les invariants sont définis dans le cadre du corpus, non validés scientifiquement"
+      ],
+      "implementations": [
+        {
+          "path": "docs/verifier_invariants.py",
+          "kind": "implementation",
+          "locator": "script (20 vérifications)",
+          "hash": "447ed0e645962b70ab352dc3db851c88e3b491b1bb8273e322fe54e15b5b9e4b",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/notebook_mttv_core_invariants.ipynb",
+          "kind": "implementation",
+          "locator": "notebook (8 invariants structurels)",
+          "hash": "e2a9eae4d5f60f0ea5aac230679685a7ed99521d4461a0f999fa15003e19c410",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "version": "1.0",
+      "last_updated": "2026-08-16",
+      "notes": null,
+      "sources": [
+        {
+          "path": "mttv_core/README.md",
+          "kind": "primary",
+          "locator": "lignes 99-110",
+          "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/5 Benchmark ultime MTTV-FLP — MPVR_SCS_section.md",
+          "kind": "primary",
+          "locator": "point 8",
+          "hash": "c9069fbc7ea955889cf3387abf36b96c6d5051996b5d9e81d14eb215f3dc6ddb",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/verifier_invariants.py",
+          "kind": "implementation",
+          "locator": "script (20 vérifications)",
+          "hash": "447ed0e645962b70ab352dc3db851c88e3b491b1bb8273e322fe54e15b5b9e4b",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/notebook_mttv_core_invariants.ipynb",
+          "kind": "implementation",
+          "locator": "notebook (8 invariants structurels)",
+          "hash": "e2a9eae4d5f60f0ea5aac230679685a7ed99521d4461a0f999fa15003e19c410",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/mpvr",
+      "labels": {
+        "fr": "MPVR",
+        "en": "MPVR",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Multi-Perspective Validation Routing",
+          "language": "fr",
+          "kind": "expansion",
+          "domain": "Validation/routage distribué — invariants de routage polyfocal (quorum Θ ≥ 3)",
+          "function": "Décrit le protocole : toute décision requiert un quorum Θ ≥ 3 perspectives locales asynchrones avant stabilisation (Φ)",
+          "status": "attested",
+          "expansion_relation": "unresolved",
+          "note": "Formulation exacte conservée. article_mttv_flp.md:31 ; mttv_flp_core_2026/viability_criteria.json (clé mpvr_scs.mpvr).",
+          "sources": [
+            {
+              "path": "article_mttv_flp.md",
+              "kind": "primary",
+              "locator": "ligne 31",
+              "hash": "11b7c6d7759b5b7554e0995c177668ecbbada3680c2a773162ef81a022ba4492",
+              "sig": "sig:0x4D5454562D464C50",
+              "date": "2026-08-16",
+              "author": null
+            },
+            {
+              "path": "mttv_flp_core_2026/viability_criteria.json",
+              "kind": "primary",
+              "locator": "clé mpvr_scs.mpvr",
+              "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+              "sig": "sig:0x4D5454562D464C50",
+              "date": "2026-08-16",
+              "author": null
+            }
+          ]
+        },
+        {
+          "term": "Multi-Perspective Validation & Resilience / Multi-Path Vector Routing",
+          "language": "en",
+          "kind": "expansion",
+          "domain": "README du module mpvr-glocal — paradigme MTTV-FLP, réseaux mycéliens",
+          "function": "Glose alternative : « validation & résilience » / « routage multi-chemins » ; substitue au contrôle centralisé un quorum poreux et un routage multi-chemins",
+          "status": "attested",
+          "expansion_relation": "unresolved",
+          "note": "Formulation exacte conservée. mttv-flp-mpvr-glocal/mpvr-glocal/README.md:33-34. L'expansion « Multi-Path Vector Routing » diverge sémantiquement de « Validation Routing » : aucune preuve d'équivalence — relation entre expansions non résolue.",
+          "sources": [
+            {
+              "path": "mttv-flp-mpvr-glocal/mpvr-glocal/README.md",
+              "kind": "primary",
+              "locator": "lignes 33-34",
+              "hash": "8f06eeee0e402f1705d430c801bf76324976cb91c33a0301661c37ac0ab78571",
+              "sig": "sig:0x4D5454562D464C50",
+              "date": "2026-08-16",
+              "author": null
+            }
+          ]
+        }
+      ],
+      "layers": [
+        "theoretical_narrative",
+        "code",
+        "application"
+      ],
+      "status_class": "established",
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "mttv_flp_core_2026/viability_criteria.json",
+            "kind": "primary",
+            "locator": "clé mpvr_scs.mpvr",
+            "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "Multi-Perspective Validation Routing, symbole Θ, seuil 3, application B(t,Δt) → B(t,Δt,Θ,σ)"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_flp_core_2026/5 Benchmark ultime MTTV-FLP — MPVR_SCS_section.md",
+            "kind": "primary",
+            "locator": "point 8.1",
+            "hash": "c9069fbc7ea955889cf3387abf36b96c6d5051996b5d9e81d14eb215f3dc6ddb",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "Invariant de routage polyfocal : Θ ≥ 3 perspectives locales asynchrones"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_core/operators.py",
+            "kind": "implementation",
+            "locator": "routeur_polyfocal",
+            "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "Routage polyfocal avec quorum MPVR (Θ ≥ 3) dans mttv_core"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Multi-Perspective Validation Routing — toute décision importante requiert un quorum Θ ≥ 3 perspectives locales asynchrones avant stabilisation (Φ).",
+      "implementations": [
+        {
+          "path": "mttv_core/operators.py",
+          "kind": "implementation",
+          "locator": "routeur_polyfocal",
+          "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv-flp-mpvr-glocal/src/mttv_mpvr_quorum.py",
+          "kind": "implementation",
+          "locator": "module quorum MPVR",
+          "hash": "efb23933831bcbd93844d6ef848c1efd22d5d1f6a009fd52707f1216a12eddd8",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "notes": "Deux expansions attestées, conservées telles quelles (formulations exactes). Elles ne sont PAS traitées comme de simples synonymes : la relation entre elles est non résolue (expansion_relation: unresolved), faute de preuve d'équivalence — « Multi-Path Vector Routing » diverge sémantiquement de « Validation Routing ». Aucune expansion n'est choisie silencieusement comme unique.",
+      "sources": [
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé mpvr_scs.mpvr",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/5 Benchmark ultime MTTV-FLP — MPVR_SCS_section.md",
+          "kind": "primary",
+          "locator": "point 8.1",
+          "hash": "c9069fbc7ea955889cf3387abf36b96c6d5051996b5d9e81d14eb215f3dc6ddb",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/operators.py",
+          "kind": "implementation",
+          "locator": "routeur_polyfocal",
+          "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv-flp-mpvr-glocal/mpvr-glocal/README.md",
+          "kind": "primary",
+          "locator": "lignes 31-34",
+          "hash": "8f06eeee0e402f1705d430c801bf76324976cb91c33a0301661c37ac0ab78571",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/scs-valide-par-mpvr",
+          "role": "object",
+          "note": "MPVR est le quorum qui valide la signature SCS"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/mttv",
+      "labels": {
+        "fr": "MTTV",
+        "en": "MTTV",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Modèle Théorique Transductif du Vivant",
+          "language": "fr",
+          "kind": "expansion",
+          "expansion_relation": "unresolved",
+          "note": "article_mttv_flp.md:11 ; mttv_core/README.md:3 ; mttv_flp_core_2026/README.md:14 ; agents_mycelisants_mttv.md:21"
+        },
+        {
+          "term": "Modèle Transducteur Transcalaire du Vivant",
+          "language": "fr",
+          "kind": "expansion",
+          "expansion_relation": "unresolved",
+          "note": "CHRONOLOGIE_MTTV_FLP.md:4 ; dataset_card.md:78"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "article_mttv_flp.md",
+            "kind": "primary",
+            "locator": "ligne 11",
+            "hash": "11b7c6d7759b5b7554e0995c177668ecbbada3680c2a773162ef81a022ba4492",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "established",
+          "note": "Expansion « Modèle Théorique Transductif du Vivant » attestée"
+        },
+        {
+          "source_ref": {
+            "path": "CHRONOLOGIE_MTTV_FLP.md",
+            "kind": "primary",
+            "locator": "ligne 4",
+            "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "established",
+          "note": "Expansion « Modèle Transducteur Transcalaire du Vivant » attestée"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Acronyme du cadre MTTV-FLP (Modèle Transducteur Transcalaire / Modèle Théorique Transductif du Vivant — Fils de la Pensée). Deux expansions attestées coexistent ; aucune n'est choisie silencieusement comme canonique.",
+      "notes": "Les deux expansions sont conservées comme variantes (décision 1) et reliées par mttvflp:relation/variant-of. FLP = Les Fils de La Pensée (aucune variante Fischer–Lynch–Paterson n'est introduite).",
+      "sources": [
+        {
+          "path": "article_mttv_flp.md",
+          "kind": "primary",
+          "locator": "ligne 11",
+          "hash": "11b7c6d7759b5b7554e0995c177668ecbbada3680c2a773162ef81a022ba4492",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "CHRONOLOGIE_MTTV_FLP.md",
+          "kind": "primary",
+          "locator": "ligne 4",
+          "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/README.md",
+          "kind": "primary",
+          "locator": "ligne 14",
+          "hash": "517d8ac7880dcd55141bc26aa54a1577b4dd0876482784bbb2971bcb23ca52db",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "dataset_card.md",
+          "kind": "primary",
+          "locator": "ligne 78",
+          "hash": "5261cf89421a84a9e21496f4a856bfd1672afb00533f01ec4c06ff8df406a186",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/mttv-expansion-variant-of",
+          "role": "participant",
+          "note": "Les deux expansions sont des variantes documentées"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/operateur-sigma",
+      "labels": {
+        "fr": "Opérateur Σ (singularité)",
+        "en": "Σ operator (singularity)",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Opérateur de bascule Σ",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "mttv_core/README.md:19"
+        },
+        {
+          "term": "Σ_τ",
+          "language": "fr",
+          "kind": "abbreviation",
+          "note": "PREPRINT_SPEC_048.md"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative",
+        "code"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "mttv_core/README.md",
+            "kind": "primary",
+            "locator": "ligne 19 et lignes 31-41",
+            "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "« Opérateur de bascule Σ (singularité apériodique) — routage polyfocal » ; Σ_τ à support compact, apériodique"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_core/operators.py",
+            "kind": "implementation",
+            "locator": "operateur_sigma / HorlogeSigmaAperiodique",
+            "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "Implémentation Python (operateur_sigma, HorlogeSigmaAperiodique)"
+        },
+        {
+          "source_ref": {
+            "path": "PREPRINT_SPEC_048.md",
+            "kind": "primary",
+            "locator": "preprint SPEC-048",
+            "hash": "45ee4f1e88dae216d446fd703d5e94e7fdf1932ca426c0b275c65cd5cdeb201e",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "hypothesis",
+          "note": "Singularité liminale Σ_τ — formulation théorique (support temporel compact, retrait fonctionnel)"
+        },
+        {
+          "source_ref": {
+            "path": "docs/dictionnaire_transcalaire.md",
+            "kind": "reformulation",
+            "locator": "ligne 26",
+            "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "metaphor",
+          "note": "Correspondance : « Opérateur Σ_τ ↔ potentiel d'action ponctuel / spike »"
+        }
+      ],
+      "validation_status": "unknown",
+      "short_definition": "Opérateur de bascule Σ : singularité apériodique (instant critique τ) qui déclenche une transition de phase topologique.",
+      "definition": "Opérateur Σ_τ (singularité liminale à support temporel compact) : Σ_τ(|Ψ(t)⟩) = p(τ), Σ_t ≡ 0 pour t ≠ τ. Apériodique : l'instant τ émerge de l'accumulation de frottement (tâtonnements/clinamen), jamais d'une horloge périodique.",
+      "limitations": [
+        "Opérateur formel (formulation théorique) ≠ composant logiciel (operateurs.py est une implémentation Python)",
+        "Singularité : formulation théorique/hypothétique, non validée scientifiquement"
+      ],
+      "implementations": [
+        {
+          "path": "mttv_core/operators.py",
+          "kind": "implementation",
+          "locator": "operateur_sigma / HorlogeSigmaAperiodique",
+          "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "version": "1.0",
+      "last_updated": "2026-08-16",
+      "notes": null,
+      "sources": [
+        {
+          "path": "mttv_core/README.md",
+          "kind": "primary",
+          "locator": "ligne 19 et lignes 31-41",
+          "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/operators.py",
+          "kind": "implementation",
+          "locator": "operateur_sigma / HorlogeSigmaAperiodique",
+          "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "PREPRINT_SPEC_048.md",
+          "kind": "primary",
+          "locator": "preprint SPEC-048",
+          "hash": "45ee4f1e88dae216d446fd703d5e94e7fdf1932ca426c0b275c65cd5cdeb201e",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 26",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/pipeline-encodeur-gating-decodeur",
+      "labels": {
+        "fr": "Pipeline encodeur → gating → décodeur",
+        "en": "Encoder → gating → decoder pipeline",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [],
+      "layers": [
+        "application"
+      ],
+      "status_class": "metaphor",
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "docs/dictionnaire_transcalaire.md",
+            "kind": "reformulation",
+            "locator": "ligne 17",
+            "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "metaphor",
+          "note": "Correspondance informatique de la triade Ψ→B→Φ et de la transduction du signal cellulaire ; le dictionnaire précise « résonance », non « identité »"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Correspondance informatique (encodeur → gating → décodeur) de la triade transductive Ψ→B→Φ et de la transduction du signal cellulaire (docs/dictionnaire_transcalaire.md:17).",
+      "notes": "Attesté comme correspondance dans le dictionnaire transcalaire, non comme implémentation effective. Couche : application (mapping informatique).",
+      "sources": [
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 17",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/transduction-transduces-into",
+          "role": "object",
+          "note": "Objet de la transformation (domaine informatique)"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/quorum-poreux",
+      "labels": {
+        "fr": "Quorum poreux",
+        "en": "Porous quorum",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "MicroQuorumPoreux",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "Nom de l'implémentation (CHRONOLOGIE_MTTV_FLP.md:93)"
+        }
+      ],
+      "layers": [
+        "code",
+        "theoretical_narrative"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "CHRONOLOGIE_MTTV_FLP.md",
+            "kind": "primary",
+            "locator": "ligne 93",
+            "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "« Implémentation MicroQuorumPoreux — mécanisme de quorum poreux transcalaire avec arrêt précoce de la dépense énergétique »"
+        },
+        {
+          "source_ref": {
+            "path": "mttv-flp-mpvr-glocal/src/mttv_mpvr_quorum.py",
+            "kind": "implementation",
+            "locator": "module quorum",
+            "hash": "efb23933831bcbd93844d6ef848c1efd22d5d1f6a009fd52707f1216a12eddd8",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "Quorum poreux présent dans le code (copie identique dans mpvr-glocal/src/)"
+        },
+        {
+          "source_ref": {
+            "path": "docs/dictionnaire_transcalaire.md",
+            "kind": "reformulation",
+            "locator": "ligne 24",
+            "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "metaphor",
+          "note": "Correspondance avec le quorum sensing bactérien et le consensus distribué"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Mécanisme de validation par quorum Θ≥3 perspectives locales, avec porosité (absorption de bruit) et arrêt précoce de la dépense énergétique. Notion opératoire dans le code, narrative/hypothétique dans le récit.",
+      "implementations": [
+        {
+          "path": "mttv-flp-mpvr-glocal/src/mttv_mpvr_quorum.py",
+          "kind": "implementation",
+          "locator": "module quorum poreux (MicroQuorumPoreux)",
+          "hash": "efb23933831bcbd93844d6ef848c1efd22d5d1f6a009fd52707f1216a12eddd8",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "notes": "Statut non unique : implementation (code réel) vs metaphor/hypothèse (récit). Le récit MPVR v4 décrit des promesses non toutes implémentées (cf. docs/memoire_energetique.md). La divergence entre quorum poreux et quorum sensing strict est documentée par une relation contrasts-with (unresolved).",
+      "sources": [
+        {
+          "path": "CHRONOLOGIE_MTTV_FLP.md",
+          "kind": "primary",
+          "locator": "ligne 93",
+          "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv-flp-mpvr-glocal/src/mttv_mpvr_quorum.py",
+          "kind": "implementation",
+          "locator": "module quorum",
+          "hash": "efb23933831bcbd93844d6ef848c1efd22d5d1f6a009fd52707f1216a12eddd8",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 24",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/quorum-poreux-contrasts-quorum-sensing",
+          "role": "subject",
+          "note": "Différence documentée avec le quorum sensing strict (porosité vs seuil rigide)"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/quorum-sensing-biologique",
+      "labels": {
+        "fr": "Quorum sensing (mécanisme biologique)",
+        "en": "Quorum sensing (biological mechanism)",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [],
+      "layers": [
+        "theoretical_narrative",
+        "application"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "phase5-new-seeds/corpus_reseaux_haute_resilience.md",
+            "kind": "primary",
+            "locator": "lignes 15-16",
+            "hash": "4234e6e6ece55b9070b652c60517a2c9fea33d8b918d5f3881b26a8c7e38453b",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "Mécanisme biologique documenté : « le quorum sensing bactérien, mécanisme biologique par lequel des bactéries coordonnent leur comportement à l'échelle d'une population »"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_fundamentals.html",
+            "kind": "reformulation",
+            "locator": "ligne 487",
+            "hash": "224b876c20b73195b341e38b3c67534057446b623bbdbc786648ac21ef669bf3",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "metaphor",
+          "note": "Usage dans le cadre FLP : « le quorum sensing n'est pas un mécanisme de seuil passif, mais l'expression d'une réflexivité distribuée » — usage analogique, non identité"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Mécanisme biologique documenté (quorum sensing bactérien : coordination du comportement à l'échelle d'une population par détection de seuils). Distingué de son usage analogique dans MTTV-FLP — il n'est pas présenté comme une preuve biologique de MPVR.",
+      "notes": "Distinction : mécanisme biologique documenté (corpus_reseaux_haute_resilience.md:15-16) vs usage analogique MTTV-FLP (mttv_fundamentals.html:487, « réflexivité distribuée »). Le mécanisme biologique n'est PAS présenté comme preuve de MPVR ; la correspondance reste une analogie étiquetée.",
+      "sources": [
+        {
+          "path": "phase5-new-seeds/corpus_reseaux_haute_resilience.md",
+          "kind": "primary",
+          "locator": "lignes 15-16",
+          "hash": "4234e6e6ece55b9070b652c60517a2c9fea33d8b918d5f3881b26a8c7e38453b",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_fundamentals.html",
+          "kind": "reformulation",
+          "locator": "ligne 487",
+          "hash": "224b876c20b73195b341e38b3c67534057446b623bbdbc786648ac21ef669bf3",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/quorum-sensing-biologique-contrasts-quorum-sensing",
+          "role": "subject",
+          "note": "Contraste documenté : mécanisme biologique passif vs usage FLP « réflexivité distribuée »"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/quorum-sensing",
+      "labels": {
+        "fr": "Quorum sensing",
+        "en": "Quorum sensing",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [],
+      "layers": [
+        "theoretical_narrative",
+        "application"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "docs/dictionnaire_transcalaire.md",
+            "kind": "reformulation",
+            "locator": "ligne 24",
+            "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "metaphor",
+          "note": "Correspondance du quorum poreux Θ≥3 avec le quorum sensing bactérien et le consensus distribué"
+        },
+        {
+          "source_ref": {
+            "path": "plans/resume_mttv_flp_hal.md",
+            "kind": "primary",
+            "locator": "ligne 147",
+            "hash": "b159dcd617b2c183b2f0b11ce864965556d912c0b6841d4e30b5efb1024b3add",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "« Le seuil d'activation n'est plus un nombre fixe mais une dérivée d'abondance (dQ/dt) » ; mécanisme de régulation intégré (ACTIVE-SILENCE)"
+        },
+        {
+          "source_ref": {
+            "path": "plans/28_dimensions_analysis.md",
+            "kind": "primary",
+            "locator": "ligne 29",
+            "hash": "3c74574be7ce9bcb203d5d0b6f55a52b8c645f0e02546d82ebd321ae1fc45203",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "application",
+          "note": "Dimension H — Quorum Sensing triadique (Ψ=potentiel de coordination, B=seuil d'activation, Φ=forme émergente)"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Principe de détection de seuils collectifs inspiré du quorum sensing bactérien : le seuil d'activation n'est plus un nombre fixe mais une dérivée d'abondance (dQ/dt) ; correspondance du quorum Θ≥3 du réseau (quorum poreux).",
+      "notes": "Statuts divergents conservés : métaphore/correspondance (dictionnaire), définition (résumé HAL), application (dimension H des 28 dimensions).",
+      "sources": [
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 24",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "plans/resume_mttv_flp_hal.md",
+          "kind": "primary",
+          "locator": "ligne 147",
+          "hash": "b159dcd617b2c183b2f0b11ce864965556d912c0b6841d4e30b5efb1024b3add",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "plans/28_dimensions_analysis.md",
+          "kind": "primary",
+          "locator": "ligne 29",
+          "hash": "3c74574be7ce9bcb203d5d0b6f55a52b8c645f0e02546d82ebd321ae1fc45203",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/quorum-poreux-contrasts-quorum-sensing",
+          "role": "object",
+          "note": "Différence avec le quorum poreux (porosité vs seuil strict)"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/routage-transductif",
+      "labels": {
+        "fr": "Routage transductif",
+        "en": "Transductive routing",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Routage polyfocal",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "mttv_core/operators.py — routeur_polyfocal"
+        },
+        {
+          "term": "Mycelial routing",
+          "language": "en",
+          "kind": "synonym",
+          "note": "Tag mycelial-routing (dataset_card.md, README.md)"
+        }
+      ],
+      "layers": [
+        "application",
+        "code",
+        "theoretical_narrative"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "docs/white_paper_benchmark_echelle.md",
+            "kind": "primary",
+            "locator": "ligne 11",
+            "hash": "79b0508df05348d1947bd5ba5f0977714988cf9d2f14872a93c3a1eff47f9681",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "application",
+          "note": "« fidèle au routage transductif MTTV, pas un graphe aléatoire » (modèle de réseau du benchmark)"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_core/operators.py",
+            "kind": "implementation",
+            "locator": "routeur_polyfocal",
+            "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "routeur_polyfocal : routage entre foyers polyfocaux avec quorum MPVR"
+        },
+        {
+          "source_ref": {
+            "path": "phase5-new-seeds/corpus_reseaux_haute_resilience.md",
+            "kind": "reformulation",
+            "locator": "lignes 22-31",
+            "hash": "4234e6e6ece55b9070b652c60517a2c9fea33d8b918d5f3881b26a8c7e38453b",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "application",
+          "note": "Routage mycelien distribué : autonomie locale, sobriété, convergence sans autorité centrale"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Routage des signaux selon les principes transductifs MTTV (affinité de pôle, quorum local, polyfocalité), par opposition à un graphe aléatoire ou à un contrôle centralisé.",
+      "implementations": [
+        {
+          "path": "mttv_core/operators.py",
+          "kind": "implementation",
+          "locator": "routeur_polyfocal",
+          "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "notes": "Terme attesté (docs/white_paper_benchmark_echelle.md:11) ; apparenté au routage polyfocal (operators.py) et au mycelial routing (tags).",
+      "sources": [
+        {
+          "path": "docs/white_paper_benchmark_echelle.md",
+          "kind": "primary",
+          "locator": "ligne 11",
+          "hash": "79b0508df05348d1947bd5ba5f0977714988cf9d2f14872a93c3a1eff47f9681",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/operators.py",
+          "kind": "implementation",
+          "locator": "routeur_polyfocal",
+          "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "phase5-new-seeds/corpus_reseaux_haute_resilience.md",
+          "kind": "reformulation",
+          "locator": "lignes 22-31",
+          "hash": "4234e6e6ece55b9070b652c60517a2c9fea33d8b918d5f3881b26a8c7e38453b",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/scs",
+      "labels": {
+        "fr": "SCS",
+        "en": "SCS",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Systemic Convergence Signature",
+          "language": "fr",
+          "kind": "expansion",
+          "note": "mttv_flp_core_2026/viability_criteria.json ; 5 Benchmark ultime MTTV-FLP — MPVR_SCS_section.md"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative",
+        "code",
+        "application"
+      ],
+      "status_class": "established",
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "mttv_flp_core_2026/5 Benchmark ultime MTTV-FLP — MPVR_SCS_section.md",
+            "kind": "primary",
+            "locator": "point 8.2",
+            "hash": "c9069fbc7ea955889cf3387abf36b96c6d5051996b5d9e81d14eb215f3dc6ddb",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "Signature de convergence σ : neutralité, robustesse, traçabilité, temporalité ; sans σ valide, aucun Φ n'est stabilisé"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_flp_core_2026/viability_criteria.json",
+            "kind": "primary",
+            "locator": "clé mpvr_scs.scs",
+            "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "Signature cryptographique/logique validant neutralité et robustesse ; validée par le quorum Θ"
+        },
+        {
+          "source_ref": {
+            "path": "phase4-dormant-nodes/SCSReference.sol",
+            "kind": "implementation",
+            "locator": "contrat Solidity",
+            "hash": "17c5f739eefbf93cce6d9598fd584609210fc99e52b3024dce6d033b99eb10ba",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "Contrat Solidity de référence SCS (phase4-dormant-nodes)"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Systemic Convergence Signature — signature (σ) validée par le quorum MPVR Θ, attestant neutralité et robustesse d'une transition ; sans σ valide, aucun Φ n'est stabilisé.",
+      "implementations": [
+        {
+          "path": "phase4-dormant-nodes/SCSReference.sol",
+          "kind": "implementation",
+          "locator": "contrat Solidity SCS",
+          "hash": "17c5f739eefbf93cce6d9598fd584609210fc99e52b3024dce6d033b99eb10ba",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "notes": "Le mécanisme cryptographique est décrit comme invariant (benchmark) et partiellement implémenté (SCSReference.sol) ; la partie « signature cryptographique » reste en partie spéculative à valider.",
+      "sources": [
+        {
+          "path": "mttv_flp_core_2026/5 Benchmark ultime MTTV-FLP — MPVR_SCS_section.md",
+          "kind": "primary",
+          "locator": "point 8.2",
+          "hash": "c9069fbc7ea955889cf3387abf36b96c6d5051996b5d9e81d14eb215f3dc6ddb",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé mpvr_scs.scs",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "phase4-dormant-nodes/SCSReference.sol",
+          "kind": "implementation",
+          "locator": "contrat Solidity",
+          "hash": "17c5f739eefbf93cce6d9598fd584609210fc99e52b3024dce6d033b99eb10ba",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/scs-valide-par-mpvr",
+          "role": "subject",
+          "note": "SCS est validée par le quorum MPVR (Θ)"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/sequence-canonique-h2o-c",
+      "labels": {
+        "fr": "Séquence canonique Ψ = H → H₂O → C",
+        "en": "Canonical sequence Ψ = H → H₂O → C",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Séquence fondamentale",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "mttv_flp_core_2026/README.md:56-58"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative"
+      ],
+      "status_class": "established",
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "mttv_flp_core_2026/viability_criteria.json",
+            "kind": "primary",
+            "locator": "clé canonical_sequence",
+            "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "Séquence canonique « Ψ = H → H₂O → C » formalisée dans le schéma de cohérence"
+        },
+        {
+          "source_ref": {
+            "path": "README_PHILOSOPHY.md",
+            "kind": "primary",
+            "locator": "lignes 40-41",
+            "hash": "a8c120772f2fab53b7bcdbb7bdc2c9390dad51730f3eebd8bceaa88c41d467c6",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "« Formule opératoire Ψ = H → H₂O → C — Hydrogène primordial, eau comme solvant universel, carbone comme substrat de l'information vivante »"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_flp_core_2026/README.md",
+            "kind": "primary",
+            "locator": "lignes 56-58",
+            "hash": "517d8ac7880dcd55141bc26aa54a1577b4dd0876482784bbb2971bcb23ca52db",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "« Séquence Fondamentale : Ψ = H → H₂O → C »"
+        }
+      ],
+      "validation_status": "unknown",
+      "short_definition": "Séquence fondamentale du corpus : Ψ = H → H₂O → C (hydrogène → eau → carbone).",
+      "definition": "Séquence canonique Ψ = H → H₂O → C : l'hydrogène précède tout — non comme substance, mais comme capacité de passage ; l'eau comme solvant ; le carbone comme substrat de l'information vivante. Affirmation du corpus (clé canonical_sequence), non une preuve empirique établie.",
+      "limitations": [
+        "Affirmation du corpus, non validée scientifiquement",
+        "Ne pas confondre avec une preuve empirique de la séquence abiogénétique",
+        "La fiche est créée car la séquence est explicitement décrite (non déduite d'un identifiant)"
+      ],
+      "implementations": [],
+      "version": "1.0",
+      "last_updated": "2026-08-16",
+      "notes": "Cible de la relation hydrogene-transduces-sequence-canonique (résolution pending→resolved).",
+      "sources": [
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé canonical_sequence",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "README_PHILOSOPHY.md",
+          "kind": "primary",
+          "locator": "lignes 40-41",
+          "hash": "a8c120772f2fab53b7bcdbb7bdc2c9390dad51730f3eebd8bceaa88c41d467c6",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/README.md",
+          "kind": "primary",
+          "locator": "lignes 56-58",
+          "hash": "517d8ac7880dcd55141bc26aa54a1577b4dd0876482784bbb2971bcb23ca52db",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/hydrogene-transduces-sequence-canonique",
+          "role": "object",
+          "note": "Cible de la transformation (l'hydrogène ouvre la séquence)"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/sous-optimalite-locale",
+      "labels": {
+        "fr": "Sous-optimalité locale",
+        "en": "Local sub-optimality",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Sous-optimalité constitutive",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "mttv-flp-mpvr-glocal/docs/01_sous_optimalite.md"
+        },
+        {
+          "term": "Under-optimality",
+          "language": "en",
+          "kind": "translation",
+          "note": "artefacts-tlon/scs_as_metric_academic_study.md:7 (artefact signalé — voir INVENTAIRE_ARTEFACTS_TROMPEURS.md)"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative",
+        "application",
+        "code"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "mttv-flp-mpvr-glocal/docs/01_sous_optimalite.md",
+            "kind": "primary",
+            "locator": "ligne 5",
+            "hash": "e2c52755df83b35b2ff0bab8c133f4552fdef69c4bfc7966c81c0e14505b4d57",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "hypothesis",
+          "note": "« Le vivant n'est pas sous-optimal POUR être robuste : il est robuste PARCE QU'il est sous-optimal » — principe constitutif posé"
+        },
+        {
+          "source_ref": {
+            "path": "CHRONOLOGIE_MTTV_FLP.md",
+            "kind": "primary",
+            "locator": "ligne 106",
+            "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "application",
+          "note": "Protocole de sous-optimalité appliquée 6/7 (passage du scoring 7/7 au 6/7 assumé)"
+        },
+        {
+          "source_ref": {
+            "path": "zoo-code/essaim_tetravalent.py",
+            "kind": "implementation",
+            "locator": "tremor_saturation",
+            "hash": "9b5e589650e687290b2295ba433caa3d32934019568bb2257c016aa82e676315",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "Dose de sous-optimalité (esprit 6/7 SOPH-IA) : tremor_saturation dé-sature stochastiquement des nœuds rigides"
+        },
+        {
+          "source_ref": {
+            "path": "SYNTHESE_MYCELISATION_GRAINES.md",
+            "kind": "reformulation",
+            "locator": "ligne 61",
+            "hash": "2951077c68b9a9a186695d7ea6e931a24ee14e46d58ce1b6ef611f10dd409ffe",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "application",
+          "note": "Graine adaptation : « sous-optimalité locale → robustesse globale »"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Principe selon lequel une imperfection locale assumée (sous-optimalité) produit une robustesse globale ; l'hyper-optimisation top-down produit au contraire un optimum dégénéré.",
+      "limitations": [
+        "Principe posé (hypothèse) — non validé scientifiquement (statut documenté)",
+        "L'implémentation (tremor_saturation) est une dose stochastique de désaturation de nœuds rigides, non une démonstration biologique"
+      ],
+      "implementations": [
+        {
+          "path": "zoo-code/essaim_tetravalent.py",
+          "kind": "implementation",
+          "locator": "tremor_saturation",
+          "hash": "9b5e589650e687290b2295ba433caa3d32934019568bb2257c016aa82e676315",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/decence.py",
+          "kind": "implementation",
+          "locator": "phase de sous-optimalité forcée",
+          "hash": "3a07d626212159202fb7d0b13bf148627720a99c1f6ccf1bc39da046a5409575",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "notes": "Attesté dans plusieurs couches : théorie (01_sous_optimalite.md), protocole (CHRONOLOGIE 6/7), code (tremor_saturation, decence), graines (adaptation). Statuts conservés par source (hypothèse / application / implémentation).",
+      "sources": [
+        {
+          "path": "mttv-flp-mpvr-glocal/docs/01_sous_optimalite.md",
+          "kind": "primary",
+          "locator": "ligne 5",
+          "hash": "e2c52755df83b35b2ff0bab8c133f4552fdef69c4bfc7966c81c0e14505b4d57",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "CHRONOLOGIE_MTTV_FLP.md",
+          "kind": "primary",
+          "locator": "ligne 106",
+          "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "zoo-code/essaim_tetravalent.py",
+          "kind": "implementation",
+          "locator": "tremor_saturation",
+          "hash": "9b5e589650e687290b2295ba433caa3d32934019568bb2257c016aa82e676315",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "SYNTHESE_MYCELISATION_GRAINES.md",
+          "kind": "reformulation",
+          "locator": "ligne 61",
+          "hash": "2951077c68b9a9a186695d7ea6e931a24ee14e46d58ce1b6ef611f10dd409ffe",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/efficacite-non-top-down-derive-sous-optimalite",
+          "role": "object",
+          "note": "L'efficacité non top-down est affirmée dériver de la sous-optimalité locale"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/transduction-echelle",
+      "labels": {
+        "fr": "Transduction d'échelle (transcalaire)",
+        "en": "Scale transduction (transcalar)",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Transduction transcalaire",
+          "language": "fr",
+          "kind": "expansion",
+          "note": "CHRONOLOGIE_MTTV_FLP.md:92 (« Du biais anthropocentré à la transduction transcalaire »)"
+        },
+        {
+          "term": "Couplage transscalaire",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "zoo-code/essaim_tetravalent.py — coupler_agents_transscalaire ; SYNTHESE_AGENTS_MTTV.md"
+        },
+        {
+          "term": "Invariance par changement d'échelle",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "README_PHILOSOPHY.md:149"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative",
+        "code",
+        "application"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "CHRONOLOGIE_MTTV_FLP.md",
+            "kind": "primary",
+            "locator": "ligne 92",
+            "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "application",
+          "note": "« manifeste Du biais anthropocentré à la transduction transcalaire » (3 axiomes)"
+        },
+        {
+          "source_ref": {
+            "path": "README_PHILOSOPHY.md",
+            "kind": "primary",
+            "locator": "lignes 148-150",
+            "hash": "a8c120772f2fab53b7bcdbb7bdc2c9390dad51730f3eebd8bceaa88c41d467c6",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "hypothesis",
+          "note": "« Invariance par changement d'échelle : la même structure T⁴ s'applique au niveau d'un neurone, d'un agent, d'une communauté » — invariance posée"
+        },
+        {
+          "source_ref": {
+            "path": "zoo-code/essaim_tetravalent.py",
+            "kind": "implementation",
+            "locator": "coupler_agents_transscalaire",
+            "hash": "9b5e589650e687290b2295ba433caa3d32934019568bb2257c016aa82e676315",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "implementation",
+          "note": "Couplage transscalaire des tenseurs Φ entre agents (similarité cos) — essaim sans nœud maître"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Transformation d'une même structure/formulation à travers les échelles (transcalaire) : la structure T⁴ s'applique du neurone à la communauté (invariance par changement d'échelle) ; couplage transscalaire des tenseurs Φ entre agents. Distinct d'un simple changement de vocabulaire : le couplage transscalaire est formalisé et implémenté.",
+      "limitations": [
+        "Invariance par changement d'échelle : hypothèse posée (README_PHILOSOPHY.md:149), non démontrée",
+        "Le couplage transscalaire est une implémentation (essaim_tetravalent.py), pas une preuve de l'invariance théorique"
+      ],
+      "implementations": [
+        {
+          "path": "zoo-code/essaim_tetravalent.py",
+          "kind": "implementation",
+          "locator": "coupler_agents_transscalaire",
+          "hash": "9b5e589650e687290b2295ba433caa3d32934019568bb2257c016aa82e676315",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "notes": "Terme « transduction d'échelle » non attesté verbatim ; attesté via « transduction transcalaire » (CHRONOLOGIE), « couplage transscalaire » (essaim_tetravalent.py) et « invariance par changement d'échelle » (README_PHILOSOPHY). Ne pas confondre avec un simple changement de vocabulaire : la transcalarité est un couplage/invariance formalisée.",
+      "sources": [
+        {
+          "path": "CHRONOLOGIE_MTTV_FLP.md",
+          "kind": "primary",
+          "locator": "ligne 92",
+          "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "README_PHILOSOPHY.md",
+          "kind": "primary",
+          "locator": "lignes 148-150",
+          "hash": "a8c120772f2fab53b7bcdbb7bdc2c9390dad51730f3eebd8bceaa88c41d467c6",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "zoo-code/essaim_tetravalent.py",
+          "kind": "implementation",
+          "locator": "coupler_agents_transscalaire",
+          "hash": "9b5e589650e687290b2295ba433caa3d32934019568bb2257c016aa82e676315",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/transduction",
+      "labels": {
+        "fr": "Transduction",
+        "en": "Transduction",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Transduction Ψ→B→Φ",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "Nom de la notion dans le cycle triade"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative",
+        "code"
+      ],
+      "status_class": "established",
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "article_mttv_flp.md",
+            "kind": "primary",
+            "locator": "ligne 11",
+            "hash": "11b7c6d7759b5b7554e0995c177668ecbbada3680c2a773162ef81a022ba4492",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "established",
+          "note": "« transduire — c'est-à-dire faire passer l'information et l'énergie à travers des seuils vivants »"
+        },
+        {
+          "source_ref": {
+            "path": "docs/dictionnaire_transcalaire.md",
+            "kind": "reformulation",
+            "locator": "ligne 17",
+            "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "metaphor",
+          "note": "Correspondance « Pipeline encodeur → gating → décodeur » ; le dictionnaire précise résonance, non identité"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Faire passer l'information et l'énergie à travers des seuils vivants, en respectant les rythmes et les complexités du réel (article_mttv_flp.md:11). Mécanisme central opposé à l'extraction.",
+      "notes": "Statut principal : established (défini dans article_mttv_flp.md). Divergence conservée : le dictionnaire transcalaire la présente comme correspondance/métaphore. Couche code : opérateurs MTTV (operateurs.py) implémentent des mécanismes transductifs (Sigma).",
+      "sources": [
+        {
+          "path": "article_mttv_flp.md",
+          "kind": "primary",
+          "locator": "ligne 11",
+          "hash": "11b7c6d7759b5b7554e0995c177668ecbbada3680c2a773162ef81a022ba4492",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 17",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/operators.py",
+          "kind": "implementation",
+          "locator": "operateur_sigma",
+          "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [
+        {
+          "relation_id": "mttvflp:relation/transduction-transduces-into",
+          "role": "subject",
+          "note": "Transformation vers le pipeline encodeur→gating→décodeur (changement de domaine)"
+        }
+      ],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/triade",
+      "labels": {
+        "fr": "Triade Ψ→B→Φ",
+        "en": "Triad Ψ→B→Φ",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Triade transductive",
+          "language": "fr",
+          "kind": "synonym",
+          "note": null
+        }
+      ],
+      "layers": [
+        "theoretical_narrative"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "article_mttv_flp.md",
+            "kind": "primary",
+            "locator": "ligne 23",
+            "hash": "11b7c6d7759b5b7554e0995c177668ecbbada3680c2a773162ef81a022ba4492",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "established",
+          "note": "« Cette triade n'est pas une métaphore. Elle s'ancre dans la physique réelle » — statut d'énoncé ancré, non métaphorique"
+        },
+        {
+          "source_ref": {
+            "path": "docs/dictionnaire_transcalaire.md",
+            "kind": "reformulation",
+            "locator": "ligne 17",
+            "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "metaphor",
+          "note": "Correspondance « Transduction du signal cellulaire / Pipeline encodeur → gating → décodeur » ; le dictionnaire précise résonance, non identité"
+        },
+        {
+          "source_ref": {
+            "path": "mttv_flp_core_2026/viability_criteria.json",
+            "kind": "primary",
+            "locator": "clé triade",
+            "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "definition",
+          "note": "Triade formalisée (psi, beta, phi) dans le schéma de cohérence"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Triade transductive Ψ→B→Φ : champ pré-formel, opérateur de différence, forme stabilisée. Statut divergent selon les sources : énoncé ancré dans la physique (article) ou correspondance/métaphore (dictionnaire transcalaire).",
+      "notes": "Aucun statut global unique n'est imposé (décision 6) : les statuts sont conservés source par source (established / metaphor / definition). La divergence est volontairement non tranchée.",
+      "sources": [
+        {
+          "path": "article_mttv_flp.md",
+          "kind": "primary",
+          "locator": "ligne 23",
+          "hash": "11b7c6d7759b5b7554e0995c177668ecbbada3680c2a773162ef81a022ba4492",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 17",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé triade",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    },
+    {
+      "schema_version": "1.0",
+      "id": "mttvflp:concept/vivant-emerge",
+      "labels": {
+        "fr": "Vivant émergé (émergence du vivant)",
+        "en": "Emerged living (emergence of the living)",
+        "zh": null,
+        "hi": null
+      },
+      "aliases": [
+        {
+          "term": "Émergence du vivant",
+          "language": "fr",
+          "kind": "synonym",
+          "note": "Formulation attestée (dimension F) — le terme exact « vivant émergé » n'est pas attesté verbatim"
+        }
+      ],
+      "layers": [
+        "theoretical_narrative",
+        "application"
+      ],
+      "status_class": null,
+      "statuses_by_source": [
+        {
+          "source_ref": {
+            "path": "plans/28_dimensions_analysis.md",
+            "kind": "primary",
+            "locator": "ligne 27 (dimension F)",
+            "hash": "3c74574be7ce9bcb203d5d0b6f55a52b8c645f0e02546d82ebd321ae1fc45203",
+            "sig": "sig:0x4D5454562D464C50",
+            "date": "2026-08-16",
+            "author": null
+          },
+          "status_class": "application",
+          "note": "Dimension F « Niveaux d'émergence Gaïa » → famille SOIL « émergence du vivant » (échelle de l'indifférencié horizontal/bactérien au solipsiste anthropique vertical)"
+        }
+      ],
+      "validation_status": "unknown",
+      "definition": "Notion d'émergence du vivant (dimension F des 28 dimensions : échelle du bactérien horizontal à l'humain vertical). Le terme exact « vivant émergé » n'est pas attesté verbatim ; la formulation attestée est « émergence du vivant » (dimension F).",
+      "notes": "Terme « vivant émergé » non attesté verbatim — la fiche documente l'attestation la plus proche (« émergence du vivant », dimension F). Non complété par inférence. Statut par source : application (dimension d'étiquetage).",
+      "sources": [
+        {
+          "path": "plans/28_dimensions_analysis.md",
+          "kind": "primary",
+          "locator": "ligne 27 (dimension F)",
+          "hash": "3c74574be7ce9bcb203d5d0b6f55a52b8c645f0e02546d82ebd321ae1fc45203",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "relations": [],
+      "data_anomaly_refs": [],
+      "provenance_record": null
+    }
+  ]
+}

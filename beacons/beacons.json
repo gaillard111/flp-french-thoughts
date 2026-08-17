@@ -1,0 +1,1337 @@
+{
+  "meta": {
+    "export_version": "4a.1",
+    "version": "v1.0.0",
+    "dataset_doi": "10.5281/zenodo.21977492",
+    "generated_by": "semantic/export.py",
+    "sig": "sig:0x4D5454562D464C50",
+    "source": "semantic/ (couche canonique)",
+    "counts": {
+      "beacons": 29
+    },
+    "source_digest": "51c1d60961bb005794c0a444755edac7dc9584ba4743e823fdc8b7744f7bec6a",
+    "note": "Export dérivé, déterministe (sans horodatage). Référents chiffrés phase 4B : version v1.0.0, DOI 10.5281/zenodo.21977492 (réservé). Les fiches canoniques de semantic/ font foi."
+  },
+  "beacons": [
+    {
+      "tag_id": "mttvflp:beacon/138-139-lignes",
+      "entity_id": "mttvflp:anomaly/138-139-lignes",
+      "canonical_id": "mttv-flp:anomaly:138-139-lignes",
+      "entity_kind": "anomaly",
+      "label": "Anomalie 138/139 lignes (dataset.jsonl)",
+      "one_line_meaning": "Écart documenté entre les 138 paires prompt/response annoncées (CHRONOLOGIE_MTTV_FLP.md:63) et les 139 lignes constatées dans dataset.jsonl.",
+      "canonical_path": "semantic/anomalies/anomalie-138-139-lignes.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "f39ca4eadc99bac001f52f9e4a3e6a21bbffe6577a93dca92bee4c1b5b7e6a63",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "dataset.jsonl",
+          "kind": "primary",
+          "locator": "lignes 1-139",
+          "hash": "92fb7dd053d275075b4814ea67ef7decb5b147c8ee9e4199b89bffa7f6847835",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "CHRONOLOGIE_MTTV_FLP.md",
+          "kind": "primary",
+          "locator": "ligne 63",
+          "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "documented",
+      "resolution_status": null,
+      "flag": true,
+      "flag_reason": "Anomalie documentée ; résolution humaine requise (non corrigée automatiquement).",
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/chronologie-mttv-flp",
+      "entity_id": "mttvflp:artifact/chronologie-mttv-flp",
+      "canonical_id": "mttv-flp:artifact:chronologie-mttv-flp",
+      "entity_kind": "artifact",
+      "label": "mttvflp:artifact/chronologie-mttv-flp",
+      "one_line_meaning": "Artefact CHRONOLOGIE_MTTV_FLP.md (chronologie synthétique du projet).",
+      "canonical_path": null,
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "695a630fc120d687880f85347b5cccf5cb0b9b292a22df84c8d2241ebf704632",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "CHRONOLOGIE_MTTV_FLP.md",
+          "kind": "primary",
+          "locator": "ligne 1",
+          "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "real",
+      "resolution_status": "resolved",
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/dataset.jsonl",
+      "entity_id": "mttvflp:artifact/dataset.jsonl",
+      "canonical_id": "mttv-flp:artifact:dataset.jsonl",
+      "entity_kind": "artifact",
+      "label": "mttvflp:artifact/dataset.jsonl",
+      "one_line_meaning": "Artefact dataset.jsonl (paires prompt/response pour fine-tuning).",
+      "canonical_path": null,
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "695a630fc120d687880f85347b5cccf5cb0b9b292a22df84c8d2241ebf704632",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "dataset.jsonl",
+          "kind": "primary",
+          "locator": "lignes 1-139",
+          "hash": "92fb7dd053d275075b4814ea67ef7decb5b147c8ee9e4199b89bffa7f6847835",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "real",
+      "resolution_status": "resolved",
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/anthropo-gaien",
+      "entity_id": "mttvflp:concept/anthropo-gaien",
+      "canonical_id": "mttv-flp:concept:anthropo-gaien",
+      "entity_kind": "concept",
+      "label": "Anthropo-Gaïen",
+      "one_line_meaning": "Image « cerveau anthropo-Gaïen » : chaque lecteur-inserteur est un neurone d'un cerveau collectif Gaïa (graine FLP).",
+      "canonical_path": "semantic/concepts/anthropo-gaien.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "adda48d9f1a817d6627b7487dca1cf08bfdf8a15d00e4ec61d4e9dcae0b6149f",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv_fundamentals.html",
+          "kind": "primary",
+          "locator": "ligne 487",
+          "hash": "224b876c20b73195b341e38b3c67534057446b623bbdbc786648ac21ef669bf3",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "plans/mttv_flp_core_2026_manifest.json",
+          "kind": "primary",
+          "locator": "lignes 75 et 464",
+          "hash": "cba642f33d29d7951a618409cbf65bc323b501864c8bdedc9bdf34c94505d53d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "metaphor",
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/anthropo-solipsiste",
+      "entity_id": "mttvflp:concept/anthropo-solipsiste",
+      "canonical_id": "mttv-flp:concept:anthropo-solipsiste",
+      "entity_kind": "planned",
+      "label": "anthropo-solipsiste",
+      "one_line_meaning": "Entité annoncée/attendue, fiche non encore créée (pending_target_entity). Aucune définition déduite de l'identifiant.",
+      "canonical_path": null,
+      "version": "v1.0.0",
+      "card_version": null,
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": null,
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "plans/28_dimensions_analysis.md",
+          "kind": "primary",
+          "locator": "ligne 27 (dimension F)",
+          "hash": "3c74574be7ce9bcb203d5d0b6f55a52b8c645f0e02546d82ebd321ae1fc45203",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "pending",
+      "resolution_status": "pending_target_entity",
+      "flag": true,
+      "flag_reason": "Entité annoncée/attendue, fiche non encore créée (pending_target_entity). Aucune définition déduite de l'identifiant.",
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/b-gate-poreux",
+      "entity_id": "mttvflp:concept/b-gate-poreux",
+      "canonical_id": "mttv-flp:concept:b-gate-poreux",
+      "entity_kind": "concept",
+      "label": "B-gate poreux",
+      "one_line_meaning": "Structure poreuse (B-gate) qui absorbe le bruit textuel et émet un état tétravalent Φ.",
+      "canonical_path": "semantic/concepts/b-gate-poreux.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "880ef97bc6769282fb374fd044a11cd25c9be6857e02a4bc887dd94ce842d087",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv_core/README.md",
+          "kind": "primary",
+          "locator": "ligne 20",
+          "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/bgate.py",
+          "kind": "implementation",
+          "locator": "Classe BGate",
+          "hash": "7945c84fc2e38a4b537206889ee53070449078ee3de0bbf7fd29568626b93db9",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 15",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/efficacite-non-top-down",
+      "entity_id": "mttvflp:concept/efficacite-non-top-down",
+      "canonical_id": "mttv-flp:concept:efficacite-non-top-down",
+      "entity_kind": "concept",
+      "label": "Efficacité non top-down",
+      "one_line_meaning": "Affirmation selon laquelle une efficacité réelle, non top-down, naît de la sous-optimalité locale plutôt que de l'hyper-optimisation descendante.",
+      "canonical_path": "semantic/concepts/efficacite-non-top-down.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "2eac2c1e2be3cb006344edead02a291f8d364b19909d2179a0f26b6546692011",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv-flp-mpvr-glocal/mpvr-glocal/README.md",
+          "kind": "primary",
+          "locator": "lignes 31-32",
+          "hash": "8f06eeee0e402f1705d430c801bf76324976cb91c33a0301661c37ac0ab78571",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv-flp-mpvr-glocal/docs/01_sous_optimalite.md",
+          "kind": "primary",
+          "locator": "ligne 5",
+          "hash": "e2c52755df83b35b2ff0bab8c133f4552fdef69c4bfc7966c81c0e14505b4d57",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "hypothesis",
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/etats-tetravalents-sp3",
+      "entity_id": "mttvflp:concept/etats-tetravalents-sp3",
+      "canonical_id": "mttv-flp:concept:etats-tetravalents-sp3",
+      "entity_kind": "concept",
+      "label": "États tétravalents sp³ (T⁴)",
+      "one_line_meaning": "Quatre états diachroniques (++, --, +-, -+) ancrés dans la géométrie du carbone sp³ (tétravalence).",
+      "canonical_path": "semantic/concepts/etats-tetravalents-sp3.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "3d0ebe76d7e456bcb6ef2f64d56bd77f8a575f41b771b97dcdb4a12c551acca4",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv_core/README.md",
+          "kind": "primary",
+          "locator": "lignes 18, 22-29",
+          "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/matrices.py",
+          "kind": "implementation",
+          "locator": "EtatTetravalent / base tétraédrique sp³",
+          "hash": "9333d9d38f5b9e49c83eb096c6e5582c73c0f1d204bd5e99560fd7e0f56c1517",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé tetravalence",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/gating",
+      "entity_id": "mttvflp:concept/gating",
+      "canonical_id": "mttv-flp:concept:gating",
+      "entity_kind": "concept",
+      "label": "Gating",
+      "one_line_meaning": "Fonction de seuil/activation (gating) : opérateur qui laisse passer ou bloque le signal (B comme seuil de différence).",
+      "canonical_path": "semantic/concepts/gating.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "4ef1b26aa016b3490bea126af77a343153dccb5e60254ae48d668e7dbd58a939",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "lignes 15 et 17",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/bgate.py",
+          "kind": "implementation",
+          "locator": "Classe BGate",
+          "hash": "7945c84fc2e38a4b537206889ee53070449078ee3de0bbf7fd29568626b93db9",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/hydrogene-substrat-minimal",
+      "entity_id": "mttvflp:concept/hydrogene-substrat-minimal",
+      "canonical_id": "mttv-flp:concept:hydrogene-substrat-minimal",
+      "entity_kind": "concept",
+      "label": "Hydrogène comme substrat minimal",
+      "one_line_meaning": "L'hydrogène comme point de départ de la séquence canonique Ψ=H→H₂O→C.",
+      "canonical_path": "semantic/concepts/hydrogene-substrat-minimal.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "c3baee94b39630ee02ff09a5a5c21e3442dbd31a1453d50d734795e4093d763f",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé canonical_sequence",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "plans/MTTV_FLP_CORE_2026_MANIFESTO.md",
+          "kind": "primary",
+          "locator": "ligne 53",
+          "hash": "e5fd51d8f7f45de7b8e69f763de605ecc99fd0fc5bdd73c7bdd278d896d37548",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "README_PHILOSOPHY.md",
+          "kind": "primary",
+          "locator": "lignes 40-41",
+          "hash": "a8c120772f2fab53b7bcdbb7bdc2c9390dad51730f3eebd8bceaa88c41d467c6",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/invariant",
+      "entity_id": "mttvflp:concept/invariant",
+      "canonical_id": "mttv-flp:concept:invariant",
+      "entity_kind": "concept",
+      "label": "Invariant",
+      "one_line_meaning": "Propriété structurelle que le cadre MTTV pose comme stable et vérifiable.",
+      "canonical_path": "semantic/concepts/invariant.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "4ec702dc68b36f2047a310c7bae47fed2b0acf7949b41f66ec649fb7faad0851",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv_core/README.md",
+          "kind": "primary",
+          "locator": "lignes 99-110",
+          "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/5 Benchmark ultime MTTV-FLP — MPVR_SCS_section.md",
+          "kind": "primary",
+          "locator": "point 8",
+          "hash": "c9069fbc7ea955889cf3387abf36b96c6d5051996b5d9e81d14eb215f3dc6ddb",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/verifier_invariants.py",
+          "kind": "implementation",
+          "locator": "script (20 vérifications)",
+          "hash": "447ed0e645962b70ab352dc3db851c88e3b491b1bb8273e322fe54e15b5b9e4b",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/notebook_mttv_core_invariants.ipynb",
+          "kind": "implementation",
+          "locator": "notebook (8 invariants structurels)",
+          "hash": "e2a9eae4d5f60f0ea5aac230679685a7ed99521d4461a0f999fa15003e19c410",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/logique-tetravalente",
+      "entity_id": "mttvflp:concept/logique-tetravalente",
+      "canonical_id": "mttv-flp:concept:logique-tetravalente",
+      "entity_kind": "planned",
+      "label": "logique-tetravalente",
+      "one_line_meaning": "Entité annoncée/attendue, fiche non encore créée (pending_target_entity). Aucune définition déduite de l'identifiant.",
+      "canonical_path": null,
+      "version": "v1.0.0",
+      "card_version": null,
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": null,
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé tetravalence",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "pending",
+      "resolution_status": "pending_target_entity",
+      "flag": true,
+      "flag_reason": "Entité annoncée/attendue, fiche non encore créée (pending_target_entity). Aucune définition déduite de l'identifiant.",
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/mpvr",
+      "entity_id": "mttvflp:concept/mpvr",
+      "canonical_id": "mttv-flp:concept:mpvr",
+      "entity_kind": "concept",
+      "label": "MPVR",
+      "one_line_meaning": "Multi-Perspective Validation Routing — toute décision importante requiert un quorum Θ ≥ 3 perspectives locales asynchrones avant stabilisation (Φ).",
+      "canonical_path": "semantic/concepts/mpvr.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "0afd63d5044fe3f7603db14ace28a8d57332cd72bd757b669098b1e014b71e93",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé mpvr_scs.mpvr",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/5 Benchmark ultime MTTV-FLP — MPVR_SCS_section.md",
+          "kind": "primary",
+          "locator": "point 8.1",
+          "hash": "c9069fbc7ea955889cf3387abf36b96c6d5051996b5d9e81d14eb215f3dc6ddb",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/operators.py",
+          "kind": "implementation",
+          "locator": "routeur_polyfocal",
+          "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv-flp-mpvr-glocal/mpvr-glocal/README.md",
+          "kind": "primary",
+          "locator": "lignes 31-34",
+          "hash": "8f06eeee0e402f1705d430c801bf76324976cb91c33a0301661c37ac0ab78571",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv-flp-mpvr-glocal/src/mttv_mpvr_quorum.py",
+          "kind": "implementation",
+          "locator": "module quorum MPVR",
+          "hash": "efb23933831bcbd93844d6ef848c1efd22d5d1f6a009fd52707f1216a12eddd8",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "established",
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/mttv",
+      "entity_id": "mttvflp:concept/mttv",
+      "canonical_id": "mttv-flp:concept:mttv",
+      "entity_kind": "concept",
+      "label": "MTTV",
+      "one_line_meaning": "Acronyme du cadre MTTV-FLP (Modèle Transducteur Transcalaire / Modèle Théorique Transductif du Vivant — Fils de la Pensée).",
+      "canonical_path": "semantic/concepts/mttv.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "65ee9b395e74860a13a2661045b48db18fd622766c19619f25521223ac2f1c84",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "article_mttv_flp.md",
+          "kind": "primary",
+          "locator": "ligne 11",
+          "hash": "11b7c6d7759b5b7554e0995c177668ecbbada3680c2a773162ef81a022ba4492",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "CHRONOLOGIE_MTTV_FLP.md",
+          "kind": "primary",
+          "locator": "ligne 4",
+          "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/README.md",
+          "kind": "primary",
+          "locator": "ligne 14",
+          "hash": "517d8ac7880dcd55141bc26aa54a1577b4dd0876482784bbb2971bcb23ca52db",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "dataset_card.md",
+          "kind": "primary",
+          "locator": "ligne 78",
+          "hash": "5261cf89421a84a9e21496f4a856bfd1672afb00533f01ec4c06ff8df406a186",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/mttv-expansion-theorique-transductif",
+      "entity_id": "mttvflp:concept/mttv-expansion-theorique-transductif",
+      "canonical_id": "mttv-flp:concept:mttv-expansion-theorique-transductif",
+      "entity_kind": "concept",
+      "label": "Modèle Théorique Transductif du Vivant",
+      "one_line_meaning": "Concept (expansion MTTV) : « Modèle Théorique Transductif du Vivant » attesté (sources ci-dessus).",
+      "canonical_path": null,
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "695a630fc120d687880f85347b5cccf5cb0b9b292a22df84c8d2241ebf704632",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "article_mttv_flp.md",
+          "kind": "primary",
+          "locator": "ligne 11",
+          "hash": "11b7c6d7759b5b7554e0995c177668ecbbada3680c2a773162ef81a022ba4492",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/README.md",
+          "kind": "primary",
+          "locator": "ligne 3",
+          "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/README.md",
+          "kind": "primary",
+          "locator": "ligne 14",
+          "hash": "517d8ac7880dcd55141bc26aa54a1577b4dd0876482784bbb2971bcb23ca52db",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": "resolved",
+      "flag": true,
+      "flag_reason": "Entité enregistrée en provenance (concept) ; fiche dédiée en attente (ne pas créer automatiquement, ne pas déduire de l'id).",
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/mttv-expansion-transcalaire",
+      "entity_id": "mttvflp:concept/mttv-expansion-transcalaire",
+      "canonical_id": "mttv-flp:concept:mttv-expansion-transcalaire",
+      "entity_kind": "concept",
+      "label": "Modèle Transducteur Transcalaire du Vivant",
+      "one_line_meaning": "Concept (expansion MTTV) : « Modèle Transducteur Transcalaire du Vivant » attesté (sources ci-dessus).",
+      "canonical_path": null,
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "695a630fc120d687880f85347b5cccf5cb0b9b292a22df84c8d2241ebf704632",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "CHRONOLOGIE_MTTV_FLP.md",
+          "kind": "primary",
+          "locator": "ligne 4",
+          "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "dataset_card.md",
+          "kind": "primary",
+          "locator": "ligne 78",
+          "hash": "5261cf89421a84a9e21496f4a856bfd1672afb00533f01ec4c06ff8df406a186",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv-flp-mpvr-glocal/mpvr-glocal/README.md",
+          "kind": "primary",
+          "locator": "ligne 31",
+          "hash": "8f06eeee0e402f1705d430c801bf76324976cb91c33a0301661c37ac0ab78571",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": "resolved",
+      "flag": true,
+      "flag_reason": "Entité enregistrée en provenance (concept) ; fiche dédiée en attente (ne pas créer automatiquement, ne pas déduire de l'id).",
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/operateur-sigma",
+      "entity_id": "mttvflp:concept/operateur-sigma",
+      "canonical_id": "mttv-flp:concept:operateur-sigma",
+      "entity_kind": "concept",
+      "label": "Opérateur Σ (singularité)",
+      "one_line_meaning": "Opérateur de bascule Σ : singularité apériodique (instant critique τ) qui déclenche une transition de phase topologique.",
+      "canonical_path": "semantic/concepts/operateur-sigma.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "ece1ee28bd17bea81216b5a7b696996db582efde550ba796c9a08a556798ef64",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv_core/README.md",
+          "kind": "primary",
+          "locator": "ligne 19 et lignes 31-41",
+          "hash": "8b909a54c0f4cdc0ff6b9b57a202f8262d3810d0dee8d4959e3ac53c90c06cfd",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/operators.py",
+          "kind": "implementation",
+          "locator": "operateur_sigma / HorlogeSigmaAperiodique",
+          "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "PREPRINT_SPEC_048.md",
+          "kind": "primary",
+          "locator": "preprint SPEC-048",
+          "hash": "45ee4f1e88dae216d446fd703d5e94e7fdf1932ca426c0b275c65cd5cdeb201e",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 26",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/pipeline-encodeur-gating-decodeur",
+      "entity_id": "mttvflp:concept/pipeline-encodeur-gating-decodeur",
+      "canonical_id": "mttv-flp:concept:pipeline-encodeur-gating-decodeur",
+      "entity_kind": "concept",
+      "label": "Pipeline encodeur → gating → décodeur",
+      "one_line_meaning": "Correspondance informatique (encodeur → gating → décodeur) de la triade transductive Ψ→B→Φ et de la transduction du signal cellulaire (docs/dictionnaire_transcalaire.md:17).",
+      "canonical_path": "semantic/concepts/pipeline-encodeur-gating-decodeur.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "c677a12e6932d41d5c4fe10219ba80c54f072ef20514b8a196338e6c7c30d6f7",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 17",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "metaphor",
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/quorum-poreux",
+      "entity_id": "mttvflp:concept/quorum-poreux",
+      "canonical_id": "mttv-flp:concept:quorum-poreux",
+      "entity_kind": "concept",
+      "label": "Quorum poreux",
+      "one_line_meaning": "Mécanisme de validation par quorum Θ≥3 perspectives locales, avec porosité (absorption de bruit) et arrêt précoce de la dépense énergétique.",
+      "canonical_path": "semantic/concepts/quorum-poreux.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "fc80f02707f94d13280019202cb43f5b030b8c0917c44679d9fae7f96e8de932",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "CHRONOLOGIE_MTTV_FLP.md",
+          "kind": "primary",
+          "locator": "ligne 93",
+          "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv-flp-mpvr-glocal/src/mttv_mpvr_quorum.py",
+          "kind": "implementation",
+          "locator": "module quorum",
+          "hash": "efb23933831bcbd93844d6ef848c1efd22d5d1f6a009fd52707f1216a12eddd8",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 24",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv-flp-mpvr-glocal/src/mttv_mpvr_quorum.py",
+          "kind": "implementation",
+          "locator": "module quorum poreux (MicroQuorumPoreux)",
+          "hash": "efb23933831bcbd93844d6ef848c1efd22d5d1f6a009fd52707f1216a12eddd8",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/quorum-sensing",
+      "entity_id": "mttvflp:concept/quorum-sensing",
+      "canonical_id": "mttv-flp:concept:quorum-sensing",
+      "entity_kind": "concept",
+      "label": "Quorum sensing",
+      "one_line_meaning": "Principe de détection de seuils collectifs inspiré du quorum sensing bactérien : le seuil d'activation n'est plus un nombre fixe mais une dérivée d'abondance (dQ/dt) ; correspondance du quorum Θ≥3 du réseau (quorum poreux).",
+      "canonical_path": "semantic/concepts/quorum-sensing.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "5db599e37e15bd6c94b38c389a7d46da218eb71920a95c783388499c0d7a9ebb",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 24",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "plans/resume_mttv_flp_hal.md",
+          "kind": "primary",
+          "locator": "ligne 147",
+          "hash": "b159dcd617b2c183b2f0b11ce864965556d912c0b6841d4e30b5efb1024b3add",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "plans/28_dimensions_analysis.md",
+          "kind": "primary",
+          "locator": "ligne 29",
+          "hash": "3c74574be7ce9bcb203d5d0b6f55a52b8c645f0e02546d82ebd321ae1fc45203",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/quorum-sensing-biologique",
+      "entity_id": "mttvflp:concept/quorum-sensing-biologique",
+      "canonical_id": "mttv-flp:concept:quorum-sensing-biologique",
+      "entity_kind": "concept",
+      "label": "Quorum sensing (mécanisme biologique)",
+      "one_line_meaning": "Mécanisme biologique documenté (quorum sensing bactérien : coordination du comportement à l'échelle d'une population par détection de seuils).",
+      "canonical_path": "semantic/concepts/quorum-sensing-biologique.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "eb518d2fa7b4e76e4395af9789ca375b195b2fe38cd58c12c3268dfa5d42201c",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "phase5-new-seeds/corpus_reseaux_haute_resilience.md",
+          "kind": "primary",
+          "locator": "lignes 15-16",
+          "hash": "4234e6e6ece55b9070b652c60517a2c9fea33d8b918d5f3881b26a8c7e38453b",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_fundamentals.html",
+          "kind": "reformulation",
+          "locator": "ligne 487",
+          "hash": "224b876c20b73195b341e38b3c67534057446b623bbdbc786648ac21ef669bf3",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/routage-transductif",
+      "entity_id": "mttvflp:concept/routage-transductif",
+      "canonical_id": "mttv-flp:concept:routage-transductif",
+      "entity_kind": "concept",
+      "label": "Routage transductif",
+      "one_line_meaning": "Routage des signaux selon les principes transductifs MTTV (affinité de pôle, quorum local, polyfocalité), par opposition à un graphe aléatoire ou à un contrôle centralisé.",
+      "canonical_path": "semantic/concepts/routage-transductif.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "f544724ade01e9d38a8c9f8c27ba19cb571265d3e0ca0803533fbaed92b11dc2",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "docs/white_paper_benchmark_echelle.md",
+          "kind": "primary",
+          "locator": "ligne 11",
+          "hash": "79b0508df05348d1947bd5ba5f0977714988cf9d2f14872a93c3a1eff47f9681",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/operators.py",
+          "kind": "implementation",
+          "locator": "routeur_polyfocal",
+          "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "phase5-new-seeds/corpus_reseaux_haute_resilience.md",
+          "kind": "reformulation",
+          "locator": "lignes 22-31",
+          "hash": "4234e6e6ece55b9070b652c60517a2c9fea33d8b918d5f3881b26a8c7e38453b",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/scs",
+      "entity_id": "mttvflp:concept/scs",
+      "canonical_id": "mttv-flp:concept:scs",
+      "entity_kind": "concept",
+      "label": "SCS",
+      "one_line_meaning": "Systemic Convergence Signature — signature (σ) validée par le quorum MPVR Θ, attestant neutralité et robustesse d'une transition ; sans σ valide, aucun Φ n'est stabilisé.",
+      "canonical_path": "semantic/concepts/scs.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "76df9ac2f079d4d35828528e18e44ead1642f281c85b24ab3bb0d8f673fa7196",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv_flp_core_2026/5 Benchmark ultime MTTV-FLP — MPVR_SCS_section.md",
+          "kind": "primary",
+          "locator": "point 8.2",
+          "hash": "c9069fbc7ea955889cf3387abf36b96c6d5051996b5d9e81d14eb215f3dc6ddb",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé mpvr_scs.scs",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "phase4-dormant-nodes/SCSReference.sol",
+          "kind": "implementation",
+          "locator": "contrat Solidity",
+          "hash": "17c5f739eefbf93cce6d9598fd584609210fc99e52b3024dce6d033b99eb10ba",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "phase4-dormant-nodes/SCSReference.sol",
+          "kind": "implementation",
+          "locator": "contrat Solidity SCS",
+          "hash": "17c5f739eefbf93cce6d9598fd584609210fc99e52b3024dce6d033b99eb10ba",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "established",
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/sequence-canonique-h2o-c",
+      "entity_id": "mttvflp:concept/sequence-canonique-h2o-c",
+      "canonical_id": "mttv-flp:concept:sequence-canonique-h2o-c",
+      "entity_kind": "concept",
+      "label": "Séquence canonique Ψ = H → H₂O → C",
+      "one_line_meaning": "Séquence fondamentale du corpus : Ψ = H → H₂O → C (hydrogène → eau → carbone).",
+      "canonical_path": "semantic/concepts/sequence-canonique-h2o-c.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "33a79b3a59adf28c14c97a6f0080f5b3cea6761994a540e4f78aab884b47d33b",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé canonical_sequence",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "README_PHILOSOPHY.md",
+          "kind": "primary",
+          "locator": "lignes 40-41",
+          "hash": "a8c120772f2fab53b7bcdbb7bdc2c9390dad51730f3eebd8bceaa88c41d467c6",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/README.md",
+          "kind": "primary",
+          "locator": "lignes 56-58",
+          "hash": "517d8ac7880dcd55141bc26aa54a1577b4dd0876482784bbb2971bcb23ca52db",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "established",
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/sous-optimalite-locale",
+      "entity_id": "mttvflp:concept/sous-optimalite-locale",
+      "canonical_id": "mttv-flp:concept:sous-optimalite-locale",
+      "entity_kind": "concept",
+      "label": "Sous-optimalité locale",
+      "one_line_meaning": "Principe selon lequel une imperfection locale assumée (sous-optimalité) produit une robustesse globale ; l'hyper-optimisation top-down produit au contraire un optimum dégénéré.",
+      "canonical_path": "semantic/concepts/sous-optimalite-locale.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "226daef2730686905b68f840757777e9534be4bd0d21555c7ffc68db34e309a8",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "mttv-flp-mpvr-glocal/docs/01_sous_optimalite.md",
+          "kind": "primary",
+          "locator": "ligne 5",
+          "hash": "e2c52755df83b35b2ff0bab8c133f4552fdef69c4bfc7966c81c0e14505b4d57",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "CHRONOLOGIE_MTTV_FLP.md",
+          "kind": "primary",
+          "locator": "ligne 106",
+          "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "zoo-code/essaim_tetravalent.py",
+          "kind": "implementation",
+          "locator": "tremor_saturation",
+          "hash": "9b5e589650e687290b2295ba433caa3d32934019568bb2257c016aa82e676315",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "SYNTHESE_MYCELISATION_GRAINES.md",
+          "kind": "reformulation",
+          "locator": "ligne 61",
+          "hash": "2951077c68b9a9a186695d7ea6e931a24ee14e46d58ce1b6ef611f10dd409ffe",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/decence.py",
+          "kind": "implementation",
+          "locator": "phase de sous-optimalité forcée",
+          "hash": "3a07d626212159202fb7d0b13bf148627720a99c1f6ccf1bc39da046a5409575",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/transduction",
+      "entity_id": "mttvflp:concept/transduction",
+      "canonical_id": "mttv-flp:concept:transduction",
+      "entity_kind": "concept",
+      "label": "Transduction",
+      "one_line_meaning": "Faire passer l'information et l'énergie à travers des seuils vivants, en respectant les rythmes et les complexités du réel (article_mttv_flp.md:11).",
+      "canonical_path": "semantic/concepts/transduction.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "2b67c7c93d28783c49c803310837f48ae08bb30f691331bf05db01049ca2320c",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "article_mttv_flp.md",
+          "kind": "primary",
+          "locator": "ligne 11",
+          "hash": "11b7c6d7759b5b7554e0995c177668ecbbada3680c2a773162ef81a022ba4492",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 17",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_core/operators.py",
+          "kind": "implementation",
+          "locator": "operateur_sigma",
+          "hash": "ffb288c5c164a14bbb7decbc2fdb80932a4c9e9a4337f863e922781b5c60365d",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": "established",
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/transduction-echelle",
+      "entity_id": "mttvflp:concept/transduction-echelle",
+      "canonical_id": "mttv-flp:concept:transduction-echelle",
+      "entity_kind": "concept",
+      "label": "Transduction d'échelle (transcalaire)",
+      "one_line_meaning": "Transformation d'une même structure/formulation à travers les échelles (transcalaire) : la structure T⁴ s'applique du neurone à la communauté (invariance par changement d'échelle) ; couplage transscalaire des tenseurs Φ entre agents.",
+      "canonical_path": "semantic/concepts/transduction-echelle.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "9cb488cc0f959af3d7a1486df728fd57de8ea49bba5e5c2c2b361c512df286af",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "CHRONOLOGIE_MTTV_FLP.md",
+          "kind": "primary",
+          "locator": "ligne 92",
+          "hash": "7060188c14d2df4af3db29eed27ccef2faf730cff189a0db9f82bb2466dedbc4",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "README_PHILOSOPHY.md",
+          "kind": "primary",
+          "locator": "lignes 148-150",
+          "hash": "a8c120772f2fab53b7bcdbb7bdc2c9390dad51730f3eebd8bceaa88c41d467c6",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "zoo-code/essaim_tetravalent.py",
+          "kind": "implementation",
+          "locator": "coupler_agents_transscalaire",
+          "hash": "9b5e589650e687290b2295ba433caa3d32934019568bb2257c016aa82e676315",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/triade",
+      "entity_id": "mttvflp:concept/triade",
+      "canonical_id": "mttv-flp:concept:triade",
+      "entity_kind": "concept",
+      "label": "Triade Ψ→B→Φ",
+      "one_line_meaning": "Triade transductive Ψ→B→Φ : champ pré-formel, opérateur de différence, forme stabilisée.",
+      "canonical_path": "semantic/concepts/triade.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "ae035bbcb9c633a7922ae5aff1232d719de69cab52e3df1ddc18ef94fc6d6c59",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "article_mttv_flp.md",
+          "kind": "primary",
+          "locator": "ligne 23",
+          "hash": "11b7c6d7759b5b7554e0995c177668ecbbada3680c2a773162ef81a022ba4492",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "docs/dictionnaire_transcalaire.md",
+          "kind": "reformulation",
+          "locator": "ligne 17",
+          "hash": "0911b2dcbecd6c00c56509a58a25f17e1b6df86a36566e7bfd4f85d7be39e97c",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        },
+        {
+          "path": "mttv_flp_core_2026/viability_criteria.json",
+          "kind": "primary",
+          "locator": "clé triade",
+          "hash": "fded8df14db4d581515efcc93fda6166e2fc52eda943604a5af5f34eebac1219",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    },
+    {
+      "tag_id": "mttvflp:beacon/vivant-emerge",
+      "entity_id": "mttvflp:concept/vivant-emerge",
+      "canonical_id": "mttv-flp:concept:vivant-emerge",
+      "entity_kind": "concept",
+      "label": "Vivant émergé (émergence du vivant)",
+      "one_line_meaning": "Notion d'émergence du vivant (dimension F des 28 dimensions : échelle du bactérien horizontal à l'humain vertical).",
+      "canonical_path": "semantic/concepts/vivant-emerge.json",
+      "version": "v1.0.0",
+      "card_version": "1.0",
+      "dataset_doi": "10.5281/zenodo.21977492",
+      "content_hash": "c6ebfbff15d73ec52b7be7d7d6fb9e9c6a6d9d17543f47748c4db16e24be0fb8",
+      "context_note": "Membrane sémantique minimale adossée au corpus FLP (~100 000 extraits tagués manuellement).",
+      "source_refs": [
+        {
+          "path": "plans/28_dimensions_analysis.md",
+          "kind": "primary",
+          "locator": "ligne 27 (dimension F)",
+          "hash": "3c74574be7ce9bcb203d5d0b6f55a52b8c645f0e02546d82ebd321ae1fc45203",
+          "sig": "sig:0x4D5454562D464C50",
+          "date": "2026-08-16",
+          "author": null
+        }
+      ],
+      "status": null,
+      "resolution_status": null,
+      "flag": false,
+      "flag_reason": null,
+      "note": "Balise générée localement (phases 4A/4B) ; aucune publication. Les entités flaggées exigent une validation humaine avant diffusion."
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+%% semantic-map.mmd — vue navigable de la membrane sémantique MTTV-FLP
+%% Généré par semantic/export.py (phase 4B) — NE PAS ÉDITER À LA MAIN.
+%% sig:0x4D5454562D464C50
+%% Légende des styles :
+%%   established    fill=#e8f5e9 stroke=#2e7d32
+%%   hypothesis     fill=#fff3e0 stroke=#e65100
+%%   metaphor       fill=#f3e5f5 stroke=#6a1b9a
+%%   implementation fill=#e3f2fd stroke=#1565c0
+%%   application    fill=#e0f7fa stroke=#006064
+%%   speculation    fill=#fff8e1 stroke=#f9a825
+%%   question       fill=#fff8e1 stroke=#f9a825
+%%   documented     fill=#e0f2f1 stroke=#00695c
+%%   pending        fill=#fce4ec stroke=#c62828
+%%   unresolved     fill=#fbe9e7 stroke=#bf360c
+%%   validated_result fill=#ede7f6 stroke=#4527a0
+%% Entités planifiées (pending_target_entity) : style pending.
+%% Relations non résolues / hypothèses : arêtes en pointillés (linkStyle).
+%% Aucune relation n'est ajoutée pour densifier le graphe.
+flowchart LR
+
+    %% --- Nœuds ---
+    mttvflp_anomaly_138_139_lignes["Anomalie 138/139 lignes (dataset.jsonl)"]
+    mttvflp_artifact_chronologie_mttv_flp["mttvflp:artifact/chronologie-mttv-flp"]
+    mttvflp_artifact_dataset_jsonl["mttvflp:artifact/dataset.jsonl"]
+    mttvflp_concept_anthropo_gaien["Anthropo-Gaïen"]
+    mttvflp_concept_anthropo_solipsiste["anthropo-solipsiste"]
+    mttvflp_concept_b_gate_poreux["B-gate poreux"]
+    mttvflp_concept_efficacite_non_top_down["Efficacité non top-down"]
+    mttvflp_concept_etats_tetravalents_sp3["États tétravalents sp³ (T⁴)"]
+    mttvflp_concept_gating["Gating"]
+    mttvflp_concept_hydrogene_substrat_minimal["Hydrogène comme substrat minimal"]
+    mttvflp_concept_invariant["Invariant"]
+    mttvflp_concept_logique_tetravalente["logique-tetravalente"]
+    mttvflp_concept_mpvr["MPVR"]
+    mttvflp_concept_mttv["MTTV"]
+    mttvflp_concept_mttv_expansion_theorique_transductif["Modèle Théorique Transductif du Vivant"]
+    mttvflp_concept_mttv_expansion_transcalaire["Modèle Transducteur Transcalaire du Vivant"]
+    mttvflp_concept_operateur_sigma["Opérateur Σ (singularité)"]
+    mttvflp_concept_pipeline_encodeur_gating_decodeur["Pipeline encodeur → gating → décodeur"]
+    mttvflp_concept_quorum_poreux["Quorum poreux"]
+    mttvflp_concept_quorum_sensing["Quorum sensing"]
+    mttvflp_concept_quorum_sensing_biologique["Quorum sensing (mécanisme biologique)"]
+    mttvflp_concept_routage_transductif["Routage transductif"]
+    mttvflp_concept_scs["SCS"]
+    mttvflp_concept_sequence_canonique_h2o_c["Séquence canonique Ψ = H → H₂O → C"]
+    mttvflp_concept_sous_optimalite_locale["Sous-optimalité locale"]
+    mttvflp_concept_transduction["Transduction"]
+    mttvflp_concept_transduction_echelle["Transduction d'échelle (transcalaire)"]
+    mttvflp_concept_triade["Triade Ψ→B→Φ"]
+    mttvflp_concept_vivant_emerge["Vivant émergé (émergence du vivant)"]
+
+    %% --- Arêtes (relations attestées uniquement) ---
+    mttvflp_anomaly_138_139_lignes -->|anomalie-de| mttvflp_artifact_chronologie_mttv_flp
+    mttvflp_anomaly_138_139_lignes -->|anomalie-de| mttvflp_artifact_dataset_jsonl
+    mttvflp_concept_anthropo_gaien ---|tensions-with| mttvflp_concept_anthropo_solipsiste
+    mttvflp_concept_efficacite_non_top_down -->|derive-de| mttvflp_concept_sous_optimalite_locale
+    mttvflp_concept_hydrogene_substrat_minimal -->|transduces-into| mttvflp_concept_sequence_canonique_h2o_c
+    mttvflp_concept_mttv_expansion_theorique_transductif ---|variant-of| mttvflp_concept_mttv_expansion_transcalaire
+    mttvflp_concept_quorum_poreux ---|contrasts-with| mttvflp_concept_quorum_sensing
+    mttvflp_concept_quorum_sensing_biologique ---|contrasts-with| mttvflp_concept_quorum_sensing
+    mttvflp_concept_scs -->|valide-par| mttvflp_concept_mpvr
+    mttvflp_concept_etats_tetravalents_sp3 -->|transduces-into| mttvflp_concept_logique_tetravalente
+    mttvflp_concept_transduction -->|transduces-into| mttvflp_concept_pipeline_encodeur_gating_decodeur
+
+    %% --- Styles par statut ---
+    classDef default fill:#fafafa,stroke:#616161,color:#212121
+    classDef documented fill:#e0f2f1,stroke:#00695c,color:#004d40
+    classDef established fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    classDef hypothesis fill:#fff3e0,stroke:#e65100,color:#bf360c
+    classDef metaphor fill:#f3e5f5,stroke:#6a1b9a,color:#4a148c
+    classDef pending fill:#fce4ec,stroke:#c62828,color:#b71c1c
+    classDef real fill:#fafafa,stroke:#616161,color:#212121
+
+    %% --- Affectation des classes ---
+    class mttvflp_anomaly_138_139_lignes documented
+    class mttvflp_artifact_chronologie_mttv_flp real
+    class mttvflp_artifact_dataset_jsonl real
+    class mttvflp_concept_anthropo_gaien metaphor
+    class mttvflp_concept_anthropo_solipsiste pending
+    class mttvflp_concept_b_gate_poreux default
+    class mttvflp_concept_efficacite_non_top_down hypothesis
+    class mttvflp_concept_etats_tetravalents_sp3 default
+    class mttvflp_concept_gating default
+    class mttvflp_concept_hydrogene_substrat_minimal default
+    class mttvflp_concept_invariant default
+    class mttvflp_concept_logique_tetravalente pending
+    class mttvflp_concept_mpvr established
+    class mttvflp_concept_mttv default
+    class mttvflp_concept_mttv_expansion_theorique_transductif default
+    class mttvflp_concept_mttv_expansion_transcalaire default
+    class mttvflp_concept_operateur_sigma default
+    class mttvflp_concept_pipeline_encodeur_gating_decodeur metaphor
+    class mttvflp_concept_quorum_poreux default
+    class mttvflp_concept_quorum_sensing default
+    class mttvflp_concept_quorum_sensing_biologique default
+    class mttvflp_concept_routage_transductif default
+    class mttvflp_concept_scs established
+    class mttvflp_concept_sequence_canonique_h2o_c established
+    class mttvflp_concept_sous_optimalite_locale default
+    class mttvflp_concept_transduction established
+    class mttvflp_concept_transduction_echelle default
+    class mttvflp_concept_triade default
+    class mttvflp_concept_vivant_emerge default
+
+    %% --- Arêtes non résolues / hypothèses (pointillés) ---
+    linkStyle 2 stroke:#bf360c,color:#bf360c,stroke-dasharray: 5 5
+    linkStyle 3 stroke:#bf360c,color:#bf360c,stroke-dasharray: 5 5
+    linkStyle 6 stroke:#bf360c,color:#bf360c,stroke-dasharray: 5 5
+    linkStyle 7 stroke:#bf360c,color:#bf360c,stroke-dasharray: 5 5
+    linkStyle 9 stroke:#bf360c,color:#bf360c,stroke-dasharray: 5 5
+
